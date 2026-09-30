@@ -1,21 +1,22 @@
-# VulcanFlow — Technical Design Document v2.2
+# VulcanFlow — Technical Design Document v2.3
 
 **Product:** VulcanFlow — Security Scanning & Remediation Service (SaaS)
 **Domain:** vulcanflow.io
-**Document:** Technical Design Document **v2.2** — Draft for engineering review
+**Document:** Technical Design Document **v2.3** — Draft for engineering review
 **Derived from:** VulcanFlow PRD v1.1 (2026-07-29) as amended by the **PRD Change Summary (2026-08-06)**
-**Supersedes:** TDD v1.0, TDD v2.0, TDD v2.1
+**Supersedes:** TDD v1.0, TDD v2.0, TDD v2.1, TDD v2.2
 **Scope covered:** Full program, Phases 0–5
 **Platform:** Aether (self-operated Kubernetes platform — not AWS)
-**Last updated:** 2026-09-09
+**Primary implementation language:** Rust (§2.5)
+**Last updated:** 2026-09-30
 
 ---
 
 ## 0. About this document
 
-### 0.0 Revision v2.2
+### 0.0 Confirmed decisions
 
-This revision incorporates the owner's decisions from the September 2026 engineering review and corrects inconsistent schemas, examples, and execution guarantees. The referenced PRD and Change Summary were not re-reviewed with this revision; the explicit decisions below govern wherever older text differs.
+The first ten rows record the owner's decisions from the September 2026 engineering review (v2.2). The **Implementation language** row is the owner decision added in v2.3. The referenced PRD and Change Summary were not re-reviewed with these revisions; the explicit decisions below govern wherever older text differs.
 
 | Topic | Confirmed decision |
 |---|---|
@@ -28,12 +29,15 @@ This revision incorporates the owner's decisions from the September 2026 enginee
 | Verification | Normal scan consumption. Every separately executed scan type in a verification plan is accounted for in the same way as ordinary scanning. |
 | Failed scans | Failed scans consume no allowance, including target-unreachable, blocked, and platform-failed scans. Infrastructure retries add no extra consumption. A logical scan that eventually completes successfully consumes one unit. |
 | Findings | Every later scan creates fresh finding observations. Previous fixes and acknowledgments do not carry forward. Only explicit false-positive decisions carry forward to matching observations. |
-| Technology | The technologies named in the TDD are approved. Deployment versions, configuration, and compatibility still require engineering verification. |
+| Technology | The platform technologies named in the TDD (Aether, Kubernetes, secureCodeBox, Postgres/CNPG, TimescaleDB, pgvector, ClickHouse, Valkey, Keycloak, Lago, Stripe, Harbor, Argo CD, Kargo, React stack, LiteLLM) are approved. The Go-specific application frameworks previously named (chi, Huma, controller-runtime, Connect-Go) are withdrawn by the v2.3 language decision; their Rust replacements in §2.5 are `[PROPOSED]` pending engineering approval. Deployment versions, configuration, and compatibility still require engineering verification. |
 | Address family | Aether is IPv4-only. AAAA observation without IPv6 scanning is a proposal in §5.9, not a confirmed addition to execution capability. |
+| **Implementation language** `[v2.3]` | **Rust is the primary language for all VulcanFlow-owned backend code**: API, dispatcher, authorization, operator/controllers, admission webhooks, ingest, remediation, reporting, metering, abuse services, the custom completion hook, and the shared graph validator (compiled natively and to WebAssembly). Other languages remain only where §2.5.3 lists a specific reason (browser UI, upstream third-party tools, approved third-party services, ecosystem-mandated integrations). |
 
 ### 0.1 Revision scope
 
-The changes apply throughout the architecture, SQL, API contract, event examples, reports, billing, tests, phasing, and registers. Historical v2.0/v2.1 rules are summarized only in §28; they are not implementation requirements.
+**v2.3** changes the implementation language from Go to Rust. Product decisions, data model, SQL, API contract, execution guarantees, and phasing content from v2.2 are unchanged except where a section named a Go library, Go language feature, or Go-specific build step. The rationale, proposed Rust stack, and exceptions are consolidated in §2.5; language-specific consequences appear in §§2.3, 3.5, 4.2, 7.3, 8.4, 11.1, 13, 16.4, 21.3, 22, 23, 24, and the registers in §§25–28.
+
+The v2.2 changes apply throughout the architecture, SQL, API contract, event examples, reports, billing, tests, phasing, and registers. Historical v2.0/v2.1 rules are summarized only in §28; they are not implementation requirements.
 
 The product retains the existing discovery, guidance, verification, and reporting surfaces. Verification records what a check observed at a point in time; it never grants a persistent fixed status to future scan results.
 
@@ -50,7 +54,7 @@ Examples are design sketches, not assertions that manifests, migrations, metrics
 
 ### 0.3 How to read
 
-Read §§1–5 for foundations; §§6–14 for execution and data; §§15–16 for guidance, verification, and reports; §§17–24 for accounting and operations; and §§25–28 for traceability, proposals, open items, and changes.
+Read §§1–5 for foundations (§2.5 for the language and stack); §§6–14 for execution and data; §§15–16 for guidance, verification, and reports; §§17–24 for accounting and operations; and §§25–28 for traceability, proposals, open items, and changes.
 
 ---
 
@@ -119,15 +123,15 @@ graph TB
         GW[Ingress + WAF + rate limit]
     end
 
-    subgraph ControlPlane[Control Plane]
-        API[VulcanFlow API Go / chi / Huma / Connect-RPC]
+    subgraph ControlPlane[Control Plane - Rust services]
+        API[VulcanFlow API Rust / axum / utoipa]
         AUTHZ[Authorization Service]
         DISP[Scan Dispatcher]
-        OPER[VulcanFlow Operator]
+        OPER[VulcanFlow Operator kube-rs]
         REM[Remediation Service]
         RPT[Report Engine]
         METER[Metering and Allowances]
-        AIGW[AI Gateway]
+        AIGW[AI Gateway LiteLLM]
     end
 
     subgraph DataPlane[State]
@@ -186,25 +190,30 @@ Two components are new in v2.0: **`vf-remediation`** (§15) and **`vf-report`** 
 
 Unchanged in principle from v1.0. **The control plane is a normal stateful web application; the execution plane is a hostile-workload sandbox.** They communicate only through Kubernetes API objects (Scan CRDs in), object storage (findings out), and a signed webhook (completion notification). Untrusted scanner code has no general-purpose control-plane access. Approved lurker/hook status and artifact paths require narrowly scoped permissions; pod-wide network allowances must be safe for the entire pod (§3.4).
 
+The language change applies to the control plane and to VulcanFlow-owned code that runs in the execution plane (the completion hook and input adapters). The scanners themselves are upstream tools and are not rewritten (§2.5.3).
+
 **A note on "S3":** throughout this document, S3 means **Aether-provided S3-compatible object storage** (Ceph RGW / RustFS). VulcanFlow does not run on AWS.
 
 ### 2.3 Component inventory
 
-| Component | Language / framework | Responsibility | Phase |
+| Component | Language / framework `[PROPOSED crates, §2.5.2]` | Responsibility | Phase |
 |---|---|---|---|
-| `vf-api` | Go 1.26, chi v5, Huma v2 | REST + Connect-RPC, OpenAPI 3.1, SSE, webhook receiver, authn/authz enforcement | 1 |
-| `vf-authz` | Go | Track A challenge issue/verify; Track B attestation, scope signal, security.txt probe; basis records | 1 |
-| `vf-dispatcher` | Go (module of `vf-api`) | Validate graph, estimate work units, reserve allowances, emit Scan CRDs, enforce scope and concurrency | 1 |
-| `vf-operator` | Go, controller-runtime | Reconciles `Tenant` and `ScanFlow` CRDs: namespace, quota, NetworkPolicy, RBAC, schema | 1 |
-| `vf-translator` | Go (library) | Flow graph → secureCodeBox `Scan` + `CascadingRule`; graph validation | 1 |
-| `vf-ingest` | Go | Consumes findings artifacts; records fresh observations per SCB scan; idempotent ingest, enrichment and explicit false-positive matching | 1 |
-| **`vf-remediation`** | Go | **`[NEW v2.0]`** Remediation content resolution, verification orchestration, historical observation outcomes | 3 |
-| **`vf-report`** | Go + headless Chromium | **`[NEW v2.0]`** Report assembly, template rendering, PDF/HTML output, scheduled delivery, branding | 3 |
-| `vf-meter` | Go | Atomic target/scan allowance accounting, usage ledger, Lago sync, Stripe reconciliation, entitlements | 1 core / 4 commercial |
-| `vf-abuse` | Go | KYC orchestration, anomaly detection, suspend/kill automation, egress reputation | 4 |
-| `vf-aigw` | Self-hosted OpenAI-compatible gateway | Single egress point for model calls; tenant tagging, token metering, audit | 5 |
-| `vf-web` | React 19, Vite 8, TanStack Router | SPA: builder, attack graph, findings, remediation, reports, billing | 3 |
-| Custom scanner images | arm64, Harbor | dnsx, httpx, tlsx, masscan (+ optional Amass), SCB-compliant with parsers | 2 |
+| `vf-api` | Rust, tokio, axum, utoipa | REST, OpenAPI 3.1, SSE, webhook receiver, authn/authz enforcement | 1 |
+| `vf-authz` | Rust (library crate used by `vf-api` and workers) | Track A challenge issue/verify; Track B attestation, scope signal, security.txt probe; basis records | 1 |
+| `vf-dispatcher` | Rust (module of `vf-api`) | Validate graph, estimate work units, reserve allowances, emit Scan CRDs, enforce scope and concurrency | 1 |
+| `vf-operator` | Rust, kube-rs (`kube`, `kube-runtime`) | Reconciles `Tenant` and `ScanFlow` CRDs: namespace, quota, NetworkPolicy, RBAC, schema | 1 |
+| `vf-admission` | Rust, kube-rs admission types + axum | Validating webhooks for Scan, Job, and Pod admission (§5.7) | 1 |
+| `vf-translator` | Rust (library crate) | Flow graph → secureCodeBox `Scan` + `CascadingRule`; graph validation | 1 |
+| `vf-graph` | Rust (library crate; native + `wasm32-unknown-unknown`) | Single graph rule set used by server and browser (§7.3) | 1 |
+| `vf-ingest` | Rust | Consumes findings artifacts; records fresh observations per SCB scan; idempotent ingest, enrichment and explicit false-positive matching | 1 |
+| `vf-hook-notify` | Rust (SCB completion-hook image) | Signed completion notification (§8.4) | 1 |
+| **`vf-remediation`** | Rust | **`[NEW v2.0]`** Remediation content resolution, verification orchestration, historical observation outcomes | 3 |
+| **`vf-report`** | Rust assembler + isolated headless Chromium renderer | **`[NEW v2.0]`** Report assembly, template rendering, PDF/HTML output, scheduled delivery, branding | 3 |
+| `vf-meter` | Rust | Atomic target/scan allowance accounting, usage ledger, Lago sync, Stripe reconciliation, entitlements | 1 core / 4 commercial |
+| `vf-abuse` | Rust | KYC orchestration, anomaly detection, suspend/kill automation, egress reputation | 4 |
+| `vf-aigw` | Self-hosted OpenAI-compatible gateway (LiteLLM, Python — approved third-party component, not rewritten) | Single egress point for model calls; tenant tagging, token metering, audit | 5 |
+| `vf-web` | TypeScript, React 19, Vite 8, TanStack Router | SPA: builder, attack graph, findings, remediation, reports, billing | 3 |
+| Custom scanner images | Upstream tools (dnsx, httpx, tlsx, Amass: Go; masscan: C) packaged for arm64 in Harbor; VulcanFlow input adapters in Rust | SCB-compliant scanners with parsers | 2 |
 
 ### 2.4 Pipeline and scan lifecycle
 
@@ -236,6 +245,68 @@ A **pipeline run** is the `ScanFlow` aggregate. A **scan** is one metered work u
 Discovery means the complete scan count may be unknown at submission. The system proceeds within the remaining allowance and records work skipped at the limit. Tab or API-session loss does not stop execution. Progress events are a view of durable state, not the execution driver.
 
 Each scan observation is retained independently. Ingest carries forward only a matching explicit false-positive decision; it does not carry forward fixed, accepted-risk, or acknowledged state. Guidance is resolved and version-pinned at ingest. Reports use an immutable assembled input snapshot (§16.4).
+
+### 2.5 Implementation language and Rust stack `[NEW v2.3]`
+
+#### 2.5.1 Rationale and realistic expectations
+
+`[CONFIRMED]` Rust is the primary implementation language (§0.0). The expected benefits for this system, in order of how much they matter here:
+
+1. **Correctness of safety-critical state machines.** Authorization scope, allowance reservation/settlement, finding state, and role policy are closed sets of states. Rust enums with exhaustive `match` make an unhandled state a compile error rather than a runtime default. This is the strongest argument for Rust in VulcanFlow specifically.
+2. **Memory safety without a garbage collector** in code that parses attacker-influenced input (scanner output, findings artifacts, DNS/HTTP challenge responses, report content).
+3. **Lower and more predictable memory use and tail latency** for long-lived services (SSE fan-out, ingest, controllers), and therefore denser packing on Aether nodes.
+4. **A smaller, faster browser validator.** Rust compiles to compact WebAssembly without a bundled language runtime, which suits the §14.3 rule that the builder bundle stays off the activation path.
+
+Expectations must stay realistic. Most control-plane work is I/O-bound (Postgres, Kubernetes API, object storage, external APIs), and scan duration is dominated by network scanners that remain upstream Go/C binaries. Rust will not make scans measurably faster; the gains are in resource footprint, latency tails, and defect classes prevented. The costs are slower compile times, a steeper onboarding curve (async Rust in particular), and a thinner ecosystem for a few integrations (§2.5.2 marks these). `[PROPOSED]` Record baseline memory/CPU/latency measurements in Phase 1 so the resource claims are evidenced rather than assumed.
+
+#### 2.5.2 Proposed stack `[PROPOSED]`
+
+Crate choices are proposals for engineering approval. Pin exact versions in the workspace `Cargo.lock` during Phase 0; do not treat any crate named here as installed, compatible, or approved until §27 item 17 closes.
+
+| Concern | Proposed choice | Notes |
+|---|---|---|
+| Toolchain | Stable Rust pinned in `rust-toolchain.toml`, edition 2024 | One pinned toolchain for all crates; upgrades through normal review |
+| Async runtime | tokio | CPU-heavy or blocking work (PDF handoff, hashing large artifacts) uses `spawn_blocking` or dedicated workers, never the reactor thread |
+| HTTP server / middleware | axum, tower, tower-http | Replaces chi; role policy as a tower layer (§4.2) |
+| OpenAPI 3.1 | utoipa (code-first) | Replaces Huma; spec generated from handler types so it cannot drift. Confirm 3.1 output and Problem Details modelling in Phase 0 |
+| RPC | Not at GA (REST only) | Replaces Connect-Go; no first-party Connect-RPC Rust implementation is assumed. `[OPEN]` §27 item 19 |
+| Postgres | sqlx (async, compile-time-checked queries), `pgvector` crate | Compile-time checks run against a template tenant schema; tenant context wrapper in §3.5 |
+| Migrations | sqlx migrate or refinery, SQL files | Resumable per-tenant fan-out job (§21.2) |
+| Kubernetes controllers | kube-rs (`kube`, `kube-runtime`, `kube-derive`), `k8s-openapi` | Replaces controller-runtime; CRDs derived from Rust types. Leader election is not the correctness mechanism (§11.1) |
+| Admission webhooks | kube-rs `admission` types served by axum over rustls | Fail-closed configuration (§5.7) |
+| ClickHouse | official `clickhouse` crate | Read isolation still tested (§6.1) |
+| Valkey | redis-rs (`redis`) or `fred` | Wake-ups, rate limits, replay buffers only |
+| Object storage | S3 client configured for Aether endpoints (e.g. `aws-sdk-s3` or `object_store`) | Must pass conformance against Ceph RGW / RustFS, including path-style addressing, signing, and default checksum behaviour; AWS-oriented defaults must not be assumed |
+| OIDC / JWT | `jsonwebtoken`, `openidconnect` | JWKS caching as §4.1 |
+| TLS / crypto | rustls; RustCrypto `hmac`, `sha2`; `rand` (OS CSPRNG) for challenge tokens | No OpenSSL dependency where avoidable |
+| Serialization / schema | serde (`deny_unknown_fields` on external input), `jsonschema` | Graph DSL and node configs |
+| Domain handling | `idna`/`url`, a maintained Public Suffix List crate with periodic list refresh | §5.3 canonicalization |
+| Scheduling | a cron crate with timezone support plus `chrono-tz` | DST behaviour tested per §11.1 |
+| HTML templating | askama (compile-time templates) or minijinja, plus `ammonia` for any permitted rich text | Escaping caveat in §16.4 |
+| Chromium control | isolated renderer driven by a small Rust wrapper (CLI print-to-PDF or CDP via a crate such as chromiumoxide) | Renderer isolation unchanged (§16.4) |
+| Billing APIs | Lago and Stripe HTTP APIs via thin typed clients (generated or hand-written); community Stripe crates only after review | `[OPEN]` §27 item 21 |
+| Observability | `tracing`, `tracing-subscriber`, OpenTelemetry OTLP exporter, a Prometheus client crate | §19 |
+| WebAssembly | `wasm-bindgen` / `wasm-pack` for `vf-graph` | §7.3 |
+| Testing | cargo test, proptest, testcontainers, insta snapshots, cargo-fuzz | §23 |
+| Supply chain | `Cargo.lock` committed, cargo-deny (licenses, advisories, bans, sources), cargo-audit, SBOM generation | §21.3 |
+
+`[PROPOSED]` Workspace layout: one Cargo workspace with library crates `vf-core` (domain types, scope, allowance and finding state machines), `vf-graph`, `vf-translator`, `vf-authz`, `vf-db` (tenant-scoped data access), and binary crates `vf-api`, `vf-operator`, `vf-admission`, `vf-ingest`, `vf-report`, `vf-meter`, `vf-abuse`, `vf-hook-notify`. Safety-relevant logic lives in library crates with no I/O so it can be property-tested and fuzzed in isolation.
+
+`[PROPOSED]` Engineering rules: `#![forbid(unsafe_code)]` in every VulcanFlow crate (exceptions require review and a recorded reason); `clippy` with warnings denied in CI; no `unwrap`/`expect` on external input paths; panics in request handlers are caught at the service boundary and reported as platform errors, never as target outcomes.
+
+#### 2.5.3 Where Rust is not used, and why
+
+| Area | Language | Reason |
+|---|---|---|
+| Browser SPA (`vf-web`) | TypeScript/React | Approved frontend stack (§14). Only the graph validator is shared as Rust-compiled WASM |
+| Upstream scanners (subfinder, dnsx, httpx, tlsx, nuclei, Amass; masscan; nmap) | Go / C / C++ as shipped upstream | Rewriting maintained security tools adds risk and permanent maintenance cost with no product benefit. VulcanFlow wraps, pins, and conformance-tests them (§21.3) |
+| secureCodeBox operator, lurker, stock hooks | Upstream (Go/JS) | Third-party platform component |
+| SCB parsers | Upstream parser SDK (JavaScript) by default | `[OPEN]` §27 item 20: a Rust parser is permitted only after conformance proves it implements the SCB parser contract for the selected release |
+| AI gateway | LiteLLM (Python) | Approved third-party gateway (§18.1); VulcanFlow does not maintain its code |
+| Keycloak customisations, if any | Java | Keycloak's extension model |
+| Terraform provider (post-GA, §13.5) | Go | Terraform's plugin framework is Go |
+| Customer SDKs other than TypeScript (post-GA) | Customer's language | SDK languages follow customers, not the implementation language |
+| SQL migrations, Kubernetes manifests | SQL, YAML | Declarative artifacts |
 
 ---
 
@@ -301,6 +372,8 @@ status:
   conditions: [...]
 ```
 
+`[PROPOSED]` The `Tenant` and `ScanFlow` CRD schemas are generated from Rust types with `kube-derive` (`#[derive(CustomResource, JsonSchema)]`), so the operator, API, and published CRD cannot disagree about field names or types.
+
 The operator reconciles, in order: Namespace → ResourceQuota + LimitRange → NetworkPolicy → ServiceAccount + RBAC → Harbor pull secret → Postgres schema + RLS policies via a migration job → S3 prefix + scoped credential → Valkey key namespace. Each step is idempotent and reports a Condition.
 
 `entitlements` live on the CRD rather than only in the billing system so the dispatcher can enforce them without a synchronous call to Lago. `vf-meter` reconciles the CRD when a subscription changes.
@@ -342,6 +415,8 @@ CREATE POLICY tenant_isolation ON findings
 
 `[PROPOSED]` In every transaction, derive tenant context from authenticated server-side identity, set it with transaction-local `set_config(..., true)`/SET LOCAL, and safely select or qualify the corresponding schema. Apply the same pattern in ingestion, reports, scheduling, and retries. Never trust a tenant ID supplied in a finding payload or arbitrary API input. Transaction pooling by itself does not reset or safely bind an arbitrary session GUC.
 
+`[PROPOSED — v2.3]` Enforce this in the type system. `vf-db` exposes tenant-owned queries only on a `TenantTx` type whose sole constructor takes a verified tenant identity (produced by the authentication layer or a trusted work-unit record), opens the transaction, and sets the transaction-local context and schema before returning. Repository functions for tenant-owned tables accept `&mut TenantTx`, not a raw connection or pool, so a query without tenant context does not compile. Shared control/reference access uses a separate, explicitly named type. This complements, and does not replace, RLS and the isolation tests.
+
 Apply tenant policies and tenant-consistent references to every tenant-owned table, not just findings. Shared control/reference tables need explicit roles and access rules. Test missing/wrong tenant context, pooled connection reuse after commit/rollback/errors, wrong schema routing, background workers, and shared-table references. ClickHouse and storage permissions need their own tests because Postgres RLS does not protect them.
 
 ### 3.6 Tenant deletion
@@ -374,7 +449,7 @@ GA ships `admin` and `member`. Extended roles move to P2 under the new positioni
 | `member` | dispatch, cancel own | read, triage, verify | CRUD own | generate | read | — |
 | `viewer` (P2) | — | read | read | read | — | — |
 
-Enforcement is a single middleware layer with a declarative policy table, not per-handler checks. `[PROPOSED]` Express the policy in Go with exhaustive unit tests over the role × action matrix rather than adopting OPA at GA — the matrix is small and an external engine adds an availability dependency in the dispatch hot path.
+Enforcement is a single middleware layer with a declarative policy table, not per-handler checks. `[PROPOSED]` Express the policy in Rust as `Role` and `Action` enums with a single exhaustive `match` (no wildcard arm), exposed as a tower layer, with exhaustive unit tests over the role × action matrix rather than adopting OPA at GA. Adding a role or action then fails compilation until the policy decides it. The matrix is small and an external engine adds an availability dependency in the dispatch hot path.
 
 ---
 
@@ -398,7 +473,7 @@ Verification is required before any Scan custom resource is created for the targ
 
 The earlier HTTP-file-on-IP and direct CIDR review paths remain documented legacy scope proposals. `[OPEN]` Standalone IP/CIDR targets have no confirmed target-allowance definition under the domain/subdomain commercial model; do not enable their registration by silently treating an address or range as one domain target. This does not restrict domain-derived IPv4 port scans (§5.3).
 
-`[PROPOSED]` Challenge tokens contain 256 bits of randomness, expire after seven days, and bind tenant, canonical hostname, method, and challenge instance. Consume the challenge once; do not reuse a successful token for another scope. DNS verification uses three public resolvers and an authoritative lookup, with bounded retries for propagation. An HTTP challenge permits at most one redirect on the **same canonical hostname**; TLS verification remains enabled. HTTP downgrade, cross-host redirect, private/link-local destination, oversized body, and timeout fail the challenge. The verifier itself requires bounded outbound access and must not become a route into platform services.
+`[PROPOSED]` Challenge tokens contain 256 bits of randomness from the operating-system CSPRNG, expire after seven days, and bind tenant, canonical hostname, method, and challenge instance. Consume the challenge once; do not reuse a successful token for another scope. DNS verification uses three public resolvers and an authoritative lookup, with bounded retries for propagation. An HTTP challenge permits at most one redirect on the **same canonical hostname**; TLS verification remains enabled. HTTP downgrade, cross-host redirect, private/link-local destination, oversized body, and timeout fail the challenge. The verifier itself requires bounded outbound access and must not become a route into platform services.
 
 `[PROPOSED]` Control verification lasts 90 days, with periodic rechecking. A failed background recheck enters a visible 14-day grace window; passing renews approval, expiry beyond grace refuses new work and disables schedules. Explicit revocation is immediate and has no grace period. The authorization resolver applies the same temporal rules to scheduled, ordinary, verification, and cascade work. Manual-review staffing and attestation expiry remain in §27.
 
@@ -415,6 +490,8 @@ Here, **apex domain** means a registrable domain such as `example.com`, not a pu
 An apex-domain approval may cover descendants, but a run includes them only when discovery was selected. A subdomain approval covers that hostname only. A tenant may hold a broad apex approval and still submit an exact-host run; the run scope remains narrower than the approval.
 
 `[PROPOSED]` Canonicalize hostnames consistently, including case, trailing dots, and IDNA representation. Use a maintained Public Suffix List, including its private suffix rules, to reject public-suffix roots and identify registrable domains. Match the **stored approved root and run scope** with exact or dot-boundary descendant matching; comparing registrable domains alone must not broaden a subdomain approval. URL inputs resolve to the same domain/subdomain target with separate endpoint context, not additional targets per path.
+
+`[PROPOSED — v2.3]` Represent a validated hostname as a `CanonicalHost` newtype in `vf-core` with a private field and a single fallible constructor that performs the canonicalization above. Scope matching, argv construction (§22.3), and allowance admission accept only `CanonicalHost`, so an unnormalized string cannot reach them. The constructor and matcher are property-tested and fuzzed (§23.1).
 
 `[CONFIRMED]` The same approval permits domain-derived port scans against its eligible resolved IPv4 addresses. Remove the former per-type port-scan permission and separate IP-control challenge. Persist the original authorized hostname, observed resolution, timestamps, and actual destinations used; a discovered CNAME destination is not automatically a new authorized hostname to scan independently. Redirects or generated target lists that expand hostname scope must be rejected or skipped with a visible reason.
 
@@ -470,7 +547,7 @@ Renewal creates fresh grant evidence. Each dispatch decision records the applica
 
 Every root or child Scan must refer to a live authorization basis, a permitted pipeline/node, and a reserved work unit. Validate the original target and all materialized destinations. The policy applies to tenant namespaces **and the controlled scanner pool**, with tenant identity obtained from trusted provisioning/work-unit records rather than an arbitrary annotation.
 
-`[PROPOSED]` The existing validating webhook checks Scan CREATE and security-relevant UPDATE operations, fails closed, and validates target annotations against generated parameters and immutable target lists. Restrict changes to scan types, templates, command/environment overrides, init containers, volumes, and service accounts; validating only the apparent target is insufficient. Permit only operator-managed workload creation through RBAC and admission.
+`[PROPOSED]` The validating webhook (`vf-admission`, Rust) checks Scan CREATE and security-relevant UPDATE operations, fails closed, and validates target annotations against generated parameters and immutable target lists. Restrict changes to scan types, templates, command/environment overrides, init containers, volumes, and service accounts; validating only the apparent target is insufficient. Permit only operator-managed workload creation through RBAC and admission.
 
 The ScanFlow controller's status update is **not** an independent start barrier. A Scan operator may create a Job before that status changes. `[PROPOSED]` Apply the same authorization/reservation check to scanner Job admission, including pool Jobs, and protect descendant Pod creation and retries. New execution after revocation must be refused; revocation also triggers cancellation of already-running work. The exact webhook scopes and generated workload mapping must pass §23.4.1 before release.
 
@@ -530,6 +607,8 @@ ClickHouse supports row policies for read-only access; its tenant read path must
 | `scan_fingerprint` | Unique identifier of the actual secureCodeBox Scan attempt. Stored unchanged. |
 | `finding_id` | One observation from one particular scan attempt. Never reused to merge observations from later scans. |
 | `false_positive_match` | A separate tenant-scoped matching rule linking explicit false-positive decisions to equivalent later observations (§10.2). |
+
+`[PROPOSED — v2.3]` Each identity is a distinct Rust newtype (`PipelineRunId`, `WorkUnitId`, `ScanFingerprint`, `FindingId`, …) rather than a bare `Uuid`/`String`, so passing a pipeline-run ID where a scan fingerprint is expected is a compile error. This directly enforces the separation this table defines.
 
 Track first/last observation on assets, but record coverage per run. Absence from an incomplete or differently scoped scan is not evidence that an asset or vulnerability disappeared.
 
@@ -635,6 +714,8 @@ CREATE TABLE false_positive_events (
 
 `UNIQUE (scan_id, source_finding_id)` makes repeated ingestion of the same artifact idempotent. There is no uniqueness constraint merging equivalent findings across different scans. Every scan may produce many observations, each linked to that scan's fingerprint through `scans`.
 
+`[PROPOSED — v2.3]` Text-typed state columns (`status`, `state`, `outcome_class`) map to Rust enums in `vf-core` with explicit, tested string conversions; an unknown value read from the database is a hard error, not a silent default. Allowed transitions are implemented as functions over those enums, with exhaustive matches.
+
 `[PROPOSED]` Store pipeline submission, work registration, reservation, and outbox intent atomically. The SCB identifier does not exist before the Scan is created, so use `work_unit_id` to reserve safely, then bind the returned SCB identifier. Reconciliation must adopt an existing deterministic object after a timeout instead of recreating it and silently starting another attempt.
 
 ### 6.4 ClickHouse rollups and consistency
@@ -718,19 +799,23 @@ Edges carry typed data over a small closed lattice: `target`, `subdomain`, `host
 | `nuclei` | `http_endpoint`, `service`, `host` | `finding` | Template-driven |
 | `aggregate` | any (2+ inputs) | same type as input | VulcanFlow-side fan-in — §7.4; not an SCB scanner |
 
+`[PROPOSED — v2.3]` In `vf-graph`, node types and edge payload types are Rust enums, and each node's configuration is a dedicated struct deserialized with `#[serde(deny_unknown_fields)]`. The compatibility table above is a single exhaustive `match`, so a new node or data type cannot be added without deciding its edges.
+
 ### 7.3 Validation
 
-Validation runs identically on client and server from the same rule set. `[PROPOSED]` Rules are defined once in Go and compiled to WebAssembly for the browser rather than maintained twice. Two implementations of a safety-relevant rule set will diverge, and the divergence surfaces as either a false rejection (annoying) or a false acceptance (an invalid execution).
+Validation runs identically on client and server from the same rule set. `[PROPOSED]` Rules are defined once in the Rust crate `vf-graph` and compiled both natively (server) and to WebAssembly via `wasm-bindgen` (browser), rather than maintained twice. Two implementations of a safety-relevant rule set will diverge, and the divergence surfaces as either a false rejection (annoying) or a false acceptance (an invalid execution). Rust targets WebAssembly without shipping a language runtime or garbage collector, which keeps the validator bundle small; `[PROPOSED]` set a size budget for the `.wasm` artifact in the §14.3 CI bundle check, and keep the WASM build free of I/O-dependent crates (the server-only checks below that need database state stay outside the shared crate).
 
 Checks: acyclicity; type compatibility on every edge; every non-source node has a satisfied required input; at least one node produces `finding`; node config schema validity; **package entitlement** (the graph contains no node the tenant's package does not include); per-operation scope within operational ceilings, with runtime reservations for discovered work (§17).
 
-Client-side validation is advisory and instant. Server-side validation is authoritative and runs again at dispatch. **A graph that fails server validation starts no scans and consumes no allowance.**
+Client-side validation is advisory and instant. Server-side validation is authoritative and runs again at dispatch. **A graph that fails server validation starts no scans and consumes no allowance.** `[PROPOSED]` A parity test runs the same graph corpus through the native and WASM builds and requires identical results (`graph/native-wasm-parity`, §25).
 
 ### 7.4 Translation to secureCodeBox
 
 The root and each downstream scanner operation become authorized, reserved SCB Scan work units. Install and provision the SCB cascading hook as well as the operator, scanner types, parsers, and required hooks; the operator alone does not implement the full cascade pipeline.
 
 The translator uses typed argument builders and materialized input lists. It assigns pipeline/node identity to each child, scopes rules to the originating run and graph edge, and preserves the original authorized hostname when execution uses a resolved IPv4. Multiple graph nodes emitting the same finding category must not accidentally trigger one another's outgoing edges. Source-node selection and child labeling require a release-specific integration test.
+
+`[PROPOSED — v2.3]` The translator builds SCB `Scan` and `CascadingRule` objects from Rust types for those CRDs (generated from the selected release's CRD schemas, e.g. with kopium, and checked in), not from string templates, so malformed manifests are a compile or serialization error rather than an apply-time surprise.
 
 The following illustrates the documented SCB child-metadata fields. It is a fragment, not a complete ready-to-run cascade: the adapter must supply the per-candidate reserved work-unit identity and the dnsx input file before admission.
 
@@ -757,7 +842,7 @@ spec:
     parameters: ["-a", "-aaaa", "-json", "-l", "/inputs/targets.txt"]
 ```
 
-`spec.scanAnnotations` supplies child Scan annotations; annotations on the rule object do not replace it. Finding fields use `{{attributes.hostname}}`; documented `$` helpers such as `{{$.hostOrIP}}` have distinct meanings. `dnsx -l` consumes a file or stdin, so the custom scanner adapter must materialize the validated hostname into the stated file. The AAAA flag is conditional on approval of §5.9.
+`spec.scanAnnotations` supplies child Scan annotations; annotations on the rule object do not replace it. Finding fields use `{{attributes.hostname}}`; documented `$` helpers such as `{{$.hostOrIP}}` have distinct meanings. `dnsx -l` consumes a file or stdin, so the custom scanner adapter (Rust) must materialize the validated hostname into the stated file. The AAAA flag is conditional on approval of §5.9.
 
 Generated root and child Scans carry the exact scoped `spec.cascades.matchLabels`, approved node configuration, trusted work identity, and limits. The adapter must prevent unknown/unreserved candidates from becoming runnable Scans (§5.7). A matching rule alone is not a billing reservation.
 
@@ -792,7 +877,7 @@ Persist the graph version, translator version, normalized target, configured run
 
 ### 7.6 Amass
 
-`[OPEN — non-blocking]` SCB v5 dropped Amass for subfinder, and maintaining a custom arm64 Amass scanner is an ongoing cost. This design supports Amass as an **optional higher-tier node**, with default subdomain discovery being `subfinder + dnsx + CT-log sources`. That maps maintenance burden to revenue and keeps the default path on an upstream-maintained tool.
+`[OPEN — non-blocking]` SCB v5 dropped Amass for subfinder, and maintaining a custom arm64 Amass scanner is an ongoing cost. This design supports Amass as an **optional higher-tier node**, with default subdomain discovery being `subfinder + dnsx + CT-log sources`. That maps maintenance burden to revenue and keeps the default path on an upstream-maintained tool. (Amass remains the upstream Go tool; the Rust decision does not apply to it — §2.5.3.)
 
 ### 7.7 Profile-pack templates `[REVISED v2.0]`
 
@@ -840,11 +925,11 @@ Abuse suspension additionally blocks access, schedules, notifications/report tri
 
 ### 8.4 Artifacts, hooks, and ingestion
 
-Use a dedicated approved completion hook to send a small signed notification containing tenant/work identity, actual scan fingerprint, node identity, artifact reference, and checksum. A `ScanCompletionHook` is an extension execution mechanism; the custom payload, HMAC signing, replay handling, and key distribution are VulcanFlow integration work, not assumed built-in behavior.
+Use a dedicated approved completion hook to send a small signed notification containing tenant/work identity, actual scan fingerprint, node identity, artifact reference, and checksum. A `ScanCompletionHook` is an extension execution mechanism; the custom payload, HMAC signing, replay handling, and key distribution are VulcanFlow integration work, not assumed built-in behavior. `[PROPOSED — v2.3]` Implement this hook as the Rust image `vf-hook-notify` (a small static binary on a minimal base image). It holds a signing key and handles attacker-influenced artifact references, which is where memory safety and a minimal image surface matter most. Its conformance with the SCB hook invocation contract for the selected release is part of §27 item 20.
 
 Verify signature/timestamp/nonce and cross-check the identity, storage prefix, and artifact checksum against trusted work records. Ingest accepts only expected artifacts with bounded size and schema validation. A duplicate notification or artifact delivery is idempotent on the source scan/finding identity.
 
-`[PROPOSED]` A 60-second reconciliation loop checks SCB status, manifests, and Postgres processing state for missed notifications, including pool attempts and interrupted ingestion. Store ingest job intent durably; Valkey provides wake-ups, not the sole queue of record.
+`[PROPOSED]` `vf-ingest` parses artifacts with streaming, size-bounded deserialization (no unbounded buffering of scanner output) and is fuzzed with malformed and adversarial findings documents (§23.1). A 60-second reconciliation loop checks SCB status, manifests, and Postgres processing state for missed notifications, including pool attempts and interrupted ingestion. Store ingest job intent durably; Valkey provides wake-ups, not the sole queue of record.
 
 ---
 
@@ -852,7 +937,7 @@ Verify signature/timestamp/nonce and cross-check the identity, storage prefix, a
 
 ### 9.1 Transport
 
-Server-Sent Events over HTTP/2, fanned out via Valkey pub/sub. SSE rather than WebSockets because traffic is unidirectional server→client, SSE survives proxies and reconnects natively via `Last-Event-ID`, and it avoids a second connection-management stack. Control actions go over normal REST.
+Server-Sent Events over HTTP/2, fanned out via Valkey pub/sub. SSE rather than WebSockets because traffic is unidirectional server→client, SSE survives proxies and reconnects natively via `Last-Event-ID`, and it avoids a second connection-management stack. Control actions go over normal REST. `[PROPOSED]` Served by axum's SSE support; per-connection state is small and bounded, and slow clients are handled by the backpressure rules in §9.3 rather than unbounded per-client buffers.
 
 ### 9.2 Event contract
 
@@ -956,9 +1041,9 @@ CREATE TABLE schedule_occurrences (
 );
 ```
 
-`[PROPOSED]` A leader-elected scheduler in vf-api polls every 30 seconds. Claim an occurrence transactionally and use its identity as the ordinary submission idempotency key; leader election alone does not guarantee once-only dispatch. Resolve the effective immutable graph version at claim time and record it.
+`[PROPOSED]` A single active scheduler in vf-api polls every 30 seconds. Leader election may use a Kubernetes Lease (via a lease crate compatible with kube-rs) or a Postgres advisory lock; it reduces duplicate work but is **not** the correctness mechanism. Claim an occurrence transactionally and use its identity as the ordinary submission idempotency key; the `UNIQUE (schedule_id, scheduled_for)` claim, not leader election, guarantees once-only dispatch. Resolve the effective immutable graph version at claim time and record it.
 
-Scheduled work follows the same approval, scope, allowance, and execution path as manual work. Skip missed windows after downtime/suspension; do not backfill automatically. Apply deterministic jitter within the scheduled minute. `[PROPOSED]` Skip overlapping occurrences of the same schedule with a recorded reason. Use the named IANA timezone, skip nonexistent spring-forward times, and run once at a repeated fall-back wall-clock time; test the chosen cron implementation against these rules.
+Scheduled work follows the same approval, scope, allowance, and execution path as manual work. Skip missed windows after downtime/suspension; do not backfill automatically. Apply deterministic jitter within the scheduled minute. `[PROPOSED]` Skip overlapping occurrences of the same schedule with a recorded reason. Use the named IANA timezone, skip nonexistent spring-forward times, and run once at a repeated fall-back wall-clock time; test the chosen Rust cron/timezone implementation against these rules.
 
 Record no-allowance, expired-approval, overlap, and downtime skips and notify through normal delivery preferences. Do not silently restart a suspended schedule or use an old tenant/package token claim as current authorization.
 
@@ -985,7 +1070,7 @@ Track A ownership is re-verified in the background on a 90-day cycle with a 14-d
 
 `[PROPOSED]` Per-tenant hourly send caps with overflow rolled into a digest. A scan that discovers hundreds of critical findings must not generate hundreds of emails.
 
-Email delivery uses a transactional provider over SMTP/API. Report emails carry either the PDF attached or a signed link, depending on size (§16.5).
+Email delivery uses a transactional provider over SMTP/API (from Rust, e.g. `lettre` for SMTP or the provider's HTTP API). Report emails carry either the PDF attached or a signed link, depending on size (§16.5).
 
 ---
 
@@ -993,7 +1078,9 @@ Email delivery uses a transactional provider over SMTP/API. Report emails carry 
 
 ### 13.1 Shape
 
-Go 1.26 + chi v5 + **Huma v2**, generating OpenAPI 3.1 from the handler definitions so the published spec cannot drift from the implementation. Connect-RPC alongside for typed clients and streaming. `[PROPOSED]` REST is the primary supported surface at GA; Connect-RPC is experimental until the first SDK ships.
+`[PROPOSED — v2.3]` Rust + tokio + **axum** (tower middleware), generating OpenAPI 3.1 from handler and schema types with **utoipa**, so the published spec cannot drift from the implementation. A CI check fails the build if the generated spec changes without a committed spec update, and the TypeScript client is regenerated from that committed spec.
+
+REST is the only supported surface at GA. The v2.2 Connect-RPC channel (previously experimental until the first SDK) is withdrawn with the Go stack: `[OPEN]` §27 item 19 decides whether a typed streaming RPC channel is needed post-GA and, if so, whether to use gRPC via tonic (with gRPC-Web for browsers) or a Connect-compatible Rust implementation after evaluation. SSE (§9) already covers server→client streaming.
 
 ### 13.2 Principal endpoints
 
@@ -1050,6 +1137,8 @@ RFC 9457 Problem Details with a stable machine-readable `type` and a structured 
 }
 ```
 
+`[PROPOSED — v2.3]` Problem types are a single Rust error enum implementing axum's `IntoResponse`; each variant maps to exactly one stable `type` URI and HTTP status, and the enum is documented into the OpenAPI spec. Internal error details (database errors, panics) are logged with a trace ID and never serialized to the client.
+
 The refusal is *track-specific*: it tells the user which door is open to them rather than issuing a generic denial. A second error class matters equally in v2.0 — `target-allowance-exceeded` returns the current count, the package limit, and an upgrade link, because under flat tenancy that is the most common refusal a growing account will hit.
 
 ### 13.4 Rate limiting
@@ -1058,7 +1147,7 @@ Valkey token buckets per `(tenant, endpoint-class)` with package-scaled limits, 
 
 ### 13.5 SDKs
 
-`[PROPOSED]` GA ships one SDK, **TypeScript**, generated from the OpenAPI spec with a hand-written ergonomic layer over dispatch and SSE. TypeScript first because the SPA consumes the same generated client, keeping one contract exercised by two consumers. Go, Python and Terraform follow post-GA.
+`[PROPOSED]` GA ships one SDK, **TypeScript**, generated from the OpenAPI spec with a hand-written ergonomic layer over dispatch and SSE. TypeScript first because the SPA consumes the same generated client, keeping one contract exercised by two consumers. Post-GA SDKs (Python, Go, Rust) are chosen by customer demand, independent of VulcanFlow's implementation language. A Terraform provider, if built, is written in Go because Terraform's plugin framework requires it (§2.5.3).
 
 ---
 
@@ -1066,7 +1155,7 @@ Valkey token buckets per `(tenant, endpoint-class)` with package-scaled limits, 
 
 ### 14.1 Stack
 
-React 19 (compiler stable) · Vite 8 (Rolldown) · TanStack Router · Tailwind CSS **v4.3 pinned** · shadcn/ui · `@xyflow/react` v12 · Cytoscape.js · ECharts v6 · TanStack Query v5 · Zustand.
+React 19 (compiler stable) · Vite 8 (Rolldown) · TanStack Router · Tailwind CSS **v4.3 pinned** · shadcn/ui · `@xyflow/react` v12 · Cytoscape.js · ECharts v6 · TanStack Query v5 · Zustand. The graph validator is the Rust-compiled `vf-graph` WebAssembly module (§7.3), lazy-loaded with the builder. The frontend otherwise remains TypeScript (§2.5.3).
 
 ### 14.2 State strategy
 
@@ -1086,7 +1175,7 @@ Three kinds of state kept deliberately apart, because conflating them is the usu
 | SSE state change → UI p75 | < 1 s | §9 |
 | Initial LCP | < 2.5 s | Lazy-load builder and graph bundles — neither is on the activation path |
 
-`[PROPOSED]` Enforce with a CI bundle-size budget per route chunk and a Playwright interaction benchmark, failing the build on regression. A budget not enforced in CI is a wish.
+`[PROPOSED]` Enforce with a CI bundle-size budget per route chunk (including the `vf-graph` `.wasm` artifact) and a Playwright interaction benchmark, failing the build on regression. A budget not enforced in CI is a wish.
 
 The **template path, not the builder, is the activation critical path**. The builder bundle (xyflow + validation WASM) must not be on the initial load, or first-scan-in-10-minutes competes with downloading a canvas the new user may never open.
 
@@ -1129,7 +1218,7 @@ stateDiagram-v2
     Verifying --> PriorState: inconclusive; retain previous observation state
 ```
 
-This diagram describes a **single historical observation**. `PriorState` is restoration behavior, not a stored state enum. Inconclusive is a verification outcome. Every later scan creates fresh observations, subject only to explicit false-positive matching. No persistent regression or inherited fixed-state model is used.
+This diagram describes a **single historical observation**. `PriorState` is restoration behavior, not a stored state enum. Inconclusive is a verification outcome. Every later scan creates fresh observations, subject only to explicit false-positive matching. No persistent regression or inherited fixed-state model is used. `[PROPOSED — v2.3]` The transitions above are implemented once in `vf-core` as a function over the observation-state and verification-outcome enums; any transition not in the diagram is unrepresentable rather than merely untested.
 
 ### 15.2 Remediation content
 
@@ -1258,9 +1347,11 @@ Resolve the definition into concrete observations and a source-data cutoff. Asse
 
 Store immutable `input-snapshot.json` containing selected observation IDs and versions, state/verification data, enrichment and guidance versions, graph/scanner versions, filters, counts, coverage, branding, disclaimer version, template version, and cutoff/watermark. Retries render the same snapshot. Scope IDs alone do not freeze the data used by a historical report.
 
-The existing Go/HTML/headless-Chromium rendering pipeline emits self-contained HTML and PDF from the same template. The assembler reads data and stores artifacts; the Chromium execution environment has no network egress. `[PROPOSED]` Stage bounded input/output through local mounted files so the isolated renderer does not need database or S3 access. Document this handoff in deployment manifests; do not give the no-network renderer credentials to fetch its own inputs.
+`[PROPOSED — v2.3]` The rendering pipeline is a Rust assembler with compile-time HTML templates (askama, or minijinja if runtime-loaded templates are needed) feeding an isolated headless Chromium, emitting self-contained HTML and PDF from the same template. This replaces the v2.2 Go `html/template` pipeline; if any of that Go pipeline has already been built, the migration is tracked by §27 item 18. The assembler reads data and stores artifacts; the Chromium execution environment has no network egress. `[PROPOSED]` Stage bounded input/output through local mounted files so the isolated renderer does not need database or S3 access. Document this handoff in deployment manifests; do not give the no-network renderer credentials to fetch its own inputs.
 
-Treat banners, titles, findings, and branding as attacker-influenced. Contextually escape content, prohibit script execution through CSP, sanitize/re-encode approved logo formats, disallow external resources, and use a read-only root filesystem without a service-account token in the renderer. Report preview uses the same sanitized template in a sandboxed iframe. A report becomes ready only after required artifacts and checksums are committed; delivery follows that durable state.
+**Escaping caveat (language-specific).** Go's `html/template` escapes contextually (HTML body, attribute, URL, JavaScript, and CSS contexts). The proposed Rust template engines auto-escape for HTML text but are **not** context-aware. `[PROPOSED]` Compensate explicitly: (1) untrusted values are only interpolated into HTML text and quoted attribute contexts; (2) no untrusted value is ever placed in `<script>`, `<style>`, event-handler attributes, or `style` attributes; (3) URLs from findings or branding pass through a dedicated URL-sanitizing filter (scheme allow-list, then attribute escaping); (4) any permitted rich text is sanitized with an allow-list HTML sanitizer (ammonia); (5) the CSP forbids all script execution. The `report/xss-network-corpus` test (§25) covers each context.
+
+Treat banners, titles, findings, and branding as attacker-influenced. Contextually escape content as above, prohibit script execution through CSP, sanitize/re-encode approved logo formats, disallow external resources, and use a read-only root filesystem without a service-account token in the renderer. Report preview uses the same sanitized template in a sandboxed iframe. A report becomes ready only after required artifacts and checksums are committed; delivery follows that durable state.
 
 ### 16.5 Scheduled delivery
 
@@ -1272,7 +1363,7 @@ Record explicit authorization for external report delivery and the configured re
 
 ### 16.6 Branding
 
-Tenant-level: logo, primary colour, company name, optional footer text. Stored in S3 (§6.5), injected into the template. `[PROPOSED]` Validate and re-encode uploaded logos server-side (dimension caps, format allow-list of PNG/SVG, SVG sanitized of script and external references) — an SVG is a document with script capability, and it is about to be rendered in a browser (§16.4).
+Tenant-level: logo, primary colour, company name, optional footer text. Stored in S3 (§6.5), injected into the template. `[PROPOSED]` Validate and re-encode uploaded logos server-side (dimension caps, format allow-list of PNG/SVG, SVG sanitized of script and external references) — an SVG is a document with script capability, and it is about to be rendered in a browser (§16.4). PNG decoding and re-encoding run in Rust with explicit dimension and memory limits applied before full decode.
 
 `[PROPOSED]` Branding is a paid-package entitlement, matching the Change Summary's P1 placement.
 
@@ -1280,7 +1371,7 @@ Tenant-level: logo, primary colour, company name, optional footer text. Stored i
 
 Every generated report, both formats, carries the not-an-audit-artifact disclaimer. This is a **hard constraint** (§1.2 item 9), included by the template pipeline in both exported formats. The guarantee applies to generated artifacts, not recipient-edited copies.
 
-`[PROPOSED]` The disclaimer text is versioned, and `reports.disclaimer_version` records which version a given artifact carried, so the wording can evolve on legal advice without ambiguity about what a historical document said. Reports generated from a profile-pack run (§7.7) additionally carry the pack-specific framing.
+`[PROPOSED]` The disclaimer text is versioned, and `reports.disclaimer_version` records which version a given artifact carried, so the wording can evolve on legal advice without ambiguity about what a historical document said. Reports generated from a profile-pack run (§7.7) additionally carry the pack-specific framing. With compile-time templates, the disclaimer block is part of the base template that every report template extends, so a template without it does not compile.
 
 `[OPEN — product/legal]` Exact wording.
 
@@ -1330,7 +1421,7 @@ Report delivery requires separately persisted per-recipient attempts and dedupli
 
 ### 16.10 Performance
 
-`[PROPOSED]` Budget: a 1 000-observation technical report renders in under 60 seconds p95; a management report over 12 months of history in under 30 seconds p95. Assembly reads detail from Postgres and trends from ClickHouse; the rollup watermark and report cutoff must agree before using those trends.
+`[PROPOSED]` Budget: a 1 000-observation technical report renders in under 60 seconds p95; a management report over 12 months of history in under 30 seconds p95. Assembly reads detail from Postgres and trends from ClickHouse; the rollup watermark and report cutoff must agree before using those trends. Chromium rendering dominates this budget; the language of the assembler is not expected to change it materially.
 
 ### 16.11 Acceptance
 
@@ -1338,7 +1429,7 @@ Report delivery requires separately persisted per-recipient attempts and dedupli
 - Given a report scoped to a project, then it contains no finding from a target outside that project.
 - Given the same selected observations, cutoff, and filters, then the management and technical reports report the same counts — verified by a cross-check test, because two documents disagreeing about how many criticals exist would destroy trust in both.
 - Given a grouping choice, when the report renders, then the body organization matches it and every selected observation appears exactly once, with grouping preserving its identity.
-- Given a finding whose text contains HTML or script, when rendered, then it is escaped and no script executes in the renderer.
+- Given a finding whose text contains HTML or script, when rendered in any template context, then it is escaped and no script executes in the renderer.
 - Given a report definition with an after-schedule trigger, when that schedule's pipeline reaches its completion barrier, then the configured report is generated and delivered once with coverage limitations recorded.
 
 ---
@@ -1380,6 +1471,8 @@ remaining_scans = period_limit - successful_units - reserved_units
 ```
 
 Reserve only if `remaining_scans > 0`; release an unexecuted or terminally failed unit; convert its reservation into one consumption entry only after successful scanner execution, required parsing, and ingestion are confirmed. Hold the reservation across an automatic infrastructure retry. A completed logical work unit can never settle success twice. Repeated client submission with the same idempotency key and different request content is a conflict, not success.
+
+`[PROPOSED — v2.3]` In `vf-meter`, a reservation is a move-only Rust value (`Reservation`) that can be consumed exactly once, by `settle_success(self, …)` or `release(self, …)`; both take ownership, so settling twice or settling after release does not compile within a code path. This is a coding aid only — the database state machine below remains the authoritative guarantee across processes and retries.
 
 Each new SCB Scan object created for a retry has its own fingerprint but links to the original `work_unit_id`. A scanner Job retry under the same Scan preserves that Scan fingerprint. Prevent duplicate execution when retrying an uncertain creation by reconciling the deterministic object first. Retry only transient platform failures under bounded policy; target failures require a new user/scheduled attempt unless product explicitly defines otherwise.
 
@@ -1453,7 +1546,7 @@ graph LR
 
 The gateway is a mandatory chokepoint — application code cannot reach a model endpoint directly. That is what makes the data-boundary commitment enforceable rather than a convention, and it is where token metering and prompt/response audit live.
 
-**LiteLLM** is an approved gateway technology for Phase 5: OpenAI-compatible out of the box, has the routing/fallback/budget features metering needs, and is replaceable — which is the entire point of the abstraction. Envoy/Kong AI Gateway is the alternative if we later want the same policy engine as the main data plane; an in-house Go gateway is not justified by current requirements.
+**LiteLLM** is an approved gateway technology for Phase 5: OpenAI-compatible out of the box, has the routing/fallback/budget features metering needs, and is replaceable — which is the entire point of the abstraction. It is a Python component operated as a third-party service; the Rust decision does not require replacing it (§2.5.3). Rust services talk to it over its OpenAI-compatible HTTP API. Envoy/Kong AI Gateway is the alternative if we later want the same policy engine as the main data plane; an in-house gateway is not justified by current requirements.
 
 `[OPEN — BLOCKING · legal/data]` Confirm the no-data-egress default. Blocking for any AI feature; affects the DPA.
 
@@ -1477,7 +1570,7 @@ The pgvector schema ships in Phase 1 (§6.3) though these features ship in Phase
 
 ### 18.4 Retrieval isolation
 
-Retrieval for any tenant-scoped feature enforces the same RLS as everything else. The vector index lives inside the tenant schema; there is no global index over all tenants' findings. This costs index efficiency and is worth it — a cross-tenant retrieval leak in a security product is an extinction-level incident, and a shared index with a filter is one bug away from that.
+Retrieval for any tenant-scoped feature enforces the same RLS as everything else, through the same `TenantTx` access path (§3.5). The vector index lives inside the tenant schema; there is no global index over all tenants' findings. This costs index efficiency and is worth it — a cross-tenant retrieval leak in a security product is an extinction-level incident, and a shared index with a filter is one bug away from that.
 
 ### 18.5 Labeling and metering
 
@@ -1485,7 +1578,7 @@ Every AI artifact is visibly labeled and records model ID, prompt version, and `
 
 ### 18.6 Explicitly not AI
 
-Risk prioritization and scoring are deterministic — EPSS, KEV, CVSS (§10.3). **Remediation guidance is not AI-generated** (§15.2). Management report figures are computed, not generated (§18.2). No AI-driven auto-exploitation, auto-scope-expansion, or autonomous dispatch — enforced architecturally: the AI subsystem has no code path to the dispatcher, and the dispatcher requires a human-confirmed graph plus an authorization basis. A capability boundary rather than a policy, so it cannot be violated by a prompt.
+Risk prioritization and scoring are deterministic — EPSS, KEV, CVSS (§10.3). **Remediation guidance is not AI-generated** (§15.2). Management report figures are computed, not generated (§18.2). No AI-driven auto-exploitation, auto-scope-expansion, or autonomous dispatch — enforced architecturally: the AI subsystem has no code path to the dispatcher, and the dispatcher requires a human-confirmed graph plus an authorization basis. A capability boundary rather than a policy, so it cannot be violated by a prompt. `[PROPOSED — v2.3]` In the Rust workspace, the AI-feature crate has no dependency on the dispatcher crate, and a `cargo-deny` ban rule enforces that the dependency is never added.
 
 ---
 
@@ -1510,12 +1603,13 @@ Risk prioritization and scoring are deterministic — EPSS, KEV, CVSS (§10.3). 
 | `vf_report_render_seconds{audience,grouping}` | Rendering budgets |
 | `vf_report_generated_total{audience,grouping,trigger}` | Reporting adoption |
 | `vf_egress_address_reputation` | Egress operations |
+| `vf_service_resident_memory_bytes{service}` / process CPU | `[NEW v2.3]` Evidence for the §2.5.1 resource-footprint expectations |
 
 Define denominators, retry treatment, time windows, and absent-data behavior in recording rules. Scope/quota skips do not dilute the platform-error ratio. Report full pipeline coverage separately from successful scanner process counts. Keep high-cardinality tenant/target identifiers out of unbounded metric labels; use logs/audit for those dimensions.
 
 ### 19.2 Logs, traces, audit
 
-Structured JSON logs with tenant, pipeline/work identity, scan fingerprint when available, and trace ID; no sensitive target content in unbounded metric labels. OpenTelemetry traces across API → dispatcher → operator → ingest → report worker. The scan execution plane is **not** traced into scanner pods (untrusted workload; no instrumentation injected).
+Structured JSON logs (via `tracing`) with tenant, pipeline/work identity, scan fingerprint when available, and trace ID; no sensitive target content in unbounded metric labels. OpenTelemetry traces across API → dispatcher → operator → ingest → report worker. The scan execution plane is **not** traced into scanner pods (untrusted workload; no instrumentation injected).
 
 The **audit log is separate from application logs**: append-only Postgres, no application UPDATE/DELETE grant, covering scan dispatch (who, what target, when, under which basis), authorization events, observation state changes, explicit false-positive decisions, and verification outcomes, **report generation and sharing**, member and role changes, billing events, and suspend/kill actions.
 
@@ -1601,13 +1695,15 @@ The staging gate asserts **platform-error < 1%** — explicitly not scan-complet
 
 ### 21.2 Migrations
 
-`[PROPOSED]` Argo CD PreSync hook; forward-only; backward-compatible with the previously deployed application version (expand/contract), so an application rollback does not require a schema rollback. Per-tenant schema migrations run as a resumable fan-out job with per-tenant status tracking — with namespace-and-schema-per-tenant, a migration that cannot resume after partial failure is an outage.
+`[PROPOSED]` Argo CD PreSync hook; forward-only; backward-compatible with the previously deployed application version (expand/contract), so an application rollback does not require a schema rollback. Per-tenant schema migrations run as a resumable fan-out job (a Rust binary using the §2.5.2 migration tool) with per-tenant status tracking — with namespace-and-schema-per-tenant, a migration that cannot resume after partial failure is an outage. sqlx compile-time query checks run in CI against a database migrated to the head schema, so a query that disagrees with a migration fails the build.
 
 ### 21.3 Image, template, and integration versions
 
-The technology stack is approved. Pin scanner images, parsers, hooks, template packs, and operator/chart versions to reviewed releases/digests in Harbor, with signing and admission verification. Build and validate the existing custom arm64 images for dnsx, httpx, tlsx, masscan, and optional Amass.
+The platform technology stack is approved. Pin scanner images, parsers, hooks, template packs, and operator/chart versions to reviewed releases/digests in Harbor, with signing and admission verification. Build and validate the existing custom arm64 images for dnsx, httpx, tlsx, masscan, and optional Amass. These remain the upstream tools; VulcanFlow does not rewrite them in Rust (§2.5.3).
 
-secureCodeBox 5.8.0 is published upstream (Appendix D). `[OPEN — eng]` Confirm the actual selected release, Harbor artifacts, node Kubernetes compatibility, architectures, and SCB CRD/hook behavior. Do not treat upstream release existence as proof of installation or of a particular supported Kubernetes window.
+`[PROPOSED — v2.3]` VulcanFlow's Rust services and hooks are built reproducibly for arm64 from the pinned toolchain (`rust-toolchain.toml`) and the committed `Cargo.lock`, as static or near-static binaries on minimal base images (distroless or scratch), signed and digest-pinned like other images. CI runs `cargo-deny` (advisories, licenses, banned crates, allowed registries/sources) and `cargo-audit`, generates an SBOM per image, and blocks release on unresolved advisories. New third-party crates require review; prefer widely used, maintained crates and record the choice.
+
+secureCodeBox 5.8.0 is published upstream (Appendix D). `[OPEN — eng]` Confirm the actual selected release, Harbor artifacts, node Kubernetes compatibility, architectures, and SCB CRD/hook behavior. Do not treat upstream release existence as proof of installation or of a particular supported Kubernetes window. Generate the Rust CRD types used by the translator (§7.4) from that selected release.
 
 The scan-fingerprint integration must document exactly which SCB identifier is read and preserve it unchanged; `[PROPOSED]` use the Kubernetes Scan object's `metadata.uid` when that is the execution identifier exposed by the selected integration. Validate it against completion notifications and artifacts, including retries/recreated Scan objects. Field mapping is an engineering conformance item, not a new content hash.
 
@@ -1634,13 +1730,15 @@ Use an explicit approved check/template catalog for the existing scanners. Revie
 
 ### 22.1 Controls
 
-Egress-restricted scanner pods; namespace-per-tenant isolation; RLS with `FORCE`; secrets via the platform secret store with no plaintext credentials in manifests; signed, digest-pinned images; Valkey token buckets on API, dispatch, verification, and report generation.
+Egress-restricted scanner pods; namespace-per-tenant isolation; RLS with `FORCE`; secrets via the platform secret store with no plaintext credentials in manifests; signed, digest-pinned images; Valkey token buckets on API, dispatch, verification, and report generation. `[NEW v2.3]` Memory-safe control-plane and hook code with `unsafe` forbidden in VulcanFlow crates (§2.5.2); dependency supply-chain gates (§21.3); fuzzing of parsers of attacker-influenced input (§23.1).
+
+Memory safety removes a defect class; it does not remove logic flaws in scope matching, tenant context, or allowance accounting. The threat-model controls below still require their tests.
 
 ### 22.2 Threat model
 
 | Threat | Required control and evidence |
 |---|---|
-| Cross-tenant data access | RLS/context tests, ClickHouse read isolation, scoped artifacts, authorized report/scan-ID lookups |
+| Cross-tenant data access | RLS/context tests, `TenantTx`-only access to tenant tables, ClickHouse read isolation, scoped artifacts, authorized report/scan-ID lookups |
 | Scanner reaches platform/private services | Tested policies across every workload role and actual resolved destination paths (§3.4) |
 | Subdomain approval expands to parent/sibling | Exact stored approval and run scope, canonicalization and PSL boundary tests (§5.3) |
 | Unapproved cascade or pool execution | Trusted work records and live authorization/reservation checks at Scan and workload start (§5.7) |
@@ -1652,17 +1750,18 @@ Egress-restricted scanner pods; namespace-per-tenant isolation; RLS with `FORCE`
 | False-positive decision suppresses unrelated findings | Narrow tenant/target/check/location matching with versioned evidence (§10.2) |
 | Earlier fix hides a later vulnerability | Fresh observations on every scan; only explicit false positives carry forward |
 | WAF block/empty output reads as a fix | Applicable-check execution evidence and inconclusive outcome (§15.4) |
-| Malicious output exploits parser or report | Bounded schema validation; sandboxed parsers; escaped templates; renderer without network |
+| Malicious output exploits parser or report | Bounded streaming schema validation; fuzzed Rust ingest; sandboxed parsers; context-restricted escaping (§16.4); renderer without network |
+| Compromised or malicious third-party crate | Pinned `Cargo.lock`, cargo-deny/cargo-audit, reviewed additions, signed images (§21.3) |
 | Public report URL persists after revocation | Server-checked share record if sharing is approved; authenticated default |
 | Stolen/stale token bypasses suspension | Live tenant suspension and authorization state on protected work paths |
-| AI prompt injection widens scan scope | AI suggestions go through ordinary validation and confirmation; no autonomous dispatch |
+| AI prompt injection widens scan scope | AI suggestions go through ordinary validation and confirmation; no autonomous dispatch; crate-level dependency ban (§18.6) |
 | Deleted data returns after restore/replay | Durable deletion state and replay filters; explicit backup/object-version policy |
 
-The existence of a webhook, foreign key, signature, or test name does not itself prove the guarantee. Release evidence must exercise the concrete execution and failure paths.
+The existence of a webhook, foreign key, signature, type-level guard, or test name does not itself prove the guarantee. Release evidence must exercise the concrete execution and failure paths.
 
 ### 22.3 Scanner argument construction
 
-Every node type has a typed config struct and an argument builder emitting `[]string` argv with values as discrete elements — never a shell string, never a concatenated command line. Targets and derived destinations are validated against the canonical target and configured run scope, then re-checked against the current approval at argv-build and actual start time, so a graph cannot smuggle a different target into a node's parameters than the one the scan was authorized for.
+Every node type has a typed Rust config struct (deserialized with `deny_unknown_fields`) and an argument builder emitting a `Vec<String>` argv with values as discrete elements, passed to the process via `Command::args` — never through `sh -c`, never a concatenated command line, and never a user-controlled program path. Targets and derived destinations are accepted only as `CanonicalHost` / validated IPv4 values (§5.3), checked against the canonical target and configured run scope, then re-checked against the current approval at argv-build and actual start time, so a graph cannot smuggle a different target into a node's parameters than the one the scan was authorized for. Values beginning with `-` are rejected or placed after an explicit end-of-options marker where the scanner supports one, so a target cannot be parsed as a flag.
 
 Stated explicitly because it is the most likely way an otherwise well-designed system scans something it was not authorized to scan. The authorization gate checks the scan's target; if node parameters are not equally constrained, the gate is decorative.
 
@@ -1672,7 +1771,7 @@ Stated explicitly because it is the most likely way an otherwise well-designed s
 
 ### 23.1 Layers
 
-Unit/property tests cover graph rules, canonical scope matching, target normalization, work-unit derivation, allowance transitions, false-positive matching, verification plan/outcome interpretation, report selection/snapshotting, and role/action policy. Integration tests cover Postgres/RLS/pooling, outbox/SCB reconciliation, all cascade and pool paths, ingest idempotency, report retries, and usage synchronization. End-to-end tests exercise approved target → pipeline → new findings → guidance → verification → report.
+Unit/property tests (cargo test, proptest) cover graph rules, canonical scope matching, target normalization, work-unit derivation, allowance transitions, false-positive matching, verification plan/outcome interpretation, report selection/snapshotting, and role/action policy. `[PROPOSED — v2.3]` Continuous fuzzing (cargo-fuzz) targets the hostname canonicalizer and scope matcher, graph DSL parser, findings-artifact ingest, completion-notification verifier, and logo decoder. Integration tests (testcontainers for Postgres/ClickHouse/Valkey, plus a real cluster for Kubernetes paths) cover Postgres/RLS/pooling, outbox/SCB reconciliation, all cascade and pool paths, ingest idempotency, report retries, and usage synchronization. End-to-end tests exercise approved target → pipeline → new findings → guidance → verification → report.
 
 ### 23.2 Acceptance ownership
 
@@ -1680,7 +1779,7 @@ Unit/property tests cover graph rules, canonical scope matching, target normaliz
 
 ### 23.3 Scanner conformance
 
-Use a controlled fixture fleet to test parser schema, SCB identity propagation, actual destination scope, required output fields, exit/outcome classification, check applicability, IPv4 enforcement, template pinning, resource ceilings, and one logical scan per intended target/port operation. Include successful zero-finding output, blocks, DNS errors, timeouts, malformed findings, and infrastructure retries. Verify failed scans release allowance and completed successful units settle once.
+Use a controlled fixture fleet to test parser schema, SCB identity propagation, actual destination scope, required output fields, exit/outcome classification, check applicability, IPv4 enforcement, template pinning, resource ceilings, and one logical scan per intended target/port operation. Include successful zero-finding output, blocks, DNS errors, timeouts, malformed findings, and infrastructure retries. Verify failed scans release allowance and completed successful units settle once. The same suite validates the Rust completion hook and input adapters against the selected SCB contracts (§27 item 20).
 
 ### 23.4 Isolation suite
 
@@ -1707,11 +1806,11 @@ Exercise cross-tenant Postgres queries and pooled connection reuse; ClickHouse r
 - Concurrent manual, scheduled, verification, and cascade work cannot overspend the same remaining unit. Platform retries and duplicate events cannot double-consume.
 - Report counts agree for identical selected observations/cutoff/filters; rollup lag cannot silently change one report's totals.
 - Worker/Valkey loss recovers from Postgres; repeated trigger/delivery attempts do not duplicate sends.
-- Stored report snapshots reproduce the same HTML with volatile timestamps/metadata fixed; XSS and malicious logo inputs remain inert.
+- Stored report snapshots reproduce the same HTML with volatile timestamps/metadata fixed (insta snapshot tests); XSS inputs in every template context and malicious logo inputs remain inert.
 
 ### 23.6 Load and recovery
 
-Exercise 10k and 100k finding observations, the 200-node builder budget, 100 concurrent pipelines with bounded child scans, 50 concurrent report jobs, and a 24-hour controller/renderer soak. Verify that load does not bypass reservations or prevent suspension. Restore Postgres and rebuild derived state while testing deletion replay and report/usage history. Distinguish target-caused outcomes from platform failures in promotion metrics.
+Exercise 10k and 100k finding observations, the 200-node builder budget, 100 concurrent pipelines with bounded child scans, 50 concurrent report jobs, and a 24-hour controller/renderer soak. Verify that load does not bypass reservations or prevent suspension. Restore Postgres and rebuild derived state while testing deletion replay and report/usage history. Distinguish target-caused outcomes from platform failures in promotion metrics. `[PROPOSED — v2.3]` Record memory, CPU, and p99 latency for each Rust service under these loads as the baseline evidence required by §2.5.1.
 
 ---
 
@@ -1719,7 +1818,7 @@ Exercise 10k and 100k finding observations, the 200-node builder budget, 100 con
 
 ### 24.1 Walking skeleton
 
-One tenant, one verified domain, one fixed `subfinder → dnsx → httpx → nuclei` pipeline, durable scope/audit/outbox, working cascade and workload gates, integer scan reservations, fresh per-scan findings, explicit false-positive persistence, a small curated guidance set, normal-consumption verification, one technical PDF report, and SSE.
+One tenant, one verified domain, one fixed `subfinder → dnsx → httpx → nuclei` pipeline, durable scope/audit/outbox, working cascade and workload gates, integer scan reservations, fresh per-scan findings, explicit false-positive persistence, a small curated guidance set, normal-consumption verification, one technical PDF report, and SSE — all VulcanFlow-owned components in Rust from the first commit.
 
 Minimum authorization, usage, audit, and cancellation must exist with the first execution path. Do not defer these controls to commercial hardening while Phase 1 can already scan public targets. Builder, Track B, projects, masscan pool, AI, branding, and management reporting can follow the skeleton as below.
 
@@ -1727,11 +1826,11 @@ Minimum authorization, usage, audit, and cancellation must exist with the first 
 
 | Phase | Deliverables |
 |---|---|
-| 0 — Foundation | Existing approved Aether stack; CNPG/ClickHouse/Valkey/Keycloak/SCB; Harbor signing; Argo CD/Kargo; platform secret store; confirm versions and networking. |
-| 1 — Control plane | Tenant/ScanFlow, Track A, scope rules, identity mapping, outbox, atomic allowance reservations, audit, cascade/start barriers, basic cancellation, ingest/fresh observations/false positives, SSE. |
-| 2 — Scanners | Custom arm64 images/parsers; template and outcome conformance; controlled masscan pool with the same approval/accounting/cancellation guarantees. |
-| 3a — Findings and verification | SPA findings, builder/graph, guidance, observation triage, verification plans/outcomes and normal consumption. |
-| 3b — Reporting and automation | Both audiences/groupings, immutable report assembly, HTML/PDF, scheduling, notification recovery and delivery. |
+| 0 — Foundation | Existing approved Aether stack; CNPG/ClickHouse/Valkey/Keycloak/SCB; Harbor signing; Argo CD/Kargo; platform secret store; confirm versions and networking. **v2.3:** Rust workspace and pinned toolchain; crate selection and approval (§2.5.2, §27 item 17); arm64 build pipeline; cargo-deny/audit/SBOM gates; S3-client conformance against Ceph RGW/RustFS; generated SCB CRD types; team Rust enablement plan (§27 item 16a). |
+| 1 — Control plane | Tenant/ScanFlow (kube-rs), Track A, scope rules, identity mapping, outbox, atomic allowance reservations, audit, cascade/start barriers (Rust admission webhooks), basic cancellation, ingest/fresh observations/false positives, SSE. |
+| 2 — Scanners | Custom arm64 images (upstream tools) with Rust input adapters and completion hook; parsers per §27 item 20; template and outcome conformance; controlled masscan pool with the same approval/accounting/cancellation guarantees. |
+| 3a — Findings and verification | SPA findings, builder/graph (Rust WASM validator), guidance, observation triage, verification plans/outcomes and normal consumption. |
+| 3b — Reporting and automation | Both audiences/groupings, immutable report assembly, Rust templating with context-restricted escaping, HTML/PDF, scheduling, notification recovery and delivery. |
 | 4 — Commercial operations and hardening | Final package policy, Lago/Stripe usage sync, reconciliation, abuse operations/KYC, egress operations, branding entitlement, full isolation/recovery evidence. |
 | 5 — Ecosystem and AI | Track B at scale, approved AI gateway/runtime configuration, NL graph suggestions, narrative assistance, pgvector features, later SDKs/template marketplace. |
 
@@ -1741,7 +1840,7 @@ GA includes Phases 0–4 core controls, Track A, guidance, normal-consumption ve
 
 ### 24.4 Blocking dependencies
 
-Before execution: SCB identifier/hook/CRD compatibility, exact scope matching, candidate reservation and start barriers, network/kill tests. Before paid use: package limits, target-slot lifecycle, billing-period transitions, and usage reconciliation. Before reports: observation selection/snapshot policy and disclaimer wording. Before public sharing/AI external calls: the respective sharing/data-boundary decisions. The unresolved AAAA handling proposal must be adopted explicitly or omitted with an honest IPv4-only coverage statement.
+Before execution: SCB identifier/hook/CRD compatibility, exact scope matching, candidate reservation and start barriers, network/kill tests, and approval of the Rust crate set used on the execution path. Before paid use: package limits, target-slot lifecycle, billing-period transitions, and usage reconciliation (including the Lago/Stripe client decision). Before reports: observation selection/snapshot policy, disclaimer wording, and passing the per-context escaping tests. Before public sharing/AI external calls: the respective sharing/data-boundary decisions. The unresolved AAAA handling proposal must be adopted explicitly or omitted with an honest IPv4-only coverage statement.
 
 ---
 
@@ -1764,6 +1863,7 @@ Proposed test IDs below identify required evidence; implementation status is not
 | Namespace, schema/RLS, and storage isolation | §3 | `isolation/all-stores` |
 | Pooling context safety and ClickHouse isolation | §3.5, §6.1 | `isolation/background-queries` |
 | Graph validation, edge routing, no cross-run cascades | §7 | `graph/validator-translator-conformance` |
+| Identical native and WASM validator results | §7.3 | `graph/native-wasm-parity` `[NEW v2.3]` |
 | SCB fingerprint on each actual scan | §6.2, §21.3 | `execution/scan-identity` |
 | Browser loss does not stop work | §2.4, §21.4 | `execution/browser-disconnect` |
 | Closure of dynamic graph before completion | §8.2 | `execution/late-cascade-barrier` |
@@ -1782,12 +1882,15 @@ Proposed test IDs below identify required evidence; implementation status is not
 | Scheduled occurrence deduplication and skip reasons | §11 | `schedule/occurrence-identity` |
 | Reports: both audiences/groupings and HTML/PDF | §16.1–16.4 | `report/matrix` |
 | Common report snapshot, cutoff, counts | §16.4, §16.8 | `report/cross-consistency` |
-| Renderer sanitization and no network | §16.4 | `report/xss-network-corpus` |
+| Renderer sanitization (per template context) and no network | §16.4 | `report/xss-network-corpus` |
 | Recoverable jobs and deduplicated delivery | §16.4–16.5 | `report/worker-and-queue-loss` |
 | Versioned disclaimer and pack framing | §7.7, §16.7 | `report/disclaimer-framing` |
 | Branding and sharing controls | §16.6, §16.9 | `report/branding-sharing` |
 | Effective tenant and pool kill | §20.3–20.5 | `abuse/egress-stop` |
 | Pinned images/templates and no unapproved scan behavior | §21.3 | `supply-chain/check-catalog` |
+| Rust dependency and build supply chain | §2.5.2, §21.3 | `build/rust-supply-chain` `[NEW v2.3]` |
+| Fuzzing of attacker-influenced parsers | §23.1 | `fuzz/untrusted-input` `[NEW v2.3]` |
+| Resource-footprint baseline for Rust services | §2.5.1, §23.6 | `perf/service-baseline` `[NEW v2.3]` |
 | Complete deletion and restore replay protection | §3.6 | `deletion/all-stores-restore` |
 | Platform-error promotion gate and DR | §21 | `release/analysis`; `recovery/restore` |
 | UI/SSE performance and accessibility | §9, §14 | `ui/performance-accessibility` |
@@ -1800,42 +1903,45 @@ The product decisions in §0.0 are confirmed and are not reopened here. This reg
 
 | Topic | Sections | Proposed detail requiring engineering/product review |
 |---|---|---|
-| Tenant organization | §3.1, §3.3 | Projects as labels; single initial data region; provisioning defaults. |
+| **Rust stack** `[v2.3]` | §2.5.2 | tokio, axum/tower, utoipa, sqlx, kube-rs, clickhouse, redis-rs/fred, rustls, serde, askama/minijinja + ammonia, tracing/OTel; pinned toolchain; workspace layout; forbid `unsafe`. |
+| **Type-level safety** `[v2.3]` | §§3.5, 4.2, 5.3, 6.2, 7.2, 15.1, 17.3 | `TenantTx` context wrapper, exhaustive role policy, `CanonicalHost`, identity newtypes, state-machine enums, move-only reservations — as aids beneath the database and test guarantees, never replacing them. |
+| **Language exceptions** `[v2.3]` | §2.5.3 | TypeScript UI; upstream scanners/SCB components; LiteLLM; Go Terraform provider; customer-driven SDK languages. |
+| Tenant organization | §3.1, §3.3 | Projects as labels; single initial data region; provisioning defaults; CRDs derived from Rust types. |
 | Isolation | §3.4–3.5 | Per-role network allowances; transaction-local tenant context and schema selection; complete cross-store tests. |
 | Deletion/retention | §3.6, §6.5 | 30-day recovery window; raw 30d, export 7d, report account-life defaults; explicit protected-copy policy. |
-| Identity policy | §4 | 15-minute access token; rotating 30-day refresh; declarative Go role matrix. |
+| Identity policy | §4 | 15-minute access token; rotating 30-day refresh; declarative Rust role matrix with exhaustive match. |
 | Challenge lifecycle | §5.2 | Token binding/expiry, DNS checks, same-host HTTP redirect, 90-day approval and 14-day recheck grace. |
 | Scope normalization | §5.3 | Canonical host/IDNA/PSL treatment and explicit stored scope. |
 | Attested controls | §5.4–5.5 | Rolling target cap and six-hour/24-hour signal refresh/freshness. |
-| Evidence/admission | §5.6–5.7 | Immutable grant/events; Scan plus workload barriers; controlled cascade candidate registration. |
+| Evidence/admission | §5.6–5.7 | Immutable grant/events; Scan plus workload barriers (Rust webhooks); controlled cascade candidate registration. |
 | AAAA discovery | §5.9 | Observe AAAA, actively scan IPv4 only, disclose untested IPv6 and skip IPv6-only follow-up. **Not yet confirmed.** |
 | Observation storage | §6.2–6.3 | Separate pipeline/work/SCB-attempt/observation IDs; integer event ordering; 768-dimension embedding schema. |
 | Analytics | §6.4 | 60-second polling with durable changes/watermarks and idempotent replay. |
-| Graphs | §7.3–7.5 | Shared Go/WASM rules; explicit aggregation; materialized inputs and pinned execution snapshots. |
+| Graphs | §7.3–7.5 | Shared Rust native/WASM rules with parity test; explicit aggregation; typed CRD generation; materialized inputs and pinned execution snapshots. |
 | Profile packs | §7.7 | Shared compliance-framing flag across template, UI, and report. |
-| Reconciliation | §8 | Transactional outbox; deterministic object adoption; 60-second missed-event sweep. |
+| Reconciliation | §8 | Transactional outbox; deterministic object adoption; 60-second missed-event sweep; Rust completion hook. |
 | Realtime | §9 | Separate pipeline/tenant cursors, 15-minute replay, log sampling/coalescing. |
 | False positives | §10.2 | Narrow versioned target/check/location matcher with explicit decision revocation. |
 | Enrichment | §10.3 | Daily local mirrors and KEV → EPSS → CVSS sort. |
-| Scheduling/notifications | §11–12 | Occurrence deduplication, skipped missed/overlap windows, DST behavior, jitter, digests and send caps. |
-| API/SDK/UI | §13–14 | Explicit resource identities; REST primary; TypeScript SDK; perf budgets; graph fallback; accessible form alternative. |
+| Scheduling/notifications | §11–12 | Occurrence deduplication (not leader election) as the once-only guarantee, skipped missed/overlap windows, DST behavior, jitter, digests and send caps. |
+| API/SDK/UI | §13–14 | axum + utoipa OpenAPI 3.1; REST only at GA; Rust error enum → Problem Details; TypeScript SDK; perf budgets including WASM size; graph fallback; accessible form alternative. |
 | Guidance | §15.2 | Human-reviewed common-class content, top-200 target, transparent template/generic/unavailable fallbacks. |
 | Verification | §15.4 | Per-check applicability evidence; bounded request rate; observation-level outcomes. |
 | Report content | §16.2–16.3 | Five–ten top risks; 5,000-observation render cap; explicit coverage. |
-| Report execution | §16.4, §16.8 | Durable leases, immutable input snapshots, common cutoff/watermark, selection modes. |
-| Delivery/branding | §16.5–16.7 | After-scan default, PDF under 10MB, authenticated fallback, sanitized logos, versioned disclaimer. |
+| Report execution | §16.4, §16.8 | Durable leases, immutable input snapshots, common cutoff/watermark, selection modes; context-restricted escaping rules for non-contextual Rust templates. |
+| Delivery/branding | §16.5–16.7 | After-scan default, PDF under 10MB, authenticated fallback, sanitized logos, versioned disclaimer in the base template. |
 | Public sharing | §16.9 | Optional server-validated, revocable 30-day share records, off by default. |
 | Report budgets | §16.10 | 1,000-observation technical PDF p95 <60s; 12-month management report p95 <30s. |
 | Accounting mechanics | §17 | Atomic reservations, successful settlement, target admission, billing-period attribution, bounded retry policy. |
-| AI | §18 | Confirmed technologies; constrained graph suggestions and evidence-bounded narratives; commercial entitlement still open. |
-| Operations | §19–21 | Self-hosted RUM; third-party KYC with no retained identity documents; separate attested egress; <60s kill; staged promotion and restore budgets. |
-| Release discipline | §21–24 | Expand/contract migrations, pinned integration versions, no-override isolation gates, phased evidence. |
+| AI | §18 | Confirmed technologies; constrained graph suggestions and evidence-bounded narratives; crate-level ban on AI→dispatcher dependency; commercial entitlement still open. |
+| Operations | §19–21 | Self-hosted RUM; third-party KYC with no retained identity documents; separate attested egress; <60s kill; staged promotion and restore budgets; Rust service footprint metrics. |
+| Release discipline | §21–24 | Expand/contract migrations, compile-time-checked queries, pinned integration versions, cargo-deny/audit/SBOM gates, no-override isolation gates, phased evidence. |
 
 ---
 
 ## 27. Open Items
 
-Billing units, failure consumption, verification consumption, configured scope, all-scan-type approval, scan fingerprint meaning, fresh findings, false-positive persistence, technology approval, and IPv4-only execution are resolved (§0.0). Do not carry forward the old credit coefficients, free verification, per-type IP approval, or persistent regression questions.
+Billing units, failure consumption, verification consumption, configured scope, all-scan-type approval, scan fingerprint meaning, fresh findings, false-positive persistence, platform technology approval, IPv4-only execution, and the **choice of Rust as primary implementation language** are resolved (§0.0). Do not carry forward the old credit coefficients, free verification, per-type IP approval, or persistent regression questions.
 
 | # | Owner | Blocks | Unresolved question / required evidence |
 |---|---|---|---|
@@ -1855,12 +1961,34 @@ Billing units, failure consumption, verification consumption, configured scope, 
 | 14 | Product/operations | Egress service | Depeering contingency, abuse ownership, final rate limits and KYC operations? |
 | 15 | Product/data | Phase 5 | Confirm AI external-data consent and commercial entitlements; serving/runtime/GPU configuration within approved technologies? |
 | 16 | Product | Optional features | Amass availability/tier, bounty-feed licensing, branding rollout, final design tokens? Technology adoption is approved; these are packaging/operational decisions. |
+| 16a | Engineering leadership `[v2.3]` | Phase 0 schedule | Team Rust capability: current experience, hiring/training plan, code-review ownership for async and `unsafe`-adjacent code, and the schedule impact of the language change on the Phase 1 walking skeleton. |
+| 17 | Engineering `[v2.3]` | Phase 0 | Approve the §2.5.2 crate set and pin versions; confirm utoipa OpenAPI 3.1 output, kube-rs admission/controller coverage, sqlx behaviour behind PgBouncer transaction pooling (prepared statements), and the S3 client's compatibility with Ceph RGW/RustFS. |
+| 18 | Engineering `[v2.3]` | Phase 0 | Inventory any Go code already written against v2.0–v2.2 (API skeleton, operator, report pipeline, validator). Decide rewrite-now versus bounded coexistence; no long-lived mixed-language implementation of the same safety-relevant logic (scope, allowance, graph rules). |
+| 19 | Product/engineering `[v2.3]` | Post-GA SDKs | Is a typed streaming RPC channel needed beyond REST + SSE? If yes: tonic gRPC with gRPC-Web, or a Connect-compatible Rust implementation after maturity review. |
+| 20 | Engineering `[v2.3]` | Phase 2 | SCB parser and hook language: keep upstream JavaScript parser SDK for custom parsers, or implement the parser contract in Rust; confirm the hook invocation contract the Rust `vf-hook-notify` must satisfy for the selected release. |
+| 21 | Engineering `[v2.3]` | Phase 4 | Lago and Stripe client approach in Rust: generated from provider OpenAPI specs, thin hand-written clients, or reviewed community crates; webhook signature verification implementation. |
 
 ---
 
 ## 28. Revision Delta
 
-### 28.1 v2.1 → v2.2
+### 28.1 v2.2 → v2.3
+
+| Change | Updated areas |
+|---|---|
+| Rust confirmed as primary implementation language; rationale, realistic expectations, proposed stack, and exceptions consolidated | §0.0, new §2.5 |
+| Go frameworks withdrawn: chi → axum/tower; Huma → utoipa; controller-runtime → kube-rs; Connect-Go → REST-only at GA (RPC open) | §§2.1, 2.3, 13.1, 26, 27 |
+| Component inventory updated; new `vf-admission`, `vf-graph`, `vf-hook-notify` crates named explicitly | §2.3 |
+| Graph validator compiled from Rust to WASM with native/WASM parity test and bundle budget | §§7.3, 14.1, 14.3, 25 |
+| Type-level safety aids: `TenantTx`, exhaustive role policy, `CanonicalHost`, identity newtypes, state enums, move-only reservations | §§3.5, 4.2, 5.3, 6.2, 6.3, 7.2, 15.1, 17.3 |
+| Report templating moved to Rust with explicit compensation for non-contextual escaping | §§16.4, 16.7, 16.11, 22.2 |
+| Scheduler once-only guarantee clarified as occurrence claim, not leader election | §11.1 |
+| Rust build and supply-chain gates (pinned toolchain, Cargo.lock, cargo-deny/audit, SBOM, arm64 reproducible images) | §§21.2, 21.3, 22.1, 25 |
+| Fuzzing, property testing, snapshot testing, and Rust service footprint baselines added | §§19.1, 23, 25 |
+| Upstream scanners, SCB components, LiteLLM, TypeScript UI, and Terraform provider explicitly not rewritten | §§2.5.3, 7.6, 13.5, 18.1, 21.3 |
+| New open items for team capability, crate approval, existing Go code, RPC channel, SCB parser/hook language, billing clients | §27 items 16a, 17–21 |
+
+### 28.2 v2.1 → v2.2
 
 | Change | Updated areas |
 |---|---|
@@ -1882,9 +2010,9 @@ Billing units, failure consumption, verification consumption, configured scope, 
 | Correct deletion/retention promises and upstream version status | §§3.6, 6.5, 21.3 |
 | Align tests, phasing, proposal/open registers, appendices and footer | §§23–28 and appendices |
 
-### 28.2 Earlier revisions
+### 28.3 Earlier revisions
 
-v2.0 introduced flat tenancy, guidance, verification, and core reporting. v2.1 moved verification to target registration and introduced cascade authorization. v2.2 supersedes their conflicting credit billing, broad registrable-domain matching, per-type port-scan approval, and persistent finding/fix identity rules. Earlier documents remain historical references only.
+v2.0 introduced flat tenancy, guidance, verification, and core reporting. v2.1 moved verification to target registration and introduced cascade authorization. v2.2 superseded their conflicting credit billing, broad registrable-domain matching, per-type port-scan approval, and persistent finding/fix identity rules. v2.3 changes only the implementation language and its direct consequences. Earlier documents remain historical references only.
 
 ---
 
@@ -1924,7 +2052,7 @@ v2.0 introduced flat tenancy, guidance, verification, and core reporting. v2.1 m
 }
 ```
 
-The full node schemas constrain each scanner's configuration and prohibit arbitrary command/env/template/target overrides. JSON shape alone cannot establish acyclicity, unique node IDs, edge endpoints, input compatibility, configured scope, approved templates, or allowances; the server validator and runtime gates enforce these semantics. The 200-node cap is a graph-editor limit, not a cap on dynamic scanner fan-out; dynamic work has separate enforced ceilings.
+The full node schemas constrain each scanner's configuration and prohibit arbitrary command/env/template/target overrides. `[PROPOSED — v2.3]` Generate this published schema from the `vf-graph` Rust types (e.g. with `schemars`) so the schema, the server validator, and the WASM validator share one source. JSON shape alone cannot establish acyclicity, unique node IDs, edge endpoints, input compatibility, configured scope, approved templates, or allowances; the server validator and runtime gates enforce these semantics. The 200-node cap is a graph-editor limit, not a cap on dynamic scanner fan-out; dynamic work has separate enforced ceilings.
 
 ## Appendix B — Verification plan derivation
 
@@ -1972,6 +2100,9 @@ The endpoint is server-derived from the original observation and checked against
 | Project | Organizational label within a tenant, not an isolation boundary. |
 | Lurker | SCB sidecar involved in scanner-output and completion handling; actual permissions are conformance-tested. |
 | Kargo | Akuity GitOps promotion tool used with the approved Argo CD/Harbor pipeline. |
+| Cargo workspace | `[v2.3]` The single Rust build unit containing all VulcanFlow crates, with one pinned toolchain and lockfile. |
+| kube-rs | `[v2.3]` Rust Kubernetes client/controller framework proposed for the operator and admission webhooks. |
+| `TenantTx` | `[v2.3]` Proposed Rust type through which all tenant-owned database access flows, guaranteeing tenant context is set. |
 
 ## Appendix D — Upstream References Used in the Review
 
@@ -1990,6 +2121,8 @@ These sources support technical corrections; they do not prove local deployment 
 - [ClickHouse row policies](https://clickhouse.com/docs/reference/statements/create/row-policy) — read isolation and restrictions.
 - [Nuclei execution/template controls](https://docs.projectdiscovery.io/opensource/nuclei/running) — template selection, updates, and optional execution modes.
 
+`[v2.3]` Rust ecosystem references for Phase 0 evaluation (not re-checked for specific release behaviour in this revision): [kube-rs](https://kube.rs/), [axum](https://docs.rs/axum), [utoipa](https://docs.rs/utoipa), [sqlx](https://docs.rs/sqlx), [wasm-bindgen](https://rustwasm.github.io/docs/wasm-bindgen/), [cargo-deny](https://embarkstudios.github.io/cargo-deny/).
+
 ---
 
-*End of Technical Design Document v2.2 (engineering draft). Supersedes TDD v2.1. Owner-confirmed rules are in §0.0; proposed defaults and remaining questions are in §§26–27. Examples and test identifiers require implementation/conformance evidence before release.*
+*End of Technical Design Document v2.3 (engineering draft). Supersedes TDD v2.2. Owner-confirmed rules, including Rust as the primary implementation language, are in §0.0; the Rust stack and its exceptions are in §2.5; proposed defaults and remaining questions are in §§26–27. Examples and test identifiers require implementation/conformance evidence before release.*
