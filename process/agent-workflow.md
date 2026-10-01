@@ -258,7 +258,7 @@ Four required checks run on every pull request to `main`, from
 | `lane-partition` | the diff has both production source and test files — or changes the gate alongside either |
 | `test-erosion` | an `#[ignore]` was added, a test declaration was removed, or the workspace test count fell |
 | `inline-test-modules` | a `#[cfg(test)]` module exists under `crates/*/src` |
-| `gate-self-test` | the gate's own fixture assertions fail |
+| `gate-self-test` | the gate's own fixture assertions fail; or the head classifier **permits** a case the base harness asserts the gate **refuses**; or the harness's assertion count fell (ADR-0005 §4.5) |
 
 ### Which paths are which
 
@@ -271,6 +271,12 @@ Four required checks run on every pull request to `main`, from
 
 At most one of GATE, TEST, PROD per pull request. NEUTRAL rides along with any of them, so your
 code change can carry its own docs.
+
+**That rule is about what travels *between* classes. It says nothing about what travels within
+one, and a GATE-only diff is permitted on purpose** — the gate has to be able to change. What
+guards a GATE diff instead is ADR-0005 **§4.5** (the `gate-self-test` row above) and **§4.6**, the
+five-item review obligation that applies to every pull request touching a GATE path. If you are
+touching one, read both before you open it.
 
 ### Run it yourself before you push
 
@@ -286,7 +292,15 @@ ci/lane-gate.sh all origin/main HEAD
 A red `lane-partition` means split the pull request — not add a path to the NEUTRAL list. The
 gate only changes through its own pull request, with a new fixture in `ci/lane-gate-test.sh`
 asserting the new behaviour, and under an ADR-0005 revisit trigger. A gate edit bundled with the
-change it would permit is itself refused.
+change it would permit is itself refused — **that is the bundled form only, and the solitary form
+is permitted; ADR-0005 §4.5 is what guards it.**
+
+The fixture and the classifier change it asserts go in the **same** pull request, not in two.
+`gate-self-test` is a required check, so a fixture asserting behaviour the classifier does not yet
+have is a red required check and cannot merge at all (ADR-0005 **R10**). This is the one place in
+the pipeline where lane 2 does not precede lane 3, it applies to GATE paths and nothing else, and
+§4.5's monotonicity sub-check is why it is not a weakening: what your pull request must survive is
+the fixture set already on `main`.
 
 ---
 
@@ -324,6 +338,17 @@ Still gaps, and still not permission:
   empty. The gate goes in the moment a repository receives source.
 - **A lane crossing split across two pull requests passes both.** The gate partitions paths, not
   people. VUL-9 is what closes that.
+- **The gate cannot fully guard the file that decides whether it runs.** Branch protection holds
+  the four check **names**, not the four job **bodies**. A pull request touching
+  `.github/workflows/lane-gate.yml` and nothing else is GATE-only, so `lane-partition` permits it,
+  and a `run:` step rewritten to exit zero leaves all four required contexts green while none of
+  the four checks has run. Deleting or renaming a job is **not** this — a required context that
+  never reports blocks the merge, which is the mechanism behind the `4 of 4 required status checks
+  are expected` push refusal in §8. The weakening that passes is the one that keeps the names and
+  changes the bodies. ADR-0005 §4.5 limb 3 records why no path rule reaches it, §4.6 is the review
+  obligation that stands in for a mechanism, and **R9** is the escalation. Treat that file as the
+  highest-consequence path in the repository: if you are reviewing a diff that touches it, §4.6
+  item 2 is a blocking finding on its own.
 - **A bot thread can be mistaken for reviewer #2.** The CodeRabbit App is installed and posts on
   every pull request, but nothing in GitHub distinguishes its commentary from a review verdict.
   Lane 6 is **two Paperclip verdicts that each meet ADR-0005 §6.3 condition 3** — not two

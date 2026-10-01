@@ -11,7 +11,7 @@ Each record states the question, the options considered, the choice, the reason,
 | [ADR-0001](./ADR-0001-retire-go-scaffold-vf-api.md) | Retire the Go scaffold in `vf-api` PR #1 | Accepted | §27 item 18 |
 | [ADR-0002](./ADR-0002-rust-crate-set-and-phase0-pins.md) | Approved Rust crate set, toolchain pin, and secureCodeBox pin | Accepted — amended **A1** | §27 item 17 (and the engineering half of item 5 / §21.3) |
 | [ADR-0003](./ADR-0003-rpc-scb-parser-and-billing-clients.md) | Streaming RPC, secureCodeBox parser/hook language, and billing clients | Accepted | §27 items 19, 20, 21 |
-| [ADR-0005](./ADR-0005-delivery-pipeline-and-lane-enforcement.md) | The delivery pipeline and how its lanes are enforced | Accepted — amended **1**, **2**, **3**, **4** | No §27 item — supersedes the enforcement claim in the VUL-1 plan §4 |
+| [ADR-0005](./ADR-0005-delivery-pipeline-and-lane-enforcement.md) | The delivery pipeline and how its lanes are enforced | Accepted — amended **1**, **2**, **3**, **4**, **5** | No §27 item — supersedes the enforcement claim in the VUL-1 plan §4 |
 | [ADR-0007](./ADR-0007-repo-level-agent-process-bootstrap.md) | The agent process bootstrap is checked into `vulcanflow/platform` | Accepted | No §27 item — process. Weighs against ADR-0004's definition of what `platform` holds |
 
 **ADR-0004 and ADR-0006 are not on `main` yet.** ADR-0004 is the Cargo workspace repository
@@ -56,6 +56,7 @@ that check.
 | ADR-0005 | **2** | Reviewer #2's route is the CodeRabbit **App**, triaged by Warren; bot commentary is not a verdict; lane 5.5 named — §2, §6.1, §6.2, R6, plus `process/agent-workflow.md` and `plans/open-decisions.md` D17 |
 | ADR-0005 | **3** | Lane 7's merge condition has one statement, the `docs#24` merge is recorded under R5b, and every merge now owes an attestation — §2, §2.3, §6.1–§6.4, §7 item 10, §9, R5a/R5b, plus `process/agent-workflow.md` and this index |
 | ADR-0005 | **4** | NEUTRAL `ci/**` is lane-3 work with four agents excluded by name, and the attestation detector's floor is four named commits — §2, §4.4, §6.1, §6.5, §7 items 10–11, R5b, R6, R8, plus `process/agent-workflow.md` |
+| ADR-0005 | **5** | The gate's own weakening split into three limbs: deleting a check was already closed by branch protection, the classifier-with-its-own-harness diff is closed by monotonicity plus an assertion floor, and the workflow file's job **bodies** cannot be closed in the repository at all — §4.1, §4.2, §4.4, §4.5, §4.6, §7 items 4 and 12, R9, R10, plus `process/agent-workflow.md` |
 
 Each row is a **pointer into that record's own amendment history**, which is the authority on what
 an amendment changed. It is deliberately not a summary: a summary here would be a second statement
