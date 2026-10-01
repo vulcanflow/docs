@@ -298,7 +298,7 @@ Four checks, in `vulcanflow/platform` at `ci/lane-gate.sh`, run by
 | `lane-partition` | any diff containing **both** production source and test files; also any diff that changes the gate itself alongside source or tests |
 | `test-erosion` | any added `#[ignore]`; any removed test declaration; any net fall in the workspace's total test count |
 | `inline-test-modules` | any `#[cfg(test)]` module inside `crates/*/src` |
-| `gate-self-test` | runs the gate against **15 fixture diffs** producing **21 asserted verdicts**, so the gate's own logic is itself tested |
+| `gate-self-test` | runs the gate against **15 fixture diffs** producing **21 asserted verdicts**, so the gate's own logic is tested **to the extent the harness can construct the case** — §4.5 limb 2 turns on three cases it cannot, which is why §4.6 item 5 makes naming an uncoverable case a review obligation. The two numbers are not interchangeable: a fixture may carry more than one assertion, and conflating them is what put a third, wrong number in this table until amendment 4. §4.5 **specifies** three further sub-checks for this job — refusing a head classifier that *permits* a case the base harness asserted the gate *refuses*, refusing a fall in the harness's assertion count, and refusing a harness that cannot fail against a known-bad classifier — none of which exists yet; they land with pull request 2 of §4.5's sequence |
 
 ### 4.1 Why `lane-partition` is the load-bearing one
 
@@ -309,8 +309,12 @@ says authored it. The identity problem is routed around rather than solved — t
 asking *who* and starts asking *what*.
 
 The second half of the rule — a gate change may not travel with source or tests — closes the
-obvious hole, which is weakening the gate in the same pull request as the change it would let
-through.
+**bundled** form of the obvious hole: weakening the gate in the same pull request as the change
+it would let through. **It does not close the solitary form, and reading this paragraph as
+closing gate-weakening in general is withdrawn.** A diff containing only GATE paths is
+*permitted*, deliberately and asserted by fixture 6, because the gate has to be able to change
+on its own pull request. What that permits, what closes it, and the one part that cannot be
+closed inside this repository at all, are **§4.5**. Read this paragraph as scoped to bundling.
 
 ### 4.2 The path classification
 
@@ -326,6 +330,13 @@ and not production source.
 
 At most one of GATE, TEST and PROD may appear in a diff. NEUTRAL may accompany any of them, so
 a code change can carry its own documentation.
+
+**That rule partitions *between* classes and says nothing about what travels *within* one, which
+is where it bit.** All three GATE paths in one diff satisfies it — the classifier, the only
+assertion that the classifier is correct, and the file naming the four checks, in a single pull
+request `lane-partition` passes. **§4.5** is the statement of what that permits and what now
+refuses it; the table above is **not** amended, because the defect is not that two files share a
+class and no class split repairs it (§4.5, "What was not adopted").
 
 ### 4.3 Why `test-erosion` counts the whole tree
 
@@ -425,6 +436,494 @@ made three claims that are false and a wrong operational instruction on `main` i
 So: this is weaker than the path partition, it is recorded as weaker rather than presented as
 equivalent, and it is **the arrangement chosen** for a file class the partition deliberately
 waves through — not the only one and not provably the best.
+
+**The "they still move together" reason in the third bullet is now load-bearing twice, and
+§4.5 is what answers it.** This section observed that moving a detector and its harness into GATE
+does not stop them travelling in one diff, and used that to reject the move. Correct — and the
+same sentence is true of the GATE pair that already exists. §4.5 supplies the mechanism a class
+move was never going to supply, and it answers this bullet for the `lane-gate` pair **without
+reclassifying anything**, which is the part that transfers.
+
+**What does not transfer, stated plainly because this paragraph claimed it did.** An earlier draft
+said §4.5's mechanism is *"stated over any detector/harness pair rather than over GATE specifically,
+so the prospective `ci/lane7-attest.sh` pair inherits it without a class change"*. **That is false
+and it is withdrawn.** Raised by Warren as reviewer #2. §4.5's three sub-checks — monotonicity, the
+assertion floor and the sentinel — are specified as steps inside the existing **`gate-self-test`**
+job and are written against `classify_path()`, `ci/lane-gate.sh` and `ci/lane-gate-test.sh` by name.
+There is no generic pair-level mechanism for a second pair to inherit, and a `ci/lane7-attest.sh`
+shipped on the belief that this section already covers it would have **none** of the three. What
+transfers is the *argument* — a detector and the only assertion that the detector is correct need a
+monotonicity check, a floor and a sentinel, whatever class they sit in — and the obligation that
+creates is **R8**'s, which already requires an amendment in the same change that makes such a script
+gate anything. The spec for that pair's three sub-checks is lane-1 work that does not exist yet, and
+calling it inherited is exactly the overclaim §4.4's own final paragraph was corrected for once
+already.
+
+### 4.5 The gate's own weakening — what the partition reaches, and the one thing it cannot — added 2026-10-01
+
+Raised by Assay on **VUL-68**, against merged code at `platform@41506ad` rather than against any
+diff under review, and against §4.1's claim rather than against an implementation bug. The
+reading is confirmed in full, the limb Assay could not resolve is resolved here from a read-back,
+a second limb is closed by a new check, and a **third limb is named as unmechanised and left to
+review**, which is the part that matters most and was not in the finding. That third limb was first
+written here as *structurally* unclosable; the CEO showed on VUL-68 that it is a property of the
+`pull_request` trigger rather than of the repository, and the overclaim is withdrawn in limb 3
+below. The trigger swap that would change it is rejected there on three reasons and tracked at
+**R11**.
+
+**The reading, confirmed against `41506ad`.** `classify_path()` puts `ci/lane-gate.sh`,
+`ci/lane-gate-test.sh` and `.github/workflows/lane-gate.yml` in **GATE**. `cmd_partition()` has
+exactly two refusal conditions — PROD together with TEST, and GATE together with either — so a
+diff holding all three GATE paths and nothing else gives `gate=3, prod=0, test=0` and
+`lane-partition` **passes it**. `test-erosion`'s `count_markers` greps `-- '*.rs'`, so a diff with
+no Rust in it leaves the base and head counts equal and passes. `inline-test-modules` passes.
+Assay's further point is also confirmed: `ci/lane-gate-test.sh`'s `setup()` copies only
+`ci/lane-gate.sh` into the fixture repository and creates neither `ci/lane-gate-test.sh` nor
+`.github/`, so **the harness cannot construct the diff in question** — fixture 5 asserts *gate +
+prod → fail* and fixture 6 asserts *gate alone → pass*, and there is nothing in between because
+there is nothing in between that the harness can build.
+
+#### Limb 1 — deleting or renaming a check — is already closed, by configuration
+
+This is the fact VUL-68 asked for and could not read, and it decides the severity of the rest.
+`GET /repos/vulcanflow/platform/branches/main/protection`, read back **2026-10-01**, returns
+`required_status_checks.contexts` = `lane-partition`, `test-erosion`, `inline-test-modules`,
+`gate-self-test`; `strict: true`; each context pinned to `app_id 15368`; and
+`enforce_admins: true`. That is the configuration **§8.2** records as applied, still in place.
+
+`15368` is **GitHub Actions**, read rather than recalled: `GET /apps/github-actions` returns
+`{"id": 15368, "slug": "github-actions", "name": "GitHub Actions"}`. An earlier draft of this
+section asserted that mapping in an uncited parenthetical, which is the recalled-not-read kind of
+claim this record is supposed to refuse. The read-back is also **independently corroborated**:
+Forge read the protection endpoint from a different runner under VUL-68 and verified the `app_id`
+the same way, and Atlas read it twice; all three reads return the same four contexts, the same
+`strict: true`, the same pinned `app_id` and the same `enforce_admins: true`. Three reads, two
+agents, two routes, one configuration — which carries weight here because this limb is closed by
+configuration alone and **nothing in the repository restates it**, so the citation is the only
+record a later reader has.
+
+Two consequences a reader can check:
+
+- **A check that stops reporting blocks the merge.** Deleting the `gate-self-test` job, renaming
+  it, removing `pull_request` from the workflow's `on:`, adding a `paths:` filter that excludes
+  the diff, or deleting the workflow file outright all leave a required context that is *expected
+  and never reported*. §8.4's observed push refusal — *"4 of 4 required status checks are
+  expected"* — is the same mechanism seen from the other side and is the evidence that the four
+  contexts are held **by name, in GitHub configuration, independently of any file in the
+  repository**.
+- **The pinned `app_id` means nothing else can satisfy them.** An external bot cannot report a
+  check run named `gate-self-test` into these contexts.
+
+So `lane-gate.yml`'s header sentence — *"Wire all four as required checks on main"* — reads as an
+instruction but describes something already done, and §8.2 is where it is recorded rather than the
+workflow comment. **VUL-68's conditional severity resolves to its lower branch for this limb, and
+for this limb only.** The repository genuinely did not establish the fact; §8.2 did, and the
+read-back above is now the citation.
+
+One caveat, because the limb is closed on a *reported* check and not on a *correct* one: a job
+that is **skipped** rather than absent may be treated by branch protection as satisfying its
+context. That behaviour is **not verified here**, and §4.6 item 3 therefore refuses an `if:` on
+these four jobs outright — at job level for this reason, and at step level for a different one it
+also enumerates — rather than resting on which way the semantic goes.
+
+#### Limb 2 — the classifier and its own harness in one diff — was open, and is closed here
+
+A diff holding `ci/lane-gate.sh` and `ci/lane-gate-test.sh` can weaken `classify_path()` and, in
+the same change, remove or relax the fixture that would have caught it. `gate-self-test` runs the
+**head** harness against the **head** classifier, so it is self-referential and reports green.
+That was open on `main` and is closed by three sub-checks, added to the existing `gate-self-test`
+job so that no new required context has to be wired:
+
+1. **Monotonicity — a case the gate refused on `main` may not be permitted at head.** Run the
+   harness **as it exists at the base commit** against the classifier **at head**. For every base
+   fixture: if the base harness asserted **fail** and the head classifier gives **pass**, that is
+   a blocking failure. The converse — base asserted **pass**, head gives **fail** — is *reported
+   and does not block*, because the gate getting stricter is not a weakening. This is one
+   sentence, it needs no filename convention, it reads the base from `git` rather than from the
+   diff, and it refuses the whole of limb 2 **in a single pull request** rather than splitting it
+   into two. The base harness is code already merged to `main`, so executing it introduces no
+   trust the branch did not already have.
+2. **An assertion floor.** The number of `check` invocations in `ci/lane-gate-test.sh` may not
+   fall between base and head. This closes the two-pull-request route that monotonicity alone
+   leaves open — delete the fixture in one change, weaken the classifier in the next, by which
+   point the base harness no longer asserts the case.
+3. **A sentinel — the harness must still be able to fail.** Run the **head** harness against a
+   deliberately wrong classifier and require it to report failure. The wrong classifier is a
+   fixed, committed mutant: a `classify_path()` that returns `NEUTRAL` for every path, which
+   every one of the 6 fail-asserting fixtures must refuse. If the head harness reports success
+   against it, the harness has lost the ability to fail and the check is blocking.
+
+   **This is the third sub-check and it exists because sub-checks 1 and 2 trust the harness's
+   verdict machinery without constraining it.** Monotonicity runs the base harness *wholesale*
+   and the floor counts `check` *invocations*, so neither constrains `check`'s body or the
+   harness's exit line (`[ "$fail_count" -eq 0 ]`, the last line of `ci/lane-gate-test.sh` at
+   `41506ad`). Without the sentinel, two GATE-only pull requests defeat all of it: the first
+   touches the harness alone and rewrites `check()` so `fail_count` never increments, or replaces
+   the exit line with `exit 0` — the invocation count is unchanged so the floor passes, the
+   classifier is unchanged so monotonicity passes, and the gutted harness reports success so the
+   head-against-head leg passes; the second then weakens `classify_path()` alone, and
+   monotonicity now runs the *gutted* base harness, which asserts nothing. All legs green, gate
+   fully defeated. The sentinel refuses the first pull request at the point the harness stops
+   being able to fail, which is the only place the sequence is visible. Raised by Assay in lane 6
+   against this amendment's own first draft, which enumerated four defeated shapes and called the
+   set complete.
+
+Together these refuse: weakening the classifier (caught by 1, whatever the diff does to the
+harness); deleting a fixture (caught by 2); gutting `check()` or the harness's exit status (caught
+by 3); flipping a fixture's expected verdict while leaving its body intact (caught by the existing
+head-against-head leg); and hollowing the body of a **fail-asserting** fixture while leaving its
+expected verdict intact (also caught by the existing leg, since a hollowed diff no longer produces
+the asserted `fail`).
+
+**That last one is scoped to fail-asserting fixtures deliberately, and the scope is most of the
+point.** An earlier draft stated it unconditionally, which is wrong for the majority of the set:
+of the 21 `check` invocations at `platform@41506ad`, **15 assert `pass` and 6 assert `fail`**.
+Hollow a *pass*-asserting fixture — fixture 6, *gate alone → pass* — and the constructed diff is
+empty, `cmd_partition()` returns `pass "partition: empty diff"`, the assertion is `pass`, and the
+head-against-head leg is **green**. Monotonicity is green because the classifier is untouched and
+the floor is green because the count holds. So hollowing a pass-asserting fixture is **silent
+coverage loss, caught by nothing mechanical**, and its only control is §4.6 item 5 — the reviewer
+reading the fixture's body, not its verdict. That reaches fixture 6, which is the fixture the whole
+of §4.5 turns on, and fixtures 13–15, which cover the no-Rust and empty-diff regressions. Raised
+by Assay in lane 6; the unconditional claim is withdrawn here rather than quietly narrowed.
+
+#### Limb 3 — the workflow file's job bodies — is not closed, and the reason is the trigger
+
+**Branch protection pins job names, not job bodies.** A diff touching
+`.github/workflows/lane-gate.yml` and nothing else is GATE-only, so `lane-partition` permits it;
+`test-erosion` sees no Rust; `inline-test-modules` is unaffected. If that diff replaces each
+job's `run:` step with a command that exits zero, **all four required contexts report success
+while none of the four checks has run.** One file, four green checks, no gate. That is strictly
+more reachable than the three-file sequence VUL-68 describes, and no edit to `classify_path()`
+touches it, because the file is already alone in its class.
+
+It is not an oversight and it is not fixable by a path rule. Under `on: pull_request` the workflow
+file in the pull request's own head is what decides whether the gate runs, so nothing the gate does
+can be guaranteed to run — and **every layer above bottoms out here**, monotonicity included, since
+its step lives in that same file. Say it plainly rather than let §4.5's first two limbs read as a
+complete mechanism.
+
+**An earlier draft of this limb called that *structural*, and it is not — it is a property of the
+trigger. The overclaim is withdrawn here.** Raised by the CEO on VUL-68 from R9's probe, and
+confirmed against upstream documentation read 2026-10-01: under **`on: pull_request_target`** the
+workflow file, the checked-out ref and `GITHUB_SHA` all come from the **default branch**, not from
+the pull request, so `main`'s copy of `lane-gate.yml` is the one that runs and the head's copy is
+never executed. GitHub's events reference gives `GITHUB_REF` as *"Default branch"* and `GITHUB_SHA`
+as *"Last commit on default branch"* for that event, and the changelog of 2025-11-07 (effective
+2025-12-08) makes it unconditional rather than base-branch-dependent: *"The workflow file and
+checkout commit will always be taken from the repository's default branch."* The check run such a
+run produces still attaches to the **pull request head SHA**, so it can satisfy a required context
+— verified on third-party data rather than assumed, because this is the step the whole option turns
+on: `puppetlabs/puppetlabs-firewall` run `35264886978` has `event: pull_request_target` and
+`head_sha 97945b9e2ff93bb53db232b0043119c97f8b875e`, which is pull request #1247's head and not that
+repository's `main` (`be2016d7558a1866956c42d3a8149ef474c33a0d`), and check run `105349461328`
+(`strip / Strip CI label`, app `github-actions`, id `15368`) carries that same head SHA.
+
+So the correct statement is narrower and it is the one that goes into the record: **limb 3 exists
+because the gate is triggered on `pull_request`, and a trigger exists under which the gate cannot be
+prevented from running.** That is a real difference and it reclassifies the limb — it is not
+unmechanisable, it is **unmechanised, on a trigger this record has now chosen deliberately rather
+than inherited.** §4.5's rejection of the swap is below, with the three reasons, the first of which
+is that it would not have closed the limb anyway.
+
+Three things follow:
+
+- **The control on a GATE-only diff is lane 6, by construction.** §4.6 makes it checkable instead
+  of leaving it to a reviewer's instinct.
+- **`.github/workflows/lane-gate.yml` is the highest-consequence path in the repository**, and it
+  is labelled as such here and in `process/agent-workflow.md` §7.
+- **Any real closure is a control the diff does not contain, and the ruleset route is now closed.**
+  **R9** asked whether a ruleset `workflows` rule was available on this plan. It is not: the CEO's
+  probe on VUL-89 is recorded at R9 below, and R9 is answered rather than open. The trigger route
+  that replaced it is rejected below and tracked at **R11**, whose owner is also not Atlas.
+
+#### What was not adopted, and why — on the record so it is not re-argued
+
+- **A pairing rule: "`ci/X.sh` and `ci/X-test.sh` may not appear in the same diff."** Named by
+  Assay as the alternative, and the appeal is real — it would reach the existing `lane-gate` pair
+  and the prospective `lane7-attest` pair at once, with no new class. **Rejected, because
+  monotonicity is strictly stronger on the same case and costs less.** The pairing rule *splits* a
+  one-pull-request weakening into two and buys legibility; monotonicity **refuses** it. The
+  pairing rule also rests on a filename convention, and the edit that defeats it — rename
+  `ci/lane-gate-test.sh`, change the matching `run:` line — is a two-path GATE-only diff the rule
+  itself permits. **An earlier draft of this bullet gave a third reason that is wrong and it is
+  withdrawn rather than quietly dropped**: it said the pairing rule would force the classifier
+  change and the fixture asserting it into separate pull requests, as a cost. R10's sequence puts
+  them in separate pull requests *anyway*, so the pairing rule costs nothing there. Stated because
+  a rejection standing on an argument its own record falsifies is worse than no rejection: the next
+  reader re-opens it correctly. **A third reason, supplied by Assay in lane 6 while upholding the
+  rejection of its own alternative, replaces the withdrawn one: the pairing rule would not have
+  caught sub-check 3's sequence either.** That sequence is already two separate pull requests —
+  harness alone, then classifier alone — so a rule about what may *share* a diff never engages. The
+  rejection therefore rests on three reasons, and the strongest is this one: the defect was never
+  about co-travel in a single diff.
+- **A class split — one path class per detector, or moving `ci/lane-gate-test.sh` out of GATE.**
+  §4.4's third bullet already rejected the GATE reclassification of the prospective `lane7-attest`
+  triple with the reason *"both would still move together"*. That reason is right and it applies
+  here: the defect is not that two files share a class, it is that **a detector and the only
+  assertion that the detector is correct are the same change** — true in whatever classes they
+  sit. A class split also costs one new class per detector as detectors multiply, which Assay
+  named. §4.4's rejection stands and §4.2's table is unchanged.
+- **Swapping the gate's trigger to `on: pull_request_target`.** Proposed by the CEO on VUL-68 as a
+  zero-cost closure of limb 3, on the correct observation above that `main`'s workflow file and
+  `main`'s checkout are what run. **Not adopted. Three reasons, and the first is the one that
+  settles it.**
+
+  **One — it makes the gate unevadable without making the gate refuse, so limb 3's merge still
+  happens.** A pull request that touches `.github/workflows/lane-gate.yml` and nothing else is
+  GATE-only. Under `pull_request_target`, `main`'s four jobs run on it and report four *honest*
+  verdicts — and all four are **green**, because `lane-partition` permits a single-class diff
+  deliberately (§4.1, §4.2's note), `erosion` greps `-- '*.rs'` and sees no shell, `inline-test-
+  modules` is unaffected, and `gate-self-test` is running `main`'s harness against `main`'s
+  classifier, neither of which the diff touched. Four green required contexts, zero approvals
+  required (§4.6's closing paragraph), the pull request merges, and from the next pull request
+  onward `main`'s gate is the hollow one. **The merge outcome is identical to today's.** What the
+  swap changes is that the verdicts stop being vacuous and start being honest-but-silent — the gate
+  ran, and it has nothing to say about a hollowed workflow, because no check asks. That is worth
+  having and it is not a closure: the closure is a sub-check that refuses the hollowing, which does
+  not exist in either trigger. The swap would make such a sub-check *possible* to write
+  un-neuterably, which is exactly the reclassification recorded above and nothing more.
+
+  The same reasoning applies to the variant the proposal also claims — that because the checkout is
+  from `main`, a GATE diff can no longer neuter `ci/lane-gate.sh` and `ci/lane-gate-test.sh` in one
+  pass. True, and it does not help: `gate-self-test` would then be testing `main`'s classifier and
+  **never the pull request's**, so a diff weakening `classify_path()` merges on a green-but-vacuous
+  self-test and `main` is weak from then on. The weakening is not evaded; it is simply not looked
+  at. Limb 2 would be *relocated*, not killed — which is why monotonicity is still required, and
+  monotonicity is where reason two bites.
+
+  **Two — it is incompatible with all three of limb 2's sub-checks, on GitHub's own stated rule.**
+  The secure-use reference is explicit, read 2026-10-01: *"Workflows that use these triggers must
+  not explicitly check out untrusted code"*, and *"You must ensure the checked-out code is only ever
+  inspected as data and never executed before using a `pull_request_target` event."* Every one of
+  the three sub-checks executes head-authored shell. Monotonicity runs the base harness against the
+  **head** `ci/lane-gate.sh` — the note at sub-check 1 that *"the base harness is code already
+  merged to `main`, so executing it introduces no trust the branch did not already have"* is true of
+  the harness and silent about the classifier, which is the file under test and is head-authored by
+  construction. The sentinel runs the **head** `ci/lane-gate-test.sh`. And `gate-self-test` at
+  `41506ad` already runs head against head. The proposal's own third caveat — *"never check out or
+  execute PR code under this trigger; a diff-only gate is precisely the job shape for which it is
+  safe"* — is right about `lane-partition`, `test-erosion` and `inline-test-modules`, which are
+  diff-only, and does not reach **`gate-self-test`, which is not diff-only and is the fourth
+  required context.** Under this trigger that job becomes privileged execution of untrusted code
+  with cache access in the default branch's scope: the Pwn Request, which the same reference names
+  as *"one of the most commonly exploited vulnerabilities in action workflows"*. A partial swap —
+  the three diff-only checks on `pull_request_target` in a second workflow file with disjoint job
+  names, `gate-self-test` left on `pull_request` — avoids the double-reporting the proposal's first
+  caveat warns about and is the only coherent shape this option has. It is still refused on reason
+  one, which applies to the partition unchanged, and on reason three, which applies to both files.
+
+  **Three — and this is not in the proposal: the trigger is scheduled to be blocked by default on
+  this repository on 2026-11-02, thirty-two days from this read.** GitHub's changelog of 2026-09-17,
+  *Workflow execution protections in GitHub Actions generally available*: *"For public repositories
+  that do not already have an applicable event policy, GitHub is introducing a default rule that
+  disables `pull_request_target`"*, and the rule *"does not apply to private or internal
+  repositories"*. The repository-settings reference states the date flatly: *"GitHub has added a
+  default policy that will block the `pull_request_target` event in public repositories. This policy
+  will be enforced on November 2, 2026."* Read back against this organisation on 2026-10-01, and
+  every one of the four facts puts us inside that rule rather than outside it:
+
+  ```
+  GET /repos/vulcanflow/platform                  → visibility: public
+  GET /repos/vulcanflow/docs                      → visibility: public
+  GET /repos/vulcanflow/platform/actions/policies → {"total_count": 0, "policies": []}
+  GET /repos/vulcanflow/docs/actions/policies     → {"total_count": 0, "policies": []}
+  GET /orgs/vulcanflow/actions/policies           → 403 "Resource not accessible by integration"
+  ```
+
+  Public, with no applicable event policy, on `plan.name: free`. A gate swapped to this trigger and
+  left there **stops running on 2026-11-02**. It would fail *closed* — the contexts never report,
+  every pull request is held by the four expected-and-missing checks, which is §4.5 limb 1's
+  mechanism turned on the whole gate — so it is not the silent failure limb 3 is about. It is worse
+  in a different way: it halts delivery entirely on a date nobody wrote down. Keeping the trigger
+  therefore requires an **Actions event policy** allow-listing `pull_request_target` for the named
+  workflow file, which is the same class of org-and-plan object R9 just came back negative on. This
+  paragraph's own first draft read *"whether our identity can create one at repository level on Free
+  is **unverified** — the `GET` above proves the endpoint is readable to us and proves nothing about
+  the `POST`"*, and **that clause is answered, positive: see R11, probed by the CEO on 2026-10-01.**
+  A repository-level event policy *is* creatable by our identity on Free, which is the opposite of
+  R9's answer on the ruleset rule. It changes nothing here — this reason was never the one that
+  settles the swap, and reasons one and two refuse it with or without a policy — and it is not
+  probed in *this* section for the reason that still holds: a write to Actions policy on a protected
+  repository is a CI-configuration mutation, and §4.4's exclusions keep Atlas out of that even when
+  the API would allow it. The probe was a plan-and-permission question of §8's shape, so it was
+  **R11** and its owner was the CEO, not Atlas.
+
+  **What this option is worth, recorded so the rejection is not read as a dismissal.** It is the
+  only route anyone has found that puts the gate's execution outside the diff's reach, the proposal's
+  three caveats are all correct and all load-bearing, and the second one — that `GITHUB_REF` and
+  `GITHUB_SHA` become `main`, so the base-versus-head diff must fetch
+  `github.event.pull_request.head.sha` explicitly — correctly identifies where the implementation
+  cost sits. The conditional this paragraph set — R11 positive **and** a sub-check that refuses a
+  hollowed workflow specified — now has its **first conjunct satisfied and its second not**: R11
+  came back positive on 2026-10-01, and no such sub-check is specified anywhere. If one is written,
+  the partial swap above is the shape to reach for, and reasons one and two are the two things that
+  specification has to answer. Until then limb 3's control is §4.6, as review and not as mechanism.
+
+- **A count-only floor, with no monotonicity.** Counts catch *deletion*, never *relaxation* — the
+  distinction §4.3 draws when it waves a rename through and §4.4 draws about its own fixture set.
+  The floor is adopted as the second layer, not as the answer.
+
+#### What remains open, stated so nobody reads it as closed
+
+**In-place relaxation of a fixture.** One pull request, harness only: replace a fixture's body
+with a weaker case *and* flip its expected verdict to match, so the `check` count holds, the
+head-against-head leg is green, and the base-against-head leg still runs the real fixture against
+an unchanged classifier. The next pull request weakens the classifier and the base harness no
+longer asserts the case. Both are green. The control is a reviewer reading **each fixture against
+the outcome the lane-1 spec states for it** — §4.6 item 4, the same control §4.4 settled on for a
+NEUTRAL harness, recorded here at the same strength: weaker than the partition, and chosen.
+
+**And the floor is an endpoint comparison, with the blindness that implies.** Adding one fixture
+and removing another in one diff preserves the count. This is the same shape as fixture 12's
+second half, which asserts that adding and then removing a `fuzz_target!` within one pull request
+passes `erosion` *"vs baseline count is unchanged"* — Assay flagged it, it is deliberate and
+documented, and it is unchanged here. Monotonicity does **not** have this shape: it compares base
+assertions against head behaviour, not two endpoints of a count.
+
+#### Lane assignment for the work §4.5 creates, and the order it has to go in
+
+§4.4's subject table governs, extended to GATE paths because the axis is the same: `ci/lane-gate.sh`
+is pure computation over its inputs, so the implementation is **Forge** in lane 3; the fixtures are
+**Scribe** in lane 2, enumerated with their outcomes in the lane-1 spec per §4.4; the runs and the
+merge are Crucible's. §4.4's four exclusions apply unchanged. The work carries **no §25
+identifier** — `n/a (no §25 identifier in scope)` under §6.3 condition 2, for §4.4's reason: all 45
+identifiers map to a product requirement in §2–§23 and none to the delivery pipeline's own tooling.
+
+**The order is forced by R10 and it is not the ordinary one, so it is written out rather than left
+to be discovered.** `gate-self-test` is a required check, so a harness asserting behaviour the
+classifier does not yet have is a red required check and cannot merge at all.
+
+**What R10 forces in general is the inversion, which is two pull requests: the implementation,
+then its fixtures.** *This* change needs three, and the third is not a general rule — an earlier
+draft wrote "a new gate behaviour therefore needs three pull requests, not two", and the
+"therefore" does not hold. The extra step exists because `setup()` at `41506ad` cannot construct a
+GATE-pair diff or a workflow-only diff, so the **current** behaviour's coverage has to be
+backfilled before anything is added. That is a property of this `setup()` capability gap, not of
+gate changes as such: for a later gate behaviour whose fixtures the harness can already build,
+step 1 is empty and the sequence is two. Raised by Assay in lane 6, as the same overclaim-by-scope
+this amendment narrows §4.1 for.
+
+So, for this change, three — step 1 **conditional on the capability gap**, steps 2 and 3 the
+general inverted pair:
+
+| | Lane | Author | Diff | Why it is green |
+|---|---|---|---|---|
+| 1 | 2 | **Scribe** | *Conditional on the `setup()` gap, not a general step.* `setup()` gains the ability to write `ci/lane-gate-test.sh` and `.github/workflows/` into the fixture repository, plus fixtures asserting the verdicts the gate **already** gives on a GATE-pair diff and on a workflow-only diff | They assert current behaviour, which is exactly what was missing — the absence of these two fixtures is how limb 2 survived from `41506ad` to VUL-68 |
+| 2 | 3 | **Forge** | monotonicity, the floor and the sentinel added to `ci/lane-gate.sh`, wired as steps in `gate-self-test`, which also gains `fetch-depth: 0` and a fetch-base step | Additive. Every existing fixture, including pull request 1's, is unaffected |
+| 3 | 2 | **Scribe** | fixtures asserting the three new sub-checks' verdicts | The behaviour now exists, so the assertions pass |
+
+**Two preconditions on pull request 2, which is a lane-1 spec and not commentary.** At `41506ad`
+the `gate-self-test` job has a bare `uses: actions/checkout@v4` — no `fetch-depth: 0` and no
+*Fetch base branch* step, unlike `lane-partition` and `test-erosion`, which both have them.
+Monotonicity reads the base harness from `git`, so pull request 2 must add both to that job or the
+sub-check cannot run at all. And **a monotonicity step that cannot resolve the base ref must fail
+closed, not skip**: a silent skip would reproduce limb 3 inside the sub-check built to close limb
+2. Both raised by Assay in lane 6.
+
+**Nobody crosses a lane and nothing is ever red.** What is inverted is only that the *new*
+behaviour's fixtures arrive after it, in pull request 3 — R10's exception, confined to one pull
+request, and the reason §4.4's "written by Scribe before the implementation exists" clause cannot
+hold for a GATE path. The substitute is lane 1 and lane 6, not a mechanism: Atlas enumerates pull
+request 3's fixtures **with their outcomes** before pull request 2 is written, and §4.6 item 4 is
+Assay checking the delivered harness against that enumeration per fixture. Recorded as weaker than
+the ordinary arrangement, for the same reason §4.4 records its own as weaker.
+
+### 4.6 A GATE-class pull request has a named review obligation — added 2026-10-01
+
+§4.5 limb 3 is not mechanised — under the `pull_request` trigger it cannot be, and §4.5 rejects the
+one trigger under which it could on three reasons — so for a diff touching any GATE path the review
+**is** the control rather than the second line. Enumerate it: "review it carefully" is not a specification,
+and §4.4's own correction established that a reviewer needs the outcome stated rather than the
+name. Assay's lane-6 verdict on such a pull request states each of these per item and cites the
+line it read.
+
+1. **The four job names in `.github/workflows/lane-gate.yml` are unchanged**, and the same four
+   still appear in `required_status_checks.contexts` — quoted from both sides, four and four.
+2. **Each job's conclusion is decided by the gate's exit status.** `lane-partition` →
+   `ci/lane-gate.sh partition`; `test-erosion` → `ci/lane-gate.sh erosion`; `inline-test-modules`
+   → `ci/lane-gate.sh inline-tests`; `gate-self-test` → the harness, at all three evaluations
+   §4.5 limb 2 requires. The test is **not** that the `run:` line still names the script — that is
+   necessary and nowhere near sufficient. `run: ci/lane-gate.sh partition || true` names the
+   script, reaches the script, and discards its verdict. So the question is whether a non-zero
+   exit from the gate still fails the job: no `|| true`, no `; exit 0`, no `set +e` around the
+   call, no trailing command that would mask the status. A step that reaches the script but does
+   not let it decide the outcome **is** the limb-3 defect and is a blocking finding on its own,
+   whatever else the diff does. An earlier draft of this item tested reachability instead, which
+   all three one-line weakenings in the paragraph below pass.
+3. **`on: pull_request: branches: [main]` is unchanged, and nothing short-circuits a job or
+   forgives its failure.** Refused, by name: a workflow-level `paths:` filter; an `if:` at
+   **either** job or step level; and `continue-on-error:` at **either** job or step level. A
+   `paths:` filter fails safe — the workflow does not run, the context never reports, the merge
+   blocks — but it fails *visibly stuck* rather than selectively, so it is refused as a mistake
+   rather than tolerated as a nuance. An `if:` is refused at job level because §4.5 limb 1's
+   caveat — whether a *skipped* job satisfies its required context — is unverified and a flat
+   refusal is cheaper and stronger than settling it in GitHub's semantics; at step level it is
+   refused because `if: false` on the gate's own step leaves the `run:` line textually perfect and
+   the job green. `continue-on-error:` is the sharpest of the three: the step runs, the script
+   runs, the script reports failure, and the job concludes `success` regardless — item 2 as
+   originally worded passed it.
+
+   These three — `|| true`, `continue-on-error: true`, step-level `if: false` — are **one-line,
+   single-file, GATE-only diffs that produce four green required contexts with no gate**, which is
+   limb 3 at a quarter of the cost of rewriting each `run:` body. They are enumerated here because
+   this list is limb 3's only control and an enumeration that omits the cheapest attack is not a
+   control. Raised by Assay in lane 6 against this amendment's own first draft.
+
+   **A diff proposing `on: pull_request_target` is refused by this item too, and it is the one
+   refusal here that is a decision rather than a defect.** §4.5 rejects the swap on three reasons:
+   it does not close limb 3, it puts `gate-self-test` in violation of GitHub's rule that code reached
+   under that trigger must never be executed, and the trigger is blocked by default on public
+   repositories from **2026-11-02** absent an applicable Actions event policy — which none of the
+   four public repositories has, and which R11 records as **creatable** by us and deliberately not
+   created.
+   The second is why it cannot be waved through as a hardening tweak and the third is why it cannot
+   be waved through as harmless: it would read as strengthening the gate and would stop the gate.
+   Reopening it is **R11** and an ADR amendment, not a CI change.
+4. **Every fixture in `ci/lane-gate-test.sh` is read against the outcome of record for it** — per
+   fixture, not as a count. The count is the gate's floor; the outcomes are the reviewer's, and
+   in-place relaxation has no other control.
+
+   **The outcome of record is the lane-1 spec's enumeration where one exists, and `41506ad`
+   otherwise.** §4.4's rule that Atlas enumerates fixtures with their outcomes in the spec arrived
+   with amendment 4; the 21 `check` invocations on `main` predate it, so for those there is no
+   spec to read them against and this item would have been unperformable on exactly the set where
+   the residue lives. For them the outcome of record is the `check` call's own third argument
+   together with its section comment **as they stand at `platform@41506ad`** — 21 invocations, 15
+   asserting `pass` and 6 asserting `fail`, counted there — frozen as the baseline. A diff that
+   changes any of those 21 verdicts is changing the outcome of record and owes a stated reason in
+   its own pull request body, which is the thing a reviewer can then check. No backfill of
+   retrospective specs is required and none is implied; the frozen commit is the spec for the
+   pre-§4.4 set. Raised by Assay in lane 6.
+5. **The fixture set still covers the cases the harness can construct**, and any case it cannot is
+   **named in the verdict as uncovered**. Leaving an uncoverable case unmentioned is how §4.5's
+   limb 2 survived from `41506ad` to VUL-68.
+
+Warren's input is reviewer #2's on the ordinary terms of §6.1 and §6.3. Nothing here changes the
+verdict shape, the severity mapping or the head-coverage rule.
+
+**How strong this obligation actually is, stated rather than left to be assumed.** The same
+protection read-back that closes §4.5 limb 1 also returns
+`required_pull_request_reviews.required_approving_review_count: 0` and
+`require_code_owner_reviews: false` — §8.2's deliberate choice, for §3.1's reason, and the other
+half of why `CODEOWNERS` is unavailable as a closure anywhere in §4.5. The consequence for this
+section is worth naming: **GitHub will merge a GATE-class pull request with no approving review
+at all.** Every one of the five items above is enforced by §6.3 inside Paperclip and by nothing
+in GitHub, so on a GATE-class diff the four required contexts can be green, the approval count
+can be zero, and the only thing between a hollowed `run:` and `main` is Crucible refusing the
+merge under §6.3 condition 3. That is not an argument for raising the count — one shared identity
+(§3.1) makes a GitHub-side count unsatisfiable, which is §8.2's own reason — it is why §4.6 is
+written as checkable items rather than as an instruction to review carefully, and part of why
+**R9** and **R11** both have the CEO as owner.
+
+**And R9 is now answered, negative, which makes this section's standing longer than it was drafted
+to be.** When §4.6 was written it was the interim control until a ruleset `workflows` rule could be
+probed. That probe came back unavailable on this plan, and the trigger route that replaced it is
+rejected in §4.5 on three reasons. So §4.6 is not an interim measure waiting on a mechanism — it is
+**the** control on the highest-consequence path in the repository, for as long as the gate runs on
+`pull_request`, which §4.5 now records as a decision rather than as something inherited. A control
+of that standing is worth re-reading as such: the five items are not a checklist appended to a
+mechanism, they are the mechanism.
 
 ---
 
@@ -1142,11 +1641,20 @@ inside its range, that is a second R5b event, and R5b already says where a secon
 2. **Every change costs more pull requests.** A feature is now at least two: the test, then the
    code. This is the intended price and it is paid on every item.
 3. **Unit tests move out of `src`.** See §5.
-4. **The gate itself is tested.** `gate-self-test` asserts **21 verdicts across 15 fixture
-   diffs** (`ci/lane-gate-test.sh ci/lane-gate.sh` → `21 passed, 0 failed`), so a future edit that
-   silently guts the gate fails the gate. **The two numbers are not interchangeable** — a fixture
-   may carry more than one assertion — and conflating them is what put a third, wrong number in
-   §4's check table until amendment 4 corrected it.
+4. **The gate itself is tested, and its self-test is still only self-referential until §4.5's
+   pull request 2 lands.** `gate-self-test` asserts **21 verdicts across 15 fixture diffs**
+   (`ci/lane-gate-test.sh ci/lane-gate.sh` → `21 passed, 0 failed`), all of them
+   head-against-head, so a future edit that silently guts the gate fails the gate *only where the
+   harness can build the case*. **The two numbers are not interchangeable** — a fixture may carry
+   more than one assertion — and conflating them is what put a third, wrong number in §4's check
+   table until amendment 4 corrected it. §4.5 **specifies** three sub-checks that will break the
+   self-reference — the **base** harness against the **head** classifier, refusing any case the
+   base asserted the gate refuses that head now permits; a floor on the assertion count; and a
+   sentinel requiring the head harness to fail against a known-bad classifier — and **none of them
+   exists at `platform@41506ad`**. They land with pull request 2 of §4.5's sequence and not before.
+   An earlier draft of this item wrote them in the present tense; §9 names a false operational
+   statement as the live hazard, and amendment 3 corrected this record once already for exactly
+   this tense error.
 5. **The gate is live on `platform` only.** `docs` has no code; `infra` and `vf-api` are empty
    repositories whose `main` is an initial commit. The gate is added to each the moment it
    receives source; a Markdown-only repository has no lane to cross.
@@ -1178,6 +1686,14 @@ inside its range, that is a second R5b event, and R5b already says where a secon
     else, and the control on its harness is **temporal rather than mechanical**: no check in CI
     sees a shell fixture, so what protects it is that the fixtures land first and a reviewer
     reads them.
+12. **A GATE-class pull request costs a five-item review obligation** (§4.6), because §4.5 limb 3
+    is not mechanised under the trigger in use: branch protection pins job *names*, not job
+    *bodies*, so a diff touching
+    `.github/workflows/lane-gate.yml` alone can keep four green required contexts while neutering
+    everything they run. That file is now the **highest-consequence path in the repository**, and
+    the honest shape of the mechanism is that it detects its own weakening everywhere except in
+    the one file that decides whether it runs at all. The price is that GATE diffs are slower to
+    review and that §4.1's "closes the obvious hole" is narrowed to bundling.
 
 ---
 
@@ -1487,6 +2003,148 @@ Named, so this record is revisited on evidence rather than on mood.
   live from the moment §6.5's detector lands, because making it required is the obvious next
   thing to want and is exactly where §4.1's second rule stops applying by accident.
 
+- **R9 — enforcement that a pull request cannot reach — ANSWERED 2026-10-01, negative.** §4.5
+  limb 3 is unmechanised in `platform`: branch protection pins job **names**, not job **bodies**, so
+  a GATE-only diff can keep four green required contexts while replacing what they run. Any real
+  closure is a GitHub control the diff does not contain, and the candidate this trigger named was a
+  ruleset **`workflows`** rule. **The CEO probed it on VUL-89 and it is not available to us.** A
+  repository-level `workflows` rule returns `422 Validation Failed`, invariant across eight payload
+  variants including a bogus `repository_id` and a nonexistent path, while control rules
+  (`non_fast_forward`, `required_status_checks`) created successfully on `platform` in the same
+  session and were deleted again — so the mechanism works and this one rule does not. GitHub's
+  documentation places the rule at organisation and enterprise level only, the changelog of
+  2023-08-02 records it as *"only available on GitHub Enterprise plans"*, and
+  `GET /orgs/vulcanflow/rulesets` returns `403 Resource not accessible by integration` for our App
+  in any case. Team at $4 per user per month does not carry it; Enterprise Cloud at $21 does.
+  **The board declined, which is outcome 3 of R7's frame: the cost is not worth limb 3.** Full
+  evidence is on VUL-89. R9 therefore stops being an open probe and becomes a standing trigger:
+  fires if the org moves to a paid plan carrying the rule for any other reason, or on a second
+  limb-3-shaped finding, which would mean §4.6 is not holding.
+
+  **One read-back in this trigger's earlier text was wrong and is corrected.** It said
+  `GET /repos/vulcanflow/platform/rulesets` returns `[]` and generalised that to *"no repository
+  ruleset exists on any of the four repositories' `main`"*. The generalisation is false, and the CEO
+  caught it. Re-read 2026-10-01: `platform`, `infra` and `vf-api` are `[]`; **`vulcanflow/docs` has
+  an active ruleset `protect-default`, id `24332832`, created `2026-10-01T20:35:06Z`**, scoped to
+  `~DEFAULT_BRANCH`, carrying `deletion`, `non_fast_forward`, `code_scanning`, `pull_request`
+  (`required_approving_review_count: 0`, `require_code_owner_review: false`) and
+  `required_status_checks` with the single context `CodeRabbit` (`integration_id 347564`, the App
+  §6.1 records). That does not change R9's answer — `protect-default` carries no `workflows` rule and
+  could not, which is the point — and it does change what the record claims about this organisation's
+  configuration, which §8.2 is the place that has to be right. **Rulesets are available to us on Free
+  for a public repository; one rule inside them is not.**
+
+- **R11 — an Actions event policy allow-listing `pull_request_target`, before 2026-11-02 —
+  ANSWERED 2026-10-01 on both halves, and it closes *positive*.** §4.5 rejects the trigger swap on
+  three reasons, and the third of them has an external date: `pull_request_target` is blocked by
+  default on public repositories from **2026-11-02** unless an applicable Actions event policy
+  permits it, per the changelog of 2026-09-17 and the repository-settings reference, both read
+  2026-10-01. This trigger asked two things and the CEO probed both; full evidence is on VUL-107.
+  **This is still not a trigger to adopt the swap — reasons one and two refuse it independently of
+  any policy, and the positive answer removes only the third.**
+
+  **Half one — can our identity create a repository-level event policy on this plan? Yes.** The
+  read-backs, 2026-10-01:
+
+  ```
+  GET  /repos/vulcanflow/{platform,docs,infra,vf-api}/actions/policies
+                                         → 200 {"total_count": 0, "policies": []}   (all four)
+  POST /repos/vulcanflow/platform/actions/policies {}
+                                         → 422 "missing required keys: name, enforcement"
+  POST /repos/vulcanflow/platform/actions/policies
+       {name, enforcement: "disabled", rules: [{type: "<invalid>"}]}
+                                         → 422 "Invalid property /rules/0"
+  GET  /orgs/vulcanflow/actions/policies → 404 Not Found
+  GET  /orgs/vulcanflow                  → plan.name: free
+  GET  /repos/vulcanflow/platform        → permissions.admin: true, visibility: public
+  ```
+
+  The inference is the one those status codes carry and no more: a `422` naming a missing or invalid
+  key **in the request body** means the write reached schema validation, and schema validation sits
+  behind authorisation and plan gating — a refusal on either returns `403` or `404` first, which is
+  exactly what the organisation-level endpoint does on the same session. **Nothing was created.**
+  The post-probe read-back is still `total_count: 0` on all four public repositories, so none of
+  them has left the population the default rule covers. The `POST` §4.5 recorded as deliberately
+  unprobed is therefore probed — by the owner §4.5 named, and not by Atlas, whose §4.4 exclusion
+  from CI-configuration mutation is unchanged.
+
+  **Half two — does any VulcanFlow workflow use the trigger? No: zero occurrences
+  organisation-wide, as of the 2026-10-01 sweep.** The sweep also corrects a count this record had
+  been carrying: the organisation holds **15 repositories, not four** — 4 public (`platform`,
+  `docs`, `infra`, `vf-api`) and 11 private, all 11 of them unborn at 0 KB with no branches. Every
+  branch of every repository was read for `.github/workflows/*.y[a]ml`, together with the files of
+  every open pull request on the four public ones. `platform` holds the only workflow files in the
+  organisation, 5 across 4 branches: `lane-gate.yml` is blob `91a8539`, byte-identical on `main`
+  (at `41506ad`) and on `atlas/vul-24-repo-superpowers-bootstrap`,
+  `forge/vul-50-lane7-attestation-detector` and `scribe/vul-56-lane7-attest-harness`, each one
+  `on: pull_request: branches: [main]`; the single workflow added by an open pull request —
+  `lane7-attest.yml`, blob `408ef44`, `platform#6` — is `on: pull_request: branches: [main]` plus
+  `schedule: cron '17 6 * * *'` and `workflow_dispatch`. `docs` (12 branches), `infra` and `vf-api`
+  have no workflow files at all. **So 2026-11-02 is a no-op for VulcanFlow on the state of
+  2026-10-01**: nothing fails open, nothing fails closed, the four required contexts of §4.5 limb 1
+  are untouched. That is a **dated sweep and not a standing invariant** — it is true of the tree
+  that was read, and the first observable below is what carries it forward.
+
+  **Two deltas against what this record already had in writing, both recorded rather than corrected
+  away.** First, `GET /orgs/vulcanflow/actions/policies` returned **`404 Not Found`** on this read,
+  where §4.5's read-back block of the same date quotes `403 "Resource not accessible by
+  integration"`. Both stand: the conclusion they support is identical — organisation level is
+  unavailable to us either way — and the status difference is not worth collapsing, because
+  **repository level is the only level we have and it is the level that works.** Second, this is the
+  **opposite** of R9's result on a neighbouring object: the ruleset `workflows` rule is documented
+  at organisation and enterprise level only, while Actions event policies are documented at
+  enterprise, organisation **and repository** level. Availability on Free is a per-object fact, and
+  R9's negative does not generalise to it — which is the general lesson of both triggers.
+
+  **What the positive answer does not do: it does not reopen §4.5.** Reason one — the swap does not
+  close limb 3, because a GATE-only diff still draws four *honest* green contexts and still merges
+  — and reason two — it puts `gate-self-test` in violation of GitHub's rule that code reached under
+  that trigger is inspected as data and never executed — hold independently of any policy, and
+  either one alone refuses the swap. §4.5's conditional therefore stands with its **first conjunct
+  satisfied and its second not**: a sub-check that refuses a hollowed workflow is still
+  unspecified, and until it exists the partial swap has nothing to offer limb 3.
+
+  **The side effect, recorded because it is a reason not to touch this.** GitHub's default rule
+  applies to a public repository with **no applicable event policy**. Creating any applicable policy
+  on `platform` moves it out of that population and makes this organisation the owner of what
+  `pull_request_target` does there — from the moment the policy exists, not from 2026-11-02, and for
+  every workflow the policy's scope reaches rather than only the one it was created for. The posture
+  is therefore stated: **all four public repositories stay at zero policies until a workflow
+  actually needs one**, and the first policy is an ADR amendment carrying its own reason, not a
+  configuration change made in passing.
+
+  **R11 stops being a probe and becomes a live knob with two observables.** It fires **if any
+  VulcanFlow workflow is ever written on `pull_request_target` for any other reason** — on
+  2026-11-02 it would stop running, and four required contexts that stop reporting hold every pull
+  request open; the check is the sweep above repeated, and `grep -rn pull_request_target` over every
+  branch's `.github/workflows/**` answers it. It fires **if an Actions event policy is created on
+  any of the four public repositories**, which is the side effect above read as a trigger: the
+  observable is `GET /repos/vulcanflow/<repo>/actions/policies` returning a non-zero
+  `total_count`. **Owner: CEO**, the owner §4.5 gave it and the owner R9 had.
+
+  R9 and R11 are now both answered and **neither of them mechanises limb 3** — R9 because the
+  control does not exist on this plan, R11 because the control it makes available buys nothing that
+  reasons one and two do not refuse. **Limb 3's control is §4.6, and it is recorded as review, not
+  as mechanism.**
+
+- **R10 — `gate-self-test` is required, so the gate's own suite may never be red, and the gate's own
+  fixtures therefore arrive *after* the behaviour they assert.** A consequence rather than a choice,
+  recorded because it is a standing exception to *tests precede code* and nobody decided it: a
+  fixture asserting behaviour the classifier does not yet have makes a required check fail, and a
+  failing required check cannot merge under `enforce_admins: true`. **What this trigger forces in
+  general is two pull requests — the implementation, then its fixtures.** §4.5's sequence has a
+  third only because `setup()` at `41506ad` cannot construct the cases that needed covering first,
+  which is a capability gap and not a rule; when the harness can already build a new behaviour's
+  cases, step 1 is empty. **No lane is crossed in either shape**, and what is inverted is only the
+  fixtures-after-implementation step.
+  §4.5's monotonicity sub-check is why the inversion is not a weakening: what a pull request must
+  survive is the fixture set already on `main`, so a fixture arriving late does not mean arriving
+  unenforced. The control over step 3 is lane 1 and lane 6 — Atlas enumerating the fixtures with
+  their outcomes before step 2 is written, and §4.6 item 4 — because there is no mechanism for it.
+  Revisit if a way appears to land a known-red gate fixture without blocking the branch. An
+  expected-failure marker inside the harness is the obvious shape and is **not** adopted today,
+  because a marker the implementer can also set is §4.4's problem again.
+
 ---
 
 ## 11. Relationship to the other records
@@ -1555,3 +2213,4 @@ date attached.
 | 2 | 2026-10-01 | **Reviewer #2's route corrected, and the independence rule stated.** The CodeRabbit GitHub App (`coderabbitai`, app id `347564`, installation `166977157`, installed `2026-10-01T19:12:07Z`, `repository_selection: all`) is installed, so the "`coderabbit:review` is not installed … merges wait" sentence in §6 is withdrawn — quoted in §6.1 rather than deleted, because the degraded period was real and agents cited it. New **§6.1** records lane 6's route as the App's review on the pull request, read and triaged by Warren with no tool run; separates that from the authenticated CodeRabbit **CLI** (`0.8.2`, seat assigned), which is the author's pre-flight under the board rule of 2026-10-01 19:49Z and is codified as lane 5.5 on VUL-28 — a CLI review is never reviewer #2's verdict (this row's own draft qualified that as *author-run*; row 3 redraws the boundary on the **surface** rather than on who ran it, and row 3 is the operative form); and records that `COMMENTED` is not approval and that a review counts only when `coveredCommitId` equals `head.sha`. New **§6.2** states the rule the install correction was hiding: **the App posting on a pull request is input to lane 6, not satisfaction of it** — lane 6 is two attributable Paperclip verdicts, a bot thread with no Warren verdict is an unreviewed pull request, and the `lane6-review-verdict` skill sitting in Assay's catalog (VUL-36) does not make Assay reviewer #2. §2's lane-6 row updated to match; **R6** closed on the install half and the live remainder restated as **four limbs, each naming the observable that fires it and the agent who hits it first** — App removed or suspended; App installed and unsuspended but **silently not reviewing** (the mode that reads healthy and produces nothing, which the other limbs do not cover); the subscription lapsing, owned by the CEO, with the earlier draft's **shared App/CLI seat assertion withdrawn as unsupported by either read-back** and the `Advanced (trial)` clock recorded as having **no end date exposed by `auth status`**; and CodeRabbit changing its severity vocabulary or dropping the `final_review_risk_coverage` anchors. §6.1's CLI path **rooted to the agent runner** (`…/companies/<company-id>/tools/bin/coderabbit`, a wrapper over `coderabbit.bin`) with the note that it is in **no repository** — an earlier draft wrote it unrooted, where it read as repository-relative. **Lane 5.5 named in §2 and in `process/agent-workflow.md` §1 as a deliberate non-row** — owner is the change's author, surface is the CLI, it **gates nothing**, and its mechanics are VUL-28's — because §6.1 names a lane that the lane tables did not. `plans/open-decisions.md` **D17's Rider row withdrawn**, with its superseded sentence quoted rather than deleted and the §6.2 hazard put in its place; that row reached `main` in docs#24 before this amendment and was the last surviving recitation. `process/agent-workflow.md` §1, lane 6 and §7 updated in the same change. **Revised in lane 6 before merge, from reviewer #1's findings on `b573391` and `aba73a9`** (VUL-38, VUL-44): §2's adjacency rule **scoped to the seven numbered lanes**, because as written it forbade every exercise of lane 5.5 by the only owner lane 5.5 has — the rule protects against one agent holding both the production of a thing and the gate that clears it, and a lane that clears nothing cannot be half of that pair; §6.4 consequence 1 restated as **six open findings plus one withdrawn here** rather than seven, since commit `c7bb4af` in this same change withdraws D17's Rider and a record asserting a count its own commit falsifies is the failure class this amendment exists to close; §6.2 corollary 3's advisory set given **a present label reading `none`** beside the absent label — **that clause is withdrawn 2026-10-01 and is recorded here rather than deleted.** It read "closing the last divergence from the skill's §3 table" and both halves were false: row 3 reverses it, the absent label is **blocking**, and collapsing the two cases *created* a divergence by reversing a control the skill states explicitly rather than closing one; §6.3's attestation detector and R5b's closure condition given an owner and an issue — **VUL-50**, `platform`, Forge implementing on a lane-1 spec. Two issues were filed for one detector by two concurrent runs; **the duplicate was not cancelled** (the cancel returned 409 against a live checkout, recorded on that issue at 2026-10-01T22:11:30Z) and **VUL-48 remains open as the detector's lane-1 spec issue**, additionally owning amendment 4 (`docs#33`). An earlier version of this row said it "was subsequently rescoped as the owning issue of amendment 4 rather than closed", which read as though it had stopped being the spec issue, and then claimed in the same sentence to assert nothing about its disposition; both halves are withdrawn here (reviewer #1, finding B16 at `342a816`). The detector's three lanes are **VUL-48** spec, **VUL-56** fixtures, **VUL-50** implementation. With the question of which lane implements a NEUTRAL `ci/**` script raised here and **settled in §2** rather than left open; §9's claim that amendments 2 and 3 "went through lane 6" **forward-tensed**, because what records that they did is condition 4's attestation in `git log`, not this record asserting it in advance; `process/agent-workflow.md`'s `6 → 7` transition cell reduced to a pointer after it restated three of condition 3's four clauses and dropped **Independently attributable**; and `decisions/README.md`'s amendment marker stated to be **each record's own label**, quoted rather than normalised. **Four further corrections in lane 6 from VUL-52's read of `1dfa36e`**, which reviewer #1 verified still open at `ded8d11` after its own verdict was voided by the head moving: `process/agent-workflow.md` lane 4's **"executes anything" corrected to "executes suites"**, matching §2's lane-4 row — the shorthand was harmless until §1 of that same document began telling an author to run the lane 5.5 pre-flight, at which point one document told a coding agent both that it may run the pre-flight and that it may not execute anything; §2's **interposed-gate rationale narrowed to the 3/5 pairing**, because it does not hold for 4/7 — lane 6 does not read the ledger, so **§6.3 condition 2 is self-certified by the agent that produced it**, and a `Lane-7-Ledger: PASS` is not verifiable from `main` the way an `n/a` is, so the pairing is accepted on a stated residual rather than on an argument that over-claims; §6.4 consequence 1's **"no surviving copy" corrected to "no surviving live recitation"**, since the sentence does survive quoted inside its own dated withdrawal and deleting it is the one repair that would break the quote-don't-delete method; and §2 given the clause making the **out-of-repo copies of the adjacency rule subordinate** to it, with **VUL-49's scope widened** from the merge condition to this rule — the agents' instructions state it unqualified, so after this amendment they disagree with §2 about lane 5.5. That reaches every agent that opens a pull request — Scribe and Ledger on a test-only one, Atlas on this one — and bites hardest on Forge, Anvil and Kiln, the only agents holding a numbered lane the unqualified copy appears to put next to 5.5, and so the only ones for whom the two readings give different answers. (An earlier draft of this clause called them the only three who would ever exercise the lane, which §2's own definition of lane 5.5 and `process/agent-workflow.md` §1 both contradict — lane 5.5's owner is whoever opens the pull request. Caught by the lane 5.5 pre-flight on the commit that wrote it, which is the pre-flight doing exactly what §2 says it is for and still gating nothing.) Recorded by Atlas under VUL-37. |
 | 3 | 2026-10-01 | **Lane 7's merge condition has one statement, and the merge that exposed its absence is recorded.** New **§6.3** is the sole statement of the merge condition — **four conditions, read there and not from this row**, which is why this row does not list them, and why it does not summarise their vacuity carve-out either. §2's lane-7 row, §6's bullets and `process/agent-workflow.md` lane 7 are rewritten as pointers to §6.3 rather than as three independent statements — the three prior statements ("two approving verdicts"; "Assay's verdict and Warren's verdict"; the VUL-32 board directive's "a CLEAN CodeRabbit verdict at the current head") are withdrawn in §6.3. New **§6.4** records, under R5b, that `docs#24` merged to `main` at 2026-10-01T20:59:26Z (`b40201b`) over a `REQUEST CHANGES` verdict with seven blocking findings unresolved on an already-superseded head, with no reviewer #2 verdict in existence — explicitly **not** filed as a §9 exception, and not sanctioned retrospectively. §10 R5 split into R5a (lane crossing — repair is a `ci/lane-gate-test.sh` fixture) and R5b (merge taken against §6.3 — repair is §6.3 plus an attestation detector over `main`), with R5b live until that detector runs. §6.1's CLI boundary redrawn on the **surface** rather than on who ran it, with the §6.3 condition-3 reason: a CLI run emits no coverage anchors, so its coverage is unperformable, so a Warren-run CLI review is still lane 5.5. §6.1's withdrawal quote restored to full text including the lead clause "Warren is blocked until T7." and its `docs#24` citation corrected from "correctly held" to Warren's decline. §6.2 corollary 1's verb changed from *count* to evaluation against §6.3; corollary 3's severity set given `Nitpick`. `decisions/README.md`'s index row for this record corrected — it read a bare "Accepted" through amendments 1 and 2, so the index was itself a stale statement of the design of record; the amendment markers now sit in the status column with a per-amendment table beside the in-place-amendment rule, whose rows are pointers into each record's own history rather than summaries of it. **Corrected in lane 6 before this amendment reached `main`, from reviewer #1's verdicts at `aba73a9` (VUL-43, VUL-44).** Amendment 2's row records the corrections that landed on §2's adjacency rule, §6.4's count, §9's tense and the index's marker convention; these are the rest, and they are recorded on this row because they are corrections to §6.1, §6.2 and §6.3, which this amendment wrote. **§6.1's list of disagreements with the `lane6-review-verdict` skill grown from one to three**, because "the ADR wins" is unusable by a reviewer who does not know where the conflict is: the skill's §5 `Result: BLOCKED \| CLEAR \| UNSATISFIED` vocabulary uses neither word §6.3 condition 3 requires, so the procedure as attached yields a verdict Crucible must refuse — mapped here (`BLOCKED` → `REQUEST CHANGES`, `CLEAR` → `APPROVE`, `UNSATISFIED` → the absence of a verdict) and observed live on this pull request, where reviewer #2 posted `CLEAR` at one head and `UNSATISFIED` at the next; and the skill's closing "everything in §2–§5 applies unchanged to CLI output", which read against the verdict shape sanctions a CLI-sourced reviewer #2 verdict that §6.1 forbids on the surface. **§6.2 corollary 3's severity rule restated to fail closed, reversing the collapsed reading that amendment 2's row records and that row now withdraws in place** — the attribution matters, because corollary 3 is amendment 2's section and an earlier version of this row credited the reversal to this amendment's own draft. **The mapping itself is not reproduced on this row — read corollary 3.** What moved is its direction: the earlier draft collapsed a present `none` and an absent label into one advisory case, which reversed the skill's stated fail-closed control and contradicted R6 limb 4's own claim that the lane fails closed on a dropped severity header. A row that enumerated the mapping instead of naming it is the defect this table's preamble now ranges over. **§6.3's supremacy claim split into the rule and the state of the world**: the copies converted in this repository are enumerated, the copies this record binds but cannot edit (the company skill, the nine agents' managed instructions stating lane 7 as "a green suite plus two approvals", board directives) are named with **VUL-49** as their route and owner CEO, and the check is stated as `grep` rather than reading — a *partial* restatement being the more dangerous kind, since it reads as sanctioned and drops the clause its writer was not thinking about. **§6.3's vacuity carve-out given the actor it was missing**: the issue's **lane-1 spec** determines whether a §25 identifier is in scope, not the merger, so condition 2's exemption is not self-certified. **The attestation detector's implementation issue corrected to VUL-50** (`platform`, Forge) in §6.3 and R5b, after two board issues were filed for one detector — see amendment 2's row for what became of the other one, which is not what an earlier version of both rows asserted. That correction went too far in the other direction by attributing the **lane-1 spec** to VUL-50 as well, so the record read as though the implementer had written its own spec; §6.3 and R5b now name all three lanes — VUL-48 spec, VUL-56 fixtures, VUL-50 implementation — in the third pass below; and **§2 settles what the earlier draft left open** — NEUTRAL `ci/**` tooling is specced in lane 1, implemented in lane 3, given fixtures by lane 2 and run by lane 4, because leaving it unassigned is how a gate script acquires an author nobody chose. `process/agent-workflow.md`'s **lane-6 verdict paragraph** reduced to a pointer alongside its `6 → 7` cell: both were added by this amendment and restated condition 3 in two and three clauses respectively, eight and forty lines from the same file's own statement that a list which looks close enough to a summary is how the second phrasing gets back in. **§8.3's "all six ADRs" corrected to the five records on `main`** (ADR-0001, 0002, 0003, 0005, 0007) — a miscount that arrived with amendment 1 and is wrong on either way of counting. New **§2.3 — one change, one author run**, which is the only *new rule* in this correction pass rather than a repair of an existing one. It is here because concurrency, not judgement, produced four observable defects on this record's own pull request in one day; §2.3 lists them and names which bullet binds each. It is explicitly **not** an R5 event, for the one reason that does the work — nothing reached `main` that the gate should have refused — and if it recurs the fix is a Paperclip-level control owned by CEO rather than a further restatement here. **A second lane-6 correction pass followed, from reviewer #1's verdict at `ded8d11` (VUL-54) and reviewer #2's `UNSATISFIED` at the same head (VUL-55).** **§6.1 split into the rule and the state of the world**, the same split §6.3 already carried: the skill reached **v3.0.0** at 2026-10-01T22:10:35Z — read from the company skill record and the installed frontmatter — and all three named disagreements were closed there under VUL-49 part 1 while this section still asserted them in the present tense and cited `v2.0.0`. They are now recorded as **closed, dated, with what closed each**, the `BLOCKED`/`CLEAR`/`UNSATISFIED` conversion retained as the reading for verdicts written while that vocabulary was live, and VUL-49's live scope narrowed to the nine agents' managed instructions; §6.3's parallel count went from three copies to **two**, since the skill is no longer one of them and the VUL-32 directive is counted rather than treated as erased by its own withdrawal. **§6.2 corollary 3 given back the *promotion* override it had dropped** — stated there as a floor rather than a ceiling, and not restated here. Stating the severity set absolutely had struck the skill's promotion rule through §6.1's supremacy clause and would have let a `Minor`-labelled authorization or tenancy defect merge as advisory, which is the same widening the fail-closed correction had just closed, arriving through the other half of the sentence. **That restoration was itself defective and is corrected in the third pass below**, because it came back as a permission where the skill states a duty. **§12's preamble repaired by conversion rather than by disclaimer**: it had answered this table's one recitation of §6.3 with a sentence declaring the row not to be a restatement, and row 3 now names the four conditions without listing them. **Row 2's `none`-beside-the-absent-label clause withdrawn in place**, and the claim on both rows that the duplicate detector issue "was cancelled" corrected — the cancel failed against a live checkout, and VUL-48 was neither cancelled nor displaced from its lane-1 spec scope (that pass said "rescoped rather than closed", which the third pass below withdraws). **§2's NEUTRAL `ci/**` bullet given the half it was missing**: a NEUTRAL script and the shell harness beside it are both NEUTRAL, so all four checks pass on a lane-3 agent that writes its own fixtures, and the control is §2.1 enforced by Assay in lane 6 rather than the §4.2 partition — recorded as weaker than the partition, with the fixture set enumerated in the lane-1 spec so the reviewer has a list. **§2.3's scope extended to delegation and board writes**, because the first of the three instances it cited as warrant was a delegation and no sentence about branches reached it; a fourth instance added (`aba73a9`, the branch merged into itself) because it is the one visible in `git log`; the recurrence of instance (i) recorded (VUL-52 and VUL-54 both live for one pull request); and its not-an-R5 reasoning cut to the single clause that carries it. **A third lane-6 correction pass followed, from reviewer #1's verdict at `342a816` (VUL-65), with reviewer #2 again absent at that head.** **§6.2 corollary 3's promotion override restated as an obligation with its trigger** — a reviewer **must** promote on a security boundary, a tenancy or authorization path, or a public API contract, and **may** promote elsewhere on stated grounds. The previous pass had restored it as a bare permission, which through §6.1's supremacy clause replaced the skill's §3 *duty* with a discretion and left a `Minor`-labelled tenancy defect mergeable as advisory at the reviewer's option — the third leak in the same direction from this one corollary, after the collapsed absent label and the absolutely-stated set, and the first of the three to turn on grammatical mood rather than on content. The general lesson is recorded in the section: restating a subordinate document's rule means restating its force, and an intended divergence belongs in §6.1's list rather than in a verb. **§12's preamble prohibition unscoped from §6.3** and extended to every rule this record states, after the §6.3-only scope licensed this row to enumerate corollary 3's severity mapping with the fail-closed half and without the floor-not-ceiling half; the mapping and the merge conditions are now both named-not-listed here, and this row's own two enumerations are reduced to pointers. **§6.1's "the only copy … known to diverge today" corrected** — it contradicted §6.3's dated count of two by conflating what VUL-49 owns (the nine agents' managed instructions) with what diverges (those, plus the VUL-32 board directive, which is not VUL-49's to correct). **The attestation detector's lanes separated in §6.3 and R5b** — lane-1 spec VUL-48 (Atlas), lane-2 fixtures VUL-56 (Scribe), lane-3 implementation VUL-50 (Forge) — because the previous pass's correction had attributed the spec to the implementer's issue, and row 2's claim that VUL-48 "was subsequently rescoped as the owning issue of amendment 4 rather than closed" is withdrawn: it is still the spec issue and it also owns `docs#33`. Recorded by Atlas under VUL-40. |
 | 4 | 2026-10-01 | **NEUTRAL `ci/**` gets an owner, and the attestation detector gets a floor it cannot choose.** Closes the two questions amendment 3 left open on VUL-48. New **§4.4**: a `ci/` script outside the three GATE paths is **lane-3 work** moving through all seven lanes, with the agent chosen by subject on the axis that already separates the coding agents (pure computation → Forge, service binaries → Anvil, cluster and manifests → Kiln) and **four agents excluded by name** — Crucible from any script auditing lanes 4 or 7, because §6.2 corollary 2's principle refuses to let the audited party build its auditor; Atlas as lane-1-adjacent; Assay and Warren because they would review their own artefact, which §2's adjacency rule does not reach by number and so is stated here. It gets **no §25 identifier**: all 45 map to a product requirement in §2–§23, so the ledger reads `n/a (no §25 identifier in scope)` and the lane-1 acceptance statement is the whole acceptance — fabricating a row would break identifier→requirement injectivity to record something §25 does not describe (the row's own earlier draft said "injective mapping" without a direction, which §25's 45 identifiers across 44 rows falsify in the other one). §4.4 also states where the control on the **fixture harness** actually sits: the harness is NEUTRAL, not TEST, so no check sees it and a coding agent can mechanically reach it — so the fixtures are **enumerated by Atlas in the spec and written by Scribe first**, and that is recorded as weaker than the path partition rather than presented as equivalent. New **§6.5** fixes the detector's **floor as four named commits** read back from each protected `main` on 2026-10-01 (`docs` `b31ddfec`, `platform` `41506ad`, `infra` `304b300e`, `vf-api` `45d7ded9`), asserting `--first-parent` **exclusive of the floor**; `docs`'s floor is chosen so `b40201b` is the **first** commit asserted on and §6.4's defect is *derived* rather than hard-coded, which is why **§7 item 10's "reads forward from the first attested merge" is corrected** — that floor points into the future and would have excluded the only known event. §6.5 states the **eight** finding classes — seven at first draft, the eighth added in this amendment's own lane-6 pass below, which is why an earlier version of this row said seven while the section said eight (reviewer #1, blocking finding 5 at `8e94fef`) — the **three things the detector cannot assert** (zero unresolved blocking findings leaves no trace; verdict existence is a Paperclip fact and degrades to `UNCHECKED`, never to a pass; §25 scope is a spec judgment), that moving a floor is an amendment and an unmanifested protected repository is itself a finding, that it lives in `platform` so as not to engage **R2** on the other three, and **the residue**: Crucible runs the thing that audits Crucible, which lane 4's monopoly makes unavoidable, mitigated by Assay **re-deriving the ledger by hand** in lane 6 and recorded as still not an independent auditor. **R5b's closure condition restated as four things a person can check** — script and harness on `platform`'s `main`, the harness green on every enumerated fixture *at its stated outcome*, a Crucible run in which the only commits carrying a finding are the ones R5b records, and Assay's hand re-derivation of that same ledger. New **R8**: the moment a NEUTRAL `ci/**` script becomes a required status check, §4.4's premise that it gates nothing is void and §4.2's GATE row must be amended in the same change. §2 gains a note that the lane table assigns **lanes, not path classes**, which is the gap `ci/**` fell through. **Revised in lane 6 before merge, from both reviewers' verdicts at `b614f82`** (VUL-59 reviewer #1, VUL-60 reviewer #2 — 2 blocking and 7 advisory, and 1 blocking and 1 advisory, with one defect found by both). **§6.5's residue no longer asks Assay to run the detector**: the earlier draft said "Assay reproduces the run", which is a lane-4 act, so R5b could not be closed without the reviewer crossing a lane; the mitigation is now Assay **re-deriving the ledger by hand from `git log`**, which is a review act, reaches the same conclusion on a reproducible input, and leaves lane 4's monopoly — the premise §4.4's Crucible exclusion rests on — unqualified. **§4.4's final paragraph had three false claims and now has three honest ones**: the fixture control is *temporal*, not structural (nothing mechanical stops an implementer editing the delivered harness, which the preceding sentence had just established); the reviewer's check is **per fixture against its stated outcome**, not a count, because counting catches deletion and not relaxation — so the spec enumerates outcomes and not names; and "the strongest arrangement available" is withdrawn, with the stronger option — naming the script, its manifest and its harness in §4.2's **GATE** row — **considered and rejected on the record**, because both would still move together and because GATE is §4.1's enforcement set, which R8 now names as the repair for the day the premise expires. **§6.5 gains a subsumption rule, a resolution route and an eighth class** — the rule is stated there and is **not restated here**, under this table's own preamble, and the second pass below records that its first form was wrong; `<n>` is resolved by **`GET /repos/{owner}/{repo}/commits/{sha}/pulls`** and **never** by parsing a `(#n)` subject suffix, which §7 item 10's typed-message requirement does not guarantee; an unreachable API yields **`UNCHECKED`**, because "could not resolve" is not "no pull request"; and new **class 8** compares `Lane-7-Gate: PASS` against the commit's actual check runs, since it was otherwise **transcribed and not verified** while reading as confirmed. **R5b's closure criterion 3 rephrased against the recorded event set** rather than a single sha, so a merge landing before the detector exists is a second R5b event rather than permanent unsatisfiability. **§2's non-adjacency bullet narrowed to the two pairings it names** (3+5, 4+7): the interposed-gate argument does not transfer to 3+6, which §4.4 forbids, and the old wording affirmatively licensed every pairing the adjacency rule misses. **§2's `ci/**` bullet reduced to a pointer** after this amendment and amendment 3 produced two statements of one rule in one day — §4.4 is the statement. **New §6.1 bullet on stacked pull requests**: a base other than the default branch draws a skip notice rather than a walkthrough, the sanctioned recourse is an `@coderabbitai review` comment (the App's surface, not the CLI), and **R6 limb 2 does not fire on the skip notice** — limb 2's observable is amended to make the re-trigger part of it. **R8's observable given its second form**: a script whose exit code decides a required check as a *step inside another required job* never appears in `required_status_checks.contexts`, which is the cheaper and therefore likelier form. **`process/agent-workflow.md` §1's exclusions made symmetric** — Crucible's cell reduced to the plain prohibition and all four excluded agents named in the §4.4 pointer below the table, since annotating one row read as permitting the other three. **A second lane-6 correction pass followed, from reviewer #1's verdict at `8e94fef` (VUL-69 — 5 blocking, 3 advisory; reviewer #2 absent at that head, VUL-70 having produced no verdict), together with two defects raised by Scribe on VUL-56 and one question from Forge on VUL-50.** **§6.5's subsumption rule re-derived from data dependency instead of from class number**, which is the pass's one substantive change: class 1 asserts both *presence* and *completeness*, so it fires on an absent block **and** on a present-but-incomplete one, while the rationale given covered only the first — so a merge over a red gate with one reviewer and one omitted key published a one-line "attestation incomplete" ledger with classes 6 and 8 suppressed by a key neither of them reads. Suppression now follows the fields a class actually reads, the absent-block case falls out as the degenerate instance, and *present but wrong* is stated as **not** absent. Forge's independent question on VUL-50 — whether one missing `Lane-7-Head` should yield three findings, two of them vacuous — is the same defect from the other side and is answered by the same rule. **R5b criterion 3 given its `UNCHECKED` clause**: classes 2, 3 and 8 need the API and degrade to `UNCHECKED`, which is not a finding, so without the clause a first run that hit the unauthenticated rate limit would have reported one finding, satisfied the criterion verbatim and closed R5b having run five of eight classes. **Criterion 4 and §6.5's residue given the three public read endpoints**, replacing "its input is public git history" — `git log` cannot produce classes 2, 3 and 8, and §6.5 forbids the subject-suffix shortcut that would fake class 3, so the hand re-derivation as written would have omitted exactly the three classes criterion 3's rate-limit scenario may also have skipped; reading a public API is a review act, so lane 4's monopoly is untouched. **Class 8's "required" resolved from the tree at `Lane-7-Head`**, with both alternatives rejected on the record — `required_status_checks.contexts` is present-tense and unretained, and read as today's set it makes the class vacuous on the three repositories that have no required contexts at all; **class 4 gains its mirror limb**, `Lane-7-Gate: PASS` on a commit whose tree holds no workflow, without which a merge to `docs` typing `PASS` where §6.3 requires `n/a (no workflow on docs)` passed all eight classes. **Criterion 3's recorded set rooted in §6.4** as the register rather than named parenthetically. **"Per commit in range" qualified**: classes 2 and 8 read a sha that is deliberately not in range. **Reconciled forward a second time onto `docs#32` at `185c491`** per §2.3, which is where §2's 4/7 self-certification residual, the withdrawal of §6.2 corollary 3's collapsed label and the amendment rows 2 and 3 rewrites come from; **§2's duplicated `ci/**` paragraph withdrawn in place** rather than carried alongside §4.4, since its closing "strongest arrangement available" is the claim §4.4 withdraws as false. **Two further defects, raised by Scribe on VUL-56 while reading this amendment at `8e94fef` and fixed here rather than deferred.** (1) **§6.5 contradicted §4.4 about who authors the harness**: its "all three ... authored in lane 3 by **Forge**" governed `ci/lane7-attest-test.sh` as well, while §4.4 and §7 item 11 both make the harness lane-2 work written by Scribe. §6.5 was the later text and cited §4.4 as its own authority while contradicting it, so it is the clause corrected: the detector and its manifest are Forge's, the harness is Scribe's. Taken at face value the old wording would have moved the assertions themselves into lane 3, which is the one thing §4.4 exists to prevent. (2) **§4's check table still carried the count amendment 1 corrected**, reading "17 fixture diffs" where §7 item 4 reads 21 verdicts; measured at `platform@41506ad`, `ci/lane-gate-test.sh` has **15** fixture-diff blocks and **21** top-level `check` invocations, so 17 was wrong on either reading. §4's row now carries both numbers and §7 item 4 says why they differ. Recorded by Atlas under VUL-48. |
+| 5 | 2026-10-01 | **The gate's own weakening has three limbs: one was already closed by configuration, one is closed here by three new sub-checks, and the third is left to review — on a trigger this amendment ends up recording as a decision rather than as unmechanisable.** Closes the §4.2 question Assay raised on VUL-68 against merged code at `platform@41506ad`. The reading is confirmed in full: all three GATE paths in one diff gives `gate=3, prod=0, test=0`, `lane-partition` passes it, `test-erosion` greps `-- '*.rs'` and sees nothing, and `ci/lane-gate-test.sh`'s `setup()` copies only `ci/lane-gate.sh` so the harness cannot construct the diff — fixture 5 is *gate + prod → fail*, fixture 6 is *gate alone → pass*, and there is nothing between them. New **§4.5** splits it into three limbs. **Limb 1, deleting or renaming a check, was already closed by configuration**, which is the fact VUL-68 asked for and could not read: `GET /repos/vulcanflow/platform/branches/main/protection` read back 2026-10-01 returns the four contexts `lane-partition`, `test-erosion`, `inline-test-modules`, `gate-self-test`, `strict: true`, each pinned to `app_id 15368`, with `enforce_admins: true` — the configuration §8.2 records as applied, still in place — so a check that stops reporting leaves a required context expected and never reported and the merge blocks, which is §8.4's *"4 of 4 required status checks are expected"* seen from the other side. VUL-68's conditional severity resolves to its lower branch for that limb only. **Limb 2, the classifier and its own harness in one diff, was open and is closed by two sub-checks** inside the existing `gate-self-test` job, so no new context has to be wired: **monotonicity** — the base harness is run against the head classifier and any case the base asserted the gate *refuses* that head now *permits* is blocking, while the converse is reported and does not block because a stricter gate is not a weakening — and an **assertion floor** on the harness's `check` count, which closes the delete-then-weaken route monotonicity alone leaves open. **Limb 3 is named as unclosable inside the repository and was not in the finding:** branch protection pins job **names**, not job **bodies**, so a diff touching `.github/workflows/lane-gate.yml` **alone** is GATE-only, `lane-partition` permits it, and replacing each job's `run:` with a command that exits zero leaves all four required contexts green while none of the four checks has run — one file, four green checks, no gate, strictly more reachable than the three-file sequence VUL-68 describes and unreachable by any edit to `classify_path()`. Every layer above bottoms out there, monotonicity included, since its step lives in that file. **Two alternatives rejected on the record.** A **pairing rule** (*"`ci/X.sh` and `ci/X-test.sh` may not appear in the same diff"*), which Assay named: monotonicity is strictly stronger on the same case — the pairing rule *splits* a one-pull-request weakening into two and buys legibility where monotonicity *refuses* it — and the pairing rule rests on a filename convention that a GATE-only rename defeats. A third reason this row's own earlier draft gave — that the pairing rule would force the classifier change and its fixture into separate pull requests — is **withdrawn in §4.5 as false**: R10's sequence separates them anyway, so the rejection stands on two reasons and not three. A **class split**, one class per detector: §4.4's *"both would still move together"* is right and applies here, because the defect is not that two files share a class but that a detector and the only assertion that the detector is correct are the same change, so §4.2's table is **unchanged**. **What remains open is stated rather than implied**: in-place relaxation of a fixture — body weakened and expected verdict flipped together, count preserved — is caught by nothing mechanical, and the floor is an endpoint comparison with the same blindness as fixture 12's second half, which Assay flagged, which is deliberate, and which is unchanged. New **§4.6** gives a GATE-class pull request a five-item review obligation, because limb 3's control is lane 6 by construction and "review it carefully" is not a specification: the four job names unchanged and still in `required_status_checks.contexts`; each job's conclusion still decided by the gate's exit status, with a `run:` that reaches the script but discards its verdict a blocking finding on its own; `on:` unchanged with no `if:` and no `continue-on-error:` at either job or step level and no `paths:` filter; every fixture read **against its outcome of record** rather than counted; and any case the harness cannot construct **named in the verdict as uncovered**, which is how limb 2 survived from `41506ad` to VUL-68. **§4.1's second paragraph is narrowed and an overclaim withdrawn** — it closes the *bundled* form of gate-weakening and not the solitary form, and a GATE-only diff is permitted deliberately — and **§4.2 gains a note that its rule partitions *between* classes and says nothing about what travels *within* one**, which is where it bit. New **R9**: limb 3's only real closure is a GitHub control the diff does not contain; two were looked for on 2026-10-01 and neither is in place (`GET /repos/vulcanflow/platform/rulesets` → `[]`, `GET /orgs/vulcanflow` → `plan.name: free`), whether a ruleset `workflows` rule is available on Free for a public repository is **not verified here**, and because that is a plan question of §8's shape the **owner is CEO**. New **R10**: `gate-self-test` being required means the gate's own suite may never be red, so a fixture asserting behaviour the classifier does not yet have is a red required check that cannot merge at all — a standing exception to *tests precede code*, with monotonicity the reason the inversion is not a weakening. §4.5 writes out the **three** pull requests this forces — existing-behaviour fixtures by Scribe, then Forge's implementation, then the new behaviour's fixtures by Scribe — in which **no lane is crossed** and nothing is ever red, only step 3 is inverted, and the control over step 3 is lane 1 plus §4.6 item 4 rather than a mechanism, because §4.4's "written by Scribe before the implementation exists" clause is not satisfiable for a GATE path. **§4 table's fixture count corrected**, which this record contradicted itself on in two places; this amendment first wrote it as 21 fixture diffs, and the forward reconciliation onto docs#33 takes that branch's sharper unit split instead — **21 asserted verdicts across 15 fixture diffs**, the two numbers not interchangeable because a fixture may carry more than one `check` invocation, counted at `41506ad`. The earlier "17 to 21" phrasing in this row was wrong in its unit as well as its number and is withdrawn here. §7 gains item 12. Lane assignment for the work §4.5 creates follows §4.4's subject table extended to GATE paths — classifier **Forge** in lane 3, fixtures **Scribe** in lane 2 enumerated with their outcomes in the lane-1 spec, `n/a (no §25 identifier in scope)` under §6.3 condition 2, in R10's three-pull-request order — and `setup()` must gain the ability to write `ci/lane-gate-test.sh` and `.github/workflows/` into the fixture repository, since the three cases this amendment turns on are the three it cannot build. `process/agent-workflow.md` §6 and §7 updated in the same change. **Corrected in lane 6 before merge, from Forge's independent measurement on VUL-68.** Limb 1's `app_id 15368` was asserted in an uncited parenthetical and is now read: `GET /apps/github-actions` returns `id: 15368`, `slug: github-actions`, and the protection read-back is recorded as corroborated by three reads from two agents over two routes, which is the citation this limb needs because nothing in the repository restates the configuration that closes it. **Every date this amendment stamped on its own read-backs said 2026-10-02 and the reads happened 2026-10-01 UTC**; all eight occurrences are corrected, including this row's own date and §4.5's and §4.6's *added* markers — a record whose provenance dates are a day ahead of its evidence is the same defect class as an uncited pin. And §4.6 gains a closing note on its own strength, from the second datum in the same read: `required_approving_review_count: 0` with `require_code_owner_reviews: false` means GitHub will merge a GATE-class pull request with **no approving review at all**, so all five items are enforced by §6.3 inside Paperclip and by nothing in GitHub — not an argument for raising a count §3.1 makes unsatisfiable, but the reason §4.6 is checkable items rather than an instruction to review carefully. **Corrected in lane 6 before merge, from reviewer #1's verdict at `5860c5a` (VUL-84): seven blocking findings, every one of them against what this amendment said about itself rather than against its substance, and all seven applied here.** A **third sub-check** is added to §4.5 limb 2 — a **sentinel** requiring the head harness to report failure against a committed known-bad classifier — because sub-checks 1 and 2 constrain the classifier and the assertion *count* while trusting the harness's verdict machinery, so two GATE-only pull requests defeated both: gut `check()` or the `[ "$fail_count" -eq 0 ]` exit line with the invocation count held, then weaken `classify_path()` against a base harness that now asserts nothing. The four-shape "Together these refuse" enumeration called itself complete and was not. **§4.6 items 2 and 3 are restated on exit-code authority rather than reachability**: item 2 tested that the `run:` line still reaches the script, which `run: ci/lane-gate.sh partition \|\| true` passes, so it now asks whether a non-zero exit still fails the job; and item 3's refusal list gains **step-level** `if:` and `continue-on-error:` at job and step level, each a one-line single-file GATE-only diff producing four green contexts with no gate — limb 3 at a quarter of the cost, absent from the enumeration that is limb 3's only control. **The claim that hollowing a fixture's body is caught by the existing leg is withdrawn for *pass*-asserting fixtures**, which are 15 of the 21 at `41506ad` (6 assert `fail`, counted there): hollow fixture 6 and the diff is empty, `cmd_partition()` returns `pass`, the assertion is `pass`, and every leg is green — silent coverage loss whose only control is §4.6 item 5. **Three present-tense statements about sub-checks that do not exist are future-tensed** — §4's check table, §7 item 4 and `process/agent-workflow.md` §6's four-check table, the last being the table an agent reads before pushing, which §9 names as the live hazard and which amendment 3 corrected this record for once already. **The "three pull requests" count is narrowed to this change**: R10 forces the *inversion*, which is two — implementation, then fixtures — and the third step exists only because `setup()` at `41506ad` cannot construct the cases needing coverage first, a capability gap and not a rule; §4.5, R10 and the agent-facing sentence all corrected, the same overclaim-by-scope this amendment narrows §4.1 for. **§4.6 item 4 is made performable on the set it governs**: the 21 fixtures predate §4.4's enumerate-with-outcomes rule, so for them the outcome of record is the `check` call's third argument plus its section comment **frozen at `platform@41506ad`**, and the one control the residue rests on is no longer empty exactly where the residue lives. **`process/agent-workflow.md` §7's limb-3 bullet dropped item 2's condition** and made *touching* the workflow file the blocking finding, which contradicts §4.5's own pull request 2 and fixture 6 — the partial-restatement failure mode amendment 3 recorded about §6.3, repeated in the same document; the condition is restored. §4's `gate-self-test` row loses the unqualified *"the gate's own logic is itself tested"* (advisory A1 — the same species of overclaim §4.1 withdrew, surviving one screen above it). §4.5's pull request 2 row gains the two preconditions monotonicity cannot run without (advisory A2): `fetch-depth: 0` and a fetch-base step on the `gate-self-test` job, which has a bare `actions/checkout@v4` at `41506ad` unlike `lane-partition` and `test-erosion`, and a base ref that cannot be resolved must **fail closed, not skip**, since a silent skip reproduces limb 3 inside the sub-check built to close limb 2. `decisions/README.md`'s pointer row gains §4 (advisory A4). The pairing rule's **third** rejection reason is supplied by Assay while upholding the rejection of its own alternative — it would not have caught the sentinel's two-pull-request sequence either, since that sequence never shares a diff — which is stronger than the reason it replaces. Reviewer #1's verdict also re-derived every read-back in this amendment independently and confirmed all eleven, upheld limb 1's decision not to verify the skipped-job semantic (the outright refusal in §4.6 item 3 is stronger than either branch), and walked R10's sequence step by step confirming no lane is crossed and nothing is ever red. Advisory **A3** is not applied here because it is in `platform`, not this repository: `cmd_partition()`'s GATE refusal message names `ci/lane-gate.sh` and `.github/workflows/lane-gate.yml` but omits `ci/lane-gate-test.sh`, which is in the same class — it goes to §4.5's pull request 2. **Corrected in lane 6 before merge, from the CEO's answer to R9 and its second half, which found a false claim in this amendment's most load-bearing sentence.** §4.5 limb 3 said the limb was *structurally* unclosable because *"the workflow file is what decides whether the gate runs"* — **true under `on: pull_request` and false in general, and the overclaim is withdrawn.** Under `on: pull_request_target` the workflow file, the checked-out ref and `GITHUB_SHA` all come from the **default branch** (GitHub's events reference gives `GITHUB_REF` as *"Default branch"*; the changelog of 2025-11-07, effective 2025-12-08, makes it unconditional: *"The workflow file and checkout commit will always be taken from the repository's default branch"*), and a check run from such a run still attaches to the **pull request head SHA** and can satisfy a required context — verified on third-party data because the whole option turns on it: `puppetlabs/puppetlabs-firewall` run `35264886978`, `event: pull_request_target`, `head_sha 97945b9e…` = pull request #1247's head and not that repository's `main` `be2016d7…`, with check run `105349461328` on the same head SHA. Limb 3 is therefore **unmechanised rather than unmechanisable**, the section heading and §4.5's opening paragraph are reworded, and the trigger becomes a recorded decision instead of an inherited default. **The swap itself is rejected on three reasons, and the first is that it would not have closed the limb:** under `pull_request_target` a diff touching `lane-gate.yml` alone draws four *honest* green contexts — `lane-partition` permits a single-class diff deliberately, `erosion` sees no Rust, `inline-test-modules` is unaffected, and `gate-self-test` is running `main`'s harness against `main`'s classifier — so it still merges and `main`'s gate is hollow from the next pull request on, which is **the same merge outcome as today**; the swap converts vacuous-green into honest-but-silent and makes an un-neuterable sub-check *possible*, which is the reclassification and not a closure. The variant the proposal also claims — that a GATE diff can no longer neuter classifier and harness in one pass — holds and does not help, because `gate-self-test` would then never test the pull request at all, relocating limb 2 rather than killing it and leaving monotonicity still required. **Second reason: it is incompatible with all three of limb 2's sub-checks**, on GitHub's own rule — *"Workflows that use these triggers must not explicitly check out untrusted code"* and *"You must ensure the checked-out code is only ever inspected as data and never executed"* — because monotonicity executes the **head** classifier, the sentinel executes the **head** harness, and `gate-self-test` at `41506ad` already runs head against head; sub-check 1's note that the base harness introduces no new trust is true of the harness and silent about the classifier, which is the head-authored file under test. The proposal's own caveat that a diff-only gate is the safe shape is right for three of the four jobs and does not reach `gate-self-test`, which is the fourth required context. **Third reason, and not in the proposal: the trigger is blocked by default on public repositories from 2026-11-02**, per the changelog of 2026-09-17 and the repository-settings reference, both read 2026-10-01 — and the read-back puts us inside that rule: `platform` and `docs` are `visibility: public`, `GET …/actions/policies` returns `{"total_count": 0, "policies": []}` on both, `GET /orgs/vulcanflow/actions/policies` returns `403 Resource not accessible by integration`, on `plan.name: free`. A gate on that trigger stops running on that date; it fails **closed**, which halts delivery rather than hiding a hole, on a date nobody had written down. The partial swap — three diff-only checks on `pull_request_target` in a second file with disjoint job names, `gate-self-test` left behind — is recorded as the only coherent shape the option has and is refused on reasons one and three. **R9 is ANSWERED, negative:** the CEO's probe on VUL-89 returns `422 Validation Failed` for a repository-level ruleset `workflows` rule, invariant across eight payload variants, while control rules created and deleted successfully in the same session; the rule is documented at organisation and enterprise level only, the changelog of 2023-08-02 records it as *"only available on GitHub Enterprise plans"*, `GET /orgs/vulcanflow/rulesets` is `403` for our App regardless, Team at $4 does not carry it and Enterprise Cloud at $21 does — **the board declined, outcome 3 of R7's frame.** R9 stops being a probe and becomes a standing trigger. **One read-back in R9 was wrong and the CEO caught it:** it generalised `platform`'s empty `rulesets` to *"no repository ruleset exists on any of the four repositories' `main`"*, and `vulcanflow/docs` has an **active** ruleset `protect-default`, id `24332832`, created `2026-10-01T20:35:06Z`, scoped `~DEFAULT_BRANCH`, carrying `deletion`, `non_fast_forward`, `code_scanning`, `pull_request` and `required_status_checks` with the single context `CodeRabbit` (`integration_id 347564`) — re-read here rather than transcribed. It does not change R9's answer, since `protect-default` carries no `workflows` rule and could not; it does change what this record claims about the organisation's configuration, and the general statement — **rulesets are available to us on Free for a public repository and one rule inside them is not** — replaces the false one. New **R11** tracks the Actions event policy that would keep `pull_request_target` available past 2026-11-02, **not** as a trigger to adopt the swap (reasons one and two refuse it independently of any policy) but because its availability expires in a way nothing else in this record does, and because any VulcanFlow workflow written on that trigger for any other reason stops running on that date; owner **CEO**, and the `POST` is deliberately **unprobed** — the `GET` is readable to us, and a write to Actions policy on a protected repository is a CI-configuration mutation §4.4's exclusions keep Atlas out of. §4.6 item 3 gains the trigger as a named refusal with the reason, and §4.6's closing note records that R9's negative answer makes §4.6 **the** control on the highest-consequence path rather than an interim measure waiting on a mechanism. `process/agent-workflow.md` §7 gains a bullet carrying all three reasons, because an agent reading only the old bullet would read the swap as the obvious hardening and it is the one change that would look like strengthening the gate while stopping it. **Reconciled forward onto docs#33** under §2.3, three conflicts, all taking that branch's fixture-count unit split. **Corrected in lane 6 before merge, from reviewer #2's verdict at `394fe54` (VUL-85): REQUEST CHANGES, three blocking, one advisory, one dismissed.** Reviewer #2 promoted two Minors to blocking and found the third independently. **§4.4's claim that §4.5's mechanism is inherited by the prospective `ci/lane7-attest.sh` pair is false and is withdrawn:** it said the sub-checks are *"stated over any detector/harness pair rather than over GATE specifically"*, and they are not — all three are steps inside the existing **`gate-self-test`** job, written against `classify_path()`, `ci/lane-gate.sh` and `ci/lane-gate-test.sh` by name, so a second pair shipped on that belief would have **none** of them. What transfers is the argument and not the mechanism; the obligation it creates is **R8**'s, and the second pair's three sub-checks are lane-1 work that does not exist. This is the same overclaim §4.4's final paragraph was corrected for in amendment 4, one paragraph below where it recurred. **R9's four-repository negative rested on a single-repository endpoint**, which reviewer #2 reached independently of the CEO's answer in the same window — and the CEO's read settles it harder than reviewer #2's objection does: the generalisation was not merely unsupported, it was **false**, because `vulcanflow/docs` has an active ruleset. Both reviewers and the board landed on one sentence; the corrected text claims only what each endpoint can establish, per repository. **`decisions/README.md`'s amendment-5 pointer row said limb 2 is closed by *"monotonicity plus an assertion floor"* — two, where §4.5 and §7 item 4 say three** since the sentinel landed in the same commit; a stale second statement of §4.5's content is precisely what that file's own preceding paragraph says a pointer index exists to prevent, and amendments 2, 3 and 4 were each corrected for it. Advisory: an unescaped `\|\|` inside a backtick span in this row broke the table into five cells under strict Markdown parsing, and the pipes are escaped; every table in the three changed files is re-checked for cell-width consistency rather than just this one. Reviewer #2's **dismissal is upheld**: this row's opening clause stays at *"two sub-checks"* because the row is an append-only chronology that then narrates the third being added, §12 makes §4.5 the authority over the row, and rewriting the opening to "three" would make the row contradict its own next sentence. **R11 is ANSWERED before this amendment reached `main`, on both halves, and it closes *positive* — the one answer in this record that turns the opposite way from R9's.** The CEO probed it on VUL-107 on 2026-10-01: a repository-level Actions event policy **is** creatable by our identity on Free (two `422`s against the request body, which sits behind authorisation and plan gating, where the organisation-level endpoint refuses first — **nothing was created**, and the four public repositories read back at `total_count: 0` after the probe), and **no VulcanFlow workflow uses `pull_request_target`** — zero occurrences across all 15 repositories, 4 public and 11 unborn private, every branch and every open pull request's files, so 2026-11-02 is a no-op for us on the state read that day. R11 is restated there as a **live knob with two observables** rather than a dormant probe, with the dated sweep explicitly **not** promoted to a standing invariant; the answer, its evidence and the posture it sets are read in R11 and are not reproduced on this row. **This row's own clause that the `POST` is "deliberately unprobed" is withdrawn in place** — it was true when written and is now the state of the previous day; the probe was performed by the owner this amendment assigned, and §4.4's exclusion that kept Atlas out of it is unchanged. **§4.5 is not reopened**: the positive answer removes the third of its three rejection reasons and reasons one and two refuse the swap independently, so §4.5's own *"unverified"* clause is answered in place with its direction stated, its closing conditional is marked as having its **first conjunct satisfied and its second not**, and §4.6 item 3's *"an Actions event policy this organisation does not have"* is corrected to **creatable, none created** — because "cannot have" and "chose not to create" are different facts and only the second is ours. Also recorded there: the `403` in §4.5's read-back block and the `404` in R11's are the **same endpoint on the same date**, both kept, since they support one conclusion and neither is the reason organisation level is unavailable; and the **first side effect anyone would trip** — creating any applicable policy on `platform` moves it out of the no-policy population the default rule covers and makes this organisation the owner of what `pull_request_target` does there, which is why the posture is zero policies on all four public repositories until a workflow needs one and the first policy is an amendment rather than a settings change. **This R11 pass is filed under VUL-112** and sits on this row rather than opening an amendment 6, because every section it touches — R11, §4.5's third reason, §4.6 item 3 — is one this amendment wrote and has not yet merged. Recorded by Atlas under VUL-68. |
