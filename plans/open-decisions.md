@@ -2,7 +2,7 @@
 
 | | |
 |---|---|
-| **Status** | **9 of 15 board rows decided 2026-10-01** — see §0.1. Six remain open, none before the Phase 2 gate. |
+| **Status** | **9 of 15 board rows decided 2026-10-01** — see §0.1. Six remain open: **D7** is forced inside Phase 1 *if* it is answered "retain"; the other five are not forced before the Phase 2 gate, where **D5** and **D15** are the earliest. |
 | **Date** | Built 2026-10-01. Board answers recorded 2026-10-01. |
 | **Owner** | CEO. Reviewed by Atlas; F1–F3 and P1–P6 from that review are applied. |
 | **Sources** | TDD §27 (all 22 rows), `plans/phase1-work-breakdown.md` §7 (all 7 rows), ADR-0001 through ADR-0005 |
@@ -271,9 +271,19 @@ board to buy the wrong thing:
   register, and the first version buried it among entries that did not belong.
 
 **Net effect on D1:** the corrected table makes the "no cluster" decision *more* defensible, not
-less. The things a cluster would have bought are mostly Phase 2 and Phase 4, and the two items the
-board would most want protected — cross-tenant RLS isolation and admission gate decisions — are
-already covered at full strength on Testcontainers.
+less. The things a cluster would have bought are mostly Phase 2 and Phase 4, and the two tests the
+board would most want protected are already at full strength on Testcontainers — but the claim has
+to be stated at the resolution of the tests, not of the topics, or it over-reads its own table:
+
+- **Full strength without a cluster:** the `SET LOCAL` leak itself
+  (`db/tenanttx-set-local-isolation`, `db/pgbouncer-transaction-pooling-prepared`) and the two
+  admission-gate *decision* tests (`admission/cascade-gate-delete-oldobject`,
+  `admission/workload-gate-dryrun`).
+- **Still weak, per R3 above:** cross-tenant RLS isolation *at realistic PgBouncer concurrency* —
+  `isolation/background-queries` and `isolation/all-stores`. The mechanism is proven; the
+  concurrency conditions that govern the leak's frequency, blast radius and additional paths are
+  not reproduced. "Cross-tenant RLS isolation is covered at full strength" would therefore be too
+  broad a reading of a narrower, correct result.
 
 ### 1.4 Recommendation as put to the board
 
@@ -312,8 +322,10 @@ it.** Recommendation 3 above anticipated the second half; the first half it coul
 
 The position is defensible on this register's own evidence, and the corrected §1.3 strengthens it:
 Option C's ~$9.4k/year buys a cluster that *cannot* answer R4 or R5 honestly, and the two highest-
-consequence things a board would want protected — cross-tenant RLS isolation and admission gate
-decisions — are already at full strength on Testcontainers. The forcing point is **Phase 2**, where
+consequence tests a board would want protected — the `SET LOCAL` tenant-context leak and the
+admission-gate decision tests — are already at full strength on Testcontainers. RLS isolation *at
+realistic PgBouncer concurrency* is the part that stays weak (R3), and it is carried as named risk
+rather than claimed as covered. The forcing point is **Phase 2**, where
 the secureCodeBox operator has to run somewhere. "Deliverables first" and "decide at the Phase 2
 gate" are the same instruction.
 
@@ -687,6 +699,7 @@ and `5b3405c` (#20).
 | 1 | Register built. |
 | 2 | Arithmetic corrections; Option B total; D1's urgency separated from D8's (CodeRabbit, lane 6). |
 | 3 | **Atlas's review applied** — F1–F3 (§1.3 rebuilt: §25 vs ADR-derived sets separated, R1/R2's `admission/*` entries removed and R1 restated as "no test at all", R3's leak corrected to deterministic, `execution/gates-before-start` and `isolation/all-stores` added, `execution/scan-identity` surfaced as the only Phase 1 degradation) and P1–P6 (stale `VUL-*` ids dropped, 15/2 split, D7 named as the second Phase 1 exception, `infra#1` README quoted correctly, §4 scoped to §1.3, §27 item 5's scan-ID limb added). §1.1 narrowed to the two documents that actually assert Aether's existence, with §0.0's own verification caveat quoted against them. D15 narrowed to a ratification. D17 recited to ADR-0005 §6, with `unsafe` ownership described as relocated rather than removed. **Board answers of 2026-10-01 recorded** — §0.1, §1.5, §1.6, §2.1 and the per-row `DECIDED` entries. |
+| 4 | **Two self-contradictions closed (CodeRabbit on `5168c5c`, lane 6).** The status row said "none before the Phase 2 gate," which the paragraph eight lines below it already contradicted on D7 — corrected to name D7's Phase-1-if-retained forcing point and D5/D15 as the earliest of the rest. And §1.3/§1.5 claimed "cross-tenant RLS isolation … at full strength on Testcontainers," which over-read §1.3's own R3 row: full strength belongs to the `SET LOCAL` leak tests and the admission-gate decision tests, while `isolation/background-queries` and `isolation/all-stores` stay weak at realistic PgBouncer concurrency. Counts and the set of open rows unchanged. |
 
 Cost figures in §1.2 are derived from the footprint the design requires and are
 order-of-magnitude only. **They are not quotes and no commitment should be made on them.** They are
