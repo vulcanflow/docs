@@ -48,8 +48,8 @@ TDD §2.5.2 and the Appendix C glossary define the Cargo workspace as:
 
 ADR-0001 closed the six per-repository Go bootstraps in favour of that one workspace, and
 recorded the consequence in its appendix — *"repository list follows the workspace topology"* —
-**without naming a repository**. One build unit cannot span fourteen of them. So: which
-repository holds it?
+**without naming a repository**. The organisation holds **fifteen** repositories (§2.1); one
+build unit cannot span them. So: which repository holds it?
 
 ### 1.2 What actually exists
 
@@ -97,8 +97,12 @@ re-authors those crates under the pipeline; it does not re-decide which reposito
 precisely why this record is worth having independently of the rebuild.
 
 **The polyrepo.** Separately, twelve per-component repositories were created on
-2026-09-09 — nine of them named after crates in that same list. The organisation holds
-**fifteen** repositories in total.
+2026-09-09. **Eight** of them are named after crates in that same manifest — `vf-api`,
+`vf-authz`, `vf-translator`, `vf-operator`, `vf-ingest`, `vf-meter`, `vf-report`, `vf-abuse`.
+A ninth, `vf-remediation`, is named after a TDD §2.3 *component* that has **no crate at all**,
+in the archived manifest or anywhere else; it is folded for the same reason as the eight but
+on a different ground, and §2.1 states that ground rather than letting the name imply a crate.
+The organisation holds **fifteen** repositories in total.
 
 ### 1.3 What breaks if both persist
 
@@ -126,7 +130,7 @@ This is the part that is not a tidiness argument.
   written is a design failure, and the polyrepo is the second one.
 - **The lane gate has nothing to stand on.** ADR-0005 §4.2 classifies paths like
   `crates/*/src/**` and `crates/*/tests/**`; its own §7 item 5 records that the gate is live on
-  `platform` only. Nine crate repositories are nine places the pipeline is not enforced.
+  `platform` only. Nine unfolded repositories are nine places the pipeline is not enforced.
 - **A reader is actively misdirected.** The next agent looking for `vf-authz` finds an
   organisation that offers two plausible answers and no record saying which is wrong. That is
   the concrete thing this record prevents.
@@ -184,17 +188,21 @@ the reason. There is no residual category.
 
 | Repository | Role | Why it is not folded in |
 |---|---|---|
-| `platform` | The Cargo workspace: every VulcanFlow Rust crate, one toolchain, one lockfile, the CI gates. Today it holds `.gitattributes` and the ADR-0005 lane gate; the fourteen crates arrive with the rebuild | It *is* the workspace |
+| `platform` | The Cargo workspace: every VulcanFlow Rust crate, one toolchain, one lockfile, the CI gates. Today it holds `.gitattributes` and the ADR-0005 lane gate; the crates arrive with the rebuild. **How many and which is the open member-set question of §1.2, not a layout question, and nothing in this record authorises a count** | It *is* the workspace |
 | `docs` | The design of record — the TDD, these ADRs, `process/`, and `plans/` once `docs#24` lands (not on `main` today) | Markdown. Holds no `Cargo.toml` |
-| `infra` | Kubernetes manifests and GitOps configuration (Argo CD/Kargo, CNPG, ClickHouse, Valkey, Keycloak, secureCodeBox, Harbor) | Declarative YAML/Kustomize/Helm, not a `cargo` target (TDD §2.5.3, *"SQL migrations, Kubernetes manifests"*). Its `factory/phase0-foundation` branch stays unmerged on purpose, pending the CEO cluster decision |
+| `infra` | Kubernetes manifests and GitOps configuration (Argo CD/Kargo, CNPG, ClickHouse, Valkey, Keycloak, secureCodeBox, Harbor) | Declarative YAML/Kustomize/Helm, not a `cargo` target (TDD §2.5.3, *"SQL migrations, Kubernetes manifests"*). **It holds nothing today:** `infra#1` was closed unmerged at 2026-10-01T19:29:11Z — five seconds after `platform#1`, in the same purge — its `factory/phase0-foundation` branch is deleted, its head survives as tag `archive/pr-1-phase0-gitops` (`ed1b42cf`), and `infra@main` is the single commit `304b300e` *"Initialize main"* over the **empty tree** `4b825dc6`. The Phase 0 GitOps work is to be re-authored through the pipeline, and is separately gated on the CEO cluster decision. None of that bears on the disposition: `infra` stays active because it holds no `Cargo.toml` and never will (§2) |
 | `vf-web` | The browser SPA | TypeScript/React. TDD §2.5.3 states it is explicitly **not** rewritten |
 | `scanners` | Custom arm64 secureCodeBox scanner images, parsers, conformance | Container builds wrapping upstream Go/C tools. TDD §2.5.3: not rewritten |
 | `vf-aigw` | Self-hosted OpenAI-compatible AI gateway | LiteLLM, operated as an approved third-party Python service. TDD §2.5.3: not rewritten |
 
-**To be archived — 9.** Each is named after a crate that now lives in `platform/crates/`, so
-each would otherwise be a second home for the same code.
+**To be archived — 9.** Each would otherwise be a second plausible home for code that belongs
+in `platform`. The ground differs between them, and the difference matters: **eight** are
+named after crates the archived manifest declared and the rebuild will re-author under
+`platform/crates/`; the ninth, `vf-remediation`, is named after a component that has no crate
+anywhere. Note the tense — `platform@main` holds **no `crates/` directory today** (§1.2), which
+is exactly why §4.2 orders the archiving after it does.
 
-| Repository | Where the code is instead | Content to migrate |
+| Repository | Where the code belongs instead | Content to migrate |
 |---|---|---|
 | `vf-api` | `crates/vf-api` (binary) | None. `main` is an empty-tree initial commit; the Go scaffold on `refs/pull/1/head` was retired by ADR-0001 |
 | `vf-authz` | `crates/vf-authz` (**library**, not a service — TDD §2.3, §2.5.2) | None. No commits |
@@ -239,9 +247,10 @@ which is where phasing belongs (TDD §24):
 One build unit, one lockfile, one toolchain, one CI configuration, one place the ADR-0002
 boundary and TLS-provider gates can assert a whole-graph property. `platform` is the name
 because the thing is not a service: it is the platform the services are built from, and it is
-the name that still reads correctly when the fifteenth crate lands.
+the name that still reads correctly whatever the approved member set turns out to be, and
+when the one after that lands.
 
-**B. Promote one existing repository — put all fourteen crates under `vf-api`, or create
+**B. Promote one existing repository — put every crate under `vf-api`, or create
 `vf-core` as a repository. → Lost.**
 Every candidate name is a lie about the contents. A reader who finds `vf-meter`'s allowance
 accounting inside a repository called `vf-api` has been actively misled, and every
@@ -266,8 +275,8 @@ from "two lockfiles" to "one lockfile that lies about its sources".
 considered.**
 It would put the design of record, the GitOps manifests that configure the cluster, and the
 SPA in the same change surface as the crates. ADR-0005's lane gate partitions *paths*; widening
-the repository to hold unrelated trees widens every classification decision with it. The
-if-and-only-if-`cargo` rule is narrower and needs no exceptions.
+the repository to hold unrelated trees widens every classification decision with it. §2's
+crate-level rule is narrower and needs no exceptions.
 
 ---
 
@@ -279,28 +288,37 @@ if-and-only-if-`cargo` rule is narrower and needs no exceptions.
    A sixteenth is answered by the §2 rule without a new record.
 2. `decisions/README.md` loses its *"ADR-0004 is not on `main` yet"* note, and the root
    `README.md`'s "Repository architecture (polyrepo)" section is marked superseded. That table
-   still names Go, chi, Huma and Connect-RPC; **rewriting it is the `docs#20` README work, not
-   this record** — the banner exists so the stale table cannot be read as a live decision in
-   the meantime.
+   still names Go, chi, Huma and Connect-RPC; **rewriting it is not this record's job** — the
+   banner exists so the stale table cannot be read as a live decision in the meantime. It was
+   `docs#20`'s job, and `docs#20` **was closed unmerged at 2026-10-01T18:50:51Z** in the same
+   purge as `docs#23` (tag `archive/pr-20-tdd-v2.3-rename`), so the rewrite currently has no
+   owner. Naming a closed PR as the owner of outstanding work is the defect this record was
+   corrected for twice (§6 items 3 and 6); it is not repeated here. The rewrite needs a work
+   item, and the banner holds until it gets one.
 3. ADR-0005 §11's *"does not touch ADR-0001 through ADR-0004"* stops being a reference to an
    absent document.
 4. **A counting collision becomes visible, and is resolved here rather than left to a reader.**
    This record calls **six** repositories active (§2.1); ADR-0005 §3.2 and §7, and
-   `decisions/README.md`, say **four**. Both are right about different sets: ADR-0005 counts the
-   repositories that *have content and therefore need the lane gate and branch protection*
-   (`docs`, `platform`, `infra`, `vf-api`), while §2.1 counts the repositories that **remain
-   active after the fold** (`platform`, `docs`, `infra`, `vf-web`, `scanners`, `vf-aigw`). Note
-   that `vf-api` is in ADR-0005's four and is one of the nine to be archived here — so the two
-   sets are not nested, and "active" must be read with its qualifier. The fold reduces
-   ADR-0005's four to three.
+   `decisions/README.md`, say **four**. Both are right about different sets, and the
+   distinguishing property is not content — ADR-0005 §7 item 5 says in terms that `infra` and
+   `vf-api` are *empty* and get the gate *"the moment it receives source"*. ADR-0005's four
+   (`docs`, `platform`, `infra`, `vf-api`) are the repositories with an **initialised default
+   branch**: the ones a branch-protection or force-push rule could be applied to at all, which
+   is what §3.2 and §7 item 8 are counting. The other eleven have **zero refs**, so there is no
+   `main` to protect. §2.1's six are the repositories that **remain active after the fold**
+   (`platform`, `docs`, `infra`, `vf-web`, `scanners`, `vf-aigw`). Note that `vf-api` is in
+   ADR-0005's four and is one of the nine to be archived here — so the two sets are not nested,
+   and "active" must be read with its qualifier. The fold reduces ADR-0005's four to three.
 
 ### 4.2 On the workspace reaching `platform@main` — the fold, owned by [VUL-6](/VUL/issues/VUL-6)
 
 **The trigger is a state, not a pull request:** the fold runs once `platform@main` carries a
-`Cargo.toml` whose `[workspace].members` is the workspace member set then of record — TDD
-§2.5.2's thirteen crates, plus any crate a later record adds (§1.2). Whichever PR delivers
-that satisfies the condition. The original draft tied this to `platform#1` merging, and
-`platform#1` is now closed — stating the trigger as a state is what keeps this record true
+`Cargo.toml` whose `[workspace].members` is the workspace member set **then of record**.
+There is no such record today — that is §1.2's gap, and closing it is a precondition of the
+rebuild, not of this record. Whichever PR delivers that state satisfies the condition, and the
+fold does not need to know which crates the record names, only that a record names them.
+
+The original draft tied this to `platform#1` merging, and `platform#1` is now closed — stating the trigger as a state is what keeps this record true
 across the rebuild, and is the correction worth generalising: *an ordering constraint should
 name the condition it needs, never the change that happened to be carrying it.*
 
@@ -331,14 +349,14 @@ the history and removes the ambiguity.
    `platform/crates/` and a `members` entry. Creating a repository for it is a design failure,
    not a convenience.
 5. **The CI gates are whole-graph assertions by construction.** `crate-boundaries`,
-   `tls-provider-assertions`, `forbid-unsafe` and `reproducible-build` each assert a property of
-   one dependency graph, and in one repository they see every crate. This is the property §1.3
-   says a split destroys, and it is the main thing the decision buys. The scripts themselves
+   `tls-provider-assertions`, `forbid-unsafe`, `reproducible-build` and `sbom` each assert a
+   property of one dependency graph, and in one repository they see every crate. This is the
+   property §1.3 says a split destroys, and it is the main thing the decision buys. The scripts themselves
    are not on `platform@main` today — they exist at `archive/pr-1-cargo-workspace` and the
    rebuild must re-establish them; this record fixes the topology that lets them be
    whole-graph, and does not claim they are currently running.
-6. **All fourteen crates share one lockfile, so one pin applies to all of them.** A dependency
-   bump is a workspace-wide decision and needs an ADR-0002 amendment (ADR-0002 §1). There is no
+6. **Every crate in the workspace shares one lockfile, so one pin applies to all of them.**
+   A dependency bump is a workspace-wide decision and needs an ADR-0002 amendment (ADR-0002 §1). There is no
    per-crate pin and no way to introduce one.
 7. **Compile time is shared.** A touch to `vf-core` can rebuild its dependents. Accepted: the
    answer at this scale is `sccache` and per-crate CI scoping, not a repository split (§5).
@@ -371,7 +389,7 @@ and amendments A1 (§3.6) and A2 (§3.7)"*, with **§3.7 the authority where the
 §3.7 records that A2 corrects six feature names that did not exist or meant the opposite of what
 §3 said, and withdraws two crates. §3.7 is not on `docs@main`.
 
-So the rebuild is now scheduled to re-author fourteen crates against a pin set whose only
+So the rebuild is now scheduled to re-author the workspace against a pin set whose only
 correct form lives in an archived tag. Were it merely a matter of merging a finished branch, the
 gap would be caught at review; instead the rebuild will reach for ADR-0002 §3, find the six
 wrong feature names, and either rediscover the corrections or ship them wrong.
@@ -381,6 +399,19 @@ rebuild (the fold's precondition in §4.2) rather than this record, which pins n
 text is recoverable from `archive/pr-23-adr-0004`, and every claim in it must be re-derived
 against crates.io before it is re-filed, not copied.
 
+**There are therefore two missing records between here and the rebuild, not one, and they are
+different in kind.** A2 is missing *pin corrections* (above). §1.2's gap is a missing *member
+list* — nothing on `docs@main` says how many crates the workspace has or what they are called.
+The rebuild needs both, and **neither of them is this record's to supply**; both are tracked
+under **Still open** in `decisions/README.md`.
+
+Stated as an instruction, because this is the sentence a rebuild agent will act on:
+**no count in this document is an authorisation.** The fourteen in §1.2 and in the §6
+provenance table is a reading of an archived manifest, cited as evidence of the workspace's
+*shape*, and it is one more than TDD §2.5.2's thirteen. The rebuild authors the member set
+the crate-set record approves; if that record does not exist yet, the rebuild is blocked on
+it rather than on a count recovered from a closed pull request.
+
 ---
 
 ## 5. What would make me revisit this
@@ -389,7 +420,8 @@ against crates.io before it is re-filed, not copied.
   workspace level that cannot be reconciled. That is an argument for a **second workspace**, and
   only then possibly a second repository; it is not an argument for one repository per crate.
   None exists today: ADR-0002 §3 resolves as a single graph, and §3.3 records the cross-check.
-- **Build times at a scale this workspace is nowhere near.** Fourteen crates is not that scale.
+- **Build times at a scale this workspace is nowhere near.** A workspace of this order — a
+  dozen-odd crates, whatever the approved member set turns out to be — is not that scale.
   The ordered answers are `sccache`, then per-crate CI scoping, then a split — in that order.
   **The number, so this trigger is checkable like the other four:** a cold workspace
   `cargo build --workspace --locked` over 30 minutes, or a warm incremental rebuild after a
@@ -403,12 +435,14 @@ against crates.io before it is re-filed, not copied.
   lockfile."** This record implements that sentence. If the sentence changes, this changes with
   it.
 - **A §2.5.3 exception becoming VulcanFlow-owned Rust.** If `scanners`' parsers become Rust
-  crates under §27 item 20, the if-and-only-if-`cargo` rule folds them in automatically — that
-  is the rule working, and it needs no new record. What *would* need one is a §2.5.3 component
-  staying non-Rust while nonetheless needing to be inside the workspace.
+  crates under §27 item 20, §2's crate-level rule folds **those crates** in automatically —
+  that is the rule working, and it needs no new record. Note what it does *not* do: the
+  `scanners` repository keeps its container builds and stays active, because the rule moves
+  crates, not repositories. What *would* need a new record is a §2.5.3 component staying
+  non-Rust while nonetheless needing to be inside the workspace.
 
-**Not a reason to revisit:** that nine repository names now 404-by-archive and someone expected
-to find code there. That is the decision working as intended, and §2.1 is the place it is
+**Not a reason to revisit:** that nine repository names now resolve to read-only archives
+rather than to code, and someone expected to find code there. That is the decision working as intended, and §2.1 is the place it is
 written down.
 
 ---
@@ -428,7 +462,11 @@ the file that is authoritative for it.
 | Toolchain channel **`1.98.1`**, components `rustfmt`/`clippy`, target `aarch64-unknown-linux-gnu`, profile `minimal` | `rust-toolchain.toml` at that same tag — the file ADR-0002 §2 makes authoritative. Read at a tagged, immutable ref, not recalled |
 | `platform#1` named ADR-0002 §3.7 as the pin authority, and what A2 corrects (§4.4) | header comment of that same `Cargo.toml`; `platform#1` review thread, comment of 2026-10-01T12:21:26Z |
 | `platform#1` closed unmerged `2026-10-01T19:29:06Z`, head branch deleted, head preserved at tag `archive/pr-1-cargo-workspace` / `refs/pull/1/head`; board chose rebuild-from-scratch on [VUL-1](/VUL/issues/VUL-1) at 19:07Z | `GET /repos/vulcanflow/platform/pulls/1`; its closing comment; `GET …/branches`; `GET …/git/refs/tags/archive/pr-1-cargo-workspace` |
-| The seven ADR-0002 CI gate scripts exist only at the archive tag, not on `platform@main` | `GET /repos/vulcanflow/platform/git/trees/{main,archive/pr-1-cargo-workspace}?recursive=1`, compared |
+| ADR-0002's gates are **seven `ci/` files — five scripts** (`crate-boundaries.sh`, `tls-provider-assertions.sh`, `forbid-unsafe.sh`, `reproducible-build.sh`, `sbom.sh`) **and two data files** (`pure-crate-dependencies.txt`, `tool-versions.env`) — and all seven exist only at the archive tag, not on `platform@main` | `GET /repos/vulcanflow/platform/git/trees/{main,archive/pr-1-cargo-workspace}?recursive=1`, compared |
+| `infra#1` closed unmerged `2026-10-01T19:29:11Z`, head `ed1b42cf` on the now-deleted `factory/phase0-foundation`, preserved as tag `archive/pr-1-phase0-gitops`; `infra@main` is commit `304b300e` *"Initialize main"* over the empty tree `4b825dc6` and `contents` returns `[]` | `GET /repos/vulcanflow/infra/pulls/1`; `GET …/branches` → `["main"]`; `GET …/tags`; `GET …/commits`; `GET …/contents` |
+| Eleven repositories have **zero branches**, so ADR-0005's "four" are exactly the four with an initialised default branch (§4.1 item 4) | `GET /repos/vulcanflow/{name}/branches` → `[]` for each |
+| `docs#20` closed unmerged `2026-10-01T18:50:51Z`, archived as tag `archive/pr-20-tdd-v2.3-rename`; `docs#24` and `docs#26` are still open | `GET /repos/vulcanflow/docs/pulls/{20,24,26}`; `GET /repos/vulcanflow/docs/tags` |
+| Eight of the twelve 2026-09-09 per-component repositories share a name with a crate in the archived manifest; `vf-remediation` does not, and neither do `scanners`, `vf-web`, `vf-aigw` | the org repository list above, intersected with the `[workspace].members` list in the row above |
 | `platform@main` holds `.gitattributes` plus the ADR-0005 lane gate (`ci/lane-gate.sh`, `ci/lane-gate-test.sh`, `.github/workflows/lane-gate.yml`), merged as `platform#2` | `GET /repos/vulcanflow/platform/git/trees/main?recursive=1` |
 | `docs#23` closed unmerged `2026-10-01T18:50:19Z`, no reviews, no comments; archived as tag `archive/pr-23-adr-0004`, commit `cee1edc` | `GET /repos/vulcanflow/docs/pulls/23`; `git tag -l` in `docs` |
 | TDD §2.5.2's workspace-layout sentence: **thirteen** crates, 5 library / 8 binary, `[PROPOSED]`; the glossary wording; the §2.5.3 exception table; §21.2's Rust per-tenant migration binary; §2.3's `vf-remediation` Phase 3 row | `VulcanFlow_Technical_Design_Document_v2.2.md` on `docs@main` |
@@ -439,8 +477,12 @@ the file that is authoritative for it.
 | All fifteen repositories return `archived: false` — none of the nine is archived yet | `GET /orgs/vulcanflow/repos`, `isArchived` field |
 | ADR-0005 §3.2 / §4.2 / §7 items 5 and 8 / §8 / §11 (§7 is a numbered list, not subsections) | `decisions/ADR-0005-delivery-pipeline-and-lane-enforcement.md` on `docs@main` |
 
-**Five claims were corrected rather than carried forward — three by this audit, two by hand
-review ([VUL-21](/VUL/issues/VUL-21), Assay, on commit `489dc7f`):**
+**Ten claims were corrected rather than carried forward — three by this audit (1–3), three by
+the first hand review ([VUL-21](/VUL/issues/VUL-21), Assay, on commit `489dc7f`; items 4–6),
+and four by the re-review of the fixes ([VUL-23](/VUL/issues/VUL-23), Assay, on commit
+`98ac439`; items 7–10). Items 7–10 are all residue of the 3 and 4 fixes, which is the pattern
+worth noticing: a withdrawn claim leaves downstream sentences that still assume it, and
+withdrawing it in one place is not the same as retracting it.**
 
 1. The draft said `platform`'s `main` *"carries a single `.gitattributes` commit so the PR had a
    base."* It no longer does — `platform#2` merged the ADR-0005 lane gate to `main` after the
@@ -467,6 +509,32 @@ review ([VUL-21](/VUL/issues/VUL-21), Assay, on commit `489dc7f`):**
    builds with `cargo`"* — which answers TDD §21.2's Rust migration binary in `infra` wrongly,
    by pulling the GitOps repository into the workspace. §2 now states it over **crates**. Also
    found in hand review.
+6. **The root `README.md` banner announced the nine as *"archived"*.** All fifteen repositories
+   return `archived: false`; the nine are writable today, and §4.2 defers the step on purpose.
+   Announcing it as done would have removed the pressure to do it while §4.3 item 9 was
+   simultaneously calling archiving the only enforcement the free plan permits. Found in hand
+   review; the banner now says *"to be archived, and are not archived yet"*.
+7. **§2.1 and §4.4 still instructed the rebuild to author *fourteen* crates** after item 4
+   withdrew that number's authority — §4.4 said *"scheduled to re-author fourteen crates"* and
+   §2.1's `platform` row said *"the fourteen crates arrive with the rebuild"*, while §4.2 said
+   thirteen-plus-later-records in the same document. A rebuild agent reading §4.4 authors
+   `vf-store`, which is the exact harm item 4 names. Both now defer to the member-set record,
+   and §4.4 ends with the instruction in terms: **no count in this document is an
+   authorisation.**
+8. **§2.1's `infra` row asserted a branch that no longer exists** — *"its
+   `factory/phase0-foundation` branch stays unmerged on purpose"*. `infra#1` closed five
+   seconds after `platform#1` in the same purge; the branch is deleted and `infra@main` is an
+   empty tree. This is item 3 again, one row below, and the §6 table carried no provenance row
+   for `infra`, so the *"read and not recalled"* claim over-reached. Both fixed.
+9. **"Nine named after crates" was eight**, and §2.1 said they *"now live in
+   `platform/crates/`"* when `platform@main` holds four files and no `crates/`.
+   `vf-remediation` is the ninth and its own row says it has no crate — so the preamble made
+   the inference the section exists to block. §1.2 and §2.1 now split the eight from the ninth
+   and state the tense.
+10. **The rule item 5 withdrew was still operative in two places** — §3 alternative E and §5
+    both still read *"the if-and-only-if-`cargo` rule"*, which over repositories would pull
+    `scanners`' container builds into the workspace. Both now cite §2's crate-level rule, and
+    §5 says explicitly that the `scanners` repository stays active.
 
 **Not verified, and deliberately so:** nothing here was compiled. The crate set is read as a
 manifest, not as a successful build, and that manifest is now historical. §25

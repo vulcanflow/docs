@@ -15,8 +15,11 @@ Each record states the question, the options considered, the choice, the reason,
 | [ADR-0005](./ADR-0005-delivery-pipeline-and-lane-enforcement.md) | The delivery pipeline and how its lanes are enforced | Accepted | No §27 item — supersedes the enforcement claim in the VUL-1 plan §4 |
 
 ADR-0004 supersedes the root [`README.md`](../README.md) "Repository architecture (polyrepo)"
-section. That table is pre-v2.3 and still names Go, chi and Huma; rewriting it is the `docs#20`
-README work.
+section, and **ADR-0004 §2.1 is the repository list of record** — the README table is fourteen
+rows with no `platform` row. That table is pre-v2.3 and still names Go, chi and Huma. Rewriting
+it was `docs#20`'s job and `docs#20` was **closed unmerged** (tag
+`archive/pr-20-tdd-v2.3-rename`), so the rewrite has no owner today; it is listed under **Still
+open** below. The superseded banner holds in the meantime.
 
 ADR-0005's operational companion is [`process/agent-workflow.md`](../process/agent-workflow.md),
 which is what an agent reads mid-task.
@@ -30,6 +33,7 @@ which is what an agent reads mid-task.
 | 16a | Engineering leadership | Phase 0 schedule — team Rust capability and schedule impact |
 | — (not §27) | Atlas | **The Cargo workspace member set is on no record.** ADR-0004 §1.2 establishes that TDD §2.5.2 `[PROPOSED]` names **thirteen** crates, while the archived `platform#1` manifest declares **fourteen** — `vf-store` appears in no ADR on `main` (grep-confirmed) and ADR-0002 §3 is the third-party pin set, not the member list. The rebuild therefore has no approved crate list to build against. File as an ADR-0002 amendment alongside the A2 re-file |
 | — (not §27) | Atlas | **ADR-0002 amendment A2 (§3.7) is not on `main`.** It was bundled into the closed PR docs#23 alongside ADR-0004 and did not come back with it; ADR-0004 §4.4 records why. A2 corrects six feature names in §3 that did not exist or meant the opposite of what §3 said, and withdraws two crates, so the Phase 0 pin set on `main` is currently wrong in six places. A2 must be re-filed — with every pin re-derived against crates.io, not copied from `archive/pr-23-adr-0004` — **before the `platform` workspace rebuild authors crates against §3** |
+| — (not §27) | Unowned | **The root `README.md` rewrite has no owner.** Its "Repository architecture (polyrepo)" table names Go, chi, Huma and Connect-RPC, which ADR-0001 and ADR-0002 withdrew, and it has no `platform` row. `docs#20` carried the rewrite and was closed unmerged (`archive/pr-20-tdd-v2.3-rename`). ADR-0004 added a superseded banner so the table cannot be read as a live decision, but the banner is a holding action. Needs a work item |
 
 The §2.5.2 crate table is superseded by ADR-0002 §3 and is no longer `[PROPOSED]`. §24.4's
 gate on "approval of the Rust crate set used on the execution path" is cleared.

@@ -11,10 +11,12 @@ Authoritative project documentation for VulcanFlow — a multi-tenant SaaS secur
 > **Superseded by [ADR-0004](./decisions/ADR-0004-workspace-repository.md).** All VulcanFlow
 > Rust crates belong in one Cargo workspace in [`vulcanflow/platform`](https://github.com/vulcanflow/platform),
 > and the rule is that every VulcanFlow Cargo crate lives there — no other repository contains a
-> `Cargo.toml`. The nine per-crate repositories below are **to be archived, and are not archived
-> yet**: ADR-0004 §4.2 orders that step after the workspace reaches `platform@main`, so all
-> fifteen repositories are still writable today. ADR-0004 §2.1 dispositions every one of them as
-> active or to-be-archived, with a reason. The table below is also pre-TDD-v2.3 — the languages and frameworks it names
+> `Cargo.toml`. Nine repositories are **to be archived, and are not archived yet**: ADR-0004
+> §4.2 orders that step after the workspace reaches `platform@main`, so all fifteen
+> repositories are still writable today. **ADR-0004 §2.1, not the table below, is the
+> repository list of record** — it dispositions all fifteen as active or to-be-archived, with
+> a reason. This table has only fourteen rows and no `platform` row at all, because it predates
+> the repository that now holds the workspace. It is also pre-TDD-v2.3 — the languages and frameworks it names
 > were withdrawn by [ADR-0001](./decisions/ADR-0001-retire-go-scaffold-vf-api.md) and
 > [ADR-0002](./decisions/ADR-0002-rust-crate-set-and-phase0-pins.md). It is retained only until
 > this README is rewritten; read it as history, not as a decision.
