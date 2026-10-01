@@ -383,7 +383,9 @@ Still gaps, and still not permission:
   and GitHub **blocks the trigger by default on public repositories from 2026-11-02** unless an
   Actions event policy allows it, which `platform` does not have — so the change would read as
   hardening and would stop the gate, holding every pull request on four contexts that never report.
-  Reopening it is **R11** and an ADR amendment, not a CI tweak.
+  Reopening it is **R11** and an ADR amendment, not a CI tweak. R11 is **answered**: such a policy
+  *is* creatable by us, and the first two reasons refuse the swap anyway, so creating one is also an
+  amendment and not a settings change — read R11 before reaching for either.
 - **A bot thread can be mistaken for reviewer #2.** The CodeRabbit App is installed and posts on
   every pull request, but nothing in GitHub distinguishes its commentary from a review verdict.
   Lane 6 is **two Paperclip verdicts that each meet ADR-0005 §6.3 condition 3** — not two
