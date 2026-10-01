@@ -27,9 +27,15 @@ which is what an agent reads mid-task. ADR-0007's is `CLAUDE.md` at the root of
 
 | §27 item | Owner | Blocks |
 |---|---|---|
-| — (not §27) | Board | **The GitHub plan decision.** `vulcanflow` is on the free plan with private repositories, so branch protection and rulesets are unavailable and the lane gate cannot be made a *required* check. ADR-0005 §8 sets out the three options and recommends upgrading to GitHub Team. Until it is taken, `main` is directly writable and force-pushable on all four repositories |
 | 5 (cluster half) | Engineering | First automatic cascade — Harbor artifacts and node Kubernetes compatibility for the pinned secureCodeBox v5.9.0. Needs a cluster; ADR-0002 §7 risk R6 |
 | 16a | Engineering leadership | Phase 0 schedule — team Rust capability and schedule impact |
+
+**Closed 2026-10-01 — the GitHub plan decision.** The board took option B of ADR-0005 §8: the
+four active repositories (`docs`, `platform`, `infra`, `vf-api`) are **public**, which unlocks
+branch protection on the free plan. `main` is protected on all four with `enforce_admins: true`,
+`allow_force_pushes: false` and `allow_deletions: false`, and `platform`'s four lane-gate checks
+are required. Recorded as ADR-0005 amendment 1; the disclosure cost is §8.3 and the route back to
+private is R7.
 
 The §2.5.2 crate table is superseded by ADR-0002 §3 and is no longer `[PROPOSED]`. §24.4's
 gate on "approval of the Rust crate set used on the execution path" is cleared.
