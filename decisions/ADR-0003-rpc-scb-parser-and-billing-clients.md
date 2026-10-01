@@ -2,10 +2,11 @@
 
 | | |
 |---|---|
-| **Status** | Accepted |
+| **Status** | Accepted — amended **A1** |
 | **Date** | 2026-10-01 |
 | **Owner** | Atlas (Staff Architect / Tech Lead) |
 | **Closes** | TDD **§27 items 19, 20 and 21** |
+| **Amendments** | **A1** (2026-10-01) — two factual corrections from re-reading the v5.9.0 scanner tree: §3.2's custom-parser claim, and §3.5's severity remedy. Neither reverses a decision. See §7. |
 | **Depends on** | [ADR-0002](./ADR-0002-rust-crate-set-and-phase0-pins.md) — the crate set and the secureCodeBox v5.9.0 pin |
 | **Does not close** | §27 items 16a, and the Product halves of items 2, 4 and 11 that bear on paid use |
 | **Design of record** | `VulcanFlow_Technical_Design_Document_v2.2.md` (filename says v2.2; the content is **TDD v2.3**) — §2.5.2, §2.5.3, §9, §17.5, §21.3, §24.2–24.4 |
@@ -192,6 +193,12 @@ the language it is written in.
 nuclei` (§24.1), and upstream ships parsers for all four. **Phase 1 requires zero custom
 parsers.** Deciding to stay on the upstream SDK defers no work and blocks nothing.
 
+> **Corrected by amendment A1 (§7.1): the two sentences above are wrong.** secureCodeBox v5.9.0
+> ships no `dnsx` and no `httpx` scanner, so Phase 1 requires **two** custom parsers. The decision
+> to stay on the upstream JavaScript SDK is unchanged and is if anything better supported; what is
+> wrong is the claim that it costs nothing. See
+> [ADR-0006](./ADR-0006-false-positive-equivalence-and-alias-semantics.md) §4.1 for the evidence.
+
 **Rejected alternatives.** A Rust parser SDK (above). A Go parser SDK — the language is
 withdrawn by §0.0 and ADR-0001, and it would be a mixed-language implementation with no
 compensating benefit. Parsing inside `vf-ingest` instead of in a parser container — this
@@ -268,6 +275,14 @@ read severities from the findings artifact, which carries the parser's actual se
 values. Treating the CRD status as the severity source of truth would silently collapse or
 drop critical findings, which in a security product is a reporting defect with customer
 consequences.
+
+> **Corrected by amendment A1 (§7.2): the remedy in the second sentence does not work.** The
+> findings artifact cannot carry `CRITICAL` either — `parser-sdk/nodejs/findings-schema.json` at
+> `v5.9.0` restricts `severity` to `INFORMATIONAL | LOW | MEDIUM | HIGH`, so no schema-conformant
+> parser can emit it, and the v5.9.0 nuclei parser's `getAdjustedSeverity` maps `CRITICAL → HIGH`
+> before the artifact is written. The warning stands; the fix is to derive severity at ingest from
+> enrichment per §10.3 (`KEV → EPSS → CVSS`). See
+> [ADR-0006](./ADR-0006-false-positive-equivalence-and-alias-semantics.md) §8.4.5.
 
 ### 3.6 Revisit trigger
 
@@ -477,3 +492,66 @@ form of evidence for this record: items 19, 20 and 21 ask what a contract *is* a
 implementation to choose, and those are answered by reading the authoritative source. Every
 claim whose truth depends on our own code running instead carries a named test ID and an
 owner above.
+
+---
+
+## 7. Amendment history
+
+Amendments are recorded here rather than silently edited in, so a reader who reviewed an earlier
+revision can see what moved. Both entries below are **factual corrections**; neither reverses a
+decision, and reversing one would need a new ADR that supersedes this record.
+
+### 7.1 A1 §1 — §3.2's custom-parser claim is wrong (2026-10-01)
+
+§3.2 asserted that *"upstream ships parsers for all four"* scanners of the §24.1 pipeline and that
+*"Phase 1 requires zero custom parsers."* Both are false.
+
+**Observed.** The `scanners/` directory at `secureCodeBox/secureCodeBox` tag `v5.9.0` contains
+`ffuf`, `git-repo-scanner`, `gitleaks`, `kube-hunter`, `ncrack`, `nikto`, `nmap`, `nuclei`,
+`screenshooter`, `semgrep`, `ssh-audit`, `sslyze`, `subfinder`, `test-scan`, `trivy`, `trivy-sbom`,
+`whatweb`, `wpscan`, `zap-automation-framework`. **There is no `dnsx` and no `httpx`.** Confirmed
+a second way: `scanners/subfinder/parser/` and `scanners/nuclei/parser/` both contain `parser.js`,
+and the equivalent paths for `dnsx` and `httpx` do not exist.
+
+TDD §21.3 already anticipated the *images* — *"Build and validate the existing custom arm64 images
+for dnsx, httpx, tlsx, masscan, and optional Amass"* — so the gap is not in the TDD. What §3.2 got
+wrong is assuming a custom image comes with a parser. It does not: it needs a custom `ScanType`
+**and** a custom `ParseDefinition` with a parser behind it.
+
+**The decision in §3.1 is unchanged, and this strengthens rather than weakens it.** Once we are
+certainly writing parsers, the choice between the upstream JavaScript SDK and a Rust
+reimplementation matters more, and §3.2's seven-step reading of `parser-wrapper.ts` is the reason
+to stay on the SDK: a Rust path would mean reimplementing the Kubernetes reads, the presigned
+download that switches on `ParseDefinition.spec.contentType`, `addIdsAndDates`, `addScanMetadata`,
+the schema validation, and the signature-relevant empty `content-type` on the `PUT` — for two
+scanners, in Phase 1.
+
+**What changes is the cost estimate.** Phase 1 carries two custom parsers (`dnsx`, `httpx`) plus
+their `ScanType` and `ParseDefinition` manifests, not zero. Their field mapping is specified in
+[ADR-0006](./ADR-0006-false-positive-equivalence-and-alias-semantics.md) §4.3–4.4, read from the
+upstream tools' own output structs at `projectdiscovery/dnsx` `v1.3.1` (via
+`projectdiscovery/retryabledns` `v1.0.116`) and `projectdiscovery/httpx` `v1.12.0`.
+
+### 7.2 A1 §2 — §3.5's severity remedy does not work (2026-10-01)
+
+§3.5 correctly observes that `Scan.status.findings` has only four severity buckets and that
+VulcanFlow's severity model must not be derived from it. Its remedy — *"read severities from the
+findings artifact, which carries the parser's actual severity values"* — does not hold.
+
+**Observed.** `parser-sdk/nodejs/findings-schema.json` at `v5.9.0` constrains `severity` to
+`enum: ["INFORMATIONAL", "LOW", "MEDIUM", "HIGH"]`. The four-bucket limit is therefore a property
+of the **findings envelope**, not only of the CRD status, and no schema-conformant secureCodeBox
+parser can emit `CRITICAL`. `scanners/nuclei/parser/parser.js` at the same tag confirms it in
+practice: `getAdjustedSeverity` maps `CRITICAL → HIGH`, `INFO → INFORMATIONAL`, `UNKNOWN → LOW`,
+and the original value is not preserved anywhere in `attributes`.
+
+**The warning in §3.5 stands and the consequence is larger than it stated:** a critical finding
+appears as `HIGH` everywhere downstream, and reading the artifact instead of the CRD status does
+not recover it.
+
+**The fix is already in the design of record.** §10.3 prescribes deterministic enrichment with the
+risk ordering `KEV → EPSS → CVSS`, explicitly *not* an AI feature. VulcanFlow's severity must be
+derived at ingest from that enrichment, with the scanner's severity retained as an input rather
+than as the answer. The product-facing severity model — what a customer sees, and whether a
+`CRITICAL` band exists at all — is a separate decision that needs an owner; it is named in
+ADR-0006's "Does not close" row for that reason.
