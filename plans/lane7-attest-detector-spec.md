@@ -3,6 +3,11 @@
 **Issue:** VUL-48 (lane 1, Atlas). **Lane 2:** VUL-56, Scribe. **Lane 3:** VUL-50, Forge.
 **Status:** authoritative on merge. Until then it is a proposal and the two implementers work
 from it at the risk named in §9.
+**Revision 3** — Forge's two lane-1 items and one phrasing tension, raised on VUL-56 and
+adjudicated here: rule A reaches a verdict line's own fields (**§4.3**, transcription — no
+fixture moves), an absent credential is a finding and never exit 2 (**§6.2**), and
+`LANE7_GITHUB_TOKEN` gains the rows it never had (**fixtures 45 and 46**, §9.3). The table is
+**46 rows**.
 
 ADR-0005 §6.5 fixes two things about the detector at record level — **where the assertion
 starts** and **what it asserts** — and delegates the rest by name: *"Everything else — the
@@ -226,6 +231,41 @@ Forge reproduced came from exactly the vacuity this rule forbids. Rule A does no
 fixture 26, because fixture 26's two findings read two *different* keys, both of which are
 present.
 
+**Rule A also reaches the fields *inside* a verdict line — revision 3, and it was already the
+ruling.** Forge is right that rule A's table enumerates the four single-valued keys and stops,
+while the verdict-contents lookup reads two further inputs that live inside a
+`Lane-7-Verdict-*` line: its **disposition** and its **`covers` sha**. Three rows turn on
+whether rule A reaches them, and **fixture 37 settles it** — under the reading where the lookup
+runs anyway, the harness must write `Assay APPROVE deadbeefzz` into `verdicts/VUL-<n>`, that
+record does not cover the head, `L7-VERDICT-NOT-FOUND` joins the expected set, and the row as
+written goes red. Fixture 19 is unsatisfiable the same way. So the table below is a transcription
+of what §9 already asserts, not a new rule, and **it changes no row and no expected set.**
+
+The verdict-contents lookup's inputs are the cited issue, the reviewer, the disposition
+`APPROVE`, and the `covers` sha. A class-6 code that fires because one of those is not in the
+shape the lookup needs **suppresses the lookup**:
+
+| Firing code | Why the lookup has no well-formed input | Suppresses |
+|---|---|---|
+| `L7-VERDICT-COUNT` (15, 16, 32) | there is no pair of verdicts to look up | all four `L7-VERDICT-*` lookup codes |
+| `L7-VERDICT-DUP` (17) | two records of one reviewer is not the pair the lookup asks about | all four |
+| `L7-VERDICT-WHO` (18) | the reviewer named is not one the lookup can ask about | all four |
+| `L7-VERDICT-DISP` (19, 20) | `APPROVE` is the only disposition the detector can confirm; anything else leaves the comparison without a left-hand side | all four |
+| `L7-VERDICT-ISSUE` (21) | no `VUL-<n>` is a lookup with no key — this one already fell out of the general clause | all four |
+| `L7-VERDICT-COVERS`, **malformed value** (37) | `deadbeefzz` is not a sha, so nothing can be keyed on it | all four |
+
+**Fixture 22 against fixture 37 is the clean statement of rule C's boundary**, and the pair is
+the reason this is one table rather than one sentence:
+
+- **22** — `covers` is a *well-formed* sha that is simply **wrong** (`5168c5c` against head
+  `ff1e2be`). Rule C: present, so used. §9.0's baseline keys `verdicts/VUL-<n>` on the value the
+  block names, the lookup runs and **succeeds**, and `L7-VERDICT-COVERS` fires alone.
+- **37** — `covers` is **malformed**. Rule A: no well-formed input, the lookup does not run, and
+  `L7-VERDICT-COVERS` fires alone.
+
+Same expected set, two different mechanisms, and an implementation that confuses them fails
+exactly one of the two. That is the property the pair exists to have.
+
 **Rule B — class 3 is never suppressed by anything except its own lookup failing.** §6.5 already
 says class 1 does not suppress it. Nothing else does either: `L7-NOT-PR` is a statement about how
 the commit reached `main`, which no key in the block can make true or false. The one thing that
@@ -328,6 +368,23 @@ of the two and the one §6.5 class 8 names first.
 so `L7-VERDICT-UNCHECKED` is produced by the credential being absent and not by the fact being
 absent. Without this rule fixture 24 would assert "I unset something irrelevant" — the
 check-that-could-not-run arriving inside the fixture meant to close it.
+
+**"Required to be non-empty" is an obligation on the caller, not a precondition the detector
+enforces — revision 3, and fixture 24 is authoritative.** Forge read the sentence above as the
+grammar of a precondition, noticed that a precondition is **exit 2** by §5, and noticed that
+exit 2 would make fixture 24 — which asserts a *finding* and **exit 1** — unsatisfiable. The
+reading is a real ambiguity in the previous phrasing and the resolution is the one Forge was
+going to implement:
+
+- The rule binds **the fixture and the workflow**: §9.0's baseline sets both credentials, and
+  `attest-history` supplies both (§10.1). A row that unsets one is varying its single variable.
+- The **detector never treats an absent or empty credential as a usage error.** It degrades the
+  classes that credential gates, reports the corresponding `*-UNCHECKED` code **per commit**, and
+  exits `1`. Exit `2` stays reserved for *the detector did not complete* and must not be reachable
+  by a missing token — a run that could not check and said so is a complete ledger, and §5's whole
+  point is that the two outcomes are not interchangeable.
+- `LANE7_GITHUB_TOKEN` absent is the same shape, and until revision 3 no row asserted it. It is
+  now **fixture 45** and **fixture 46**.
 
 ### 6.3 What the seam costs, stated rather than left to be noticed
 
@@ -454,18 +511,23 @@ GATE row must be amended in the same change. That amendment is not this document
 is entangled with VUL-68. So, plainly: between Forge's PR landing and that decision,
 `attest-self-test` **runs and reports on every pull request but does not block one**. That is
 weaker than `gate-self-test` and it is recorded as weaker. It is still the difference between the
-44 fixtures being asserted twice ever — once by Crucible confirming red, once by Forge reaching
+46 fixtures being asserted twice ever — once by Crucible confirming red, once by Forge reaching
 green — and being asserted on every pull request forever, which was Assay's actual point.
 
 ---
 
-## 9. The fixture table — 44 rows
+## 9. The fixture table — 46 rows
 
 **Rows 1–28 keep the numbers they had in VUL-56 as filed**, so Scribe's
 one-`check`-per-row-in-table-order commitment survives. Rows 29–40 were added by this document's
 first revision; **rows 41–44 are added by its second**, and three of the four are VUL-56 rows this
 document had silently dropped — see the correction note after the table, which is a defect in
-this spec rather than in either implementer's reading of it.
+this spec rather than in either implementer's reading of it. **Rows 45 and 46 are added by its
+third**, and they close the one credential the table did not assert; §9.3 says why they are two
+rows and not one.
+
+**Rows 1–44 are unchanged by revision 3.** No expected set, no code and no exit code moves. The
+only additions are 45 and 46; everything else revision 3 does is transcription (§4.3, §6.2).
 
 ### 9.0 The field-default rule — answers Scribe's item 9 (N1, N2)
 
@@ -553,6 +615,8 @@ of the assertion; where it is silent, that rule supplies it rather than leaving 
 | 42 | Squash, **subject reads `… (#99)`**, `pulls/<sha>` = `none` | `L7-NOT-PR` |
 | 43 | One parent, `pulls/<sha>` = `none`, **and no `Lane-7-*` line at all** | **both `L7-MISSING` and `L7-NOT-PR`** |
 | 44 | `Lane-7-Gate: PASS`, `check-runs/<head>` **present and empty**, `tree-has-gate-workflow: yes` | `L7-GATE-UNCONFIRMED` |
+| 45 | Baseline block and **merge** shape, `LANE7_GITHUB_TOKEN` **unset**; `pulls/`, `pull-head/` and `check-runs/` all present and complete | **both** `L7-PR-UNCHECKED` and `L7-GATE-UNCHECKED`, **and no `L7-NOT-PR`, `L7-HEAD`, `L7-HEAD-UNRESOLVABLE` or `L7-VERDICT-*`**, exit 1 |
+| 46 | **Squash**, `LANE7_GITHUB_TOKEN` **unset**; `pulls/`, `pull-head/` and `check-runs/` all present and complete | **exactly one** `L7-PR-UNCHECKED` and one `L7-GATE-UNCHECKED`, **and no `L7-HEAD-UNRESOLVABLE`, `L7-HEAD` or `L7-NOT-PR`**, exit 1 |
 
 ### 9.1 Correction — rows 41–44, and a defect in this document's first revision
 
@@ -633,17 +697,47 @@ was correct. It stays uncovered: the reason string is prose for a human, and a d
 parsed it would be asserting on prose, which §3 rules out for the harness and should rule out
 for the detector too.
 
+### 9.3 Rows 45 and 46 — the credential the table did not assert, and why it costs two rows
+
+Forge found the gap and offered one row, declining to add it. **Accepted, and it takes two**, for
+a reason the one-row version cannot reach.
+
+The gap is real and it is exactly fixture 24's shape pointed at the other credential.
+`LANE7_GITHUB_TOKEN` gates three lookups and **no row unset it**, so nothing in the table
+distinguished *the credential was absent* from *the fact was absent* on classes 2, 3 and 8 —
+which is §6.2 corollary 4's shape, and the shape §6.4 actually had. Rows 39 and 40 assert
+`*-UNCHECKED` from an absent **file**; they say nothing about an absent **credential**.
+
+**Why 45 alone is not enough.** Forge's row is merge-shaped, because §9.0's baseline is. On a
+merge the head is the second parent — **a git fact needing no credential** — so `L7-HEAD` is
+silent because the head is correct, and `L7-HEAD-UNRESOLVABLE` is unreachable on a merge at all.
+Both negative clauses in row 45 are therefore **vacuously** satisfied, and an implementation that
+got rule A wrong on `pull-head` would still pass it. The clause reads like an assertion and
+constrains nothing. Leaving that on the record is worse than not having the row.
+
+**46 is the non-vacuous half.** On a squash, class 2 resolves the head through `pulls` and then
+`pull-head`, so an absent `LANE7_GITHUB_TOKEN` means the PR number never exists and rule A
+suppresses `L7-HEAD-UNRESOLVABLE` — a suppression that *is* otherwise reachable there (fixture
+8). 46 also asserts the **de-duplication** §3 states on the emitting side: classes 2 and 3 both
+reach `L7-PR-UNCHECKED` on this commit and the ledger carries **one** line, which no other row in
+the table forces.
+
+Row 46 varies **two** fields against the baseline — shape and the credential — and says so, as
+rows 2, 7, 8, 41 and 42 already do. 45 is kept as offered rather than folded into 46 because the
+merge path and the squash path degrade differently and a row that passed for either reason would
+not say which.
+
 ---
 
 ## 10. Acceptance
 
-**`ci/lane7-attest-test.sh` asserts one verdict per fixture for all 44 fixtures in §9 — each
+**`ci/lane7-attest-test.sh` asserts one verdict per fixture for all 46 fixtures in §9 — each
 verdict comparing the complete set of `L7-*` lines **and** the exit code, per §9.0 — with the
 finding codes as written, and prints an `N passed, M failed` line in `ci/lane-gate-test.sh`'s
-format.** That is the whole of VUL-56, and the closing line reads `44 passed, 0 failed`.
+format.** That is the whole of VUL-56, and the closing line reads `46 passed, 0 failed`.
 
 **`ci/lane7-attest.sh`, with its manifest at `ci/lane7-attest-floors.txt`, its workflow at
-`.github/workflows/lane7-attest.yml`, and both §6.2 credentials supplied, passes all 44 fixtures
+`.github/workflows/lane7-attest.yml`, and both §6.2 credentials supplied, passes all 46 fixtures
 and reports over the four §6.5 ranges exactly one finding — `L7-MISSING vulcanflow/docs
 b40201b…` — and `OK` or an empty `RANGE` for every other commit in scope.** That is the whole of
 VUL-50.
