@@ -4,10 +4,11 @@
 |---|---|
 | **Status** | **9 of 15 board rows decided 2026-10-01** — see §0.1. Six remain open: **D7** is forced inside Phase 1 *if* it is answered "retain"; the other five are not forced before the Phase 2 gate, where **D5** and **D15** are the earliest. |
 | **Date** | Built 2026-10-01. Board answers recorded 2026-10-01. |
-| **Owner** | CEO. Reviewed by Atlas; F1–F3 and P1–P6 from that review are applied. |
+| **Owner** | CEO. Reviewed by Atlas (F1–F3, P1–P6 applied) and through ADR-0005 lane 6. **Revision 5** closes the six blocking findings of reviewer #1's `docs#24` verdict — the merge that put revision 4 on `main` is recorded as a lane-7 gate defect in ADR-0005 §6.4. See the revision history. |
 | **Sources** | TDD §27 (all 22 rows), `plans/phase1-work-breakdown.md` §7 (all 7 rows), ADR-0001 through ADR-0005 |
 | **Design of record** | `VulcanFlow_Technical_Design_Document_v2.2.md` — filename says v2.2, content is **TDD v2.3** |
 | **Issue** | VUL-8 |
+| **`T*` labels used below** | **T1** = [VUL-5](/VUL/issues/VUL-5), review and land the landable open PRs. **T2** = `plans/program-plan.md`, Phases 0–5. **T3** = [VUL-6](/VUL/issues/VUL-6), finish Phase 0 and execute the ADR-0004 fold. Glossed here because an unresolvable label is as opaque as the stale `VUL-*` ids this register dropped. |
 
 **Nothing in this register blocks Phase 0 or Phase 1**, with two exceptions, both called out as
 such: **D16** is needed inside Phase 1 and is Atlas's to answer, not the board's; and **D7** is
@@ -39,11 +40,14 @@ better than that, and the difference is the point of gathering them:
 ADR — and are counted with the board. Only **D16** (Atlas) and **D17** (CEO via T2) leave
 the board's queue entirely.
 
-The board was asked for **15 decisions** as a single batch, with seven of the fifteen closable by
-accepting a recommended default in this document without further research. **Nine were answered on
-2026-10-01**: D1, the seven defaults as a block, and D8. Six remain open — D3, D4, D5, D7, D12,
-D15 — and the earliest forcing point among them is the **Phase 2 gate** (D5 and D15). They are
-listed with their forcing points in §2.1.
+**15 board rows exist; the batch actually put three questions, covering nine of them.** That
+distinction matters and the first revision of this line blurred it. The VUL-8 interaction asked
+`cluster` (D1), `defaults` (the seven closable by accepting a recommended default — D2, D6, D9,
+D10, D11, D13, D14) and `legal` (D8). **All three were answered on 2026-10-01**, which is how nine
+rows became decided in one exchange. The other six — D3, D4, D5, D7, D12, D15 — were **never
+asked**: this register deliberately offered no default on them (§2.1), so they are unasked rather
+than unanswered. The earliest forcing point among them is the **Phase 2 gate** (D5 and D15). They
+are listed with their forcing points in §2.1.
 
 Breakdown §7 contributed exactly one new decision. That is worth stating plainly: the seven
 "more" items were almost entirely the same product questions §27 already asked, restated in
@@ -52,20 +56,36 @@ load.
 
 ## 0.1 Decision log — board answers of 2026-10-01
 
-Recorded verbatim in substance from the board's answer to the VUL-8 decision batch. Each row's
-full reasoning stays in the numbered section it belongs to; this is the index.
+Recorded from the board's answer to the VUL-8 decision batch (interaction
+`vul-8:open-decision-register:batch-1`, resolved 2026-10-01). Each row's full reasoning stays in
+the numbered section it belongs to; this is the index.
+
+**How to read the first column of each row, because the three answers did not arrive in the same
+form.** `defaults` and `legal` were answered by **selecting an option** — `accept_all` and
+`placeholder` respectively — and those rows record a selection. **`cluster` was answered in free
+text with no option selected**: the interaction result is `optionIds: []` plus `otherText`. So D1's
+row records what the board *said*, and names Option D as **this register's reading** of it rather
+than as an act the board performed. §1.5 argues that reading in full. The distinction is kept
+because §1.6 requires the Phase 2 gate to re-decide D1 *"with Option C's price in front of it"*,
+which is only coherent if this log says plainly that the board has never been shown a priced
+option and chosen one.
 
 | # | Decision | Effect |
 |---|---|---|
-| **D1** | **No cluster.** *"The Aether cluster does not exist and it makes no sense to create one before having any deliverables."* **Option D adopted.** | The §1.1 question is answered **negatively**: there is no Aether environment. `infra#1` stays unmerged. R1–R6 are carried as named risk with the owners in §1.3. Re-decided at the **Phase 2 gate**, not before. Consequences in §1.6. |
+| **D1** | **No cluster.** Answered in free text, verbatim: *"Ather cluster does not exists and it makes no sense to create before having any deliverables."* `[sic]`. **No option was selected** (`optionIds: []`); **Option D is this register's reading** of that answer, not a board selection — see §1.5. | The §1.1 question is answered **negatively**: there is no Aether environment. `infra#1` stays unmerged. R1–R6 are carried as named risk with the owners in §1.3. Re-decided at the **Phase 2 gate**, not before. Consequences in §1.6. |
 | **D2** | §24.3's stated cut line **is** the GA scope. The date is an output of the program plan, not an input. | T2 (`plans/program-plan.md`) derives the date. No separate GA-scope decision remains. |
 | **D6** | **Observe AAAA, scan IPv4 only, disclose untested IPv6.** §5.9 moves from `[PROPOSED — owner review]` to adopted. | `report/matrix` coverage wording must say "resolved AAAA, not scanned". §24.4's "adopt explicitly or state the limitation" is discharged by adopting. |
+| **D8** | **Option (b) selected** (`optionIds: ["placeholder"]`), **not the recommended (a): ship a conservative internally-drafted disclaimer / ToS / permission-attestation text and get it reviewed before GA.** Outside counsel is not commissioned now. | Removes the only external lead time on the register. **Three** residues, not two, and the third was disclosed with the option the board took: the pre-GA review becomes a release gate; the external lead time is gone; and counsel's review may change the attestation **flow**, not only its wording. D8's own row carries all three. |
 | **D9** | **§26's retention defaults stand** — 30-day recovery window, raw output 30d, exports 7d, reports for account life. Erasure beats locked evidence except under a documented legal hold. A restore must replay the deletion log before restored data is reachable. | `deletion/all-stores-restore` and `recovery/restore` keep the shape they were already written to. Policy is configuration, not code. |
 | **D10** | **Authenticated download only at GA.** No external transactional-email provider. Public report sharing stays off by default and post-GA. | Ratifies §26 and §24.3. No vendor data-processing review is needed for GA. §0.0 rule 8 / §18.1 boundary is not crossed. |
 | **D11** | **§26's report defaults and §16.10's budgets stand.** Comparable coverage is defined as **"resolved and scanned"**, with resolved-but-unscanned — IPv6, blocked, skipped — stated separately rather than folded in. | Ties to D6 by construction. `report/matrix` and `report/cross-consistency` can be written against fixed numbers. |
 | **D13** | **Phase 5 AI deferred entirely** to the Phase 5 gate. | GA is "usable operation with AI disabled" per §24.3. The §18 crate-level AI→dispatcher ban and `ci/crate-boundaries.sh` are what make the deferral safe. |
 | **D14** | **Optional-feature package deferred.** The carve-out resolves to its default: **Amass is not in the Phase 2 pinned scanner set.** | §24.1's walking skeleton stays `subfinder → dnsx → httpx → nuclei`. `supply-chain/check-catalog`'s pinned-image list is fixed for Phase 2. |
-| **D8** | **Option (b), not the recommended (a): ship a conservative internally-drafted disclaimer / ToS / permission-attestation text and get it reviewed before GA.** Outside counsel is not commissioned now. | Removes the only external lead time on the register. The residual is recorded in D8's row: the pre-GA review is now the single control standing between an internal draft and a liability position, so it is a gate, not a courtesy. |
+
+**D2, D6, D9, D10, D11, D13 and D14 are one answer, not seven.** The `defaults` question was
+answered `optionIds: ["accept_all"]` — *"Accept all seven defaults as written."* Each row above is
+the register's own recommended default, which the board accepted as a block; the per-row text is
+this document's, and the selection is the single `accept_all`.
 
 **Still open: D3, D4, D5, D7, D12, D15.** Six rows, all board-owned, all pricing, billing-edge,
 scope or liability-posture judgements where this register deliberately offered no default. §2.1
@@ -113,10 +133,10 @@ answer changes what the next two phases can prove. It gets its own section.
 |---|---|
 | **Item** | Do we stand up a Kubernetes environment for Phase 1, and if so which one? |
 | **Source** | Breakdown §7.7 (the only genuinely new item in that section). Risk register in ADR-0002 §7 (R1–R6). The §27 item 5 residue that ADR-0002 and ADR-0003 explicitly did **not** close. |
-| **Blocks** | Nothing in Phase 0 or Phase 1 *delivery*. It blocks **verification**: six named risks, **nine §25 identifiers and two ADR-derived confirmations**, plus three areas that have no test at all (table in §1.3). `infra#1` stays unmerged. |
+| **Blocks** | Nothing in Phase 0 or Phase 1 *delivery*. It blocks **verification**: six named risks, **nine §25 identifiers** a cluster would strengthen, **one ADR-derived confirmation whose deployment coverage — not its assertion — stays incomplete** (`storage/s3-compat-conformance`, ADR-0002 A3 §7.1(c)), plus three areas that have no test at all (table in §1.3). `infra#1` stays unmerged. |
 | **Needed by** | Phase 2 forces a partial answer (secureCodeBox operator must run somewhere). Phase 4 forces a complete one (`recovery/restore`, `deletion/all-stores-restore`, `release/analysis`, `abuse/egress-stop` have no non-cluster form at all). |
 | **Owner** | Board. |
-| **DECIDED 2026-10-01** | **No cluster — Option D.** *"The Aether cluster does not exist and it makes no sense to create one before having any deliverables."* The existence question in §1.1 is answered **no**. Re-decided at the Phase 2 gate. Consequences in §1.6. |
+| **DECIDED 2026-10-01** | **No cluster.** Answered in free text — *"Ather cluster does not exists and it makes no sense to create before having any deliverables."* `[sic]` — with **no option selected** (`optionIds: []`). **Option D is this register's reading** of that answer (§1.5), not a board selection. The existence question in §1.1 is answered **no**. Re-decided at the Phase 2 gate. Consequences in §1.6. |
 
 ### 1.1 The question is not the one the brief assumed — and the answer is "it does not exist"
 
@@ -154,10 +174,25 @@ it? No agent had ever confirmed it, and no document in the design of record does
 
 There is already a live instance of this exposure compiled into the workspace, which is what makes
 it concrete rather than a phasing argument. `platform#1`'s root `Cargo.toml` pins
-`k8s-openapi = "=0.28.0"` with `features = ["v1_32"]`, under the manifest's own comment: *"if
-Aether's control plane is older than 1.32, this pair is wrong outright — that is CEO's to
-confirm."* With no control plane to confirm against, that pin is now an **assumption with no
-owner who can discharge it** rather than a question awaiting an answer. §1.6 routes it.
+`k8s-openapi = "=0.28.0"` with `features = ["std", "v1_32"]`. The manifest's comment is quoted
+here **in full**, because an earlier revision of this line cut it at the dash and the clause after
+the dash answers the charge:
+
+> *"`v1_32` is decided in §3.7.4, not a placeholder: it is the floor 0.28.0 offers, and
+> k8s-openapi's generated types for an older minor stay valid against a newer API server.
+> Compiling against the floor means `vf-operator`/`vf-admission` can only name surface every
+> supported minor serves, so a field the real cluster lacks is a **compile** error rather than a
+> reconcile that silently stops short. Raising the floor is then a deliberate act. (If Aether's
+> control plane is older than 1.32, this pair is wrong outright — that is CEO's to confirm **and is
+> filed separately; §24.2 puts the operator after the services and nothing in Phase 1 reconciles a
+> CRD.**)"*
+
+So the pin is **not** a live defect, and this register does not claim it is: the floor is a
+reasoned choice, a wrong floor surfaces as a compile error rather than a silent misbehaviour, and
+nothing in Phase 1 exercises it. What D1's answer changes is narrower and still real: the sentence
+*"that is CEO's to confirm"* describes a question awaiting an answer, and with no control plane in
+existence there is nothing to confirm against — so it is an **assumption with no owner who can
+discharge it** until the Phase 2 gate. §1.6 routes it as exactly that, and no further.
 
 That single fact selected between the four options below. It eliminated A and B outright.
 
@@ -183,6 +218,7 @@ rather than argued about.
 | Recurring | 3–4 additional arm64 worker nodes at ~8 vCPU / 32 GB: **~$400–550/month** (~$5–7k/year), plus ~1 TB block storage for CNPG's 3-instance HA and ClickHouse at ~$100/month. **≈ $500–650/month (~$6–8k/year).** |
 | One-time | As Option A, plus node provisioning. |
 | Settles | Same as Option A. R5 (arm64 reproducibility *on Aether nodes*) is settled only if the new nodes are the same platform. |
+| **Figure the board actually saw** | **~$550–700/month (~$7–8k/year)**, in the VUL-8 interaction's option text. The number above is a later recomputation from the same footprint and its arithmetic checks (400–550 + 100); both are order-of-magnitude and neither is a quote. Recorded because the Phase 2 gate will reuse these figures, and it should know which one the 2026-10-01 answer was given against. Option B was in any case eliminated by the fact, not by its price. |
 
 **Option C — No Aether environment exists. Provision a Phase-1 `dev` cluster.**
 
@@ -211,39 +247,77 @@ Phase 4 decision, not this one.
 |---|---|
 | Recurring | $0. |
 | Settles | Nothing. This is the status quo, and it is a legitimate choice through Phase 1. |
-| Cost | The nine §25 identifiers and two ADR-derived confirmations in §1.3 close at reduced strength, three areas stay with no test at all, and §1.3 is the list of what we ship without. |
-| **Adopted** | **Yes — this is the board's decision of 2026-10-01.** |
+| Cost | The nine §25 identifiers in §1.3 close without the strength a cluster would add, `storage/s3-compat-conformance` closes with its deployment coverage naming a containerised backend rather than Aether's, three areas stay with no test at all, and §1.3 is the list of what we ship without. |
+| **Adopted** | **Yes — as this register's reading of the board's answer of 2026-10-01.** The board answered the `cluster` question in free text with `optionIds: []`; it did not select from this list, so no option on it was priced and chosen. Option D is the only option consistent with both halves of what the board did say, and §1.5 argues that inference rather than asserting it. |
 
 ### 1.3 What stays unverifiable without a cluster
 
-ADR-0002 §7's six risks, mapped to what each one actually leaves weak. **This table was wrong in
-the first revision of this register and was rebuilt from Atlas's review (F1–F3).** The errors
-pointed in both directions at once — they over-valued a cluster on R1/R2/R3 and buried the one
-genuinely strong argument for it — so the corrected shape matters more than the correction.
+ADR-0002 §7's six risks, mapped to what each one actually leaves weak.
 
-Two distinctions the first version collapsed and this one keeps:
+> **Source of this mapping, stated before the table because it governs how to read it.** The
+> per-risk mapping below **is ADR-0002 amendment A3 §7's**, reproduced. A3 is the design of record
+> for it and this register is a plan citing it: where the two differ, **A3 wins and this table is
+> wrong**. A3 is on [`docs#28`](https://github.com/vulcanflow/docs/pull/28) and is **not yet on
+> `main`** — so if A3's §7 text changes before that pull request merges, this section is re-pointed
+> to the merged text rather than defended. It is written this way deliberately: an earlier revision
+> of this table published a *rival* mapping of the same six risks, and two mappings of one table on
+> one `main` is the defect, not the disagreement.
+
+**This table was wrong in the first revision of this register and has been rebuilt twice** — once
+from Atlas's review (F1–F3), and again here against A3 §7 after lane-6 review found it still
+diverging at **R1** and **R6**. The two divergences are named below the table so the old shape
+cannot be cited from a cached read.
+
+Three distinctions this table keeps:
 
 1. **§25 identifiers and ADR-derived confirmations are disjoint sets.** Breakdown §3 splits §25
    into 27 in-scope + 18 deferred = 45; §3.3 then adds **seven ADR-derived identifiers** as a
    separate family, which is why Crucible's ledger is 34 and not 27, and why module doc comments
    read `//! §25: <id>` *or* `//! ADR: <id>`. They are not interchangeable when pricing a cluster:
    the ADR-derived set is the conditional half of the crate approval, the §25 set is product
-   evidence.
-2. **"The test is weak" and "there is no test at all" are different costs.** The second is worse,
+   evidence. **A3 §7.1(a) counts eight in that family, not seven** — it adds
+   `scb/parser-contract-conformance` (ADR-0003 §3.4), which would make Crucible's ledger 35. The
+   figures above are breakdown §3.3's, cited faithfully. **Two design-of-record sources disagree
+   and a plan does not get to pick between them**: routed to Atlas on
+   [VUL-15](/VUL/issues/VUL-15). Nothing in D1 turns on it — the discrepancy is in the ADR-derived
+   family, and D1 is priced on the §25 column.
+2. **"Strengthen" is the verb, not "degrade"** — A3 §7.1(b): *"'Strengthen' is the right verb;
+   'degrade' is not."* Every ADR-derived confirmation here runs green with its full intended
+   assertion on a laptop, with the single exception in A3 §7.1(c). What a cluster closes is the gap
+   between a correct handler and the real platform handing it real input under load, and that gap
+   is a property of the **§25** rows.
+3. **"The test is weak" and "there is no test at all" are different costs.** The second is worse,
    and R1 is the case of it.
 
-| Risk | §25 identifiers left weak | ADR-derived confirmations left weak | Has no test at all | Owner |
+| Risk | §25 identifiers a cluster would **strengthen** | Confirmations a cluster would **not** strengthen | Has no test at all | Owner |
 |---|---|---|---|---|
-| **R1** Admission webhook TLS — cert issuance, rotation, `caBundle` injection | — (indirect only: `authz/start-barrier-all-paths` and `execution/gates-before-start` assert gate *decisions*, not TLS plumbing) | — | **cert issuance, rotation, `caBundle` injection** | Kiln |
-| **R2** Admission chain ordering and failure policy — `failurePolicy`, timeouts, mutating reinvocation | `authz/start-barrier-all-paths` (its Kubernetes paths), `execution/gates-before-start` | — | admission-chain ordering, `failurePolicy`, mutating reinvocation | Kiln |
-| **R3** RLS *at realistic concurrency* through PgBouncer | `isolation/background-queries`, `isolation/all-stores` | — | — | Forge + Ledger |
-| **R4** Ceph RGW conformance against the **real Aether** RGW — version, tuning, bucket policy | `isolation/all-stores`, `deletion/all-stores-restore` | `storage/s3-compat-conformance` (containerised RGW ≠ Aether RGW) | — | Forge |
-| **R5** arm64 build reproducibility end to end on Aether nodes | `build/rust-supply-chain`, `perf/service-baseline` | — | — | Crucible |
-| **R6** secureCodeBox v5.9.0 operator against the cluster's actual Kubernetes minor; Harbor mirroring of pinned digests. **The unclosed half of §27 item 5.** | `execution/scan-identity` (**Phase 1**), `supply-chain/check-catalog` (Phase 2) | `scb/hook-invocation-contract` | Harbor digest mirroring; operator / API-server interaction | Kiln |
+| **R1** Admission webhook TLS — cert issuance, rotation, `caBundle` injection | `authz/start-barrier-all-paths`, `execution/gates-before-start` | `admission/cascade-gate-delete-oldobject`, `admission/workload-gate-dryrun` — **ADR-derived**, settled in full without a cluster (§4.2) | **cert issuance, rotation, `caBundle` injection** | Kiln |
+| **R2** Admission chain ordering and failure policy — `failurePolicy`, timeouts, mutating reinvocation | `authz/start-barrier-all-paths`, `execution/gates-before-start` | `admission/cascade-gate-delete-oldobject`, `admission/workload-gate-dryrun` — same two, same reason | admission-chain ordering, `failurePolicy`, mutating reinvocation | Kiln |
+| **R3** RLS *at realistic concurrency* through PgBouncer | `isolation/all-stores`, `isolation/background-queries` | `db/tenanttx-set-local-isolation`, `db/pgbouncer-transaction-pooling-prepared` — **ADR-derived**, settled in full without a cluster (§4.3). *"Neither is weakened by R3"* | — | Forge + Ledger |
+| **R4** Ceph RGW conformance against the **real Aether** RGW — version, tuning, bucket policy | `isolation/all-stores` (object-store half), `deletion/all-stores-restore` (object-store half; Phase 4) | `storage/s3-compat-conformance` — **the one exception** (A3 §7.1(c)): the assertion is **not** weakened, its *deployment coverage* is. A containerised RGW is a real backend; Aether's is a second, different one | — | Forge |
+| **R5** arm64 build reproducibility end to end on Aether nodes | `build/rust-supply-chain` (reproducibility half), `perf/service-baseline` | the cargo-deny / `cargo audit` / SBOM / `forbid(unsafe_code)` half of `build/rust-supply-chain` — CI-only. **No ADR-derived identifier depends on R5** | — | Crucible |
+| **R6** secureCodeBox v5.9.0 operator against the cluster's actual Kubernetes minor; Harbor mirroring of pinned digests. **The unclosed half of §27 item 5.** | `execution/scan-identity`, `supply-chain/check-catalog` (Phase 2), **and the pool half of `authz/start-barrier-all-paths` and `execution/gates-before-start`** — §27 item 5 names the pool start barrier explicitly | `scb/hook-invocation-contract` and `scb/parser-contract-conformance` (ADR-0003 §3.4), and the §6.3 CRD-codegen drift gate — all **ADR-derived** and all cluster-free | Harbor digest mirroring; operator / API-server interaction | Kiln |
 
-**Nine distinct §25 identifiers, two ADR-derived confirmations, and three areas with no test at
-all.** Plus three further Phase 4 identifiers with no non-cluster form — `recovery/restore`,
-`release/analysis`, `abuse/egress-stop`; `deletion/all-stores-restore` is already counted under R4.
+**The two divergences this revision corrected**, named so a reader who remembers the old table
+knows which one they are holding:
+
+| | ADR-0002 A3 §7 — and now this table | What this table said before |
+|---|---|---|
+| **R1** | `authz/start-barrier-all-paths`, `execution/gates-before-start` | `—`, demoted to a parenthetical reading "indirect only" |
+| **R6** | the two above, **plus the pool half** of `authz/start-barrier-all-paths` and `execution/gates-before-start` | `execution/scan-identity` and `supply-chain/check-catalog` only |
+
+A third divergence was in the right-hand column rather than the mapping: R6 listed
+`scb/hook-invocation-contract` as left weak and R4 listed `storage/s3-compat-conformance` without
+its §7.1(c) qualification. Both are corrected above. Nothing in R1–R6's risk text, owners or test
+behaviour moves.
+
+**Nine distinct §25 identifiers a cluster would strengthen, one ADR-derived confirmation whose
+deployment coverage (not its assertion) stays incomplete, and three areas with no test at all.**
+The nine: `authz/start-barrier-all-paths`, `execution/gates-before-start`, `isolation/all-stores`,
+`isolation/background-queries`, `deletion/all-stores-restore`, `build/rust-supply-chain`,
+`perf/service-baseline`, `execution/scan-identity`, `supply-chain/check-catalog`. Plus three
+further Phase 4 identifiers with no non-cluster form — `recovery/restore`, `release/analysis`,
+`abuse/egress-stop`; `deletion/all-stores-restore` is already counted under R4.
 
 Three corrections worth stating in full, because the first version of this table would have led the
 board to buy the wrong thing:
@@ -251,10 +325,14 @@ board to buy the wrong thing:
 - **The two `admission/*` tests are not weakened by R1 or R2.** ADR-0002 §4.2 says so in terms:
   `admission/cascade-gate-delete-oldobject` and `admission/workload-gate-dryrun` are driven by
   replaying recorded `AdmissionReview` JSON through the handler — *"no cluster required, which is
-  why these are not in §7."* A cluster strengthens neither. Listing them over-valued a cluster for
-  coverage we already have, **and simultaneously under-stated R1**, whose real cost is that cert
-  issuance, rotation and `caBundle` injection have **no named test at all**. That is why ADR-0002
-  §7 carries R1 as a risk with an owner instead of as a test ID.
+  why these are not in §7."* A cluster strengthens neither, which is why they sit in the
+  right-hand column. Listing them as weakened over-valued a cluster for coverage we already have.
+  **R1's distinctive cost is in the third column, not the first**: cert issuance, rotation and
+  `caBundle` injection have **no named test at all**. That is a different and worse thing than a
+  weak test, and it is the reason R1 is carried as a risk with an owner rather than as a test ID.
+  R1 *does* bear on two §25 rows — A3 §7 names them and this table now does too — but a cluster
+  strengthening `authz/start-barrier-all-paths` is not a substitute for the TLS plumbing having no
+  test.
 - **The `SET LOCAL` leak is deterministic, not churn-dependent — and its test is full strength
   without a cluster.** A bare `SET` under transaction pooling leaks as soon as two transactions
   share one server connection; two connections and a borrow cycle is sufficient, and ADR-0002 §4.3
@@ -266,24 +344,52 @@ board to buy the wrong thing:
   pool exhaustion, `DISCARD ALL` timing, re-preparation under `max_prepared_statements = 200` —
   but it is not what makes the bug appear. The first version told the board that the
   highest-consequence test in the product needed a cluster to be trusted. It does not.
-- **R6 is the only risk that degrades a Phase 1 §25 identifier** — `execution/scan-identity`,
-  Ledger's, in Phase 1 per breakdown §3.2. That is the single strongest cluster argument on the
-  register, and the first version buried it among entries that did not belong.
+- **Seven of the nine §25 identifiers above are Phase 1, not one.** An earlier revision of this
+  bullet said *"R6 is the only risk that degrades a Phase 1 §25 identifier."* Both halves of that
+  were wrong. Counted against breakdown §3.2 (Ledger, 18) and §3.1 (Scribe, 9) — the 27 in Phase 1
+  scope — **seven** of the nine are Phase 1: `authz/start-barrier-all-paths`,
+  `execution/gates-before-start`, `isolation/all-stores`, `isolation/background-queries`,
+  `build/rust-supply-chain`, `perf/service-baseline`, `execution/scan-identity`. Only
+  `supply-chain/check-catalog` (Phase 2, §3.4) and `deletion/all-stores-restore` (Phase 4, §3.4)
+  are not. **R2, R3, R5 and R6 each bear on Phase 1 identifiers**, and so do R1 and R4 on the
+  corrected mapping — every one of the six touches at least one. And the verb was wrong as well as
+  the count: A3 §7.1(b) rules out *degrade*, and §7.1(d) adds that `authz/start-barrier-all-paths`
+  and `execution/gates-before-start` *"are Phase 1 Ledger work and must go green in Phase 1,
+  asserted against replayed `AdmissionReview` JSON through the real handler."* So no cluster risk
+  blocks a Phase 1 green; what a cluster would add is strength on top of it.
+- **R6 keeps its salience for a different reason — it is the nearest forcing point, not a unique
+  one.** Phase 2 cannot run the secureCodeBox operator anywhere without a cluster, which is a date
+  rather than a quality argument, and it is why §1.6 puts the re-decision at the Phase 2 gate.
 
-**Net effect on D1:** the corrected table makes the "no cluster" decision *more* defensible, not
-less. The things a cluster would have bought are mostly Phase 2 and Phase 4, and the two tests the
-board would most want protected are already at full strength on Testcontainers — but the claim has
-to be stated at the resolution of the tests, not of the topics, or it over-reads its own table:
+**Net effect on D1:** the corrected table makes the "no cluster" decision defensible, and the
+reason has to be stated precisely or it over-reads its own table. The four tests that *are* at full
+strength without a cluster are **ADR-derived confirmations**, and A3 §7.2 is explicit about what
+that does and does not buy:
 
-- **Full strength without a cluster:** the `SET LOCAL` leak itself
+> *"An ADR-derived confirmation going green does not make the §25 identifier it feeds green; it
+> removes one way for that identifier to fail. **Counting a feed edge as coverage of the §25 row is
+> the error this table exists to prevent.**"*
+
+So:
+
+- **Full strength without a cluster, as ADR-derived confirmations:** the `SET LOCAL` leak itself
   (`db/tenanttx-set-local-isolation`, `db/pgbouncer-transaction-pooling-prepared`) and the two
   admission-gate *decision* tests (`admission/cascade-gate-delete-oldobject`,
-  `admission/workload-gate-dryrun`).
-- **Still weak, per R3 above:** cross-tenant RLS isolation *at realistic PgBouncer concurrency* —
-  `isolation/background-queries` and `isolation/all-stores`. The mechanism is proven; the
-  concurrency conditions that govern the leak's frequency, blast radius and additional paths are
-  not reproduced. "Cross-tenant RLS isolation is covered at full strength" would therefore be too
-  broad a reading of a narrower, correct result.
+  `admission/workload-gate-dryrun`). These are real results on real mechanisms and the first
+  revision of this register was wrong to say otherwise.
+- **What they do not do is cover the §25 rows they feed.** Per A3 §7.2 those four feed exactly
+  four §25 identifiers — `isolation/all-stores`, `isolation/background-queries`,
+  `authz/start-barrier-all-paths` and `execution/gates-before-start` — and **all four are in the
+  left-hand column above, all four are Phase 1, and none of them is covered by this register's
+  green.** Each green removes one way for its §25 row to fail. That is the whole of what it buys.
+- **Specifically on the claim a reader is most likely to want:** cross-tenant RLS isolation as a
+  *product property* is **not** covered at full strength. `isolation/all-stores` and
+  `isolation/background-queries` stay in the strengthen column under both R3 and R4. The mechanism
+  is proven; the concurrency conditions that govern the leak's frequency, blast radius and
+  additional paths — `server_lifetime` recycling, pool exhaustion, `DISCARD ALL` timing,
+  re-preparation under `max_prepared_statements = 200` — are not reproduced, and neither is
+  Aether's own object store. Any sentence of the form "cross-tenant RLS isolation is already
+  covered at full strength" is a feed edge counted as coverage, and this register does not make it.
 
 ### 1.4 Recommendation as put to the board
 
@@ -313,21 +419,49 @@ register does not change it, it prices it.
 
 ### 1.5 Decision
 
-**Taken 2026-10-01. Option D — no cluster.** In the board's words: *"The Aether cluster does not
-exist and it makes no sense to create one before having any deliverables."*
+**Taken 2026-10-01. No cluster.** In the board's own words, quoted exactly as written: *"Ather
+cluster does not exists and it makes no sense to create before having any deliverables."* `[sic]`
+— the misspelling and grammar are the board's; earlier revisions of this register silently
+normalised the sentence in three places and that is corrected throughout.
 
 That is both halves of the question answered in one sentence. The fact: **there is no Aether
 environment.** The judgement: **do not buy a substitute for one until there is something to run on
 it.** Recommendation 3 above anticipated the second half; the first half it could only ask for.
 
-The position is defensible on this register's own evidence, and the corrected §1.3 strengthens it:
-Option C's ~$9.4k/year buys a cluster that *cannot* answer R4 or R5 honestly, and the two highest-
-consequence tests a board would want protected — the `SET LOCAL` tenant-context leak and the
-admission-gate decision tests — are already at full strength on Testcontainers. RLS isolation *at
-realistic PgBouncer concurrency* is the part that stays weak (R3), and it is carried as named risk
-rather than claimed as covered. The forcing point is **Phase 2**, where
-the secureCodeBox operator has to run somewhere. "Deliverables first" and "decide at the Phase 2
-gate" are the same instruction.
+**What the board did, exactly.** The `cluster` question offered five options and the result is
+`optionIds: []` with free text only. **No option was selected.** This matters enough to argue
+rather than assert, because the rest of the register is built on it:
+
+- **Options A and B die on the fact**, not on a judgement. Both are premised on *"Aether exists"*;
+  the board's first clause says it does not.
+- **Option C dies on the judgement.** *"No sense to create before having any deliverables"* is a
+  refusal to provision now. Option C is provisioning now.
+- **Option D is what is left** — keep the hold through Phase 1, decide a cluster at the Phase 2
+  gate — and it is also the option whose own text says *"decide a cluster at the Phase 2 gate,"*
+  which is the board's *"before having any deliverables"* restated.
+
+**So Option D is this register's reading, and the reading is sound. It is not a board selection,
+and nothing downstream may cite it as one.** The practical consequence is in §1.6: because no
+option was selected, **the board has never been shown Option C's price and declined it.** That is
+precisely why the Phase 2 gate item is *"re-decide D1 with Option C's price in front of it"* rather
+than "revisit a priced decision" — a distinction that only survives if this section says the price
+was never put to a vote.
+
+The position is defensible on this register's own evidence, and the corrected §1.3 supports it on a
+narrower basis than an earlier revision claimed. Option C's ~$9.4k/year buys a cluster that
+*cannot* answer R4 or R5 honestly — that argument is untouched and is the strongest one here. What
+has to be stated more carefully is the coverage side. The four tests that are at full strength on
+Testcontainers — the `SET LOCAL` tenant-context leak pair and the two admission-gate decision tests
+— are **ADR-derived confirmations**, and per ADR-0002 A3 §7.2 a green confirmation *"removes one
+way for [the §25 identifier it feeds] to fail"* and does not cover it. The four §25 rows they feed
+(`isolation/all-stores`, `isolation/background-queries`, `authz/start-barrier-all-paths`,
+`execution/gates-before-start`) are all Phase 1 and all stay in §1.3's strengthen column. **Seven**
+of the nine §25 identifiers a cluster would strengthen are Phase 1, and every one of the six risks
+bears on at least one of them. None of that blocks a Phase 1 green — A3 §7.1(d) says those rows
+must go green in Phase 1 regardless, against replayed input through the real handler — and none of
+it is covered by the four greens either. It is carried as named risk, with owners, in §1.3. The
+forcing point is **Phase 2**, where the secureCodeBox operator has to run somewhere. "Deliverables
+first" and "decide at the Phase 2 gate" are the same instruction.
 
 ### 1.6 Consequences of the decision, and who owns each
 
@@ -339,9 +473,9 @@ discovered later one at a time.
 | **`infra#1` stays unmerged** and is now held by a recorded decision rather than an open question. Its `UNCONFIRMED` pins and withheld ApplicationSet are correct as they stand — there are no destinations to confirm. | CEO / T3 |
 | **R1–R6 are carried as accepted named risk**, not as pending work, with the owners in §1.3. The Phase 2 gate inherits them. | Atlas, in ADR-0002 §7 |
 | **Two TDD statements are now known to be false.** §24.2's *"Existing approved Aether stack"* and Appendix C's *"Approved self-operated Kubernetes platform"* assert an installation that does not exist. The design of record should say what is true: Aether is the approved *target* platform, not a running one. | Atlas — TDD correction |
-| **`platform#1` pins `k8s-openapi "=0.28.0"` / `v1_32` against a control plane that does not exist.** The manifest comment makes it CEO's to confirm; with no cluster there is nothing to confirm against. It is not wrong today — nothing runs against an API server — but it is an undischargeable assumption sitting in a dependency pin, and the first cluster we ever stand up is where it bites. It should be labelled as an assumption in the manifest rather than as a pending question. | Atlas / Crucible |
+| **`platform#1` pins `k8s-openapi "=0.28.0"` / `v1_32` against a control plane that does not exist.** The manifest comment makes it CEO's to confirm; with no cluster there is nothing to confirm against. It is not wrong today — nothing runs against an API server, nothing in Phase 1 reconciles a CRD, and a wrong floor is a compile error (§1.1 quotes the comment in full) — but it is an undischargeable assumption sitting in a dependency pin, and the first cluster we ever stand up is where it bites. The comment should say "assumption, held to the Phase 2 gate" rather than "CEO's to confirm". | **Two owners, two deliverables.** The design-of-record half — ADR-0002 §3.7.4's reading, if it needs one — is **Atlas**. The edit to `platform`'s root `Cargo.toml` is **production source** and goes to **Forge** (lane 3). **Not Crucible:** ADR-0005 §2.1 — *"Crucible executes suites and merges. It writes neither production code nor tests"* — and §2's rule that *"no agent holds two adjacent lanes on the same change"* makes lane 3 unavailable to the agent holding lane 4. Crucible runs and merges it, as always. An earlier revision of this row routed the manifest edit to Crucible; the identical error in [VUL-30](/VUL/issues/VUL-30) scope item 3 (*"coordinate with Crucible on the manifest edit"*) is **Atlas's to correct there**, and this register inherited it from that issue rather than the reverse. |
 | **Phase 0's "existing approved Aether stack" deliverable cannot be delivered as written.** T3's Phase 0 scope needs its Aether line restated as "deferred to the Phase 2 gate", or Phase 0 cannot close. | CEO / T3 |
-| **The Phase 2 gate acquires a mandatory agenda item**: re-decide D1 with Option C's price and §1.3's corrected list in front of it, including whether a non-Aether cluster is acceptable given that it cannot answer R4 or R5. | CEO, at the Phase 2 gate |
+| **The Phase 2 gate acquires a mandatory agenda item**: put Option C's price and §1.3's corrected list in front of the board, including whether a non-Aether cluster is acceptable given that it cannot answer R4 or R5. **This is a first pricing, not a revisit** — the 2026-10-01 answer selected no option (§1.5), so no priced option has ever been declined, and the gate must not be run as though one had. | CEO, at the Phase 2 gate |
 
 None of these is a reason to revisit the decision. They are the bill for it, and it is a smaller
 bill than ~$9.4k/year for answers the cluster could not give.
@@ -451,8 +585,9 @@ have been a guess dressed up as advice.
 | **Options** | (a) Commission outside counsel now. (b) Ship a conservative internally-drafted placeholder and get it reviewed before GA. (c) Defer to Phase 3b. |
 | **Recommendation** | **(a) — and this is the item to start today even though it is needed last.** It is the only decision on the register with a dependency outside the company and therefore the only one with a lead time we do not control. Everything else here is a judgement the board can make in an afternoon. A security scanner's permission-attestation wording is also the document that decides whether an unauthorised scan is our liability or the customer's, which is not a thing to draft internally and hope. §16.7 already puts the disclaimer under a version, so counsel's text drops into a slot that exists. |
 | **Owner** | Board + outside counsel |
-| **DECIDED 2026-10-01** | **(b), against the recommendation: ship a conservative internally-drafted text and have it reviewed before GA.** Outside counsel is not commissioned now. Recorded as a deliberate choice, not an oversight — the recommendation for (a) was argued and declined. |
-| **What the decision changes** | Two things, and they are the whole residue. **(1) The pre-GA review becomes a release gate, not a courtesy.** Under (a) the liability position was counsel's work product; under (b) it is an internal draft plus one review, so that review is the only control standing between us and the posture, and it must be *named, scheduled and blocking* rather than assumed. **(2) The lead time we did not control is gone** — which is the real gain, and the reason this is a reasonable call: D8 leaves the critical path entirely and nothing on the register now depends on an external party. §16.7's versioned disclaimer slot means a later counsel review replaces the text without a schema change, so (b) is reversible into (a) at any point before GA at no engineering cost. |
+| **DECIDED 2026-10-01** | **(b) selected** (`optionIds: ["placeholder"]`), **against the recommendation: ship a conservative internally-drafted text and have it reviewed before GA.** Outside counsel is not commissioned now. Recorded as a deliberate choice, not an oversight — the recommendation for (a) was argued and declined. |
+| **What the decision changes** | **Three things.** **(1) The pre-GA review becomes a release gate, not a courtesy.** Under (a) the liability position was counsel's work product; under (b) it is an internal draft plus one review, so that review is the only control standing between us and the posture, and it must be *named, scheduled and blocking* rather than assumed. **(2) The lead time we did not control is gone** — the real gain, and the reason this is a reasonable call: D8 leaves the critical path entirely and nothing on the register now depends on an external party. **(3) The risk disclosed with option (b), carried here rather than left in the interaction text.** The option the board accepted was offered with this attached, verbatim: *"The risk is that counsel's review lands late and changes the attestation flow, not just the wording — which touches `authz/approval-tracks`."* That is the one residue an earlier revision of this row dropped while claiming to state the whole of it. |
+| **The reversibility claim, bounded** | §16.7's versioned disclaimer slot means a later counsel review replaces **the text** without a schema change, so (b) is reversible into (a) at any point before GA **at no engineering cost for a wording change**. It is **not** free for a flow change. §16.7 versions the disclaimer; it does not version the attestation flow. If counsel's review changes *when* or *how* a customer attests permission — rather than what the attestation says — that lands on `authz/approval-tracks` and its Track B half, which D8's own **Blocks** line already names, and it is engineering work. The cost of that branch is unpriced here because its probability is counsel's to collapse, not ours; the gate in (1) is the point at which it becomes knowable, which is a further reason that review is scheduled and blocking rather than assumed. |
 | **Scope of the draft** | Four artefacts, all conservative: the report disclaimer (§16.7, versioned); ToS; the permission-attestation wording customers accept before a scan; and attestation expiry. Manual-review service level for Track B stays with §24.3's fast-follow list. The drafting standard is **"assume it will be read adversarially after an unauthorised scan"** — that is the scenario the wording exists for. |
 
 ### D9 — Retention and deletion policy
@@ -609,6 +744,15 @@ lists them as open — can see why.
 | **21** | ~~Lago and Stripe client approach in Rust~~ | **ADR-0003** §4 | **Thin hand-written typed clients** scoped to §17.5's endpoints, provider OpenAPI specs pinned as source of truth with a drift test. Webhook signature verification in-house with RustCrypto, to the schemes in §4.4. |
 | **5** | ~~First automatic cascade: SCB release/digests, node compatibility, scan-ID field, hook/CRD inputs, candidate reservation and start barrier~~ | **ADR-0002** §6 (release, digests, arm64, CRD type generation — `Also settles` the engineering half) + **ADR-0003** (hook contract in §3.3, **and the exact scan-ID field: the scan fingerprint is `metadata.uid` of the `Scan` object**) | Struck **except its cluster half** — node Kubernetes-minor compatibility and Harbor digest mirroring, which is risk **R6** and folded into **D1**. ADR-0003 §5 says so explicitly: *"it needs a cluster, and that hold is CEO's to lift."* Candidate reservation and the start barrier are Phase 1 tests (`authz/start-barrier-all-paths`, `execution/late-cascade-barrier`), not open decisions. Limb by limb: release/digests ✅, scan-ID field ✅, hook/CRD inputs ✅, node K8s-minor **open → R6**, Harbor mirroring **open → R6**, reservation/start barrier ✅ discharged by a named test. |
 
+**One citation under item 5's scan-ID limb is circular, and this register declines to resolve it.**
+ADR-0003 §3.3 sources the scan-ID field to *"ADR-0002's reading of §21.3"*, but ADR-0002 contains
+no mention of `metadata.uid`, a scan ID or a fingerprint. The attribution to **ADR-0003** above is
+correct and the limb is almost certainly right on the merits — `metadata.uid` of the `Scan` object
+is a sound fingerprint and `execution/scan-identity` is the test that asserts it. What is wrong is
+the chain underneath it. That is **ADR text, not plan text**, so correcting it is Atlas's on
+[VUL-15](/VUL/issues/VUL-15); recorded here so the strike above is not read as resting on a
+citation that does not exist.
+
 **ADR-0004** closed no §27 item — it is a repository-topology decision and says so in its own
 header. It is cited here only because it is one of the four documents currently off `main` (§0).
 
@@ -686,7 +830,15 @@ Written 2026-10-01 from the following exact sources, all read rather than recall
 - `plans/phase1-work-breakdown.md` at `vulcanflow/docs` commit **`93c79f8`** — the head of closed PR #22, branch deleted. §2, §3, §3.2, §3.3, §4, §7.
 - `decisions/ADR-0004-workspace-repository.md` and `ADR-0002` **with amendment A2** at `vulcanflow/docs` commit **`cee1edc`** — the head of closed PR #23, branch deleted. ADR-0002 §7's R1–R6 table is byte-identical to the `main` version (verified twice, independently).
 - `vulcanflow/infra` PR #1 at `ed1b42c` — description and `README.md`, for what it does and does not install.
-- `vulcanflow/platform` PR #1 at `66f4a91` — root `Cargo.toml` (workspace lint table, `k8s-openapi` pin and its comment) and `ci/forbid-unsafe.sh`.
+- `vulcanflow/platform` PR #1 at `66f4a91` — root `Cargo.toml` (workspace lint table, `k8s-openapi` pin and its comment, quoted in full in §1.1) and `ci/forbid-unsafe.sh`.
+- **Added at revision 5**, all read from their branches rather than from `main`, because none of
+  them is on `main`: `ADR-0002` **amendment A3** §7, §7.1, §7.2 at
+  [`docs#28`](https://github.com/vulcanflow/docs/pull/28) — the source of §1.3's mapping;
+  `ADR-0005` §2.1, §6.1, §6.3 and §6.4 at
+  [`docs#32`](https://github.com/vulcanflow/docs/pull/32); and the **VUL-8 interaction object
+  itself** (`ask_user_questions`, resolved 2026-10-01) — its three questions, their option lists
+  and option descriptions, and the recorded `answers` array. §0.1, §1.2, §1.5 and D8 quote the
+  interaction directly rather than any summary of it.
 
 The off-`main` documents in §0 are reachable without the deleted branches:
 `git fetch origin 'refs/pull/*/head:refs/remotes/pr/*'` restores `93c79f8` (#22), `cee1edc` (#23)
@@ -700,6 +852,7 @@ and `5b3405c` (#20).
 | 2 | Arithmetic corrections; Option B total; D1's urgency separated from D8's (CodeRabbit, lane 6). |
 | 3 | **Atlas's review applied** — F1–F3 (§1.3 rebuilt: §25 vs ADR-derived sets separated, R1/R2's `admission/*` entries removed and R1 restated as "no test at all", R3's leak corrected to deterministic, `execution/gates-before-start` and `isolation/all-stores` added, `execution/scan-identity` surfaced as the only Phase 1 degradation) and P1–P6 (stale `VUL-*` ids dropped, 15/2 split, D7 named as the second Phase 1 exception, `infra#1` README quoted correctly, §4 scoped to §1.3, §27 item 5's scan-ID limb added). §1.1 narrowed to the two documents that actually assert Aether's existence, with §0.0's own verification caveat quoted against them. D15 narrowed to a ratification. D17 recited to ADR-0005 §6, with `unsafe` ownership described as relocated rather than removed. **Board answers of 2026-10-01 recorded** — §0.1, §1.5, §1.6, §2.1 and the per-row `DECIDED` entries. |
 | 4 | **Two self-contradictions closed (CodeRabbit on `5168c5c`, lane 6).** The status row said "none before the Phase 2 gate," which the paragraph eight lines below it already contradicted on D7 — corrected to name D7's Phase-1-if-retained forcing point and D5/D15 as the earliest of the rest. And §1.3/§1.5 claimed "cross-tenant RLS isolation … at full strength on Testcontainers," which over-read §1.3's own R3 row: full strength belongs to the `SET LOCAL` leak tests and the admission-gate decision tests, while `isolation/background-queries` and `isolation/all-stores` stay weak at realistic PgBouncer concurrency. Counts and the set of open rows unchanged. |
+| 5 | **The six blocking findings of reviewer #1's `docs#24` verdict, closed on `main` ([VUL-41](/VUL/issues/VUL-41)).** `docs#24` merged 2026-10-01T20:59:26Z over an unresolved **REQUEST CHANGES** and with no reviewer #2 verdict; ADR-0005 **§6.4** records that merge as a lane-7 gate defect under revisit trigger **R5b** and does not sanction it retrospectively. **This revision is the route §6.4 promises** — the findings go back through lane 6 like any other change. **B1**: §1.3's conclusion and §1.5 now name the four green tests as *ADR-derived confirmations*, quote A3 §7.2's feed-edge rule, and name the four Phase 1 §25 identifiers they feed as still in the strengthen column. **B2**: seven of nine are Phase 1, every risk bears on at least one, the verb is *strengthen* (A3 §7.1(b)) and §7.1(d)'s "must go green in Phase 1" is quoted so the column does not read as a blocker; R6 keeps its salience as the nearest **forcing point**, not as a uniqueness claim. **B3**: §1.3's table is now A3 §7's mapping, with R1 and R6 corrected, the two divergences named, and a source line making the table derivative of A3 rather than a rival to it. **B4**: §0.1, §1.2, §1.5, D1's `DECIDED` row and §1.6's Phase 2 item now record that the board answered the `cluster` question in free text with `optionIds: []` and that **Option D is this register's reading**, argued rather than asserted. **B5**: D8's residue is three things, with the risk disclosed alongside option (b) quoted verbatim and "no engineering cost" bounded to a wording change. **B6**: §1.6 routes the manifest edit to **Forge**, quoting ADR-0005 §2.1 and the adjacent-lane rule. **B7 was not re-fixed here** — D17's Rider was withdrawn by `c7bb4af` on `docs#32`, which this branch is stacked on. Advisories 1–5 and 7's ordering half applied; advisory 6 (seven-vs-eight ADR-derived identifiers) and 7's circular-citation half are **declined and routed to Atlas on [VUL-15](/VUL/issues/VUL-15)**, with reasons, both being ADR text a plan may not adjudicate. **Counts, the set of open rows and every board answer are unchanged**; nothing in this revision alters a decision. |
 
 Cost figures in §1.2 are derived from the footprint the design requires and are
 order-of-magnitude only. **They are not quotes and no commitment should be made on them.** They are
