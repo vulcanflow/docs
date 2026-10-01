@@ -1,0 +1,396 @@
+# ADR-0004 — The Cargo workspace lives in `vulcanflow/platform`
+
+| | |
+|---|---|
+| **Status** | Accepted |
+| **Date** | 2026-10-01 |
+| **Owner** | Atlas (Staff Architect / Tech Lead) |
+| **Closes** | the repository question left open by [ADR-0001](./ADR-0001-retire-go-scaffold-vf-api.md) appendix row #14 — *"repository list follows the workspace topology"* |
+| **Does not close** | any TDD §27 item. This is a repository-topology decision, not an open engineering item |
+| **Decides nothing about** | the implementation language ([ADR-0001](./ADR-0001-retire-go-scaffold-vf-api.md)), any dependency pin ([ADR-0002](./ADR-0002-rust-crate-set-and-phase0-pins.md)), any integration boundary ([ADR-0003](./ADR-0003-rpc-scb-parser-and-billing-clients.md)), or the delivery pipeline ([ADR-0005](./ADR-0005-delivery-pipeline-and-lane-enforcement.md)) |
+| **Design of record** | `VulcanFlow_Technical_Design_Document_v2.2.md` (filename says v2.2; the content is **TDD v2.3**) — §2.5.2, §2.5.3, Appendix C glossary |
+| **Issues** | [VUL-12](/VUL/issues/VUL-12) (this record). Consumed by [VUL-4](/VUL/issues/VUL-4) (the program plan). Executed by [VUL-6](/VUL/issues/VUL-6) (the fold) |
+
+## Why this record is being filed a second time
+
+This decision was first written on PR [`docs#23`](https://github.com/vulcanflow/docs/pull/23)
+(branch `atlas/adr-0004-workspace-repo-and-adr-0002-a2`, commit `cee1edc`). That PR was
+**closed unmerged at 2026-10-01T18:50:19Z with zero reviews and zero comments**, and tagged
+`archive/pr-23-adr-0004`. It was not rejected on its merits; it was closed along with
+`docs#20` and `docs#22` when the board that raised it was retired, so every `VUL-*` identifier
+it cited (`VUL-6`, `VUL-39`) now points at nothing.
+
+Three things therefore had to change, and the re-file is not a copy:
+
+1. **The board identifiers are resolved against the current board.** The stale ones are gone.
+2. **`docs#23` bundled two decisions in one commit** — ADR-0004 and ADR-0002 **amendment A2**
+   (§3.7, the pin corrections). This record carries ADR-0004 **only**. A2 is a pin change and
+   is explicitly out of scope here; see [Loose end](#loose-end-adr-0002-amendment-a2) below.
+3. **The repository state was re-audited rather than restated**, and the audit changed two
+   factual claims the draft made. See [Provenance](#provenance).
+
+The substance of the decision is unchanged, because the reasoning was never the problem. Under
+the design-of-record lens an unmerged PR decides nothing, and [ADR-0005 §11](./ADR-0005-delivery-pipeline-and-lane-enforcement.md)
+plus the Atlas role briefing both already cite ADR-0004 as settled. That gap is what this
+closes.
+
+---
+
+## 1. Context
+
+### 1.1 What the design of record says
+
+TDD §2.5.2 and the Appendix C glossary define the Cargo workspace as:
+
+> The single Rust build unit containing all VulcanFlow crates, with one pinned toolchain and
+> lockfile.
+
+ADR-0001 closed the six per-repository Go bootstraps in favour of that one workspace, and
+recorded the consequence in its appendix — *"repository list follows the workspace topology"* —
+**without naming a repository**. One build unit cannot span fourteen of them. So: which
+repository holds it?
+
+### 1.2 What actually exists
+
+Two incompatible topologies are live in the `vulcanflow` organisation at once.
+
+**The workspace.** `vulcanflow/platform` PR
+[#1](https://github.com/vulcanflow/platform/pull/1) (branch `vul-6/cargo-workspace-scaffold`,
+open) declares **fourteen** member crates in one `Cargo.toml`, against one
+`rust-toolchain.toml` (channel `1.98.1`, target `aarch64-unknown-linux-gnu`) and one committed
+`Cargo.lock`:
+
+| Kind | Crates |
+|---|---|
+| Library (6) | `vf-core`, `vf-graph`, `vf-translator`, `vf-authz`, `vf-db`, `vf-store` |
+| Binary (8) | `vf-api`, `vf-operator`, `vf-admission`, `vf-ingest`, `vf-report`, `vf-meter`, `vf-abuse`, `vf-hook-notify` |
+
+Fourteen, not the thirteen TDD §2.5.2 proposed: `vf-store` is additional, per ADR-0002 §3.
+
+**The polyrepo.** Separately, twelve per-component repositories were created on
+2026-09-09 — nine of them named after crates in that same list. The organisation holds
+**fifteen** repositories in total.
+
+### 1.3 What breaks if both persist
+
+This is the part that is not a tidiness argument.
+
+- **`vf-core` version skew returns, which is the exact failure ADR-0001 closed.** A repository
+  named `vf-authz` is an invitation to put a lockfile in it. Two lockfiles means two resolved
+  versions of `vf-core`, across precisely the crates that hold scope matching, allowance
+  accounting and finding state. §2.5.2 puts safety-relevant logic in pure library crates so it
+  can be property-tested in isolation; two copies of those types silently defeats that.
+- **Crate purity stops being checkable.** ADR-0002's boundaries (no I/O in `vf-core`,
+  `vf-authz`, `vf-graph`, `vf-translator`) are enforced by `ci/crate-boundaries.sh` and
+  `ci/pure-crate-dependencies.txt` in `platform`. A crate in its own repository is outside that
+  gate's reach, and a boundary that is only enforced in one of two places is not enforced.
+- **The single-TLS-provider rule becomes unverifiable.** ADR-0002 §3.6 names duplicate `rustls`
+  / `hmac` / `sha2` / `digest` and any `ring` edge as an *observed* failure mode, and
+  `ci/tls-provider-assertions.sh` asserts against it. That assertion is a property of **one**
+  dependency graph. Split the graph and the gate's answer stops meaning anything.
+- **The lane gate has nothing to stand on.** ADR-0005 §4.2 classifies paths like
+  `crates/*/src/**` and `crates/*/tests/**`; its own §7.5 records that the gate is live on
+  `platform` only. Nine crate repositories are nine places the pipeline is not enforced.
+- **A reader is actively misdirected.** The next agent looking for `vf-authz` finds an
+  organisation that offers two plausible answers and no record saying which is wrong. That is
+  the concrete thing this record prevents.
+
+**Nothing has to be migrated, because there is nothing in those repositories.** Every one of
+the twelve per-component repositories has a content-free default branch: eleven have no commits
+at all (zero refs), and `vf-api`'s `main` is one commit, `45d7ded9` *"chore: initialize
+repository"*, with an empty tree. The only code any of them ever held is `vf-api`'s closed
+PR #1 Go scaffold, which survives as `refs/pull/1/head` (`773357eb`) and which ADR-0001 already
+retired. **The fold is an archive-and-redirect operation, not a code migration.** That is why it
+is cheap now and expensive later.
+
+---
+
+## 2. Decision
+
+**The Cargo workspace is `vulcanflow/platform`, and it is the only repository that holds
+VulcanFlow Rust crates.** Forge created that repository mid-task on the predecessor board and
+opened `platform#1` against it; this record ratifies the name rather than renaming after the
+fact.
+
+**The rule, stated once so the sixteenth repository does not need a decision of its own:**
+
+> **A repository joins the workspace if and only if it builds with `cargo`.** Everything else
+> stays where it is.
+
+The workspace root is the **repository root** — `Cargo.toml`, `Cargo.lock`,
+`rust-toolchain.toml`, `deny.toml` and `crates/` at the top level, not under a `rust/`
+subdirectory. One build unit per repository means the repository *is* the build unit. A
+subdirectory implies a sibling that is not going to exist, and it costs a `working-directory:`
+on every CI step and a prefix on every ADR-0005 §4.2 path class. `platform#1` already does this.
+
+### 2.1 Disposition of all fifteen repositories
+
+Every repository in the organisation is named here, as **active** or **to be archived**, with
+the reason. There is no residual category.
+
+**Active — 6.**
+
+| Repository | Role | Why it is not folded in |
+|---|---|---|
+| `platform` | The Cargo workspace: all fourteen crates, one toolchain, one lockfile, the CI gates | It *is* the workspace |
+| `docs` | The design of record — the TDD, these ADRs, `plans/`, `process/` | Markdown. Not a `cargo` target |
+| `infra` | Kubernetes manifests and GitOps configuration (Argo CD/Kargo, CNPG, ClickHouse, Valkey, Keycloak, secureCodeBox, Harbor) | Declarative YAML/Kustomize/Helm, not a `cargo` target (TDD §2.5.3, *"SQL migrations, Kubernetes manifests"*). Its `factory/phase0-foundation` branch stays unmerged on purpose, pending the CEO cluster decision |
+| `vf-web` | The browser SPA | TypeScript/React. TDD §2.5.3 states it is explicitly **not** rewritten |
+| `scanners` | Custom arm64 secureCodeBox scanner images, parsers, conformance | Container builds wrapping upstream Go/C tools. TDD §2.5.3: not rewritten |
+| `vf-aigw` | Self-hosted OpenAI-compatible AI gateway | LiteLLM, operated as an approved third-party Python service. TDD §2.5.3: not rewritten |
+
+**To be archived — 9.** Each is named after a crate that now lives in `platform/crates/`, so
+each would otherwise be a second home for the same code.
+
+| Repository | Where the code is instead | Content to migrate |
+|---|---|---|
+| `vf-api` | `crates/vf-api` (binary) | None. `main` is an empty-tree initial commit; the Go scaffold on `refs/pull/1/head` was retired by ADR-0001 |
+| `vf-authz` | `crates/vf-authz` (**library**, not a service — TDD §2.3, §2.5.2) | None. No commits |
+| `vf-translator` | `crates/vf-translator` (library); graph *validation* is the separate `crates/vf-graph` per TDD §7.3 | None. No commits |
+| `vf-operator` | `crates/vf-operator` (binary); the admission surface is the separate `crates/vf-admission` | None. No commits |
+| `vf-ingest` | `crates/vf-ingest` (binary) | None. No commits |
+| `vf-meter` | `crates/vf-meter` (binary) | None. No commits |
+| `vf-report` | `crates/vf-report` (binary) | None. No commits |
+| `vf-abuse` | `crates/vf-abuse` (binary) | None. No commits |
+| `vf-remediation` | **No crate of its own.** The remediation surface is types and queries in `crates/vf-core` and `crates/vf-db`; verification-rescan orchestration is in `crates/vf-api` | None. No commits |
+
+`vf-remediation` is the one row that is a judgment and not bookkeeping, so it is stated
+explicitly: **`vf-remediation` does not become a fifteenth crate without a later record that
+says so.** The ADR-0002 §3 crate set has fourteen members and no remediation crate; a reader
+should not infer one from the archived repository name.
+
+### 2.2 What this gives the program plan
+
+[VUL-4](/VUL/issues/VUL-4) needs a per-phase in-scope / out-of-scope repository column.
+This record supplies the **domain** of that column and leaves the phase assignment to the plan,
+which is where phasing belongs (TDD §24):
+
+- The repository set is **closed at fifteen**, each one active or archived with a reason (§2.1).
+- Every VulcanFlow Rust crate maps to **exactly one** repository, `platform`. So "which
+  repositories does phase *N* touch?" reduces to "which crates, plus which of the five
+  non-`cargo` active repositories" — a lookup, not a judgment.
+- The nine archived repositories are **out of scope in every phase, by construction**. The plan
+  states that once by citing this record, not once per phase.
+- Cross-repository artifacts are **build artifacts, not source**. `vf-graph` compiled to
+  WebAssembly is consumed by `vf-web` (TDD §7.3, §14.1, §14.3); the WASM module crosses the
+  repository boundary, the source does not. `vf-graph` is not moved into `vf-web`, and a future
+  shared type does not justify a shared repository.
+
+---
+
+## 3. Alternatives considered, and why each lost
+
+**A. One repository for the workspace — `vulcanflow/platform`. → Chosen.**
+One build unit, one lockfile, one toolchain, one CI configuration, one place the ADR-0002
+boundary and TLS-provider gates can assert a whole-graph property. `platform` is the name
+because the thing is not a service: it is the platform the services are built from, and it is
+the name that still reads correctly when the fifteenth crate lands.
+
+**B. Promote one existing repository — put all fourteen crates under `vf-api`, or create
+`vf-core` as a repository. → Lost.**
+Every candidate name is a lie about the contents. A reader who finds `vf-meter`'s allowance
+accounting inside a repository called `vf-api` has been actively misled, and every
+per-repository issue and PR reference becomes wrong at the same moment. The option buys nothing
+over A: it is A with a worse name and a confusing history.
+
+**C. Keep the polyrepo, one workspace per crate. → Lost.**
+This is the option ADR-0001 already closed; it is listed so the closure is visible from here
+too. It produces nine lockfiles and nine toolchains and reinstates `vf-core` version skew across
+the scope, allowance and finding crates (§1.3). It also makes the ADR-0002 purity boundaries and
+the single-TLS-provider assertion unenforceable, because both are properties of one dependency
+graph.
+
+**D. Git submodules, or a `[patch]` arrangement across the existing repositories. → Lost.**
+C with extra steps: the same skew, plus a second failure mode. A submodule pins a commit that
+can be force-pushed away — which is exactly the objection `deny.toml` raises against git
+dependencies, and it is not theoretical here, because ADR-0005 §7.8 records that force-push
+refusal does not yet exist on any VulcanFlow repository. `[patch]` moves the version conflict
+from "two lockfiles" to "one lockfile that lies about its sources".
+
+**E. Fold the non-`cargo` repositories in too — a monorepo. → Lost, and not seriously
+considered.**
+It would put the design of record, the GitOps manifests that configure the cluster, and the
+SPA in the same change surface as the crates. ADR-0005's lane gate partitions *paths*; widening
+the repository to hold unrelated trees widens every classification decision with it. The
+if-and-only-if-`cargo` rule is narrower and needs no exceptions.
+
+---
+
+## 4. Consequences
+
+### 4.1 Immediate, on this record landing
+
+1. **The repository set is decided and closed.** Fifteen repositories, each dispositioned.
+   A sixteenth is answered by the §2 rule without a new record.
+2. `decisions/README.md` loses its *"ADR-0004 is not on `main` yet"* note, and the root
+   `README.md`'s "Repository architecture (polyrepo)" section is marked superseded. That table
+   still names Go, chi, Huma and Connect-RPC; **rewriting it is the `docs#20` README work, not
+   this record** — the banner exists so the stale table cannot be read as a live decision in
+   the meantime.
+3. ADR-0005 §11's *"does not touch ADR-0001 through ADR-0004"* stops being a reference to an
+   absent document.
+
+### 4.2 On `platform#1` merging — the fold, owned by [VUL-6](/VUL/issues/VUL-6)
+
+The archive step is **ordered after** `platform#1` merges, not before. Until the workspace is on
+`platform@main`, archiving the nine would leave the organisation with no home for those crate
+names at all.
+
+For each of the nine: **archive, do not delete.** Archiving makes the repository read-only and
+preserves its issues, pull requests and refs — including `vf-api`'s `refs/pull/1/head`, which
+ADR-0001 keeps for provenance and which deletion would destroy. Specifically, each archived
+repository:
+
+- becomes read-only: no pushes, no new issues or PRs, no branch creation;
+- keeps every existing ref, issue and PR readable at its current URL;
+- stays resolvable, so existing links in ADR-0001's appendix and in the `docs` issue history do
+  not rot;
+- is **reversible** — unarchiving is one action, which is what makes this the low-risk ordering.
+
+Renaming or deleting instead would redirect or break those links, and GitHub's rename redirects
+do not survive a later repository of the same name. Archiving is the only disposition that keeps
+the history and removes the ambiguity.
+
+### 4.3 Standing consequences
+
+4. **No per-crate repository is created again.** A new crate is a directory under
+   `platform/crates/` and a `members` entry. Creating a repository for it is a design failure,
+   not a convenience.
+5. **The CI gates become whole-graph assertions and stay that way.** `ci/crate-boundaries.sh`,
+   `ci/tls-provider-assertions.sh`, `ci/forbid-unsafe.sh` and `ci/reproducible-build.sh` in
+   `platform` see every crate. This is the property §1.3 says a split destroys, and it is the
+   main thing the decision buys.
+6. **All fourteen crates share one lockfile, so one pin applies to all of them.** A dependency
+   bump is a workspace-wide decision and needs an ADR-0002 amendment (ADR-0002 §1). There is no
+   per-crate pin and no way to introduce one.
+7. **Compile time is shared.** A touch to `vf-core` can rebuild its dependents. Accepted: the
+   answer at this scale is `sccache` and per-crate CI scoping, not a repository split (§5).
+8. **ADR-0005's lane gate needs to exist in exactly one Rust repository.** Its §7.5 records the
+   gate is live on `platform` only, which under this record is complete rather than partial
+   coverage. The five active non-`cargo` repositories have no Rust lane to cross; `infra` and
+   `vf-web` get the gate when and if they receive source.
+9. **Archiving is the only enforcement available today.** ADR-0005 §3.2 and §7.8 record that
+   this organisation is on the GitHub free plan with private repositories, so branch protection
+   and rulesets are unavailable and `main` is directly writable and force-pushable everywhere.
+   A read-only archived repository cannot be pushed to **at all**, which makes §4.2 the
+   strongest enforcement of this decision that the current plan permits — and one more reason
+   not to defer it. The plan upgrade stays escalated under ADR-0005 §8; this record does not
+   depend on it.
+
+### <a id="loose-end-adr-0002-amendment-a2"></a>4.4 Loose end: ADR-0002 amendment A2
+
+Recorded here because it is a direct consequence of `docs#23` closing, and a reader comparing
+this record with the archive will otherwise conclude it was dropped silently.
+
+`docs#23` carried **ADR-0002 amendment A2 (§3.7)** in the same commit as ADR-0004. ADR-0002 on
+`main` carries **A1 only**. A2 is a set of dependency-pin corrections and is therefore out of
+scope for this record, which decides repository layout and pins nothing.
+
+The consequence is live, not hypothetical: `platform#1`'s workspace `Cargo.toml` states that
+its versions come from *"ADR-0002 §3 and amendments A1 (§3.6) and A2 (§3.7)"*, and that
+**§3.7 is the authority where they disagree**. §3.7 is not on `docs@main`. So `platform#1`
+currently cites an amendment that the design of record does not contain, and merging it would
+put pins on `main` whose justification is only in an archived tag.
+
+This is Atlas's to re-file, as a separate record on a separate PR, and it blocks
+[VUL-5](/VUL/issues/VUL-5) (landing `platform#1`) rather than this record. The draft text is
+recoverable from `archive/pr-23-adr-0004` and every claim in it must be re-derived against
+crates.io before it is re-filed, not copied.
+
+---
+
+## 5. What would make me revisit this
+
+- **A crate that genuinely cannot share the lockfile** — a dependency incompatible at the
+  workspace level that cannot be reconciled. That is an argument for a **second workspace**, and
+  only then possibly a second repository; it is not an argument for one repository per crate.
+  None exists today: ADR-0002 §3 resolves as a single graph, and §3.3 records the cross-check.
+- **Build times at a scale this workspace is nowhere near.** Fourteen crates is not that scale.
+  The ordered answers are `sccache`, then per-crate CI scoping, then a split — in that order,
+  and a split needs numbers, not an impression.
+- **A crate that ships to a third party** on different licence or release terms. Everything here
+  is `publish = false` and `LicenseRef-Proprietary`; a crate that stops being either reopens
+  this.
+- **An owner reversal of TDD §2.5.2's "single Rust build unit … one pinned toolchain and
+  lockfile."** This record implements that sentence. If the sentence changes, this changes with
+  it.
+- **A §2.5.3 exception becoming VulcanFlow-owned Rust.** If `scanners`' parsers become Rust
+  crates under §27 item 20, the if-and-only-if-`cargo` rule folds them in automatically — that
+  is the rule working, and it needs no new record. What *would* need one is a §2.5.3 component
+  staying non-Rust while nonetheless needing to be inside the workspace.
+
+**Not a reason to revisit:** that nine repository names now 404-by-archive and someone expected
+to find code there. That is the decision working as intended, and §2.1 is the place it is
+written down.
+
+---
+
+## 6. <a id="provenance"></a>Provenance
+
+Everything asserted above was read on **2026-10-01**, in this order, and not recalled. This
+record pins no dependency versions; the one version it cites is the toolchain channel, read from
+the file that is authoritative for it.
+
+| Claim | Read from |
+|---|---|
+| Fifteen repositories; names, default branches, archived flag, creation dates | GitHub REST `GET /orgs/vulcanflow/repos` |
+| Eleven per-component repositories have **zero** refs | `GET /repos/vulcanflow/{name}/branches` → `[]`, and `GET …/git/trees/main` → `409 Git Repository is empty` |
+| `vf-api` `main` is one empty-tree commit `45d7ded9` *"chore: initialize repository"*; the Go scaffold survives only as `refs/pull/1/head` `773357eb` | `GET /repos/vulcanflow/vf-api/git/refs`, `…/commits`, `…/contents` → `[]` |
+| The fourteen workspace members, split 6 library / 8 binary | `Cargo.toml` `[workspace].members` on `platform@vul-6/cargo-workspace-scaffold` (`platform#1`, open) |
+| Toolchain channel **`1.98.1`**, components `rustfmt`/`clippy`, target `aarch64-unknown-linux-gnu`, profile `minimal` | `rust-toolchain.toml` on the same branch — the file ADR-0002 §2 makes authoritative |
+| `platform#1` cites ADR-0002 §3.7 as the pin authority (§4.4) | header comment of that same `Cargo.toml` |
+| `platform@main` holds `.gitattributes` plus the ADR-0005 lane gate (`ci/lane-gate.sh`, `ci/lane-gate-test.sh`, `.github/workflows/lane-gate.yml`), merged as `platform#2` | `GET /repos/vulcanflow/platform/git/trees/main?recursive=1` |
+| `docs#23` closed unmerged `2026-10-01T18:50:19Z`, no reviews, no comments; archived as tag `archive/pr-23-adr-0004`, commit `cee1edc` | `GET /repos/vulcanflow/docs/pulls/23`; `git tag -l` in `docs` |
+| TDD §2.5.2 glossary wording, the thirteen proposed crates, §2.5.3 exception table | `VulcanFlow_Technical_Design_Document_v2.2.md` on `docs@main` |
+| ADR-0001 appendix row #14, and that `main` was empty in all 14 repositories | `decisions/ADR-0001-retire-go-scaffold-vf-api.md` on `docs@main` |
+| ADR-0002 carries A1 only; A2 is not on `main` | `decisions/ADR-0002-rust-crate-set-and-phase0-pins.md` §10 and `decisions/README.md` on `docs@main` |
+| ADR-0005 §3.2 / §4.2 / §7.5 / §7.8 / §8 / §11 | `decisions/ADR-0005-delivery-pipeline-and-lane-enforcement.md` on `docs@main` |
+
+**Two claims from the `docs#23` draft were corrected by this audit, rather than carried
+forward:**
+
+1. The draft said `platform`'s `main` *"carries a single `.gitattributes` commit so the PR had a
+   base."* It no longer does — `platform#2` merged the ADR-0005 lane gate to `main` after the
+   draft was written.
+2. The draft described the nine as repositories that *"fold into `platform`"*, which reads as a
+   migration. There is nothing to migrate: all twelve non-`cargo`/per-crate default branches are
+   content-free (§1.3). The fold is archive-and-redirect only, and saying so is what makes the
+   §4.2 ordering obviously cheap.
+
+**Not verified, and deliberately so:** nothing here was compiled. `platform#1`'s crate set is
+read as a manifest, not as a successful build. §25 `build/rust-supply-chain` is the identifier
+that closes that gap and it is Crucible's to run on `platform#1` ([VUL-5](/VUL/issues/VUL-5));
+this record does not depend on the outcome, because the repository layout is the same whatever
+the build says.
+
+---
+
+## 7. A convention this decision is worth remembering for
+
+Recovered from the `docs#23` draft because it is durable, and restated without the predecessor
+board's issue numbers.
+
+The `platform` repository was created mid-task rather than by blocking on a decision, with more
+than twenty issues waiting behind it, and the agent said so in its handoff. That was the right
+call: a repository rename is one action with automatic redirects, so a reversible action
+taken-and-reported beat a week of waiting. This record ratifies the name rather than renaming
+after the fact, which is the point.
+
+Recorded in the same spirit, because it went the other way: while establishing whether creating
+a repository was permitted at all, that agent created and deleted an empty probe repository
+(`vulcanflow/vf-workspace-probe-delete-me`, no content, deleted about a minute later) and
+disclosed it unprompted. The disclosure is the behaviour we want. The action is not — the
+permission question was answerable by reading the instructions, and the organisation is not a
+test fixture.
+
+**The convention, for everyone: do not probe a permission against live infrastructure.** If
+reasoning does not settle whether an action is permitted, ask. If the action is reversible and
+the cost of waiting is real, take it deliberately and report it — which is what happened with
+`platform` itself.
+
+---
+
+## 8. Amendment history
+
+None. Amendments to this record are added here with a date and a section reference, never by
+silently editing the text above (`decisions/README.md`, "Amendments").

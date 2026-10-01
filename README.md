@@ -6,7 +6,16 @@ Authoritative project documentation for VulcanFlow — a multi-tenant SaaS secur
 
 - [Technical Design Document v2.2](./VulcanFlow_Technical_Design_Document_v2.2.md) — architecture, components, phasing, open items
 
-## Repository architecture (polyrepo)
+## Repository architecture (polyrepo) — SUPERSEDED
+
+> **Superseded by [ADR-0004](./decisions/ADR-0004-workspace-repository.md).** All VulcanFlow
+> Rust crates live in one Cargo workspace in [`vulcanflow/platform`](https://github.com/vulcanflow/platform);
+> the nine per-crate repositories below are archived, and the rule is that a repository joins the
+> workspace if and only if it builds with `cargo`. ADR-0004 §2.1 dispositions all fifteen
+> repositories. The table below is also pre-TDD-v2.3 — the languages and frameworks it names
+> were withdrawn by [ADR-0001](./decisions/ADR-0001-retire-go-scaffold-vf-api.md) and
+> [ADR-0002](./decisions/ADR-0002-rust-crate-set-and-phase0-pins.md). It is retained only until
+> this README is rewritten; read it as history, not as a decision.
 
 Chosen direction: **polyrepo** (requester preference; factory confirmed). One GitHub repository per independently deployable component or shared library, plus platform and docs.
 
