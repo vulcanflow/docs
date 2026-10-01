@@ -258,7 +258,7 @@ Four required checks run on every pull request to `main`, from
 | `lane-partition` | the diff has both production source and test files — or changes the gate alongside either |
 | `test-erosion` | an `#[ignore]` was added, a test declaration was removed, or the workspace test count fell |
 | `inline-test-modules` | a `#[cfg(test)]` module exists under `crates/*/src` |
-| `gate-self-test` | the gate's own fixture assertions fail; or the head classifier **permits** a case the base harness asserts the gate **refuses**; or the harness's assertion count fell (ADR-0005 §4.5) |
+| `gate-self-test` | the gate's own fixture assertions fail — all 21 of them head-against-head. **Three further sub-checks are specified but not yet live:** a head classifier that **permits** a case the base harness asserts the gate **refuses**; a fall in the harness's assertion count; and a harness that cannot fail against a known-bad classifier. They are ADR-0005 §4.5 and they land with pull request 2 of its sequence — **do not plan around them yet** |
 
 ### Which paths are which
 
@@ -295,12 +295,16 @@ asserting the new behaviour, and under an ADR-0005 revisit trigger. A gate edit 
 change it would permit is itself refused — **that is the bundled form only, and the solitary form
 is permitted; ADR-0005 §4.5 is what guards it.**
 
-**Changing what the gate does takes three pull requests, in this order, and this is the one place
-in the pipeline where lane 2 does not precede lane 3.** `gate-self-test` is a required check, so a
-fixture asserting behaviour the classifier does not yet have is a red required check and cannot
-merge at all (ADR-0005 **R10**). So: **(1)** Scribe lands fixtures for the behaviour the gate
-*already* has, green; **(2)** Forge lands the change to `ci/lane-gate.sh`, green because it is
-additive; **(3)** Scribe lands fixtures for the new behaviour, green because it now exists. Nobody
+**Changing what the gate does is the one place in the pipeline where lane 2 does not precede lane
+3, so the fixtures for a new gate behaviour land *after* it.** `gate-self-test` is a required
+check, so a fixture asserting behaviour the classifier does not yet have is a red required check
+and cannot merge at all (ADR-0005 **R10**). **In general that is two pull requests:** Forge lands
+the change to `ci/lane-gate.sh`, then Scribe lands the fixtures for it. **§4.5's own sequence has
+three**, because `setup()` cannot yet construct the cases that needed covering first — a
+capability gap, not a general rule. So, for that change: **(1)** Scribe lands fixtures for the
+behaviour the gate *already* has, green; **(2)** Forge lands the change to `ci/lane-gate.sh`,
+green because it is additive; **(3)** Scribe lands fixtures for the new behaviour, green because
+it now exists. Nobody
 crosses a lane and nothing is ever red. Only step 3 is inverted, it applies to GATE paths and
 nothing else, and §4.5's monotonicity sub-check is why the inversion is not a weakening: what your
 pull request must survive is the fixture set already on `main`. Step 3's fixtures are enumerated
@@ -347,13 +351,17 @@ Still gaps, and still not permission:
   the four check **names**, not the four job **bodies**. A pull request touching
   `.github/workflows/lane-gate.yml` and nothing else is GATE-only, so `lane-partition` permits it,
   and a `run:` step rewritten to exit zero leaves all four required contexts green while none of
-  the four checks has run. Deleting or renaming a job is **not** this — a required context that
+  the four checks has run. It is cheaper than that, too: `|| true` appended to the `run:` line,
+  `continue-on-error: true`, or a step-level `if: false` each do it in one line while the `run:`
+  line still names the script. Deleting or renaming a job is **not** this — a required context that
   never reports blocks the merge, which is the mechanism behind the `4 of 4 required status checks
   are expected` push refusal in §8. The weakening that passes is the one that keeps the names and
-  changes the bodies. ADR-0005 §4.5 limb 3 records why no path rule reaches it, §4.6 is the review
-  obligation that stands in for a mechanism, and **R9** is the escalation. Treat that file as the
-  highest-consequence path in the repository: if you are reviewing a diff that touches it, §4.6
-  item 2 is a blocking finding on its own.
+  changes what decides the job's outcome. ADR-0005 §4.5 limb 3 records why no path rule reaches it,
+  §4.6 is the review obligation that stands in for a mechanism, and **R9** is the escalation. Treat
+  that file as the highest-consequence path in the repository. **Touching it is not itself a
+  finding** — the gate has to be able to change on its own pull request, and §4.5's pull request 2
+  must change this file. What §4.6 item 2 makes a blocking finding on its own is narrower: a job
+  whose conclusion is **no longer decided by the gate's exit status**.
 - **A bot thread can be mistaken for reviewer #2.** The CodeRabbit App is installed and posts on
   every pull request, but nothing in GitHub distinguishes its commentary from a review verdict.
   Lane 6 is **two Paperclip verdicts that each meet ADR-0005 §6.3 condition 3** — not two
