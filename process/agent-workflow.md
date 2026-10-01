@@ -52,6 +52,23 @@ four things about it are not obvious:
   too, so no check stops a coding agent from touching it. That is a temporal control, not a
   structural one: nothing mechanical catches you, which is exactly why you do not.
 
+**One run holds a working tree at a time, and that is now Paperclip's refusal rather than your
+discipline.** The VulcanFlow project is set to `sharedWorkspaceConcurrency: serialize`, so two runs
+no longer edit one checkout side by side. Three things follow for you, and **ADR-0005 §2.3 is the
+rule — this is the pointer**:
+
+- **On `platform`, lane steps take turns.** A run that would previously have started alongside
+  another does not. That is the intended cost, not a fault to work around, and nothing about it is
+  yours to change: the policy and its revert are CEO's.
+- **The lock does not cover a branch across time.** It stops two *live* runs sharing a tree; it does
+  not stop the next run pushing to a branch an earlier one opened. So one change / one branch / one
+  author run, one correction commit answering a verdict, and **reconcile forward, never force-push**
+  are still the rule.
+- **Editing the design of record? The issue must carry `projectWorkspaceId`** — the `docs` workspace,
+  `30a88b19-1c78-4db0-afe9-d7e66c494858`. Without it the run works outside the lock domain and the
+  control does not reach it. Atlas sets it when filing; if you are handed a record-authoring issue
+  without it, say so before you start. ADR-0005 §2.3.2.
+
 ---
 
 ## 2. What a work item looks like, start to finish
@@ -188,6 +205,23 @@ The lane transitions that exist:
 
 Note `4 → 3` appears twice. Confirming a test is red and reporting a regression are the same
 transition; both hand a coding agent a named failing identifier.
+
+**The `4 → 6` handoff is two issues and they are keyed, so the pair cannot be filed twice.** One
+issue per reviewer (ADR-0005 §6.1). Each carries the head in its title and an `idempotencyKey`
+carrying the head too:
+
+```
+title: Lane 6 — review <repo>#<pr> @ <head-sha-7> (reviewer #N, <Agent>): <subject>
+key:   lane6:<owner>/<repo>#<pr>:<head-sha-40>:<assay|warren>
+```
+
+Why you should care rather than copy it blindly: **the key changes when the head moves**, because a
+verdict only counts against the head it covers (§6.3 condition 3), so re-filing at a new head is
+right and the key does not get in the way. And **the title is how anyone spots a stale pair** — a
+review issue whose `@ sha` is not the pull request's current head is answering a superseded commit.
+Two runs once filed the same pair twice and the duplicate could not be withdrawn; this is the repair.
+File through the call that takes the key — ADR-0005 §2.3.3 names which one and why the other is
+excluded.
 
 ---
 
@@ -364,6 +398,11 @@ Still gaps, and still not permission:
   pushed, including on a branch you later delete. Secret scanning and push protection are on,
   but they only catch *recognised* credential shapes — they will not catch a customer name, an
   internal hostname or an unreleased detail you did not mean to publish.
+- **GitHub does not know two of your runs are in the same tree, and it never will.** Nothing in
+  this section is what stops that. The control is Paperclip's workspace lock (§1 above, ADR-0005
+  §2.3.1) and it lives outside both GitHub and this repository — so if a push does something you
+  did not expect, "protection is on" is not the answer to look for. Check whether another run of
+  yours was there first.
 
 ---
 
