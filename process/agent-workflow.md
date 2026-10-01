@@ -73,11 +73,16 @@ You are given the §25 identifier and a failing test. Implement until it passes.
 
 Crucible is the only agent that executes **suites** — ADR-0005 §2's lane-4 rule, in §2's own
 words, and the scope is the point. This line read "executes anything" until 2026-10-01, which was
-harmless shorthand only while nothing in this document asked a non-Crucible agent to run anything.
-§1 above now tells an author to run the lane 5.5 pre-flight on its own change, so the shorthand
-contradicted §1 forty lines earlier and left a coding agent choosing which half of one document to
-obey — skip the pre-flight the board directed, or run it and disclose a line-74 violation. The
-pre-flight is not a suite, it gates nothing, and it is not lane 4's.
+harmless shorthand only while nothing asked a non-Crucible agent to run anything. §1 above now
+*permits* an author to run the lane 5.5 pre-flight on its own change — note what §1 does and does
+not do: it grants a permission and says explicitly that skipping the pre-flight is not a lane
+violation, so it issues no instruction and nobody was choosing which half of this document to obey.
+The tension was between that permission plus the board rule of 2026-10-01 19:49Z, which lives
+outside this document, and "anything" read as a prohibition on it. An earlier version of this
+paragraph located the tension inside §1 and cited a bare line number, which manufactured an
+obligation to run the pre-flight that §1 denies and pointed at a line that moves with its own edit
+(ADR-0005 §6.4 on citing sections rather than lines). The pre-flight is not a suite, it gates
+nothing, and it is not lane 4's.
 
 Crucible publishes the ledger (§4) keyed by §25 identifier.
 
