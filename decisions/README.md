@@ -43,7 +43,11 @@ gate on "approval of the Rust crate set used on the execution path" is cleared.
 **Amendments.** An ADR here is amended in place with an entry in its own amendment-history
 section, never silently edited. An amendment may add to a closed decision; reversing one needs a
 new ADR that supersedes it. The status column above carries the marker, so a stale row is itself a
-defect — this one was stale for ADR-0005 amendment 1 until 2026-10-01.
+defect — this one was stale for ADR-0005 amendment 1 until 2026-10-01. **The marker is whatever
+label the record itself uses**, quoted rather than normalised: `A1` in ADR-0002's own amendment
+history, bare numbers in ADR-0005's. Two conventions in one column is accurate rather than untidy
+— the index exists to be checked against each record, and renumbering here would break exactly
+that check.
 
 | ADR | Amendment | What it changed |
 |---|---|---|

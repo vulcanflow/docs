@@ -35,8 +35,19 @@ only the outcome.
 
 ## 2. The pipeline, unchanged
 
-The lanes and owners below are §4 of the VUL-1 plan, restated as the authority. No agent holds
-two adjacent lanes on the same change.
+The lanes and owners below are §4 of the VUL-1 plan, restated as the authority. **No agent holds
+two adjacent numbered lanes of the table below on the same change.** That sentence is the one
+Assay applies when it rejects a pull request before reading the diff, so its scope is stated here
+rather than left to be inferred:
+
+- **It ranges over the seven numbered rows and nothing else.** What it protects is specific: no
+  agent may both produce a thing and hold the gate that clears it. A lane that clears nothing
+  cannot be half of that pair, so the rule does not range over **lane 5.5** (below) at all.
+- **One agent holding two non-adjacent lanes is normal and intended.** Forge, Anvil and Kiln hold
+  3 and 5; Crucible holds 4 and 7. Lane 4 sits between 3 and 5, and lanes 5 and 6 between 4 and
+  7, and that interposed gate is exactly what makes those pairings safe.
+- **Adjacency is by lane number, not by when things happen.** Two activities that run close
+  together in time are not adjacent lanes.
 
 | # | Lane | Owner | The rule |
 |---|---|---|---|
@@ -54,8 +65,16 @@ otherwise be a gap rather than a choice. Three things about it are settled here 
 is: its owner is **the change's author**, whichever lane that author normally holds; its surface
 is the CodeRabbit **CLI** on the runner, never the App's review on the pull request; and **it
 gates nothing** — it is not a review lane, it produces no verdict, it is not one of §6.3's four
-conditions, and skipping it is not a lane violation. It sits between lanes 5 and 6 only in the
-sense that it happens before the pull request exists. Its mechanics — when it must run, what the
+conditions, and skipping it is not a lane violation.
+
+**Its number is a label, not a position in the gate sequence**, and the adjacency rule above does
+not range over it. "5.5" says only that it happens before the pull request exists. An author who
+holds lane 3 or lane 5 on a change may run the pre-flight on that same change, and that is not an
+adjacency violation: the pre-flight clears nothing, so holding it alongside a coding lane gives
+the author no authority it did not already have. Read the other way — 5.5 as a real lane wedged
+between 5 and 6 — the rule would forbid every exercise of lane 5.5 by the only owner it has, which
+is not a reading of §2 so much as evidence that §2 was phrased loosely; it is tightened above
+rather than carved out here. Its mechanics — when it must run, what the
 author does with the findings, whether it becomes required — are **VUL-28's** scope, under the
 board rule of 2026-10-01 19:49Z, and that issue adds the row if the answer is that it should have
 one. Until then, read the absence of a row as "not yet codified", not as "not a lane".
@@ -379,8 +398,11 @@ Four corollaries, each closing a specific way this gets broken:
    the lane is live — VUL-36 owns the grant. **Until it lands, §6.1 and §6.2 are the authority
    Warren works from, and they are sufficient**: read the three App surfaces, check
    `coveredCommitId` against `head.sha`, treat Critical and Major as blocking and Minor,
-   Trivial, Info, Nitpick and an absent severity as advisory while **blocking on any severity
-   label not in that set**, dismiss a blocking finding only against a quoted TDD §n or ADR, and
+   Trivial, Info, Nitpick, a label reading `none`, and the absence of a severity label as
+   advisory while **blocking on any severity label not in that set** — a present `none` and an
+   absent label are the same case and both are named because the skill's §3 table names the first
+   while this set previously named only the second, and a difference between the two documents is
+   the thing §6.1 says cannot exist — dismiss a blocking finding only against a quoted TDD §n or ADR, and
    post the verdict in §6.3 condition 3's shape with its counts stated even when they are zero.
    A missing skill attachment is a reason to work from this section, not a reason to decline the
    lane.
@@ -457,8 +479,14 @@ with `git log`, by anyone, forever: a merge with no attestation block, or one na
 is not the commit merged, or naming a verdict that does not exist at the cited issue, is visibly
 defective without needing to reconstruct a timeline from issue threads. That converts this gate
 from advisory-and-unobservable to advisory-and-observable, which is the strongest step available
-here and is the precondition for a CI check over `main` later. The detector is a follow-up item
-in `platform`; it is not yet written, and this section does not claim it is.
+here and is the precondition for a CI check over `main` later. **The detector is specified on
+VUL-48, owner Atlas for the spec**; it is not yet written and this section does not claim it is.
+It is named by issue rather than as "a follow-up item" because R5b's closure depends on it, and a
+trigger whose closure depends on unowned work is a preference. One thing the spec has to settle
+and this section will not settle in passing: a script under `ci/` other than the three GATE paths
+is **NEUTRAL** by §4.2, so authoring it crosses no lane — but no row of §2's table assigns NEUTRAL
+`ci/**` to an agent, and which lane implements it is therefore an open lane-1 question, not an
+omission to be filled in by whoever picks it up.
 
 **What this supersedes, named so the old readings cannot be cited.** §2's lane-7 row said "two
 approving verdicts" — right about `APPROVE`, silent on head coverage. §6's bullet and
@@ -511,12 +539,18 @@ change had going for it.
 
 **Two consequences, and neither is closed by this amendment:**
 
-1. **The seven blocking findings are on `main`**, in `plans/open-decisions.md`. They are listed
-   in full on VUL-31 and routed to a correction change that goes through lane 6 — owner CEO for
-   the register's text, Atlas for the two that reach an ADR. One of the seven (`B7`, D17's Rider
-   asserting the review lane is degraded) is made false by this very amendment, so the register's
-   recitation at `plans/open-decisions.md:569` is the last surviving copy of a sentence the
-   design of record has withdrawn.
+1. **The blocking findings reached `main`**, in `plans/open-decisions.md` — seven of them, listed
+   in full on VUL-31 and routed to a correction change that goes through lane 6: owner CEO for
+   the register's text, Atlas for the two that reach an ADR. **One of the seven is closed by this
+   change itself, and the count is stated after that rather than before.** `B7` — D17's Rider
+   asserting the review lane is degraded — is made false by amendment 2, and commit `c7bb4af` on
+   this amendment's own branch **withdraws that row** rather than leaving the recitation live. So
+   on merge the register carries **six** open findings and **no surviving copy** of the withdrawn
+   sentence. VUL-41 is working a ledger of seven and should restate it as six plus one withdrawn
+   here; that arithmetic belongs on that issue, not in this record. The reason to say so in the
+   same breath as the number: a record asserting seven while its own commit removes one is exactly
+   the failure class this amendment exists to close, and it would be the second time §6 was stale
+   about its own state.
 2. **The merge is not reversed by this record.** Whether `main` is corrected forward or the
    register reverted is CEO's call, not this record's: reverting would remove the board's own
    decision log from `main`, which is a product and governance question. The design-of-record
@@ -697,8 +731,13 @@ will not stop you" in the document agents read mid-task reads as permission. A w
 instruction on `main` is a live hazard; an unreviewed correction to it is a recorded one. The
 exception does not extend past this amendment, and Atlas reviews both in place on approval.
 
-**Amendments 2 and 3 are outside this exception** and went through lane 6 like anything else;
-reviewing agents exist now, so the reason for the exception has lapsed. And to close the gap a
+**Amendments 2 and 3 are outside this exception** and **go** through lane 6 like anything else;
+reviewing agents exist now, so the reason for the exception has lapsed. The tense is deliberate:
+as this paragraph is written the two amendments are *in* lane 6, not through it, and a record
+asserting its own review in the past tense would be true only if the merge then obeyed §6.3 —
+which is precisely the thing §6.4 shows cannot be assumed. What records that they completed the
+lane is §6.3 condition 4's attestation on the merge commit, readable from `git log` by anyone,
+not this sentence. And to close the gap a
 reader looking for precedent would try: **the `docs#24` merge of 2026-10-01 is not covered by
 this section and is not an exception of any kind.** It is a recorded gate defect — §6.4, and
 §10 R5b. §9's scope is four artefacts and amendment 1, and that list is exhaustive.
@@ -736,7 +775,9 @@ Named, so this record is revisited on evidence rather than on mood.
     the thing that failed; it is (i) a single statement of the merge condition, which is §6.3,
     and (ii) a way to see the defect from `main` afterwards, which is §6.3 condition 4's
     attestation and the detector that reads it. **This limb stays live until that detector
-    exists and runs over `main`'s history.** A second R5b event before it does is evidence that
+    exists and runs over `main`'s history** — it is specified on **VUL-48**, owner Atlas for the
+    spec, named so this limb's closure is owned rather than hoped for. A second R5b event before
+    the detector exists is evidence that
     a recorded condition is not enough and that lane 7 needs a mechanism outside this
     organisation's own compliance — bring it back to Atlas with both events, not a third
     restatement of the rule.
@@ -809,5 +850,5 @@ Named, so this record is revisited on evidence rather than on mood.
 |---|---|---|
 | — | 2026-10-01 | Accepted as recorded. |
 | 1 | 2026-10-01 | **The §8 plan question is decided: the board chose option B.** The four active repositories are public, branch protection is applied to all four with `enforce_admins: true`, and `platform`'s four lane-gate checks are required. §3.2 rewritten as a resolved constraint; §7 items 8–9 replaced; §8 rewritten as a decision with the pre-publication secret scan (§8.1), the applied settings and why zero required approvals (§8.2), the disclosure cost (§8.3) and two observed refusals (§8.4); R2 closed and narrowed to wiring checks per repository; R7 added as the route back to private. §7 item 4 corrected: 21 fixture verdicts, not 17. Recorded by CEO under VUL-2. |
-| 2 | 2026-10-01 | **Reviewer #2's route corrected, and the independence rule stated.** The CodeRabbit GitHub App (`coderabbitai`, app id `347564`, installation `166977157`, installed `2026-10-01T19:12:07Z`, `repository_selection: all`) is installed, so the "`coderabbit:review` is not installed … merges wait" sentence in §6 is withdrawn — quoted in §6.1 rather than deleted, because the degraded period was real and agents cited it. New **§6.1** records lane 6's route as the App's review on the pull request, read and triaged by Warren with no tool run; separates that from the authenticated CodeRabbit **CLI** (`0.8.2`, seat assigned), which is the author's pre-flight under the board rule of 2026-10-01 19:49Z and is codified as lane 5.5 on VUL-28 — a CLI review is never reviewer #2's verdict (this row's own draft qualified that as *author-run*; row 3 redraws the boundary on the **surface** rather than on who ran it, and row 3 is the operative form); and records that `COMMENTED` is not approval and that a review counts only when `coveredCommitId` equals `head.sha`. New **§6.2** states the rule the install correction was hiding: **the App posting on a pull request is input to lane 6, not satisfaction of it** — lane 6 is two attributable Paperclip verdicts, a bot thread with no Warren verdict is an unreviewed pull request, and the `lane6-review-verdict` skill sitting in Assay's catalog (VUL-36) does not make Assay reviewer #2. §2's lane-6 row updated to match; **R6** closed on the install half and the live remainder restated as **four limbs, each naming the observable that fires it and the agent who hits it first** — App removed or suspended; App installed and unsuspended but **silently not reviewing** (the mode that reads healthy and produces nothing, which the other limbs do not cover); the subscription lapsing, owned by the CEO, with the earlier draft's **shared App/CLI seat assertion withdrawn as unsupported by either read-back** and the `Advanced (trial)` clock recorded as having **no end date exposed by `auth status`**; and CodeRabbit changing its severity vocabulary or dropping the `final_review_risk_coverage` anchors. §6.1's CLI path **rooted to the agent runner** (`…/companies/<company-id>/tools/bin/coderabbit`, a wrapper over `coderabbit.bin`) with the note that it is in **no repository** — an earlier draft wrote it unrooted, where it read as repository-relative. **Lane 5.5 named in §2 and in `process/agent-workflow.md` §1 as a deliberate non-row** — owner is the change's author, surface is the CLI, it **gates nothing**, and its mechanics are VUL-28's — because §6.1 names a lane that the lane tables did not. `plans/open-decisions.md` **D17's Rider row withdrawn**, with its superseded sentence quoted rather than deleted and the §6.2 hazard put in its place; that row reached `main` in docs#24 before this amendment and was the last surviving recitation. `process/agent-workflow.md` §1, lane 6 and §7 updated in the same change. Recorded by Atlas under VUL-37. |
+| 2 | 2026-10-01 | **Reviewer #2's route corrected, and the independence rule stated.** The CodeRabbit GitHub App (`coderabbitai`, app id `347564`, installation `166977157`, installed `2026-10-01T19:12:07Z`, `repository_selection: all`) is installed, so the "`coderabbit:review` is not installed … merges wait" sentence in §6 is withdrawn — quoted in §6.1 rather than deleted, because the degraded period was real and agents cited it. New **§6.1** records lane 6's route as the App's review on the pull request, read and triaged by Warren with no tool run; separates that from the authenticated CodeRabbit **CLI** (`0.8.2`, seat assigned), which is the author's pre-flight under the board rule of 2026-10-01 19:49Z and is codified as lane 5.5 on VUL-28 — a CLI review is never reviewer #2's verdict (this row's own draft qualified that as *author-run*; row 3 redraws the boundary on the **surface** rather than on who ran it, and row 3 is the operative form); and records that `COMMENTED` is not approval and that a review counts only when `coveredCommitId` equals `head.sha`. New **§6.2** states the rule the install correction was hiding: **the App posting on a pull request is input to lane 6, not satisfaction of it** — lane 6 is two attributable Paperclip verdicts, a bot thread with no Warren verdict is an unreviewed pull request, and the `lane6-review-verdict` skill sitting in Assay's catalog (VUL-36) does not make Assay reviewer #2. §2's lane-6 row updated to match; **R6** closed on the install half and the live remainder restated as **four limbs, each naming the observable that fires it and the agent who hits it first** — App removed or suspended; App installed and unsuspended but **silently not reviewing** (the mode that reads healthy and produces nothing, which the other limbs do not cover); the subscription lapsing, owned by the CEO, with the earlier draft's **shared App/CLI seat assertion withdrawn as unsupported by either read-back** and the `Advanced (trial)` clock recorded as having **no end date exposed by `auth status`**; and CodeRabbit changing its severity vocabulary or dropping the `final_review_risk_coverage` anchors. §6.1's CLI path **rooted to the agent runner** (`…/companies/<company-id>/tools/bin/coderabbit`, a wrapper over `coderabbit.bin`) with the note that it is in **no repository** — an earlier draft wrote it unrooted, where it read as repository-relative. **Lane 5.5 named in §2 and in `process/agent-workflow.md` §1 as a deliberate non-row** — owner is the change's author, surface is the CLI, it **gates nothing**, and its mechanics are VUL-28's — because §6.1 names a lane that the lane tables did not. `plans/open-decisions.md` **D17's Rider row withdrawn**, with its superseded sentence quoted rather than deleted and the §6.2 hazard put in its place; that row reached `main` in docs#24 before this amendment and was the last surviving recitation. `process/agent-workflow.md` §1, lane 6 and §7 updated in the same change. **Revised in lane 6 before merge, from reviewer #1's findings on `b573391` and `aba73a9`** (VUL-38, VUL-44): §2's adjacency rule **scoped to the seven numbered lanes**, because as written it forbade every exercise of lane 5.5 by the only owner lane 5.5 has — the rule protects against one agent holding both the production of a thing and the gate that clears it, and a lane that clears nothing cannot be half of that pair; §6.4 consequence 1 restated as **six open findings plus one withdrawn here** rather than seven, since commit `c7bb4af` in this same change withdraws D17's Rider and a record asserting a count its own commit falsifies is the failure class this amendment exists to close; §6.2 corollary 3's advisory set given **a present label reading `none`** beside the absent label, closing the last divergence from the skill's §3 table; §6.3's attestation detector and R5b's closure condition given an owner and an issue — **VUL-48**, Atlas for the spec — with the note that which lane implements a NEUTRAL `ci/**` script is an open §2 question rather than an omission; §9's claim that amendments 2 and 3 "went through lane 6" **forward-tensed**, because what records that they did is condition 4's attestation in `git log`, not this record asserting it in advance; `process/agent-workflow.md`'s `6 → 7` transition cell reduced to a pointer after it restated three of condition 3's four clauses and dropped **Independently attributable**; and `decisions/README.md`'s amendment marker stated to be **each record's own label**, quoted rather than normalised. Recorded by Atlas under VUL-37. |
 | 3 | 2026-10-01 | **Lane 7's merge condition has one statement, and the merge that exposed its absence is recorded.** New **§6.3** is the sole statement of the merge condition: lane gate green on the commit merged; ledger with no FAIL and no MISSING against that commit; two verdicts, one each from Assay and Warren, every one of them `APPROVE` with zero unresolved blocking findings, stating a covered sha equal to `head.sha` at merge, and independently attributable on that reviewer's own lane-6 issue; and a merge attestation in the commit message naming the head, the gate and ledger dispositions and both verdicts. Conditions 1 and 2 are satisfied **vacuously** on a repository with no workflow or a change engaging no §25 identifier, but only via an explicit `n/a` in the attestation, never by silence; conditions 3 and 4 are never vacuous — "it is only documentation" is not a lane-7 argument, and §6.4's change was Markdown. §2's lane-7 row, §6's bullets and `process/agent-workflow.md` lane 7 are rewritten as pointers to §6.3 rather than as three independent statements — the three prior statements ("two approving verdicts"; "Assay's verdict and Warren's verdict"; the VUL-32 board directive's "a CLEAN CodeRabbit verdict at the current head") are withdrawn in §6.3. New **§6.4** records, under R5b, that `docs#24` merged to `main` at 2026-10-01T20:59:26Z (`b40201b`) over a `REQUEST CHANGES` verdict with seven blocking findings unresolved on an already-superseded head, with no reviewer #2 verdict in existence — explicitly **not** filed as a §9 exception, and not sanctioned retrospectively. §10 R5 split into R5a (lane crossing — repair is a `ci/lane-gate-test.sh` fixture) and R5b (merge taken against §6.3 — repair is §6.3 plus an attestation detector over `main`), with R5b live until that detector runs. §6.1's CLI boundary redrawn on the **surface** rather than on who ran it, with the §6.3 condition-3 reason: a CLI run emits no coverage anchors, so its coverage is unperformable, so a Warren-run CLI review is still lane 5.5. §6.1's withdrawal quote restored to full text including the lead clause "Warren is blocked until T7." and its `docs#24` citation corrected from "correctly held" to Warren's decline. §6.2 corollary 1's verb changed from *count* to evaluation against §6.3; corollary 3's severity set given `Nitpick` and the absent-label case as advisory. `decisions/README.md`'s index row for this record corrected — it read a bare "Accepted" through amendments 1 and 2, so the index was itself a stale statement of the design of record; the amendment markers now sit in the status column with a per-amendment table beside the in-place-amendment rule. Recorded by Atlas under VUL-40. |

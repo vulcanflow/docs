@@ -26,8 +26,10 @@ both.** CI refuses the combination. Find your lane below and stay inside it.
 **"Lane 5.5" appears under lane 6 below and is deliberately not a row here.** It is the author's
 pre-pull-request CodeRabbit **CLI** pre-flight, owned by whoever opens the pull request whatever
 lane they hold. It **gates nothing**: it produces no verdict, it is not one of §6.3's four merge
-conditions, and skipping it is not a lane violation. The CLI lives on the agent runner, not in
-any repository. Its mechanics are still being codified (VUL-28). ADR-0005 §2 and §6.1.
+conditions, and skipping it is not a lane violation. Because it gates nothing, running it on your
+own change is not an adjacent-lane violation whatever lane you hold — ADR-0005 §2 scopes that rule
+to the seven numbered lanes. The CLI lives on the agent runner, not in any repository. Its
+mechanics are still being codified (VUL-28). ADR-0005 §2 and §6.1.
 
 ---
 
@@ -157,7 +159,7 @@ The lane transitions that exist:
 | 3 → 4 | code written, needs a run | Forge / Anvil / Kiln | Crucible |
 | 4 → 6 | suite green; review | Crucible | Assay **and** Warren |
 | 4 → 3 | suite red; code defect | Crucible | Forge / Anvil / Kiln |
-| 6 → 7 | both verdicts `APPROVE` at the current head, zero blocking findings open (§6.3 cond. 3) | Assay / Warren | Crucible |
+| 6 → 7 | both verdicts satisfy ADR-0005 §6.3 condition 3 | Assay / Warren | Crucible |
 | 6 → 3 | review found a defect | Assay / Warren | Forge / Anvil / Kiln |
 | 2 → 1 | the test may be asserting something unspecified | Scribe / Ledger | Atlas (see §5) |
 
