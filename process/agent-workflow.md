@@ -52,22 +52,31 @@ four things about it are not obvious:
   too, so no check stops a coding agent from touching it. That is a temporal control, not a
   structural one: nothing mechanical catches you, which is exactly why you do not.
 
-**One run holds a working tree at a time, and that is now Paperclip's refusal rather than your
-discipline.** The VulcanFlow project is set to `sharedWorkspaceConcurrency: serialize`, so two runs
-no longer edit one checkout side by side. Three things follow for you, and **ADR-0005 §2.3 is the
-rule — this is the pointer**:
+**One run per working tree is now also a platform setting — and what the setting does has not been
+read back, so it does not replace your discipline.** The VulcanFlow project is set to
+`sharedWorkspaceConcurrency: serialize`, whose subject is two runs holding one workspace at the same
+time. Five things follow for you, and **ADR-0005 §2.3 is the rule — this is the pointer**:
 
-- **On `platform`, lane steps take turns.** A run that would previously have started alongside
-  another does not. That is the intended cost, not a fault to work around, and nothing about it is
-  yours to change: the policy and its revert are CEO's.
-- **The lock does not cover a branch across time.** It stops two *live* runs sharing a tree; it does
-  not stop the next run pushing to a branch an earlier one opened. So one change / one branch / one
-  author run, one correction commit answering a verdict, and **reconcile forward, never force-push**
-  are still the rule.
+- **On `platform`, expect lane steps to take turns.** A run that would previously have started
+  alongside another may not. That is the intended cost, not a fault to work around, and nothing
+  about it is yours to change: the policy and its revert are CEO's.
+- **Behave as though it were not there.** The lock exposes no holder and no queue, the first
+  observation taken with it in force showed three runs in one `docs` tree (ADR-0005 §2.3.1), and
+  nothing covers a branch *across time* in any case — the next run can still push to a branch an
+  earlier one opened. So one change / one branch / one author run, one correction commit answering a
+  verdict, and **reconcile forward, never force-push** are binding, and a violation is a blocking
+  finding in lane 6.
 - **Editing the design of record? The issue must carry `projectWorkspaceId`** — the `docs` workspace,
   `30a88b19-1c78-4db0-afe9-d7e66c494858`. Without it the run works outside the lock domain and the
   control does not reach it. Atlas sets it when filing; if you are handed a record-authoring issue
   without it, say so before you start. ADR-0005 §2.3.2.
+- **A lane-6 pair filed from such an issue inherits that field and must be moved back off it** —
+  one `PATCH /api/issues/{id}` after filing, by whoever filed it. A reviewer needs no checkout of
+  the record repository, and leaving the pair in that domain is what produced the three-run tree
+  above. ADR-0005 §2.3.2 gives the two field values.
+- **If your wake banner says another run concurrently holds your workspace, that is R11 limb 5 and
+  it is reportable** — quote the banner, both run ids and the workspace id to CEO. Do not infer from
+  it that the lock is broken, and do not infer from a quiet banner that it is working.
 
 ---
 
@@ -215,15 +224,14 @@ title: … <repo>#<pr> @ <head-sha-7> … (reviewer #<1|2>, <Assay|Warren>) …
 key:   lane6:<owner>/<repo>#<pr>:<head-sha-40>:<assay|warren>
 ```
 
-Those two title fragments are what is required; the rest of the title is the subject.
+Those two title fragments are what is required; the rest of the title is the subject. **A review
+issue whose `@ sha` is not the pull request's current head is stale by inspection** — that is what
+the title fragment is for, and it is the half that works without the key working.
 
-Why you should care rather than copy it blindly: **the key changes when the head moves**, because a
-verdict only counts against the head it covers (§6.3 condition 3), so re-filing at a new head is
-right and the key does not get in the way. And **the title is how anyone spots a stale pair** — a
-review issue whose `@ sha` is not the pull request's current head is answering a superseded commit.
-Two runs once filed the same pair twice and the duplicate could not be withdrawn; this is the repair.
-File through the call that takes the key — ADR-0005 §2.3.3 names which one and why the other is
-excluded.
+**ADR-0005 §2.3.3 is the rule**: which call to file through, why the other route is excluded, why
+each limb is in the key, and what the key is and is not claimed to do. Two steps that are easy to
+miss and are not optional: **re-file the pair when the head moves** (the key changes with it, by
+design), and **PATCH the new pair off the record workspace** it inherits (§2.3.2).
 
 ---
 

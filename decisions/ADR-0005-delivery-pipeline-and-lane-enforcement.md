@@ -135,11 +135,15 @@ mechanically; the first two are review obligations on Assay.
 A lane says *who* may touch a change. It says nothing about *how many of them at once*, and that
 turned out to matter. **A branch is owned by one issue and one author run at a time.**
 
-**Read the three bullets below as good practice and §2.3.1 as the enforcement.** When this section
-was first written the bullets were all there was, and they were advisory — which is why the thing
-they describe recurred twice more and went to CEO as **VUL-83**. The control that now refuses it is
-a Paperclip workspace lock, recorded in §2.3.1; the bullets survive because the lock does not reach
-every shape of the defect, not because they hold the line. Concretely:
+**The three bullets below are binding on an author run, and a violation of one is a blocking
+finding in lane 6. §2.3.1 is the platform control that was added beside them, not a replacement for
+them.** This is stated with that much force because the earlier draft of this paragraph called them
+"good practice", which left a reviewer unable to tell whether a force-push against bullet 3 was
+citable; it is. What changed with §2.3.1 is *where* the concurrent case is addressed, not whether
+these three are obligations. When this section was first written the bullets were all there was —
+which is why the thing they describe recurred twice more and went to CEO as **VUL-83**. The control
+that went there is a Paperclip workspace lock, recorded in §2.3.1; the bullets survive because the
+lock's domain does not reach every shape of the defect. Concretely:
 
 - The pull request names its **owning issue**. Another run — including another run of the same
   agent, on a different issue — does not push to that branch. It comments on the owning issue and
@@ -150,13 +154,24 @@ every shape of the defect, not because they hold the line. Concretely:
   it where it is sufficient, and says in the commit message where it overrode it. It does not
   force-push, and it does not merge the branch into itself.
 
-This is here because it was exercised three times on 2026-10-01, on this record's own pull
-request, and each time the defect came from concurrency rather than from any agent's judgement:
-**(i)** two Atlas runs each delegated a lane-6 re-read, producing duplicate review issues that
-had to be withdrawn; **(ii)** one run wrote §6.4 consequence 1 while the other's commit falsified
-it, and neither noticed — it took reviewer #1 to find it, as a blocking finding; **(iii)** both
-runs then wrote independent fixes for the same five blocking findings and filed **two** board
-issues for one attestation detector, one of which was cancelled as a duplicate.
+This is here because it was exercised five times on 2026-10-01, on this record's own pull requests,
+and each time the defect came from concurrency rather than from any agent's judgement. **The
+enumeration below is this record's, and VUL-83's is the authority on the events**; the two are the
+same five in a different order, so each row carries both labels and the arithmetic of "a sixth",
+"a seventh" is performable from either.
+
+| Here | VUL-83 | What happened |
+|---|---|---|
+| **(i)** | 1 | Two Atlas runs each delegated a lane-6 re-read for the same head, producing duplicate review issues. VUL-42/VUL-43 were withdrawn as duplicates of VUL-44; later **VUL-52/VUL-53 and VUL-54 were all live for one pull request**, and Assay had to be told on VUL-52 to stop reading, because a verdict there would have been void the moment it was posted. |
+| **(ii)** | 2 | One run wrote §6.4 consequence 1 — "seven findings on `main`" — while the other run's commit `c7bb4af` in the same change falsified it, and neither noticed. It took reviewer #1 to find it, as a blocking finding. |
+| **(iii)** | 4 | Both runs wrote independent fixes for the same five blocking findings and filed **two** board issues for one attestation detector, VUL-48 and VUL-50. **The cancel of one returned `409`** against a live checkout, so it could not be cleaned up, and the record then misdescribed what became of it — reviewer #1's blocking finding B16, two passes later. |
+| **(iv)** | 3 | **The branch merged into itself** — `aba73a9`, two parents both on the same branch. The only instance visible in `git log`. |
+| **(v)** | 5 | ~22:45–22:55Z. The VUL-37 run pushed `e2fd1fe` and `8811f82` while the VUL-40 run was mid-repair at `342a816`. The VUL-40 run reconciled forward rather than force-pushing, so nothing was lost — but it discovered the move only by re-reading `head.sha` from the GitHub API, **after** the reviewer #1 verdict it was answering had been written against a head that no longer existed. Both lane-6 verdicts were void before either reviewer could act. |
+
+Instances (iv) and (v) are the two that arrived after this section was first written, with both runs
+complying with the bullets as far as either could see. That is the fact that sent it to CEO: the
+bullets are obligations a reviewer can cite, but **none of the three is enforceable against a run
+that cannot observe the other run** — which is a statement about mechanism, not about standing.
 
 **It is deliberately not an R5 event.** No lane was crossed, no verdict was counted that should
 not have been, and nothing reached `main` that the gate should have refused — §10 R5 is about
@@ -165,10 +180,12 @@ those and this is not one. It is a sequencing defect inside lane 1.
 **It recurred, and the closing sentence of this section was discharged rather than restated.** That
 sentence said: if it happens again, the fix is outside this record, one run per branch is a
 Paperclip-level control and therefore CEO's, and it comes back with the instances rather than as a
-fourth restatement. Two more instances followed on the same day — a fourth and a fifth — and it went
-to **VUL-83**, where CEO chose, applied and read back a control. §2.3.1 is what that decision binds
-here. A sixth instance was observed by CEO while routing the decision, and is evidence of the same
-mechanism rather than a new one.
+fourth restatement. Instances **(iv)** and **(v)** followed on the same day and it went to
+**VUL-83**, where CEO chose a control, applied it, and read the applied setting back. §2.3.1 is what
+that decision binds here, and the instances came back with it — they are the table above. A **sixth**
+instance was observed by CEO while routing the decision, and a **seventh** during lane 6 on the
+amendment that wrote §2.3.1; both are the same mechanism rather than new ones, and the seventh is
+recorded in §2.3.1 because it is the first observation taken with the control in force.
 
 ### 2.3.1 The control is Paperclip's, not this record's — added 2026-10-01
 
@@ -198,13 +215,15 @@ was registered nowhere, so every ADR edit ran in a clone no Paperclip control co
 **`30a88b19-1c78-4db0-afe9-d7e66c494858`**, `sharedWorkspaceKey: vulcanflow-docs`, `defaultRef: main`,
 `isPrimary: false`, created `2026-10-01T23:03:20Z`. §2.3.2 is the half of this that is procedure.
 
-**Why the bullets above survive.** `serialize` refuses two runs *holding one workspace at the same
-time*. It says nothing about two runs holding it in turn, and a branch outlives a run: the second run
-to take the `docs` checkout can still push to a branch an earlier run opened for a different issue,
-and can still add a second partial answer to a verdict an earlier run already answered. **One change
-/ one branch / one author run, one correction commit, and reconcile-forward are therefore still the
-rule for that case** — what changed is that they are no longer the only thing standing between two
-live runs and one working tree.
+**Why the bullets above survive.** The setting's subject is **two runs holding one workspace at the
+same time** — that is what the field name says and what it was set for. Whatever it produces in that
+case, which is R11 limb 1's question and is not read back anywhere in this record, it has nothing to
+say about two runs holding the workspace **in turn**, and a branch outlives a run: the second run to
+take the `docs` checkout can still push to a branch an earlier run opened for a different issue, and
+can still add a second partial answer to a verdict an earlier run already answered. **One change /
+one branch / one author run, one correction commit, and reconcile-forward are therefore the only
+thing addressing the sequential case at all** — and they remain binding in the concurrent case too,
+because a setting whose effect this record has not read is not something to stand behind.
 
 **The override is asymmetric, and the asymmetry is the thing to watch.** `allowIssueOverride: true`
 is deliberate. A **review-only** issue may carry
@@ -217,8 +236,9 @@ event, for the same reason the six instances are not.
 **The cost is throughput on `platform`.** For the record repository it costs approximately nothing:
 one author, one branch at a time, which is what this section already asked for. For `platform` it is
 real, and the reason is in the history: `GET /api/companies/98108baf-…/execution-workspaces` returned
-**160 records on 2026-10-01, every one of them `mode: shared_workspace` and
-`strategyType: project_primary`**, with 143 of them rooted at the same `platform` working tree. Lane
+**160 records at 2026-10-01 ~23:20Z and 195 at ~23:32Z, every one of them `mode: shared_workspace`
+and `strategyType: project_primary`**, with 143 and then 174 of them rooted at the same `platform`
+working tree (the later read: 174 `platform`, 16 under another project's default path, 5 `docs`). Lane
 steps that used to interleave in that one checkout now take turns, and the cost is paid on every item
 rather than only on the ones that were racing — a lock cannot tell a race from a coincidence.
 
@@ -232,6 +252,29 @@ and it is **CEO's**, not Atlas's. R11 limb 1 names the observable that calls for
 objects, not two working trees; the lock removes their cause only while both runs share a workspace,
 which is too weak to rest the record on. §2.3.3 is the independent repair.
 
+**The first observation taken with all three controls in force does not show them working, and this
+record does not resolve why.** On 2026-10-01, with `serialize` set, `docs` registered and the
+authoring issue carrying it, **three runs held the one managed `docs` working tree inside
+twenty-three minutes** — the VUL-91 authoring run and the VUL-96 and VUL-97 lane-6 runs it filed —
+and the tree's `HEAD` moved under a live reviewer. Reviewer #1 recorded the reflog of the shared
+checkout mid-review (`HEAD@{0}: checkout: moving from atlas/vul-91-… to main`, landing while that run
+was reading) and completed the review out of the object store instead. Two runs were additionally
+**told at wake time** that the workspace was concurrently held by a named other run — the VUL-96 run
+was told of the VUL-91 run, and the run writing this correction was told of the VUL-96 run — in the
+wording VUL-83 quotes as candidate 3 and rejects as the status quo.
+
+**Two readings survive that evidence and nothing here distinguishes them.** Either a second holder is
+being admitted, or the platform's record of holders never clears and both the banner and any
+inference from it are derived from stale state. The second reading is live rather than rhetorical:
+of the 195 execution-workspace records read at ~23:32Z, **every one reads `status: active` with
+`closedAt: null`, including records opened at 18:07Z**, so `status` and `closedAt` do not distinguish
+a live holder from a finished one and **a census of them is not a usable observable** — which is why
+R11 limb 5 is keyed to the wake banner instead. What this record therefore states is the
+observation and not a conclusion: the control is set, the first look at it is the one above, and
+**the question of what it does remains open under R11 limbs 1 and 5** rather than settled in either
+direction. It is not evidence that the field is ineffective; it is evidence that nothing here has
+yet seen it be effective.
+
 ### 2.3.2 A record-authoring issue carries its workspace — added 2026-10-01
 
 **An issue that edits the design of record carries `projectWorkspaceId: 30a88b19-1c78-4db0-afe9-d7e66c494858`.**
@@ -244,22 +287,55 @@ without that field is outside the control** — stated this way because it is ch
 Demonstrated on this amendment rather than asserted. VUL-91 reads
 `projectWorkspaceId: 30a88b19-1c78-4db0-afe9-d7e66c494858`, and the run that wrote this section was
 given `PAPERCLIP_WORKSPACE_ID` equal to that id with its working directory inside the project's
-managed `docs` checkout — not a per-run clone. The same 160-record read in §2.3.1 shows **exactly one
-execution workspace ever rooted at a `docs` checkout**, and it is this one; 143 are `platform` and 16
-are a default path. So the claim that every prior ADR edit happened somewhere no control could see is
-not an inference from the five instances — it is the absence of a record, and this is the first
-record-authoring run this organisation has performed inside a lock domain.
+managed `docs` checkout — not a per-run clone. The 160-record read in §2.3.1 showed **exactly one
+execution workspace rooted at a `docs` checkout up to that moment**, and it was that run; the 195-record
+read twelve minutes later shows five, all of them from this amendment's own author and review runs.
+So the claim that every prior ADR edit happened somewhere no control could see is not an inference
+from the five instances — it is the absence of a record before 23:07Z, and that run is the first
+record-authoring run this organisation performed inside a lock domain.
 
-**It does not apply to a lane-6 review issue**, and that is not an omission. A reviewer writes
-nothing to a tree, which is the same premise §2.3.1's `allow` override rests on. Existing lane-6
-issues carry the project default — VUL-84 reads `projectWorkspaceId: 0347342b-…`, `platform` — and
-there is nothing to go back and correct.
+**A lane-6 review issue is moved back out of the record workspace, and that is a correction to this
+subsection's first draft.** The draft said the rule "does not apply" to a review issue and that
+existing pairs carried the project default with nothing to repair. True of VUL-84; **false of the
+only two pairs this amendment produced.** VUL-96 and VUL-97 were filed by the authoring run at
+23:19:05Z and 23:19:34Z, 44 and 73 seconds after the head commit, and both read
+`projectWorkspaceId: 30a88b19-…` — **inherited, not set**: `create_task` exposes no workspace field,
+so a child takes its parent's. That inheritance is the proximate cause of §2.3.1's first
+observation, because it is what put three runs in one tree.
+
+The rule, stated so it is actionable rather than descriptive:
+
+- **A record-authoring issue carries the `docs` workspace.** It writes to that tree; it belongs in
+  that lock domain.
+- **A lane-6 review issue does not.** A reviewer reads the pull request through the GitHub API and
+  writes nothing to any tree, so it needs no checkout of the record repository, and leaving it in
+  the `docs` domain buys nothing and costs the hazard above. **Because the pair is filed through
+  `create_task` and inherits, the filer corrects it immediately after filing** — one
+  `PATCH /api/issues/{id}` setting `projectWorkspaceId` to the project default
+  `0347342b-4b10-429f-bcac-21ca23f6518e` and `executionWorkspaceSettings`
+  `{"sharedWorkspaceConcurrency": "allow"}`, which is the review-only override §2.3.1 sanctions and
+  is what keeps the reviewer from then queueing inside `platform`'s domain instead. Both fields are
+  in that route's request schema (`GET /api/openapi.json`, read 2026-10-01). **Whether the PATCH is
+  honoured on an already-created issue is not asserted here** — the first use is the pair re-filed
+  at this section's own corrected head, and the read-back goes on the authoring issue.
+- **The filer is whoever delegates lane 6**, which under §2.3.3 is the authoring run, so this is one
+  more step in a procedure that run is already performing.
+
+This is the asymmetry §2.3.1 calls the thing to watch, used for the case it was written for: the
+override lands on review-only issues, never on an authoring one, and R11 limb 2 is the check that it
+stays that way.
 
 ### 2.3.3 A lane-6 review pair is keyed on (pull request, head sha) — added 2026-10-01
 
-Instance (i) was two Atlas runs each delegating the same lane-6 re-read, producing duplicate review
-issues, one of which then could not be withdrawn — the attempt returned `409`. The repair is not
-serialization: it is that **the pair is not filable twice.**
+Instance (i) was two Atlas runs each delegating the same lane-6 re-read for one head. Its worst form
+was not the first duplicate — VUL-42/VUL-43 were withdrawn cleanly — but the second: **VUL-52/VUL-53
+and VUL-54 were all live for one pull request, and Assay had to be told on VUL-52 to stop reading,**
+because a verdict there would have been void the moment it was posted. That is the case this section
+is for. (**The `409` belongs to instance (iii)**, where the cancel of one of two board issues for one
+detector failed against a live checkout; an earlier draft of this subsection attributed it to (i),
+which §2.3.1's own sentence about (i) and (iii) already contradicted two paragraphs earlier.) The
+repair is not serialization: it is that **the pair is asked to be unfilable twice, and a pair that
+does exist twice is stale by inspection.**
 
 Lane 6 is two issues, one per reviewer (§6.1). Each is created with an `idempotencyKey` derived from
 the repository, the pull request number, the full head sha and the reviewer:
@@ -289,10 +365,17 @@ is **not** among the routes that document `idempotencyKey`; so **the HTTP route'
 established and a lane-6 pair is not filed through it** until someone verifies it and records the
 read-back. The key format above is independent of which route gains it.
 
-**What the key buys is one issue per (repository, pull request, head, reviewer) — not a particular
-status code.** Whether a second run presenting the same key receives the existing issue or an error
-is not established here, and either outcome satisfies the requirement. The thing to check is the
-count of live pairs at a head, not the response.
+**What the key is, exactly: the mechanism by which Paperclip is *asked* to refuse a second filing.
+That it refuses is not read back here.** The evidence for the key is a schema field, and a schema
+field described as a "caller-stable retry key" is not an observation of a collision being
+deduplicated — no second filing under a colliding key has been performed and recorded. What the key
+is intended to buy is **one issue per (repository, pull request, head, reviewer)**, and that is
+stated as the intent rather than as a property of the platform. Nor is the response asserted:
+whether a second run presenting the same key receives the existing issue or an error is also not
+established, and either would satisfy the intent. **The thing to check is therefore the count of
+live pairs at a head** — which is checkable by anyone, from the titles, without the key working at
+all, and that is why staleness below is read from the title. If a colliding filing is ever made and
+observed, the result belongs in this paragraph.
 
 **Staleness is read from the title, not from the key, because the key is not stored on the issue.**
 `GET /api/issues/{id}` exposes no idempotency field — checked on VUL-84, 2026-10-01 — so the head
@@ -310,9 +393,12 @@ and deliberately does not fix the whole string**, because a prescribed title tha
 diverges from gets cited as a defect in the practice rather than read as the convention it was meant
 to capture.
 
-A pair whose title sha is not the pull request's current head is stale **by inspection**. That is
-what instance (i) needed and could not get, because the route it reached for was a withdrawal and the
-withdrawal returned `409`.
+A pair whose title sha is not the pull request's current head is stale **by inspection**, and that is
+exactly what instance (i) needed: three live review issues for one pull request, and the only way to
+tell which one mattered was to tell a reviewer by hand to stop reading. Inspection does not depend on
+the key working, on a withdrawal succeeding, or on anyone holding the history in mind — which is the
+property instance (iii) shows is worth having, since the withdrawal route there returned `409` and
+left the duplicate standing.
 
 ---
 
@@ -1392,16 +1478,17 @@ inside its range, that is a second R5b event, and R5b already says where a secon
     the honest shape of the mechanism is that it detects its own weakening everywhere except in
     the one file that decides whether it runs at all. The price is that GATE diffs are slower to
     review and that §4.1's "closes the obvious hole" is narrowed to bundling.
-13. **Two runs no longer share a working tree, and the record repository is inside a lock for the
-    first time** (§2.3.1). The cost is throughput on `platform`, where lane steps that used to
-    interleave in one checkout now take turns, and it is paid on every item rather than on the
-    concurrent ones — serialization cannot tell a race from a coincidence. Two smaller prices come
-    with it: a record-authoring issue is **wrong unless it carries `projectWorkspaceId`** (§2.3.2),
-    which is a field a human has to remember until it becomes a default; and this record's own rule
-    is now enforced somewhere this record cannot read — the lock exposes no holder or queue — so
-    §2.3.1 ends in a sentence that says so rather than in a claim. That is the first control in this
-    pipeline whose mechanism lives outside both GitHub and the repository, and R11 exists because a
-    control nobody here can inspect needs observables more than the others do.
+13. **The record repository is inside a lock domain for the first time, and the project is set to
+    `serialize`** (§2.3.1, which is the statement; this is the cost). The price is throughput on
+    `platform`, paid on every item rather than on the concurrent ones, because a lock cannot tell a
+    race from a coincidence. Two smaller prices: a record-authoring issue is **wrong unless it
+    carries `projectWorkspaceId`** (§2.3.2), a field someone has to remember until it becomes a
+    default; and the lane-6 pair filed from such an issue inherits that field and has to be
+    corrected back off it. **The price with no floor under it is that this is the first control in
+    the pipeline whose mechanism lives outside both GitHub and the repository** — it exposes no
+    holder and no queue, so what it does is unread, the first observation of it (§2.3.1) did not
+    show it working, and R11 carries five limbs because a control nobody here can inspect needs
+    observables more than the others do.
 
 ---
 
@@ -1632,7 +1719,16 @@ Named, so this record is revisited on evidence rather than on mood.
      walkthrough whose `coveredCommitId` does not equal `head.sha` and does not update on a
      re-trigger. **The re-trigger is part of the observable, not a courtesy** — a stacked pull
      request is *expected* to produce no automatic walkthrough (§6.1), so the absence of one
-     before an `@coderabbitai review` nudge is not this limb firing. **Warren** owns the
+     before an `@coderabbitai review` nudge is not this limb firing. **Nor is slowness: the limb
+     requires the absence to persist for at least 20 minutes after the push.** Raised to Atlas
+     2026-10-01 on VUL-97 and **resolved as not fired** — reviewer #2 read the pull request at
+     ~23:24Z, found only a "currently processing" banner and an `@coderabbitai review` reply saying
+     the command applies only when automatic reviews are paused, and reported the lane unsatisfied;
+     the review was submitted at **23:28:33Z**, 11 minutes after the push, `state: COMMENTED`,
+     covering `394fe54..eb5de61`. The correct report was made on the evidence available, and the
+     floor exists so the next reviewer is not required to re-derive it. A nudge answered with
+     *"applicable only when automatic reviews are paused"* means a review is **already in flight**
+     and is a reason to wait, not a failed re-trigger. **Warren** owns the
      observation and the immediate response is §6.2 corollary 4
      — report the lane unsatisfied and let the merge wait — and then raise R6 to **Atlas**. Do
      not reach for the CLI; §6.1 forbids it as a substitute for exactly this case.
@@ -1713,10 +1809,11 @@ Named, so this record is revisited on evidence rather than on mood.
   expected-failure marker inside the harness is the obvious shape and is **not** adopted today,
   because a marker the implementer can also set is §4.4's problem again.
 
-- **R11 — the workspace serialization in §2.3.1 is not doing what it was set to do.** Four limbs,
+- **R11 — the workspace serialization in §2.3.1 is not doing what it was set to do.** Five limbs,
   because each has a different observable, a different owner and a different repair. The control
   itself is CEO's: **the policy field and the revert are not Atlas's to change**, so what this
-  trigger produces for three of the four limbs is a report to CEO, not an edit.
+  trigger produces for most limbs is a report to CEO, not an edit. **Limb 5 has already fired
+  once**, which is recorded there and in §2.3.1 rather than treated as hypothetical.
 
   1. **`serialize` refuses rather than defers.** The decision is explicit that which of the two it
      does is **not established** — no API read exposes the lock's holder or queue — so this limb is
@@ -1732,17 +1829,22 @@ Named, so this record is revisited on evidence rather than on mood.
      Observable: an issue whose work writes to a repository tree and whose
      `executionWorkspaceSettings.sharedWorkspaceConcurrency` reads `allow`. **Owner: Assay**, who
      already rejects lane crossings before reading a diff, and this is the same kind of check on the
-     same kind of object. A second author run let through that way is **the breach §2.3.1 names** and
-     is recorded here with its instance, not absorbed.
+     same kind of object. **When: on the pull request's authoring issue, at the start of every
+     lane-6 review, in the same step as the lane check** — stated because a limb with no occasion
+     attached is a limb each reviewer has to invent an occasion for; Assay accepted this obligation
+     on VUL-96 and it is one `GET /api/issues/{id}`. A second author run let through that way is
+     **the breach §2.3.1 names** and is recorded here with its instance, not absorbed.
   3. **A record-authoring issue is filed without `projectWorkspaceId`** (§2.3.2). Observable:
      `GET /api/issues/{id}` → `projectWorkspaceId` null, or the project default
      `0347342b-…`, on an issue that amends the TDD or an ADR. **Owner: Atlas**, because Atlas files
      them; the repair is to set the field before the run starts, and the trigger fires only if it
      becomes habitual — once is a correction, a pattern means the field needs to be a default rather
      than a discipline, which is a Paperclip-level request and therefore CEO's.
-  4. **A seventh instance of §2.3 after all of the above is in force.** Observable: two runs on one
+  4. **A consummated §2.3 defect after all of the above is in force.** Observable: two runs on one
      branch, one issue or one review pair, with `serialize` set, the workspace registered and the
-     authoring issue carrying it. That combination would mean the control is in the wrong place
+     authoring issue carrying it. **This limb has not fired** — the event in §2.3.1 is two runs on
+     one *working tree*, which is limb 5 and is upstream of this one; the distinction is kept
+     because the repairs differ. That combination would mean the control is in the wrong place
      rather than merely advisory, and the next thing to want is the instance-level isolated-workspace
      flags — `enableIsolatedWorkspaces`, `enableIsolatedWorkspacesByDefault`,
      `enableWorktreeRunExecution` at `/api/instance/settings/experimental`, which is **403
@@ -1750,6 +1852,21 @@ Named, so this record is revisited on evidence rather than on mood.
      key and independently on 2026-10-01 with Atlas's, so it is the board's on **VUL-93** rather than
      anyone's here. **Owner: CEO**, carrying the instance. They would also restore the parallelism
      limb 1's cost buys away, so VUL-93 is an upgrade to this control and not a dependency of it.
+  5. **Two runs hold one project workspace concurrently with the control in force.** The upstream
+     observable, and the cheapest to see, because it fires before any board object or branch is
+     damaged. **Observable: a run's wake banner naming another run as the concurrent holder of the
+     same workspace** — *"shared workspace is concurrently held by run `<id>` (issue `<KEY>`)"* — on
+     a project set to `serialize`, for a workspace both issues carry. **It is deliberately not a
+     census of `GET /api/companies/{id}/execution-workspaces`:** all 195 records read 2026-10-01 at
+     ~23:32Z carry `status: active` and `closedAt: null`, the oldest opened more than five hours
+     earlier, so that route cannot distinguish a live holder from a finished one and a count over it
+     would fire on everything. **Owner: whoever receives the banner**, that being the one agent
+     guaranteed to see it; the report goes to **CEO**, who holds the policy and the revert, carrying
+     the banner text, both run ids and the workspace id. **Fired once already** — 2026-10-01, three
+     runs in the managed `docs` tree, recorded in §2.3.1, where the two readings of the event are
+     set out rather than resolved. What it is *not* is a conclusion that `serialize` is ineffective:
+     limb 1 and this limb are the same open question from two sides, and what closes both is a read
+     of the lock, which no route exposes.
 
 ---
 
@@ -1785,4 +1902,4 @@ the section it describes is the three-statements problem with a date attached.
 | 3 | 2026-10-01 | **Lane 7's merge condition has one statement, and the merge that exposed its absence is recorded.** New **§6.3** is the sole statement of the merge condition: lane gate green on the commit merged; ledger with no FAIL and no MISSING against that commit; two verdicts, one each from Assay and Warren, every one of them `APPROVE` with zero unresolved blocking findings, stating a covered sha equal to `head.sha` at merge, and independently attributable on that reviewer's own lane-6 issue; and a merge attestation in the commit message naming the head, the gate and ledger dispositions and both verdicts. Conditions 1 and 2 are satisfied **vacuously** on a repository with no workflow or a change engaging no §25 identifier, but only via an explicit `n/a` in the attestation, never by silence; conditions 3 and 4 are never vacuous — "it is only documentation" is not a lane-7 argument, and §6.4's change was Markdown. §2's lane-7 row, §6's bullets and `process/agent-workflow.md` lane 7 are rewritten as pointers to §6.3 rather than as three independent statements — the three prior statements ("two approving verdicts"; "Assay's verdict and Warren's verdict"; the VUL-32 board directive's "a CLEAN CodeRabbit verdict at the current head") are withdrawn in §6.3. New **§6.4** records, under R5b, that `docs#24` merged to `main` at 2026-10-01T20:59:26Z (`b40201b`) over a `REQUEST CHANGES` verdict with seven blocking findings unresolved on an already-superseded head, with no reviewer #2 verdict in existence — explicitly **not** filed as a §9 exception, and not sanctioned retrospectively. §10 R5 split into R5a (lane crossing — repair is a `ci/lane-gate-test.sh` fixture) and R5b (merge taken against §6.3 — repair is §6.3 plus an attestation detector over `main`), with R5b live until that detector runs. §6.1's CLI boundary redrawn on the **surface** rather than on who ran it, with the §6.3 condition-3 reason: a CLI run emits no coverage anchors, so its coverage is unperformable, so a Warren-run CLI review is still lane 5.5. §6.1's withdrawal quote restored to full text including the lead clause "Warren is blocked until T7." and its `docs#24` citation corrected from "correctly held" to Warren's decline. §6.2 corollary 1's verb changed from *count* to evaluation against §6.3; corollary 3's severity set given `Nitpick` and the absent-label case as advisory. `decisions/README.md`'s index row for this record corrected — it read a bare "Accepted" through amendments 1 and 2, so the index was itself a stale statement of the design of record; the amendment markers now sit in the status column with a per-amendment table beside the in-place-amendment rule, whose rows are pointers into each record's own history rather than summaries of it. **Corrected in lane 6 before this amendment reached `main`, from reviewer #1's verdicts at `aba73a9` (VUL-43, VUL-44).** Amendment 2's row records the corrections that landed on §2's adjacency rule, §6.4's count, §9's tense and the index's marker convention; these are the rest, and they are recorded on this row because they are corrections to §6.1, §6.2 and §6.3, which this amendment wrote. **§6.1's list of disagreements with the `lane6-review-verdict` skill grown from one to three**, because "the ADR wins" is unusable by a reviewer who does not know where the conflict is: the skill's §5 `Result: BLOCKED \| CLEAR \| UNSATISFIED` vocabulary uses neither word §6.3 condition 3 requires, so the procedure as attached yields a verdict Crucible must refuse — mapped here (`BLOCKED` → `REQUEST CHANGES`, `CLEAR` → `APPROVE`, `UNSATISFIED` → the absence of a verdict) and observed live on this pull request, where reviewer #2 posted `CLEAR` at one head and `UNSATISFIED` at the next; and the skill's closing "everything in §2–§5 applies unchanged to CLI output", which read against the verdict shape sanctions a CLI-sourced reviewer #2 verdict that §6.1 forbids on the surface. **§6.2 corollary 3's severity rule restated to fail closed, reversing this amendment's own earlier draft**: `Critical`/`Major` blocking; `Minor`, `Trivial`, `Info`, `Nitpick` and a label reading `none` advisory; **a missing or unparseable severity blocking**. A present `none` and an absent label are *not* the same case — the first is CodeRabbit saying there is no defect, the second is its format having moved under us — and the earlier draft collapsed them, which reversed the skill's stated fail-closed control and contradicted R6 limb 4's own claim that the lane fails closed on a dropped severity header. **§6.3's supremacy claim split into the rule and the state of the world**: the copies converted in this repository are enumerated, the copies this record binds but cannot edit (the company skill, the nine agents' managed instructions stating lane 7 as "a green suite plus two approvals", board directives) are named with **VUL-49** as their route and owner CEO, and the check is stated as `grep` rather than reading — a *partial* restatement being the more dangerous kind, since it reads as sanctioned and drops the clause its writer was not thinking about. **§6.3's vacuity carve-out given the actor it was missing**: the issue's **lane-1 spec** determines whether a §25 identifier is in scope, not the merger, so condition 2's exemption is not self-certified. **The attestation detector's issue corrected to VUL-50** (`platform`, lane-1 spec written, Forge implementing) in §6.3 and R5b, after two board issues were filed for one detector and the duplicate was cancelled; and **§2 settles what the earlier draft left open** — NEUTRAL `ci/**` tooling is specced in lane 1, implemented in lane 3, given fixtures by lane 2 and run by lane 4, because leaving it unassigned is how a gate script acquires an author nobody chose. `process/agent-workflow.md`'s **lane-6 verdict paragraph** reduced to a pointer alongside its `6 → 7` cell: both were added by this amendment and restated condition 3 in two and three clauses respectively, eight and forty lines from the same file's own statement that a list which looks close enough to a summary is how the second phrasing gets back in. **§8.3's "all six ADRs" corrected to the five records on `main`** (ADR-0001, 0002, 0003, 0005, 0007) — a miscount that arrived with amendment 1 and is wrong on either way of counting. New **§2.3 — one change, one branch, one author run**, which is the only *new rule* in this correction pass rather than a repair of an existing one. It is here because concurrency, not judgement, produced three defects on this record's own pull request in one day: duplicate delegated review issues, §6.4 consequence 1 stating a count its sibling commit had falsified, and two runs independently fixing the same five findings while filing two issues for one detector. It is explicitly **not** an R5 event — no lane was crossed and no verdict was miscounted — and if it recurs the fix is a Paperclip-level control owned by CEO rather than a fourth restatement here. Recorded by Atlas under VUL-40. |
 | 4 | 2026-10-01 | **NEUTRAL `ci/**` gets an owner, and the attestation detector gets a floor it cannot choose.** Closes the two questions amendment 3 left open on VUL-48. New **§4.4**: a `ci/` script outside the three GATE paths is **lane-3 work** moving through all seven lanes, with the agent chosen by subject on the axis that already separates the coding agents (pure computation → Forge, service binaries → Anvil, cluster and manifests → Kiln) and **four agents excluded by name** — Crucible from any script auditing lanes 4 or 7, because §6.2 corollary 2's principle refuses to let the audited party build its auditor; Atlas as lane-1-adjacent; Assay and Warren because they would review their own artefact, which §2's adjacency rule does not reach by number and so is stated here. It gets **no §25 identifier**: all 45 map to a product requirement in §2–§23, so the ledger reads `n/a (no §25 identifier in scope)` and the lane-1 acceptance statement is the whole acceptance — fabricating a row would break identifier→requirement injectivity to record something §25 does not describe (the row's own earlier draft said "injective mapping" without a direction, which §25's 45 identifiers across 44 rows falsify in the other one). §4.4 also states where the control on the **fixture harness** actually sits: the harness is NEUTRAL, not TEST, so no check sees it and a coding agent can mechanically reach it — so the fixtures are **enumerated by Atlas in the spec and written by Scribe first**, and that is recorded as weaker than the path partition rather than presented as equivalent. New **§6.5** fixes the detector's **floor as four named commits** read back from each protected `main` on 2026-10-01 (`docs` `b31ddfec`, `platform` `41506ad`, `infra` `304b300e`, `vf-api` `45d7ded9`), asserting `--first-parent` **exclusive of the floor**; `docs`'s floor is chosen so `b40201b` is the **first** commit asserted on and §6.4's defect is *derived* rather than hard-coded, which is why **§7 item 10's "reads forward from the first attested merge" is corrected** — that floor points into the future and would have excluded the only known event. §6.5 states the seven finding classes, the **three things the detector cannot assert** (zero unresolved blocking findings leaves no trace; verdict existence is a Paperclip fact and degrades to `UNCHECKED`, never to a pass; §25 scope is a spec judgment), that moving a floor is an amendment and an unmanifested protected repository is itself a finding, that it lives in `platform` so as not to engage **R2** on the other three, and **the residue**: Crucible runs the thing that audits Crucible, which lane 4's monopoly makes unavoidable, mitigated by Assay **re-deriving the ledger by hand** in lane 6 and recorded as still not an independent auditor. **R5b's closure condition restated as four things a person can check** — script and harness on `platform`'s `main`, the harness green on every enumerated fixture *at its stated outcome*, a Crucible run in which the only commits carrying a finding are the ones R5b records, and Assay's hand re-derivation of that same ledger. New **R8**: the moment a NEUTRAL `ci/**` script becomes a required status check, §4.4's premise that it gates nothing is void and §4.2's GATE row must be amended in the same change. §2 gains a note that the lane table assigns **lanes, not path classes**, which is the gap `ci/**` fell through. **Revised in lane 6 before merge, from both reviewers' verdicts at `b614f82`** (VUL-59 reviewer #1, VUL-60 reviewer #2 — 2 blocking and 7 advisory, and 1 blocking and 1 advisory, with one defect found by both). **§6.5's residue no longer asks Assay to run the detector**: the earlier draft said "Assay reproduces the run", which is a lane-4 act, so R5b could not be closed without the reviewer crossing a lane; the mitigation is now Assay **re-deriving the ledger by hand from `git log`**, which is a review act, reaches the same conclusion on a reproducible input, and leaves lane 4's monopoly — the premise §4.4's Crucible exclusion rests on — unqualified. **§4.4's final paragraph had three false claims and now has three honest ones**: the fixture control is *temporal*, not structural (nothing mechanical stops an implementer editing the delivered harness, which the preceding sentence had just established); the reviewer's check is **per fixture against its stated outcome**, not a count, because counting catches deletion and not relaxation — so the spec enumerates outcomes and not names; and "the strongest arrangement available" is withdrawn, with the stronger option — naming the script, its manifest and its harness in §4.2's **GATE** row — **considered and rejected on the record**, because both would still move together and because GATE is §4.1's enforcement set, which R8 now names as the repair for the day the premise expires. **§6.5 gains a subsumption rule, a resolution route and an eighth class**: class 1 firing **suppresses classes 2 and 4–8** (they read keys of a block that is not there) while **class 3 survives** (it reads parents and pull-request association), so `b40201b` reports exactly one finding and a closure condition phrased on findings is satisfiable; `<n>` is resolved by **`GET /repos/{owner}/{repo}/commits/{sha}/pulls`** and **never** by parsing a `(#n)` subject suffix, which §7 item 10's typed-message requirement does not guarantee; an unreachable API yields **`UNCHECKED`**, because "could not resolve" is not "no pull request"; and new **class 8** compares `Lane-7-Gate: PASS` against the commit's actual check runs, since it was otherwise **transcribed and not verified** while reading as confirmed. **R5b's closure criterion 3 rephrased against the recorded event set** rather than a single sha, so a merge landing before the detector exists is a second R5b event rather than permanent unsatisfiability. **§2's non-adjacency bullet narrowed to the two pairings it names** (3+5, 4+7): the interposed-gate argument does not transfer to 3+6, which §4.4 forbids, and the old wording affirmatively licensed every pairing the adjacency rule misses. **§2's `ci/**` bullet reduced to a pointer** after this amendment and amendment 3 produced two statements of one rule in one day — §4.4 is the statement. **New §6.1 bullet on stacked pull requests**: a base other than the default branch draws a skip notice rather than a walkthrough, the sanctioned recourse is an `@coderabbitai review` comment (the App's surface, not the CLI), and **R6 limb 2 does not fire on the skip notice** — limb 2's observable is amended to make the re-trigger part of it. **R8's observable given its second form**: a script whose exit code decides a required check as a *step inside another required job* never appears in `required_status_checks.contexts`, which is the cheaper and therefore likelier form. **`process/agent-workflow.md` §1's exclusions made symmetric** — Crucible's cell reduced to the plain prohibition and all four excluded agents named in the §4.4 pointer below the table, since annotating one row read as permitting the other three. Recorded by Atlas under VUL-48. |
 | 5 | 2026-10-01 | **The gate's own weakening: one limb was already closed, one is closed here, and the third cannot be closed in this repository.** Closes the §4.2 question Assay raised on VUL-68 against merged code at `platform@41506ad`. The reading is confirmed in full: all three GATE paths in one diff gives `gate=3, prod=0, test=0`, `lane-partition` passes it, `test-erosion` greps `-- '*.rs'` and sees nothing, and `ci/lane-gate-test.sh`'s `setup()` copies only `ci/lane-gate.sh` so the harness cannot construct the diff — fixture 5 is *gate + prod → fail*, fixture 6 is *gate alone → pass*, and there is nothing between them. New **§4.5** splits it into three limbs. **Limb 1, deleting or renaming a check, was already closed by configuration**, which is the fact VUL-68 asked for and could not read: `GET /repos/vulcanflow/platform/branches/main/protection` read back 2026-10-01 returns the four contexts `lane-partition`, `test-erosion`, `inline-test-modules`, `gate-self-test`, `strict: true`, each pinned to `app_id 15368`, with `enforce_admins: true` — the configuration §8.2 records as applied, still in place — so a check that stops reporting leaves a required context expected and never reported and the merge blocks, which is §8.4's *"4 of 4 required status checks are expected"* seen from the other side. VUL-68's conditional severity resolves to its lower branch for that limb only. **Limb 2, the classifier and its own harness in one diff, was open and is closed by two sub-checks** inside the existing `gate-self-test` job, so no new context has to be wired: **monotonicity** — the base harness is run against the head classifier and any case the base asserted the gate *refuses* that head now *permits* is blocking, while the converse is reported and does not block because a stricter gate is not a weakening — and an **assertion floor** on the harness's `check` count, which closes the delete-then-weaken route monotonicity alone leaves open. **Limb 3 is named as unclosable inside the repository and was not in the finding:** branch protection pins job **names**, not job **bodies**, so a diff touching `.github/workflows/lane-gate.yml` **alone** is GATE-only, `lane-partition` permits it, and replacing each job's `run:` with a command that exits zero leaves all four required contexts green while none of the four checks has run — one file, four green checks, no gate, strictly more reachable than the three-file sequence VUL-68 describes and unreachable by any edit to `classify_path()`. Every layer above bottoms out there, monotonicity included, since its step lives in that file. **Two alternatives rejected on the record.** A **pairing rule** (*"`ci/X.sh` and `ci/X-test.sh` may not appear in the same diff"*), which Assay named: monotonicity is strictly stronger on the same case — the pairing rule *splits* a one-pull-request weakening into two and buys legibility where monotonicity *refuses* it — and the pairing rule rests on a filename convention that a GATE-only rename defeats. A third reason this row's own earlier draft gave — that the pairing rule would force the classifier change and its fixture into separate pull requests — is **withdrawn in §4.5 as false**: R10's sequence separates them anyway, so the rejection stands on two reasons and not three. A **class split**, one class per detector: §4.4's *"both would still move together"* is right and applies here, because the defect is not that two files share a class but that a detector and the only assertion that the detector is correct are the same change, so §4.2's table is **unchanged**. **What remains open is stated rather than implied**: in-place relaxation of a fixture — body weakened and expected verdict flipped together, count preserved — is caught by nothing mechanical, and the floor is an endpoint comparison with the same blindness as fixture 12's second half, which Assay flagged, which is deliberate, and which is unchanged. New **§4.6** gives a GATE-class pull request a five-item review obligation, because limb 3's control is lane 6 by construction and "review it carefully" is not a specification: the four job names unchanged and still in `required_status_checks.contexts`; each job still invoking the gate, with a `run:` that no longer reaches the script a blocking finding on its own; `on:` unchanged with no job-level `if:` and no `paths:` filter; every fixture read **against the outcome the lane-1 spec states for it** rather than counted; and any case the harness cannot construct **named in the verdict as uncovered**, which is how limb 2 survived from `41506ad` to VUL-68. **§4.1's second paragraph is narrowed and an overclaim withdrawn** — it closes the *bundled* form of gate-weakening and not the solitary form, and a GATE-only diff is permitted deliberately — and **§4.2 gains a note that its rule partitions *between* classes and says nothing about what travels *within* one**, which is where it bit. New **R9**: limb 3's only real closure is a GitHub control the diff does not contain; two were looked for on 2026-10-01 and neither is in place (`GET /repos/vulcanflow/platform/rulesets` → `[]`, `GET /orgs/vulcanflow` → `plan.name: free`), whether a ruleset `workflows` rule is available on Free for a public repository is **not verified here**, and because that is a plan question of §8's shape the **owner is CEO**. New **R10**: `gate-self-test` being required means the gate's own suite may never be red, so a fixture asserting behaviour the classifier does not yet have is a red required check that cannot merge at all — a standing exception to *tests precede code*, with monotonicity the reason the inversion is not a weakening. §4.5 writes out the **three** pull requests this forces — existing-behaviour fixtures by Scribe, then Forge's implementation, then the new behaviour's fixtures by Scribe — in which **no lane is crossed** and nothing is ever red, only step 3 is inverted, and the control over step 3 is lane 1 plus §4.6 item 4 rather than a mechanism, because §4.4's "written by Scribe before the implementation exists" clause is not satisfiable for a GATE path. **§4 table corrected from 17 fixture diffs to 21**, which §7 item 4 has said since amendment 1 and which this record contradicted itself on in two places; the count is 21 `check` invocations, read off `ci/lane-gate-test.sh` at `41506ad`. §7 gains item 12. Lane assignment for the work §4.5 creates follows §4.4's subject table extended to GATE paths — classifier **Forge** in lane 3, fixtures **Scribe** in lane 2 enumerated with their outcomes in the lane-1 spec, `n/a (no §25 identifier in scope)` under §6.3 condition 2, in R10's three-pull-request order — and `setup()` must gain the ability to write `ci/lane-gate-test.sh` and `.github/workflows/` into the fixture repository, since the three cases this amendment turns on are the three it cannot build. `process/agent-workflow.md` §6 and §7 updated in the same change. **Corrected in lane 6 before merge, from Forge's independent measurement on VUL-68.** Limb 1's `app_id 15368` was asserted in an uncited parenthetical and is now read: `GET /apps/github-actions` returns `id: 15368`, `slug: github-actions`, and the protection read-back is recorded as corroborated by three reads from two agents over two routes, which is the citation this limb needs because nothing in the repository restates the configuration that closes it. **Every date this amendment stamped on its own read-backs said 2026-10-02 and the reads happened 2026-10-01 UTC**; all eight occurrences are corrected, including this row's own date and §4.5's and §4.6's *added* markers — a record whose provenance dates are a day ahead of its evidence is the same defect class as an uncited pin. And §4.6 gains a closing note on its own strength, from the second datum in the same read: `required_approving_review_count: 0` with `require_code_owner_reviews: false` means GitHub will merge a GATE-class pull request with **no approving review at all**, so all five items are enforced by §6.3 inside Paperclip and by nothing in GitHub — not an argument for raising a count §3.1 makes unsatisfiable, but the reason §4.6 is checkable items rather than an instruction to review carefully. Recorded by Atlas under VUL-68. |
-| 6 | 2026-10-01 | **§2.3's enforcement is a Paperclip workspace lock, and the two procedural halves of the VUL-83 decision are recorded.** Discharges the closing sentence of §2.3, which said that a recurrence meant the fix was outside this record and CEO's. It recurred twice — a fourth and fifth instance — and CEO chose, applied and read back a control on **VUL-83**, which is the authority for §2.3.1; this record binds it rather than restating it. **New §2.3.1:** `executionWorkspacePolicy.sharedWorkspaceConcurrency` on the VulcanFlow project was an **unset field, not a missing feature**, and is now `serialize`, read back from `GET /api/projects/1eb69546-cf8c-4210-a38c-72c66ad345c3` on 2026-10-01 together with the four values that were already in effect; and because the lock's domain is the **workspace** and `vulcanflow/docs` was registered as none, **setting that field alone would have prevented none of the five instances** — `docs` is now a registered project workspace, `30a88b19-1c78-4db0-afe9-d7e66c494858`, `sharedWorkspaceKey: vulcanflow-docs`, `defaultRef: main`, `isPrimary: false`. §2.3's three bullets are **reclassified as good practice** with the reason they survive stated rather than implied: `serialize` refuses two runs holding one workspace *at the same time*, a branch outlives a run, so one branch / one author run, one correction commit and reconcile-forward still govern the sequential case. The **override asymmetry** is recorded as the one deliberate hole — a review-only issue may carry `executionWorkspaceSettings: {"sharedWorkspaceConcurrency": "allow"}` because a reviewer writes nothing to the tree, an **authoring issue may not**, and a second author run let through that way is the breach. The **cost** is throughput on `platform`; the **revert** is one `PATCH` to `auto` and is **CEO's, not Atlas's**. **Whether `serialize` queues a second run or refuses it is left unasserted**, because the API exposes no read of the lock — no holder field, no queue field — and R11 limb 1 is how that gets answered by observation instead. **New §2.3.2:** a record-authoring issue carries `projectWorkspaceId: 30a88b19-…` or it is **outside the control**, since the project default is `platform` and a lock over an unheld workspace refuses nothing; checkable by one read of `GET /api/issues/{id}`. Demonstrated rather than asserted — VUL-91 carries the field and the run that wrote the section was given `PAPERCLIP_WORKSPACE_ID` equal to it with its working directory in the managed `docs` checkout, the first record-authoring run this organisation has done inside a lock domain. A lane-6 review issue is **excluded by the same premise** the `allow` override rests on, so the existing pairs carrying `platform`'s id (VUL-84) are not a defect to repair. **New §2.3.3:** a lane-6 review pair is keyed `lane6:<owner>/<repo>#<pr>:<head-sha-40>:<assay|warren>` — the **head sha is in the key** because §6.3 condition 3 makes re-filing at a new head correct behaviour that a pull-request-only key would refuse, nothing about the run or the clock is in it, and the reviewer is in it or the pair collapses to one issue. The pair is filed through **`create_task`**, where `idempotencyKey` is a **required** field (schema read 2026-10-01: `minLength 1`, `maxLength 240`, "caller-stable retry key") and which makes the pair children of the authoring issue so the blocker wake costs nothing; **the HTTP route is excluded until verified** — `POST /api/companies/{companyId}/issues` publishes **no request-body schema** in the OpenAPI document and is not among the paths documenting `idempotencyKey`. What the key buys is stated as **one issue per (repository, pull request, head, reviewer) and not a particular status code**, because whether a colliding key returns the existing issue or an error is also not established. And **staleness is read from the title, not the key**, since `GET /api/issues/{id}` exposes no idempotency field (checked on VUL-84) — the `@ <head-sha-7>` form lane 6 already uses is codified for that purpose, which is what instance (i) needed when its withdrawal returned `409`. **New R11**, four limbs: `serialize` refusing rather than deferring (owner CEO, who holds the revert, and the limb exists to answer the question §2.3.1 declines to answer); the `allow` override appearing on an authoring issue (owner Assay, same check it already makes before reading a diff); a record-authoring issue filed without `projectWorkspaceId` (owner Atlas — once is a correction, a pattern means the field should be a default, which is CEO's); and a **seventh instance with all three controls in force**, which would mean the control is in the wrong place rather than advisory, and whose next step is the instance-level isolated-workspace flags on **VUL-93** — `403 {"error":"Board access required"}` to an agent key, read back by CEO with CEO's key and independently with Atlas's, so the board's. §7 gains **item 13**: two runs no longer share a working tree, the price is paid on every item rather than only the concurrent ones because serialization cannot tell a race from a coincidence, and this is the first control in the pipeline whose mechanism lives outside both GitHub and the repository — which is why R11 carries more observables than the triggers above it. **Items 2 and 3 of VUL-91 are in this one amendment and not split**, as the issue allowed: all three are the same decision's procedure, they land in adjacent subsections of one section, and two pull requests editing §2.3 concurrently is the defect §2.3 is about. `process/agent-workflow.md` §1 and §3 and `decisions/README.md` updated in the same change. Recorded by Atlas under VUL-91. |
+| 6 | 2026-10-01 | **§2.3's enforcement is a Paperclip workspace lock, and the two procedural halves of the VUL-83 decision are recorded.** Discharges the closing sentence of §2.3, which said that a recurrence meant the fix was outside this record and CEO's. It recurred twice — a fourth and fifth instance — and CEO chose, applied and read back a control on **VUL-83**, which is the authority for §2.3.1; this record binds it rather than restating it. **New §2.3.1:** `executionWorkspacePolicy.sharedWorkspaceConcurrency` on the VulcanFlow project was an **unset field, not a missing feature**, and is now `serialize`, read back from `GET /api/projects/1eb69546-cf8c-4210-a38c-72c66ad345c3` on 2026-10-01 together with the four values that were already in effect; and because the lock's domain is the **workspace** and `vulcanflow/docs` was registered as none, **setting that field alone would have prevented none of the five instances** — `docs` is now a registered project workspace, `30a88b19-1c78-4db0-afe9-d7e66c494858`, `sharedWorkspaceKey: vulcanflow-docs`, `defaultRef: main`, `isPrimary: false`. §2.3's three bullets are **restated as binding on an author run, with a violation a blocking finding in lane 6**, and the reason they survive is stated rather than implied: the setting's subject is two runs holding one workspace *at the same time*, a branch outlives a run, so one branch / one author run, one correction commit and reconcile-forward are the only thing addressing the sequential case at all. The **override asymmetry** is recorded as the one deliberate hole — a review-only issue may carry `executionWorkspaceSettings: {"sharedWorkspaceConcurrency": "allow"}` because a reviewer writes nothing to the tree, an **authoring issue may not**, and a second author run let through that way is the breach. The **cost** is throughput on `platform`; the **revert** is one `PATCH` to `auto` and is **CEO's, not Atlas's**. **Whether `serialize` queues a second run or refuses it is left unasserted**, because the API exposes no read of the lock — no holder field, no queue field — and R11 limb 1 is how that gets answered by observation instead. **New §2.3.2:** a record-authoring issue carries `projectWorkspaceId: 30a88b19-…` or it is **outside the control**, since the project default is `platform` and a lock over an unheld workspace refuses nothing; checkable by one read of `GET /api/issues/{id}`. Demonstrated rather than asserted — VUL-91 carries the field and the run that wrote the section was given `PAPERCLIP_WORKSPACE_ID` equal to it with its working directory in the managed `docs` checkout, the first record-authoring run this organisation has done inside a lock domain. A lane-6 review issue **belongs outside that workspace** and is patched back off it after filing, because `create_task` has no workspace field and a child inherits its parent's. **New §2.3.3:** a lane-6 review pair is keyed `lane6:<owner>/<repo>#<pr>:<head-sha-40>:<assay \| warren>` — the **head sha is in the key** because §6.3 condition 3 makes re-filing at a new head correct behaviour that a pull-request-only key would refuse, nothing about the run or the clock is in it, and the reviewer is in it or the pair collapses to one issue. The pair is filed through **`create_task`**, where `idempotencyKey` is a **required** field (schema read 2026-10-01: `minLength 1`, `maxLength 240`, "caller-stable retry key") and which makes the pair children of the authoring issue so the blocker wake costs nothing; **the HTTP route is excluded until verified** — `POST /api/companies/{companyId}/issues` publishes **no request-body schema** in the OpenAPI document and is not among the paths documenting `idempotencyKey`. What the key buys is stated as **one issue per (repository, pull request, head, reviewer) and not a particular status code**, because whether a colliding key returns the existing issue or an error is also not established. And **staleness is read from the title, not the key**, since `GET /api/issues/{id}` exposes no idempotency field (checked on VUL-84) — the `@ <head-sha-7>` form lane 6 already uses is codified for that purpose, which is what instance (i) needed when three review issues were live for one pull request. **New R11**, five limbs: `serialize` refusing rather than deferring (owner CEO, who holds the revert, and the limb exists to answer the question §2.3.1 declines to answer); the `allow` override appearing on an authoring issue (owner Assay, same check it already makes before reading a diff); a record-authoring issue filed without `projectWorkspaceId` (owner Atlas — once is a correction, a pattern means the field should be a default, which is CEO's); and a **seventh instance with all three controls in force**, which would mean the control is in the wrong place rather than advisory, and whose next step is the instance-level isolated-workspace flags on **VUL-93** — `403 {"error":"Board access required"}` to an agent key, read back by CEO with CEO's key and independently with Atlas's, so the board's. §7 gains **item 13**: the record repository is inside a lock domain for the first time, the price is paid on every item rather than only the concurrent ones because a lock cannot tell a race from a coincidence, and this is the first control in the pipeline whose mechanism lives outside both GitHub and the repository — which is why R11 carries more observables than the triggers above it. **Items 2 and 3 of VUL-91 are in this one amendment and not split**, as the issue allowed: all three are the same decision's procedure, they land in adjacent subsections of one section, and two pull requests editing §2.3 concurrently is the defect §2.3 is about. `process/agent-workflow.md` §1 and §3 and `decisions/README.md` updated in the same change. **Corrected in lane 6 before merge, from reviewer #1's verdict at `eb5de61` (VUL-96: 6 blocking, 6 advisory) and the CodeRabbit App's review at the same head (2 Minor, both advisory under §6.2 corollary 3, one of them the same defect reviewer #1 found).** The amendment **asserted an outcome for the setting in six places and had read back none of them**; every one is now a statement about what was *set*, and §2.3.1's *"what is unverified stays unwritten"* is applied to the sentence that broke it. **§2.3.1 gains the first observation taken with the control in force, and it does not show the control working**: three runs held the managed `docs` tree inside twenty-three minutes with `serialize` set, `docs` registered and the authoring issue carrying it, and the tree's `HEAD` moved under a live reviewer, who finished out of the object store. Two readings survive — a second holder admitted, or a holder record that never clears — and **the record resolves neither**, because all 195 execution-workspace records read at ~23:32Z carry `status: active` and `closedAt: null` with the oldest opened five hours earlier, so that route cannot tell a live holder from a finished one. **R11 gains limb 5** for that upstream observable, keyed to the wake banner rather than to the unusable census, owned by whoever receives the banner and reported to CEO; **limb 4 is recorded as not fired**, since two runs on one *working tree* is limb 5 and two runs on one branch, issue or review pair is limb 4, and the repairs differ. Limb 2 gains the **occasion** it was missing — the authoring issue, at the start of every lane-6 review, in the same step as the lane check. **§2.3 now enumerates all five instances with the VUL-83 label beside each**, closing the arithmetic gap: (iv) is the self-merge `aba73a9` and (v) is the 22:45–22:55Z concurrent push, neither of which the first draft described while counting from them. **The `409` is reattributed from instance (i) to instance (iii)**, which is where VUL-83 and §2.3.1's own sentence put it; (i)'s actual need — three live review issues for one pull request and a reviewer told by hand to stop reading — is the better argument for the same mechanism and replaces it. **§2.3.2's claim that the rule does not reach a lane-6 issue was falsified by this amendment's own two review issues**, filed 44 and 73 seconds after the head commit and both carrying the `docs` workspace by inheritance; the subsection now decides the case rather than describing it — the pair is patched to the project default with the review-only `allow` override, by the run that files it, and that inheritance is named as the proximate cause of the three-run tree. **§2.3.3's "the pair is not filable twice" is withdrawn as unsupported**: the evidence was a schema description, no colliding filing has been performed, and the claim is now that the key is the mechanism by which Paperclip is *asked* to refuse one. **R6 limb 2 is resolved as not fired and gains a 20-minute floor**: reviewer #2 correctly reported the lane unsatisfied at ~23:24Z on the evidence then available, and the App's review arrived at 23:28:33Z, 11 minutes after the push — a nudge answered with *"applicable only when automatic reviews are paused"* means a review is already in flight. Advisory repairs: §7 item 13 and `process/agent-workflow.md` §3 reduced to cost-plus-pointer and format-plus-pointer after both restated §2.3.1 and §2.3.3 in part — a *partial* restatement being the more dangerous kind, which is this file's own position; `decisions/README.md` row 6 restored to the full key tuple; and this row's `<assay \| warren>` fragment escaped, since the raw pipe was parsed as a fourth column. Recorded by Atlas under VUL-91. |
