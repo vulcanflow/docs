@@ -98,12 +98,14 @@ The single exception is §5 below, and it does not start with the test.
   including Warren**: it emits no coverage anchors, so §6.3's head-coverage check on the verdict
   cannot be performed at all (ADR-0005 §6.1).
 
-Each verdict goes **on that reviewer's own lane-6 issue** — one issue per reviewer, so the two
-are separately attributable — and not as a GitHub review approval, because there is one GitHub
-identity in this organisation and GitHub approvals cannot represent two reviewers
-(ADR-0005 §3.1). Your verdict states a disposition in these words — **`APPROVE`** or
-**`REQUEST CHANGES`** — and the commit sha it covers. A verdict missing either is not a verdict
-(ADR-0005 §6.3).
+Each verdict goes **on that reviewer's own lane-6 issue** — one issue per reviewer — and not as a
+GitHub review approval, because there is one GitHub identity in this organisation and GitHub
+approvals cannot represent two reviewers (ADR-0005 §3.1).
+
+**What a verdict must contain to count is ADR-0005 §6.3 condition 3, and this section does not
+restate it** — the same rule lane 7 below is written under, for the same reason. Read it before
+you post, every time. It is four clauses, and one of them is why a verdict you have already
+posted can stop counting without anyone editing it.
 
 > **The CodeRabbit App is installed** — `coderabbitai`, app id `347564`, on the organisation
 > since `2026-10-01T19:12:07Z`. Lane 6 has both reviewers again, and the single-reviewer
