@@ -2,7 +2,7 @@
 
 | | |
 |---|---|
-| **Status** | Accepted |
+| **Status** | Accepted — amended **A1**, **A3** |
 | **Date** | 2026-10-01 |
 | **Owner** | Atlas (Staff Architect / Tech Lead) |
 | **Closes** | TDD **§27 item 17** |
@@ -10,7 +10,7 @@
 | **Does not close** | §27 items 16a, 18 (see [ADR-0001](./ADR-0001-retire-go-scaffold-vf-api.md)), 19, 20, 21 (see [ADR-0003](./ADR-0003-rpc-scb-parser-and-billing-clients.md)) |
 | **Supersedes** | the `[PROPOSED]` crate table in TDD §2.5.2 |
 | **Design of record** | `VulcanFlow_Technical_Design_Document_v2.2.md` (filename says v2.2; the content is **TDD v2.3**) — §2.5, §21.3, §24.2, §24.4, §25 |
-| **Amendments** | **A1** (2026-10-01) — adds §3.6: crypto, TLS and encoding pins. See §10. |
+| **Amendments** | **A1** (2026-10-01) — adds §3.6: crypto, TLS and encoding pins. **A2** — *reserved, not yet on `main`*: the §3.7 pin corrections and OIDC pins bundled into the closed PR docs#23. **A3** (2026-10-01) — adds the two identifier columns and §7.1–7.2 to the §7 risk table. See §10. |
 | **Issue** | VUL-3 |
 
 ## Question
@@ -544,14 +544,72 @@ building infrastructure to dodge it. The `infra` repo's `factory/phase0-foundati
 stays unmerged, and lifting that hold is CEO's call (tracked separately), not a consequence
 of this list.
 
-| # | Risk | Why Testcontainers cannot settle it | Owner |
-|---|---|---|---|
-| R1 | Admission webhook TLS: certificate issuance, rotation, and `caBundle` injection into the webhook configuration | Needs a real API server calling us over TLS with a trust chain it accepted | Kiln |
-| R2 | Admission ordering and failure policy under real load — `failurePolicy`, timeout behaviour, reinvocation of mutating webhooks | Emergent property of the API server's admission chain | Kiln |
-| R3 | RLS enforcement through PgBouncer at realistic concurrency, including the `SET LOCAL` property of §4.3 under connection churn | Testcontainers proves the mechanism; it does not reproduce production churn | Forge + Ledger |
-| R4 | Ceph RGW conformance against the real Aether RGW deployment — its version, tuning and bucket policy — as distinct from a containerised RGW | A containerised RGW is a different deployment from Aether's | Forge |
-| R5 | arm64 build reproducibility end to end on Aether nodes | Needs the real build and runtime platform | Crucible |
-| R6 | secureCodeBox v5.9.0 operator behaviour against the cluster's actual Kubernetes minor, with `garage.enabled: false` and an external object store; Harbor mirroring of the pinned digests | Operator / API-server interaction | Kiln |
+| # | Risk | Why Testcontainers cannot settle it | **§25 identifiers a cluster would strengthen** | **Confirmations a cluster would *not* strengthen** | Owner |
+|---|---|---|---|---|---|
+| R1 | Admission webhook TLS: certificate issuance, rotation, and `caBundle` injection into the webhook configuration | Needs a real API server calling us over TLS with a trust chain it accepted | `authz/start-barrier-all-paths`, `execution/gates-before-start` | `admission/cascade-gate-delete-oldobject`, `admission/workload-gate-dryrun` — **ADR-derived**, settled in full without a cluster (§4.2) | Kiln |
+| R2 | Admission ordering and failure policy under real load — `failurePolicy`, timeout behaviour, reinvocation of mutating webhooks | Emergent property of the API server's admission chain | `authz/start-barrier-all-paths`, `execution/gates-before-start` | `admission/cascade-gate-delete-oldobject`, `admission/workload-gate-dryrun` — **ADR-derived**, settled in full without a cluster (§4.2) | Kiln |
+| R3 | RLS enforcement through PgBouncer at realistic concurrency, including the `SET LOCAL` property of §4.3 under connection churn | Testcontainers proves the mechanism; it does not reproduce production churn | `isolation/all-stores`, `isolation/background-queries` | `db/tenanttx-set-local-isolation`, `db/pgbouncer-transaction-pooling-prepared` — **ADR-derived**, settled in full without a cluster (§4.3). Neither is weakened by R3 | Forge + Ledger |
+| R4 | Ceph RGW conformance against the real Aether RGW deployment — its version, tuning and bucket policy — as distinct from a containerised RGW | A containerised RGW is a different deployment from Aether's | `isolation/all-stores` (object-store half), `deletion/all-stores-restore` (object-store half; Phase 4) | `storage/s3-compat-conformance` — **ADR-derived**, and the one case where the cluster *does* bear on the confirmation: see §7.1(c). The assertion is not weakened; its deployment coverage is | Forge |
+| R5 | arm64 build reproducibility end to end on Aether nodes | Needs the real build and runtime platform | `build/rust-supply-chain` (reproducibility half), `perf/service-baseline` | The cargo-deny / `cargo audit` / SBOM / `#![forbid(unsafe_code)]` half of `build/rust-supply-chain` — CI-only, no cluster. No ADR-derived identifier depends on R5 | Crucible |
+| R6 | secureCodeBox v5.9.0 operator behaviour against the cluster's actual Kubernetes minor, with `garage.enabled: false` and an external object store; Harbor mirroring of the pinned digests | Operator / API-server interaction | `execution/scan-identity`, `supply-chain/check-catalog` (Phase 2), and the **pool half** of `authz/start-barrier-all-paths` and `execution/gates-before-start` — §27 item 5 names the pool start barrier explicitly | `scb/hook-invocation-contract` and `scb/parser-contract-conformance` (ADR-0003 §3.4) and the §6.3 CRD-codegen drift gate — all **ADR-derived** and all cluster-free | Kiln |
+
+### 7.1 How to read the last two columns
+
+This section is meant to be sufficient on its own. Someone pricing a cluster reads §7 and
+nothing else, so the edges that §4.2 and §4.3 state in prose are restated here rather than
+left to be found.
+
+**(a) Two kinds of identifier appear above, and they are not interchangeable.**
+
+- **§25 identifiers** are the 45 in the TDD's traceability matrix. They are the product's
+  acceptance surface. Only these appear in the "would strengthen" column.
+- **ADR-derived confirmations** are the test IDs this document and ADR-0003 invented as the
+  condition of approving a crate — `api/openapi-3_1-conformance`,
+  `admission/cascade-gate-delete-oldobject`, `admission/workload-gate-dryrun`,
+  `db/pgbouncer-transaction-pooling-prepared`, `db/tenanttx-set-local-isolation`,
+  `storage/s3-compat-conformance` (this document, §4) and `scb/hook-invocation-contract`,
+  `scb/parser-contract-conformance` (ADR-0003 §3.3–3.4). **These are not §25 identifiers**
+  and must never be counted into the 45. They are upstream of §25 identifiers: each one
+  *feeds* a §25 identifier, per §7.2.
+
+**(b) "Strengthen" is the right verb; "degrade" is not.** With one exception noted in (c),
+every ADR-derived confirmation above runs green, with its full intended assertion, on a
+laptop with Testcontainers. A cluster does not rescue a weakened test — it closes the gap
+between *"our handler behaves correctly when handed the right input"* and *"the real
+platform hands it that input, under load, in production shape."* That gap is a property of
+the **§25** identifiers, which assert the system behaviour, not of the ADR-derived
+confirmations, which assert a unit of our code against a read upstream contract.
+
+**(c) R4 is the single exception.** `storage/s3-compat-conformance` is a conformance suite
+run against a *backend*; the containerised RGW it runs against in Phase 1 is a real backend
+and the result is real. What a cluster adds is a second, different backend — Aether's own
+RGW deployment, with its version, tuning and bucket policy. So the assertion is unchanged
+and its coverage is incomplete, and the honest ledger entry is a PASS whose scope names the
+backend it ran against.
+
+**(d) What this table is not.** It does not say that a §25 identifier in the middle column
+cannot be turned green in Phase 1. `authz/start-barrier-all-paths` and
+`execution/gates-before-start` are Phase 1 Ledger work and must go green in Phase 1,
+asserted against replayed `AdmissionReview` JSON through the real handler. The middle column
+says what a cluster would *add* to that green, and the right-hand column says where it would
+add nothing.
+
+### 7.2 The feed edges, restated from §4 so §7 stands alone
+
+| ADR-derived confirmation | Stated in | Feeds these §25 identifiers |
+|---|---|---|
+| `api/openapi-3_1-conformance` | §4.1 | None. It confirms a crate's output shape; §25 has no OpenAPI-version row. No cluster risk bears on it |
+| `admission/cascade-gate-delete-oldobject` | §4.2 | `authz/start-barrier-all-paths`, `execution/gates-before-start` |
+| `admission/workload-gate-dryrun` | §4.2 | `authz/start-barrier-all-paths`, `execution/gates-before-start` |
+| `db/pgbouncer-transaction-pooling-prepared` | §4.3 | `isolation/background-queries`, `isolation/all-stores` |
+| `db/tenanttx-set-local-isolation` | §4.3 | `isolation/background-queries`, `isolation/all-stores` |
+| `storage/s3-compat-conformance` | §4.4 | `isolation/all-stores` (object-store half); `deletion/all-stores-restore` in Phase 4 |
+| `scb/hook-invocation-contract` | ADR-0003 §3.4 | `findings/replayed-artifact` (§8.4 idempotency, via the scan fingerprint) |
+| `scb/parser-contract-conformance` | ADR-0003 §3.4 | `execution/scan-identity` — stated there explicitly |
+
+**The direction of the edge matters.** An ADR-derived confirmation going green does not make
+the §25 identifier it feeds green; it removes one way for that identifier to fail. Counting a
+feed edge as coverage of the §25 row is the error this table exists to prevent.
 
 **Blocking status.** §24.4's gate on "approval of the Rust crate set used on the execution
 path" is cleared by §3. The executable confirmations in §4 are required Phase 1 work, listed
@@ -615,3 +673,50 @@ change.
 these in the workspace when VUL-6 lands and leaving the record alone — would have worked, and I
 chose the amendment because a pin that exists only in a `Cargo.toml` has no recorded reason, and
 the provider question would then have been settled by whoever hit the panic.
+
+### A2 — reserved, not on `main`
+
+**A2 is the §3.7 pin corrections and OIDC pins.** It was bundled into PR docs#23 alongside
+ADR-0004, docs#23 was closed unmerged, and ADR-0004 came back on its own (docs#27) without it.
+The number is therefore **reserved, not skipped**, and this document does not carry A2 yet.
+`platform#1`'s workspace `Cargo.toml` names §3.7 as its pin authority, so A2 must be re-filed —
+with every pin re-derived against crates.io rather than copied from the orphaned head — before
+`platform#1` merges. Tracked in `decisions/README.md` under "Still open".
+
+### A3 — 2026-10-01 — the §7 risk table now names the identifiers each risk bears on (§7, §7.1, §7.2)
+
+**Raised by me** in review of the open-decision register (docs#24). The register's §1.3 mapped
+ADR-0002 §7's risks R1–R6 onto test identifiers and got it wrong in both directions: six
+ADR-derived confirmations were presented as §25 identifiers, two tests that are settled in full
+without a cluster (`db/tenanttx-set-local-isolation`,
+`db/pgbouncer-transaction-pooling-prepared`) were listed as cluster-weakened, and
+`execution/gates-before-start` and `isolation/all-stores` were omitted entirely.
+
+**The register was not the defect.** §4.2 ends with *"These feed `authz/start-barrier-all-paths`
+and `execution/gates-before-start` in §25"* and §4.3 ends with the equivalent sentence for
+`isolation/background-queries` and `isolation/all-stores`. Those two sentences were the only
+place the feed edges existed, and **§7 named neither set**. Anyone pricing a cluster reads §7;
+§7 did not carry enough to answer the question it is about, so the reader reconstructed the
+mapping and reconstructed it wrong. A record that requires a correct inference from a distant
+section is an incomplete record, and the reader who makes the inference is not the one at fault.
+
+A3 adds two columns to the §7 table — *"§25 identifiers a cluster would strengthen"* and
+*"Confirmations a cluster would **not** strengthen"* — plus **§7.1**, which states the §25 /
+ADR-derived distinction and why "strengthen" rather than "degrade" is the accurate verb, and
+**§7.2**, which restates every feed edge from §4 and ADR-0003 §3.4 in one table so §7 is
+sufficient on its own.
+
+**It changes no decision and no assertion.** R1–R6 are unchanged, their owners are unchanged,
+and no test's behaviour moves. What changes is that §7 now answers, for each risk, which §25
+identifiers a cluster would strengthen and which confirmations it would not — without the reader
+having to read §4.
+
+**One substantive judgement is recorded rather than assumed.** R4 is the only risk where a
+cluster bears on an ADR-derived confirmation: `storage/s3-compat-conformance` runs against a
+*backend*, and Aether's RGW is a second backend rather than a better one. §7.1(c) records that
+the assertion is unweakened and the deployment coverage is incomplete, which makes the correct
+ledger entry a PASS whose scope names the backend it ran against — not a silent green.
+
+**Revisit trigger for A3 specifically.** Any new executable confirmation added to §4, or any new
+risk added to §7, must land with its §7.2 feed edge in the same change. A confirmation whose
+feed edge is stated only in §4 reproduces the exact defect this amendment fixes.

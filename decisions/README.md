@@ -9,7 +9,7 @@ Each record states the question, the options considered, the choice, the reason,
 | ADR | Title | Status | Closes |
 |---|---|---|---|
 | [ADR-0001](./ADR-0001-retire-go-scaffold-vf-api.md) | Retire the Go scaffold in `vf-api` PR #1 | Accepted | §27 item 18 |
-| [ADR-0002](./ADR-0002-rust-crate-set-and-phase0-pins.md) | Approved Rust crate set, toolchain pin, and secureCodeBox pin | Accepted — amended **A1** | §27 item 17 (and the engineering half of item 5 / §21.3) |
+| [ADR-0002](./ADR-0002-rust-crate-set-and-phase0-pins.md) | Approved Rust crate set, toolchain pin, and secureCodeBox pin | Accepted — amended **A1**, **A3** | §27 item 17 (and the engineering half of item 5 / §21.3) |
 | [ADR-0003](./ADR-0003-rpc-scb-parser-and-billing-clients.md) | Streaming RPC, secureCodeBox parser/hook language, and billing clients | Accepted | §27 items 19, 20, 21 |
 | [ADR-0005](./ADR-0005-delivery-pipeline-and-lane-enforcement.md) | The delivery pipeline and how its lanes are enforced | Accepted | No §27 item — supersedes the enforcement claim in the VUL-1 plan §4 |
 
@@ -32,7 +32,11 @@ gate on "approval of the Rust crate set used on the execution path" is cleared.
 
 **Amendments.** An ADR here is amended in place with an entry in its own amendment-history
 section, never silently edited. ADR-0002 carries **A1** (crypto, TLS and encoding pins — §3.6,
-history in §10). An amendment may add to a closed decision; reversing one needs a new ADR that
+history in §10) and **A3** (the §7 risk table now names, per risk, the §25 identifiers a cluster
+would strengthen and the ADR-derived confirmations it would not — §7.1 and §7.2, history in §10).
+**A2 is reserved and is not on `main`**: it is the §3.7 pin corrections and OIDC pins bundled into
+the closed PR docs#23, which must be re-filed with every pin re-derived against crates.io before
+`platform#1` merges. An amendment may add to a closed decision; reversing one needs a new ADR that
 supersedes it.
 
 ## Corrections to TDD v2.3 that fall out of these records
