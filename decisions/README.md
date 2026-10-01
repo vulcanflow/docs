@@ -35,10 +35,13 @@ gate on "approval of the Rust crate set used on the execution path" is cleared.
 
 **Amendments.** An ADR here is amended in place with an entry in its own amendment-history
 section, never silently edited. ADR-0002 carries **A1** (crypto, TLS and encoding pins — §3.6,
-history in §10). ADR-0003 carries **A1** (two factual corrections from re-reading the v5.9.0
-scanner tree — history in §7; the corrected paragraphs in §3.2 and §3.5 are annotated in place,
-not rewritten). An amendment may add to a closed decision; reversing one needs a new ADR that
-supersedes it.
+history in §10). ADR-0003 carries **A1** — one amendment with three entries, history in §7: two
+factual corrections from re-reading the v5.9.0 scanner tree (§3.2 and §3.5, annotated in place,
+not rewritten) and one presentational correction to §3.3, which mixed slice-relative and absolute
+`argv` index bases in adjacent rows of the very table that exists to prevent an off-by-one.
+**§3.3 is the one place the annotate-in-place rule is deliberately not followed**, because there
+the presentation *is* the defect: the before-state is quoted verbatim in §7.3 instead. An
+amendment may add to a closed decision; reversing one needs a new ADR that supersedes it.
 
 ## Corrections to TDD v2.3 that fall out of these records
 

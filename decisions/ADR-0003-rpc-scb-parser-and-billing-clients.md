@@ -6,7 +6,7 @@
 | **Date** | 2026-10-01 |
 | **Owner** | Atlas (Staff Architect / Tech Lead) |
 | **Closes** | TDD **§27 items 19, 20 and 21** |
-| **Amendments** | **A1** (2026-10-01) — two factual corrections from re-reading the v5.9.0 scanner tree: §3.2's custom-parser claim, and §3.5's severity remedy. Neither reverses a decision. See §7. |
+| **Amendments** | **A1** (2026-10-01) — three corrections, none of which reverses a decision: §3.2's custom-parser claim and §3.5's severity remedy (both factual, from re-reading the v5.9.0 scanner tree), and §3.3's mixed `argv` index bases (presentational). See §7. |
 | **Depends on** | [ADR-0002](./ADR-0002-rust-crate-set-and-phase0-pins.md) — the crate set and the secureCodeBox v5.9.0 pin |
 | **Does not close** | §27 items 16a, and the Product halves of items 2, 4 and 11 that bear on paid use |
 | **Design of record** | `VulcanFlow_Technical_Design_Document_v2.2.md` (filename says v2.2; the content is **TDD v2.3**) — §2.5.2, §2.5.3, §9, §17.5, §21.3, §24.2–24.4 |
@@ -216,23 +216,39 @@ is not JavaScript.
 getting it wrong would mean building `vf-hook-notify` as an HTTP listener that is never
 called.
 
+**One index base, stated once, used everywhere below.** Three index bases exist upstream for
+the same four URLs, and mixing them is precisely the off-by-one this section exists to
+prevent. **Every `argv[n]` in this section is absolute — the index into the process's own
+argument vector, with the binary's path at `argv[0]`.** That is `std::env::args().nth(n)` in
+Rust and `os.Args[n]` in Go. Converting between the bases, once:
+
+| | Index of the **first** presigned URL | General rule |
+|---|---|---|
+| **This section (absolute)** | `argv[1]` | — |
+| Rust, `std::env::args()` | `.nth(1)` | `.nth(n)` |
+| Go SDK, which slices `os.Args[1:]` and then indexes the slice | slice position `0` | slice position **`n − 1`** |
+| Node parser wrapper, where `process.argv[0]` is the interpreter and `[1]` the script | `process.argv[2]` | **`process.argv[n + 1]`** |
+
+Nothing below uses a slice-relative or a Node index. Where upstream's own wording is quoted
+it is converted to the absolute base, and the quote says so.
+
 | Channel | Contract |
 |---|---|
 | Env `SCAN_NAME` | **Required.** The Go SDK's `NewClient` errors if empty. |
 | Env `NAMESPACE` | **Required.** Same. |
-| `argv[1..]` | **Positional presigned URLs, in this exact order:** `[0]` raw-results **download**, `[1]` findings **download**, `[2]` raw-results **upload**, `[3]` findings **upload**. The Go SDK documents it as "(rawResults, findings, rawResultsUpload, findingsUpload), in that order". |
-| ReadOnly vs ReadAndWrite | **Distinguished only by how many URLs are passed.** A `ReadOnly` hook receives 2; the SDK's `urlAt(index)` returns `""` past the end and `UpdateRawResults` then fails with "cannot update raw results in a ReadOnly hook". There is no mode flag to read. |
-| Findings download | `argv[2]` → `GET`, parse as a **JSON array** of `Finding`, each element validated. |
+| `argv[1]` … `argv[4]` | **Positional presigned URLs, in this exact order:** `argv[1]` raw-results **download**, `argv[2]` findings **download**, `argv[3]` raw-results **upload**, `argv[4]` findings **upload**. The Go SDK documents the same list over `os.Args[1:]` as "(rawResults, findings, rawResultsUpload, findingsUpload), in that order" — slice positions `0`–`3`, which are absolute `argv[1]`–`argv[4]`. |
+| ReadOnly vs ReadAndWrite | **Distinguished only by how many URLs are passed.** A `ReadOnly` hook receives **2** — `argv[1]` and `argv[2]` are present, `argv[3]` and `argv[4]` are absent. The SDK's `urlAt(index)` returns `""` past the end and `UpdateRawResults` then fails with "cannot update raw results in a ReadOnly hook". There is no mode flag to read. |
 | Raw-results download | `argv[1]` → `GET`, as text. |
-| Writes (ReadAndWrite only) | `PUT` to the upload URL; `UpdateFindings` additionally **patches the `Scan` status** with the new finding statistics via the Kubernetes API. |
+| Findings download | `argv[2]` → `GET`, parse as a **JSON array** of `Finding`, each element validated. |
+| Writes (ReadAndWrite only) | `PUT` to the upload URL — `argv[3]` for raw results, `argv[4]` for findings. `UpdateFindings` additionally **patches the `Scan` status** with the new finding statistics via the Kubernetes API. |
 | Exit | Non-zero exit is hook failure. There is no response body. |
 
-**Note the argv index shift.** The Node parser wrapper reads `process.argv[2]` and
-`process.argv[3]` because Node's `argv[0]` is the interpreter and `argv[1]` is the script.
-The Go SDK reads `os.Args[1:]`. In a Rust binary the first URL is
-**`std::env::args().nth(1)`**. Transcribing the Node indices into Rust is an off-by-one that
-yields a confusing runtime failure rather than a compile error, so it is called out here and
-is a required check at review of `vf-hook-notify`.
+**Why the base is called out rather than left implicit.** Transcribing a Node index into Rust
+yields an off-by-one that is a confusing runtime failure, not a compile error:
+`std::env::args().nth(2)` in a Rust hook reads the *findings* download URL while the author
+believes it is reading raw results, and both are valid presigned URLs, so the first symptom is
+a parse error far from the cause. **A `vf-hook-notify` PR whose argv indices are not absolute,
+or which does not read as if `argv[1]` is the first URL, is a required change at review.**
 
 ### 3.4 Decision — hooks are Rust
 
@@ -498,8 +514,12 @@ owner above.
 ## 7. Amendment history
 
 Amendments are recorded here rather than silently edited in, so a reader who reviewed an earlier
-revision can see what moved. Both entries below are **factual corrections**; neither reverses a
-decision, and reversing one would need a new ADR that supersedes this record.
+revision can see what moved. §7.1 and §7.2 are **factual corrections**; §7.3 is a **presentational
+correction** — it changes how §3.3 states a contract, not what the contract is. None of the three
+reverses a decision, and reversing one would need a new ADR that supersedes this record.
+
+All three are entries under the single amendment **A1**. There is one amendment history on this
+record, not one per correction.
 
 ### 7.1 A1 §1 — §3.2's custom-parser claim is wrong (2026-10-01)
 
@@ -555,3 +575,50 @@ derived at ingest from that enrichment, with the scanner's severity retained as 
 than as the answer. The product-facing severity model — what a customer sees, and whether a
 `CRITICAL` band exists at all — is a separate decision that needs an owner; it is named in
 ADR-0006's "Does not close" row for that reason.
+
+### 7.3 A1 §3 — §3.3 mixed two `argv` index bases in adjacent rows (2026-10-01)
+
+**Raised by me** in review of the open-decision register (docs#24). §3.3 exists for exactly one
+reason: to stop a Rust author transcribing a Node `argv` index and producing a silent off-by-one
+in `vf-hook-notify`'s presigned-URL handling. It mixed index bases while doing it.
+
+**What was there.** The `argv[1..]` row numbered the four URLs **slice-relative**:
+
+> `argv[1..]` | **Positional presigned URLs, in this exact order:** `[0]` raw-results
+> **download**, `[1]` findings **download**, `[2]` raw-results **upload**, `[3]` findings
+> **upload**.
+
+Two rows below, the download rows cited the same URLs **absolute** — *"Findings download |
+`argv[2]`"* and *"Raw-results download | `argv[1]`"*.
+
+**Both statements were correct.** Slice position `0` *is* absolute `argv[1]`, and slice position
+`1` *is* absolute `argv[2]`. Nothing was wrong; the two bases simply sat four lines apart with
+nothing saying they were different bases. A reader who took the first row's `[1]` as the findings
+download — which is what that row literally says, in its own base — and then wrote
+`std::env::args().nth(1)` would read the **raw-results** URL believing it was findings. That is
+the exact failure §3.3 was written to prevent, reachable by reading §3.3 carefully.
+
+**What changed.** §3.3 now opens with a conversion table that fixes one base — absolute, the
+process's own argument vector with the binary at `argv[0]` — and gives the general rule for the
+Go SDK's slice (`n − 1`) and the Node wrapper (`n + 1`) once. Every row below uses absolute
+indices only; the Go SDK's quoted wording is retained and marked as converted. The raw-results
+and findings download rows were also reordered to match index order, and the writes row now names
+`argv[3]` and `argv[4]` explicitly instead of saying "the upload URL".
+
+**Nothing about the contract moved.** The four URLs, their order, the two-URL `ReadOnly` case,
+`urlAt` returning `""` past the end, and the `std::env::args().nth(1)` conclusion are all
+unchanged, and the review rule is unchanged in substance — it is restated in terms of the fixed
+base so it can be applied without re-deriving it.
+
+**Why this one is rewritten in place rather than annotated.** `decisions/README.md` requires an
+amended paragraph to be annotated rather than rewritten, and §7.1 and §7.2 follow that rule. This
+entry does not, deliberately: the defect *is* the presentation, so leaving the mixed-base table in
+place under a blockquote saying "these two rows use different bases" would preserve the trap in
+the one section whose purpose is to close it. The before-state is quoted verbatim above, which is
+what the annotate-in-place rule is for — a reader who reviewed the earlier revision can see
+exactly what moved.
+
+**§25 and test impact: none.** `scb/hook-invocation-contract` (§3.4) already asserts that the
+binary reads `argv[1]` and `argv[2]`, in the absolute base, and that it tolerates receiving only
+two URLs. The test is unchanged and no test author needs to act on this amendment. It is an
+input to the implementer and to the reviewer of `vf-hook-notify`, not to the test.
