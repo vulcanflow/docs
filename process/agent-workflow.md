@@ -84,8 +84,10 @@ The single exception is §5 below, and it does not start with the test.
   diff, and rejects a crossing on sight.
 - **Warren** reads the **CodeRabbit GitHub App's** review on the pull request, posts the
   verdict, and sorts findings into blocking versus advisory so the bot cannot gate a merge on
-  style. There is no CodeRabbit CLI credential in this company — the route is the App, and
-  nobody runs `coderabbit review` (ADR-0005 §6.1).
+  style. Warren runs no tool to produce this: lane 6's route is the App's review on the pull
+  request. The authenticated CodeRabbit **CLI** is a different surface — the change author's
+  pre-flight, lane 5.5 — and an author-run CLI review is never reviewer #2's verdict
+  (ADR-0005 §6.1).
 
 Both verdicts go **on the Paperclip issue**, not as GitHub review approvals — there is one
 GitHub identity in this organisation, so GitHub approvals cannot represent two reviewers

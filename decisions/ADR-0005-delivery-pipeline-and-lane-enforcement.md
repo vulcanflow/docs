@@ -267,11 +267,21 @@ GET /orgs/vulcanflow/installations
 
 Three things follow, and the first is the one that keeps being got wrong:
 
-- **The route is the App, not a CLI.** There is no `CODERABBIT_API_KEY` and no CLI credential in
-  this company. Warren **reads** the App's review on the pull request — the walkthrough issue
-  comment, the inline findings, and the review submissions, all three — and triages it into a
-  verdict. Nobody runs `coderabbit review`. A `coderabbit:review` tool is not what this lane
-  depends on, and its absence from an agent's tool catalog is not a blocker.
+- **Lane 6's route is the App's review on the pull request.** Warren **reads** it — the
+  walkthrough issue comment, the inline findings, and the review submissions, all three — and
+  triages it into a verdict. Warren runs no tool to produce it, so the absence of a
+  `coderabbit:review` capability from an agent's tool catalog is not a blocker on this lane.
+
+  **There are two CodeRabbit surfaces in this company and they belong to different lanes.** A
+  CodeRabbit **CLI** also exists and is authenticated — version `0.8.2` at
+  `tools/bin/coderabbit`, `auth status` reporting `Organization: vulcanflow`, `Seat: assigned`,
+  plan Advanced (trial), read from the runner at 2026-10-01. It is signed in through a GitHub
+  OAuth seat, not a `CODERABBIT_API_KEY`. That surface is a **pre-pull-request pre-flight owned
+  by the change's author**, per the board rule of 2026-10-01 19:49Z, and it is being codified as
+  **lane 5.5** on VUL-28; its mechanics are that issue's scope and not this section's. What this
+  section settles is the boundary: **an author-run CLI review is lane 5.5 and is never reviewer
+  #2's verdict**, because the author is not an independent reviewer. Running the pre-flight well
+  should make the App's review on the pull request clean; it does not make it unnecessary.
 - **The App's GitHub review state carries no verdict.** CodeRabbit submits with state
   `COMMENTED`. `COMMENTED` is not approval, and the absence of `CHANGES_REQUESTED` is not a
   clean review.
@@ -284,7 +294,11 @@ The mechanics — collecting all three comment surfaces, the coverage check, the
 mapping, the citation rule for dismissing a blocking finding, and the verdict shape — are the
 `lane6-review-verdict` company skill, v2.0.0. **This section is the authority on what lane 6
 requires; the skill is the procedure for producing it.** Where they disagree, this section wins
-and the skill is corrected.
+and the skill is corrected — and one such disagreement exists today: that skill's §0 and
+Appendix A say there is no CLI credential in this company and that `coderabbit auth status`
+reports not signed in. Both were true when the skill was written and are false now, as the
+read-back above shows. The skill is corrected under VUL-28, which owns the CLI surface; nothing
+in lane 6 changes, because lane 6 never depended on the CLI.
 
 ### 6.2 Bot commentary is not a lane-6 verdict
 
@@ -301,8 +315,8 @@ looks. "No actionable comments were generated 🎉" is a tool output, not a revi
 Four corollaries, each closing a specific way this gets broken:
 
 1. **Crucible counts verdicts, not bot activity.** Bot comments, `COMMENTED` review submissions,
-   green checks, passing pre-merge checks and a "Merge Risk: Low" rating are, together, zero of
-   the two required verdicts.
+   green checks, passing pre-merge checks, a "Merge Risk: Low" rating, and the author's own
+   lane 5.5 CLI pre-flight are, together, zero of the two required verdicts.
 2. **One reviewer never counts twice.** Assay reading the App's output does not produce Warren's
    verdict, and Warren triaging it does not produce Assay's. Nor does one agent posting two
    verdicts under two headings.
@@ -505,7 +519,8 @@ Named, so this record is revisited on evidence rather than on mood.
   and lane 6 is back to two reviewers. What remains of this trigger is narrower and still live,
   and §6.1 is reopened on any of it: the App is **removed or suspended** (a
   `GET /orgs/vulcanflow/installations` that no longer lists `coderabbitai`, or a non-null
-  `suspended_at`); the board issues a `CODERABBIT_API_KEY` and the CLI becomes the route; or
+  `suspended_at`); the CodeRabbit **seat** that the lane 5.5 CLI and the App both draw on lapses
+  — the plan reads `Advanced (trial)` today, so this one has a clock on it; or
   CodeRabbit changes its severity vocabulary or stops emitting the
   `final_review_risk_coverage` anchors the coverage check in §6.1 depends on. Note what does
   **not** reopen it: the `lane6-review-verdict` skill being attached to the wrong agent is a
@@ -543,4 +558,4 @@ Named, so this record is revisited on evidence rather than on mood.
 |---|---|---|
 | — | 2026-10-01 | Accepted as recorded. |
 | 1 | 2026-10-01 | **The §8 plan question is decided: the board chose option B.** The four active repositories are public, branch protection is applied to all four with `enforce_admins: true`, and `platform`'s four lane-gate checks are required. §3.2 rewritten as a resolved constraint; §7 items 8–9 replaced; §8 rewritten as a decision with the pre-publication secret scan (§8.1), the applied settings and why zero required approvals (§8.2), the disclosure cost (§8.3) and two observed refusals (§8.4); R2 closed and narrowed to wiring checks per repository; R7 added as the route back to private. §7 item 4 corrected: 21 fixture verdicts, not 17. Recorded by CEO under VUL-2. |
-| 2 | 2026-10-01 | **Reviewer #2's route corrected, and the independence rule stated.** The CodeRabbit GitHub App (`coderabbitai`, app id `347564`, installation `166977157`, installed `2026-10-01T19:12:07Z`, `repository_selection: all`) is installed, so the "`coderabbit:review` is not installed … merges wait" sentence in §6 is withdrawn — quoted in §6.1 rather than deleted, because the degraded period was real and agents cited it. New **§6.1** records the route as the App and not a CLI, that `COMMENTED` is not approval, and the `coveredCommitId` → `head.sha` coverage check. New **§6.2** states the rule the install correction was hiding: **the App posting on a pull request is input to lane 6, not satisfaction of it** — lane 6 is two attributable Paperclip verdicts, a bot thread with no Warren verdict is an unreviewed pull request, and the `lane6-review-verdict` skill sitting in Assay's catalog (VUL-36) does not make Assay reviewer #2. §2's lane-6 row updated to match; R6 closed on the install half and narrowed to App removal/suspension, a CLI key, or CodeRabbit dropping the coverage anchors. `process/agent-workflow.md` §1, lane 6 and §7 updated in the same change. Recorded by Atlas under VUL-37. |
+| 2 | 2026-10-01 | **Reviewer #2's route corrected, and the independence rule stated.** The CodeRabbit GitHub App (`coderabbitai`, app id `347564`, installation `166977157`, installed `2026-10-01T19:12:07Z`, `repository_selection: all`) is installed, so the "`coderabbit:review` is not installed … merges wait" sentence in §6 is withdrawn — quoted in §6.1 rather than deleted, because the degraded period was real and agents cited it. New **§6.1** records lane 6's route as the App's review on the pull request, read and triaged by Warren with no tool run; separates that from the authenticated CodeRabbit **CLI** (`0.8.2`, seat assigned), which is the author's pre-flight under the board rule of 2026-10-01 19:49Z and is codified as lane 5.5 on VUL-28 — an author-run CLI review is never reviewer #2's verdict; and records that `COMMENTED` is not approval and that a review counts only when `coveredCommitId` equals `head.sha`. New **§6.2** states the rule the install correction was hiding: **the App posting on a pull request is input to lane 6, not satisfaction of it** — lane 6 is two attributable Paperclip verdicts, a bot thread with no Warren verdict is an unreviewed pull request, and the `lane6-review-verdict` skill sitting in Assay's catalog (VUL-36) does not make Assay reviewer #2. §2's lane-6 row updated to match; R6 closed on the install half and narrowed to App removal or suspension, the Advanced trial seat lapsing, or CodeRabbit dropping the coverage anchors. `process/agent-workflow.md` §1, lane 6 and §7 updated in the same change. Recorded by Atlas under VUL-37. |
