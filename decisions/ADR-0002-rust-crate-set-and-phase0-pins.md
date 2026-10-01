@@ -10,8 +10,8 @@
 | **Does not close** | §27 items 16a, 18 (see [ADR-0001](./ADR-0001-retire-go-scaffold-vf-api.md)), 19, 20, 21 (see [ADR-0003](./ADR-0003-rpc-scb-parser-and-billing-clients.md)) |
 | **Supersedes** | the `[PROPOSED]` crate table in TDD §2.5.2 |
 | **Design of record** | `VulcanFlow_Technical_Design_Document_v2.2.md` (filename says v2.2; the content is **TDD v2.3**) — §2.5, §21.3, §24.2, §24.4, §25 |
-| **Amendments** | **A1** (2026-10-01) — adds §3.6: crypto, TLS and encoding pins. See §10. |
-| **Issue** | VUL-3 |
+| **Amendments** | **A1** (2026-10-01) — adds §3.6: crypto, TLS and encoding pins. **A2** (2026-10-01) — adds §3.7: feature-name corrections, the `sqlx`/`kube` provider fixes, `k8s-openapi v1_32`, `jsonwebtoken` pinned and `openidconnect` rejected, CI tool pins, `utoipa-swagger-ui` withdrawn, and A1 assertion 2 restated. See §10. |
+| **Issue** | VUL-3 (A1 on VUL-3; A2 on VUL-39, from the VUL-6 workspace build) |
 
 ## Question
 
@@ -230,6 +230,250 @@ One of those is closer than the rest and should not be allowed to drift: **`json
 authenticated request, so these are Phase 1, not later. Owner **Atlas**; trigger is the first
 `vf-api` PR that validates a bearer token, and that PR should not be the place the versions get
 decided.
+
+---
+
+### 3.7 Corrections, feature names, and the OIDC pins — added by amendment A2
+
+§3.1–§3.6 pinned versions. Writing the manifests on VUL-6 found that **six of those pins
+name a feature that does not exist, or names one that means the opposite of what §3 said it
+meant**, and that two of the crates §3.6 deferred cannot be adopted at all. A version pin
+with a wrong feature is not a weaker pin, it is a different dependency graph — on the AWS
+SDK it is the difference between rustls 0.23 with `aws-lc-rs` and rustls 0.21 with `ring`.
+
+Four of these were found and escalated by **Forge** on VUL-6 and are recorded here with the
+evidence re-derived independently; two more (`sqlx`, `kube`) are corrections Forge applied
+without flagging, and they are the two that matter most, so they are written down rather
+than left in a manifest comment.
+
+**Everything in this amendment is resolved against the crates.io index on 2026-10-01 and
+cross-checked against the `Cargo.lock` committed in `vulcanflow/platform#1`.** As in §4, no
+crate was compiled: the sandbox has `cargo` but no C linker, so `cargo metadata` and
+`cargo tree` are evidence and `cargo check` is not. §25 `build/rust-supply-chain` is where
+that gap closes; it is Crucible's to run (VUL-38).
+
+#### 3.7.1 The corrected feature sets
+
+| Crate | §3 said | Corrected to | Why the original is wrong |
+|---|---|---|---|
+| `reqwest` 0.13.5 | `rustls-tls` | **`rustls`** | The feature was renamed in 0.13. `rustls-tls` does not exist; the build fails. `rustls` expands to `__rustls-aws-lc-rs` + `rustls-platform-verifier`, so it selects the §3.6 provider — see §3.7.3 on the verifier. |
+| `aws-sdk-s3` 1.151.0 | `rustls` (from §3.5 "rustls everywhere") | **`default-https-client`**, `rt-tokio`, `http-1x`; **not** `sigv4a` | `aws-sdk-s3/rustls` and `aws-sdk-s3/legacy-https-client` both expand to `aws-smithy-runtime/tls-rustls`, which is `aws-smithy-http-client/legacy-rustls-ring` + `connector-hyper-0-14-x`. The feature named `rustls` **is** the legacy hyper-0.14 client, and its provider is `ring` — the crate name says so. It breaks both A1 assertions at once. `default-https-client` is `aws-smithy-http-client/rustls-aws-lc`: hyper 1.x, rustls 0.23, `aws-lc-rs`. |
+| `aws-config` 1.12.0 | — | `rt-tokio`, **`default-https-client`** | Same trap: `aws-config/rustls` expands to the same legacy client. |
+| `sqlx` 0.9.0 | `tls-rustls` | **`tls-rustls-aws-lc-rs`** | **This is the correction worth the most.** In sqlx 0.9, `tls-rustls` = `tls-rustls-ring` = `tls-rustls-ring-webpki`, which enables `rustls/ring`. §3.2 as written pins `ring` into every binary that opens a database connection, which is every binary. |
+| `sqlx` 0.9.0 | `runtime-tokio`, `tls-rustls`, `postgres`, `uuid`, `macros` | as corrected, **plus `json`**, **minus `migrate`** | `json` is needed for `JSONB` columns in §6.3. `migrate` is removed from the workspace pin — see §3.7.2. |
+| `kube` 4.2.0 | `client`, `derive`, `runtime`, `admission`, `rustls-tls` (`default-features = false`) | plus **`aws-lc-rs`**, `config`, `jsonpatch` | `kube`'s own default is `["client", "rustls-tls", "ring"]`. With `default-features = false` and no provider feature, `kube-client` gets rustls with no provider enabled by itself; with defaults it gets `ring`. Neither is what A1 decided, so the provider is named explicitly. `config` is needed for in-cluster and kubeconfig resolution; `jsonpatch` is what re-exports the `json-patch` already pinned in §3.2. |
+| `testcontainers` | 0.28.0 | **0.27.3** | `testcontainers 0.28.0` + `testcontainers-modules 0.15.0` cannot resolve. 0.15.0 is the newest `testcontainers-modules` release and declares `testcontainers ^0.27.0`; there is no modules release for 0.28. 0.27.3 is the newest version satisfying both. **Revisit** when a `testcontainers-modules` release declaring `^0.28` publishes; raise both together. |
+
+`k8s-openapi` keeps its `=0.28.0` pin and gains a decided version feature — §3.7.4.
+
+#### 3.7.2 `sqlx/migrate` is not a workspace feature
+
+Cargo unifies features across a workspace build, so a feature enabled by one member is
+enabled for every member built alongside it. `sqlx/migrate` enables `sqlx-core/migrate`,
+which enables `sqlx-core`'s **optional** `sha2 ^0.10` — the previous RustCrypto generation —
+as a real, linked dependency of anything that uses `sqlx`.
+
+§21.2 puts migrations in exactly one place: *"per-tenant schema migrations run as a resumable
+fan-out job (a Rust binary using the §2.5.2 migration tool)"*. That is one binary, and it is
+not one of the fourteen crates in PR #1 yet.
+
+**Decision:** `migrate` is **not** in `[workspace.dependencies].sqlx`. The migration-job
+crate — `vf-migrate`, to be created with the §21.2 work — adds it on top of the workspace
+pin:
+
+```toml
+sqlx = { workspace = true, features = ["migrate"] }
+```
+
+so `sha2 0.10` is linked into that one binary and nothing else. The eleven service binaries
+do not carry a second SHA-256 implementation in order to own a feature they never call.
+
+#### 3.7.3 Two trust stores, and the one that will fail on Aether
+
+The corrected feature sets produce **two different certificate-verification paths**, and
+this is not cosmetic on a self-operated platform:
+
+- `reqwest` → `rustls-platform-verifier` → the OS trust store. A CA mounted into the
+  container image or the system bundle is trusted.
+- `kube-client` → `rustls-platform-verifier` → same, plus the kubeconfig/in-cluster CA,
+  which `kube` supplies explicitly.
+- `sqlx` → `_tls-rustls-aws-lc-rs` → **`webpki-roots`**, a compiled-in set of *public* CA
+  roots, and nothing else.
+
+Aether is self-operated and CNPG issues Postgres server certificates from an internal CA.
+A public-root-only verifier **cannot** verify them. The failure mode is a TLS handshake
+rejection at first connection, which looks like a networking problem and is not one.
+
+**Decision:** `vf-db` constructs `PgConnectOptions` with `ssl_mode(Require)` *and* an
+explicit `ssl_root_cert` pointing at the mounted CA bundle. `webpki-roots` being compiled in
+is then irrelevant, because the root set is supplied per connection. This is a **required
+change at review** on the first `vf-db` PR, not a note: the default is a connection that
+either fails closed (good) or is downgraded by someone reaching for `ssl_mode(Prefer)` to
+make it work (the actual risk). `sqlx/tls-rustls-ring-native-roots` would use the system
+store instead, and is rejected — it brings `ring`.
+
+Carried to **VUL-26** (`vf-db` / `TenantTx`) as an acceptance criterion.
+
+#### 3.7.4 `k8s-openapi`'s version feature — decided, not deferred
+
+`k8s-openapi` requires exactly **one** version feature, and 0.28.0 offers `v1_32` through
+`v1_36`. The TDD does not state Aether's control-plane minor, so Forge pinned `v1_34` as an
+explicit placeholder and flagged it.
+
+A placeholder in a `=`-pinned manifest is the kind of debt that gets discovered by a
+production reconcile, so it is decided here instead.
+
+**Decision: `v1_32`** — the floor of what 0.28.0 offers.
+
+The reason is the same instinct as deny-by-default. `k8s-openapi`'s generated types for an
+older minor remain valid against a newer API server; the risk runs the other way. Compiling
+against the floor means `vf-operator` and `vf-admission` can only reference API surface that
+every supported minor serves, so a field that exists on 1.36 and not on the real cluster
+becomes a **compile** error rather than a reconcile that silently stops short. Raising the
+floor is then a deliberate act with a recorded reason, which is what we want.
+
+**The real risk this exposes, and it is not resolved by choosing a floor:** if Aether's
+control plane is **older than 1.32**, then `k8s-openapi 0.28.0` — and therefore `kube 4.2.0`,
+which declares `^0.28.0` — is the wrong pin outright, and §3.2 needs a different pair.
+Confirming the minor is a CEO question (Aether is operated, not ours to inspect) and is
+filed as such. It does **not** block the §24.1 skeleton: §24.2 puts the operator and
+admission surfaces after the services, and nothing in Phase 1 reconciles a CRD.
+
+#### 3.7.5 `openidconnect` is not adopted, and `jsonwebtoken` is pinned
+
+§3.6 named these two as the closest unpinned pair, owner Atlas, trigger "the first `vf-api`
+PR that validates a bearer token". Resolving them for this amendment found that one of them
+cannot be adopted at all, which is exactly why the trigger should not have been that PR.
+
+**`openidconnect` 4.0.1 — rejected.** Its *non-optional* dependencies are:
+
+| Dependency | Conflict |
+|---|---|
+| `chrono ^0.4` | Banned by §3.5 and by `deny.toml`. Not a feature we can turn off. |
+| `hmac ^0.12.1`, `sha2 ^0.10.6` | The previous RustCrypto generation, **non-optional**. A1's duplicate assertion exists for precisely this, and here it lands on a JWT **signature-verification** surface — the one place in the product where two SHA-256 implementations in one binary is a security question and not a size question. |
+| `reqwest ^0.12` | We pin 0.13. A second `reqwest`, a second hyper stack, two TLS configurations. |
+| `base64 ^0.21` | A third `base64` generation. |
+
+There is no feature combination that avoids any of this. Adopting it would mean reversing
+§3.5 and A1 to buy OIDC discovery.
+
+**What we do instead.** The part of `openidconnect` the skeleton needs is small and is
+better off in our own code: fetch the OIDC discovery document, fetch and cache JWKS, select
+the key by `kid`, validate the token. That is `reqwest` + `jsonwebtoken` + a cache, and
+writing it ourselves means the `iss`/`aud`/`exp`/`alg` checks are explicit, denied by
+default, and property-testable in `vf-authz` — which §2.5.2 wants anyway. **`alg` comes from
+the JWKS entry, never from the token header**; honouring the header's `alg` is the classic
+JWT confusion bug and a required change at review.
+
+**`jsonwebtoken` 11.1.0 — pinned**, `default-features = false`, features
+**`["aws_lc_rs", "use_pem"]`**.
+
+| | |
+|---|---|
+| Why 11.1.0 | It offers `aws_lc_rs` as a crypto backend. The alternative, `rust_crypto`, pulls `hmac 0.12`, `sha2 0.10`, `p256`, `rsa` and `ed25519-dalek` — the same old-generation problem as `openidconnect`, in a crate we do want. |
+| Why `aws_lc_rs` | It is the provider A1 already chose for rustls, so one crypto implementation serves TLS and JWT verification. One backend to review, one to patch. |
+| `use_pem` | Keycloak 26 JWKS keys arrive as JWK; PEM support is needed for the static-key path and for tests. |
+| Recorded limit | This is read from declared features and dependencies, not from a compiled tree. **Confirmation owed:** the first `vf-api` token-validation PR must show `aws_lc_rs` covering the algorithm Keycloak 26 actually signs with (RS256 by default), and `cargo tree -i ring` still empty with `jsonwebtoken` in the graph. |
+| Accepted noise | `jsonwebtoken` carries `getrandom ^0.2` and `rand ^0.8.5`. Neither is an A1 assertion and neither is on a signature surface — `rand 0.10`/`OsRng` remains the only generator on the challenge-token and nonce paths per §3.6. |
+
+#### 3.7.6 CI tool pins
+
+§3 pins what the workspace builds against and said nothing about the cargo subcommands CI
+runs. An unpinned `cargo install` inside the gate that exists to close supply-chain holes is
+a supply-chain hole. Forge pinned them in `ci/tool-versions.env` and asked for them to live
+here; agreed.
+
+| Tool | Pin | Role |
+|---|---|---|
+| `cargo-deny` | 0.20.2 | advisories, licences, bans, sources (§21.3) |
+| `cargo-audit` | 0.22.2 | RUSTSEC advisories read from `Cargo.lock` directly |
+| `cargo-cyclonedx` | 0.5.9 | CycloneDX SBOM per §21.3 |
+| `cargo-auditable` | 0.7.6 | embeds the dependency list in the shipped binary, so an SBOM is recoverable from the artifact and not only from the build |
+
+Installed with `--locked` so each tool's own lockfile is used. `ci/tool-versions.env` stays
+as the machine-readable copy; this table is the decision.
+
+#### 3.7.7 `utoipa-swagger-ui` is withdrawn from the approved set
+
+§3.1 pinned `utoipa-swagger-ui 10.0.1`. Its build script **downloads the Swagger UI
+distribution over the network** unless the `vendored` feature is on, and `vendored` pulls
+`utoipa-swagger-ui-vendored ^0.2`, which §3 does not pin. A network fetch inside a build
+cannot be reproducible, which is the §21.3 requirement the whole build gate exists to serve.
+
+**Decision: drop it.** The deliverable in §1081 is the *published OpenAPI 3.1 document*, and
+`utoipa` + `utoipa-axum` produce that; `vf-api` serves the JSON and the generated TypeScript
+client is produced from the committed spec. A spec-rendering UI is a developer convenience
+that any local tool renders from that same JSON without putting a network fetch in our
+release path.
+
+**Revisit** if an in-cluster spec UI is actually asked for. The answer then is `vendored`
+plus a pin for `utoipa-swagger-ui-vendored` by amendment — not the current configuration.
+
+#### 3.7.8 Accepted duplicates, named
+
+A1's duplicate assertion covers `rustls`, `hmac`, `sha2` and `digest`. Resolving the real
+graph produced two duplicates outside that set, and they are accepted here so they are not
+mistaken for drift later:
+
+- **`base64` 0.22.1 and 0.23.1.** 0.22 arrives from `k8s-openapi`, `kube-client`, `sqlx`,
+  `tonic` and `pem`; 0.23 is our pin and `reqwest`'s. Accepted: `base64` is an encoding, it
+  has no key material and no constant-time requirement, and the §3.6 decision that matters —
+  Lago signatures are `STANDARD` with padding — is a decision about the *engine at the call
+  site*, which is unaffected by a second copy of the crate existing.
+- **`tower-http` 0.6.11 and 0.7.1.** 0.6 from `kube-client` and `reqwest`; 0.7 is our direct
+  pin for the `vf-api` middleware stack. Accepted: no shared state, no security surface.
+
+Both are in `deny.toml`'s `skip` list with the same reasons. Anything **not** listed there
+is a prompt to look, which is the point of keeping the list short and specific.
+
+#### 3.7.9 A1's second assertion, restated so it is achievable and still strict
+
+A1 asked for `cargo tree -i ring` empty and `cargo tree -d` showing no duplicated `rustls`,
+`hmac`, `sha2` or `digest`. On the real graph, `ring`, `rustls` and `hmac` hold. `sha2` and
+`digest` do not, and Forge's gate reported them as findings behind a `STRICT_RUSTCRYPTO`
+flag rather than narrowing the rule — correctly, because narrowing a security assertion is
+not a coding agent's call.
+
+Resolving it properly changes the answer. A1's stated worry was *"two SHA-256
+implementations in one binary"*, and three of the four duplicate sources are not that:
+
+| Source of the old generation | Is it in a shipped binary? |
+|---|---|
+| `sqlx-core 0.9.0` → `sha2 0.10` | **Only with `migrate`.** It is optional and `sqlx-core/migrate` is its only gate. Removed from the workspace pin by §3.7.2. |
+| `sqlx-macros-core 0.9.0` → `sha2 0.10` | **No.** It is a *required* dependency, but `sqlx-macros` is a proc-macro crate: it runs on the build host at compile time and is never linked into the artifact. |
+| `aws-sigv4` → `p256` → old generation | **No.** Only under `sigv4a`, excluded in §3.7.1. |
+| `crc-fast 1.10.0` → `digest 0.10` | **Yes, genuinely.** `aws-smithy-checksums 0.65.0` depends on `crc-fast` non-optionally, and `crc-fast`'s `digest 0.10` comes in via `alloc` ← `std` ← its defaults. S3 needs the checksum path. Nothing we pin moves this. |
+
+So the assertion is achievable for `sha2` and has exactly **one** irreducible exception for
+`digest`. A1 assertion 2 is restated as:
+
+> Evaluated **per shipped binary** (`cargo tree -p <bin> --edges normal,no-proc-macro`,
+> default features), the graph must contain **no `ring`**, **no `chrono`**, and exactly one
+> version each of **`rustls`**, **`hmac`** and **`sha2`**. `digest` may resolve to two
+> versions **only** when the second is `0.10.x` reachable solely through
+> `crc-fast` ← `aws-smithy-checksums`; the gate fails on `digest 0.10` arriving by any other
+> path.
+
+Three things changed and each is deliberate:
+
+1. **Per shipped binary, not per workspace.** What ships is a binary built with its own
+   feature set. A workspace-wide resolution unifies `vf-migrate`'s `migrate` into the
+   assertion and reports a duplicate that is in no artifact.
+2. **`no-proc-macro`.** A compile-time hash on the build host is not a second
+   implementation in the binary. Counting it makes the gate wrong in the direction that gets
+   gates deleted.
+3. **The `digest` exception is asserted by path, not waived.** "Two versions are fine" would
+   let a second RustCrypto stack in through any new dependency. "Two versions are fine iff
+   the second one is reachable only here" still fails on the thing A1 was built to catch.
+
+**`STRICT_RUSTCRYPTO` is deleted.** A supply-chain assertion with an environment variable
+that turns it off is an assertion that is off. Owner **Forge** to implement
+(`ci/tls-provider-assertions.sh`), **Crucible** to run, under §25
+`build/rust-supply-chain`.
+
+**Revisit** when `aws-smithy-checksums` moves to `digest 0.11`, or when `crc-fast` makes its
+`digest` dependency optional. At that point the `digest` exception is deleted and the
+assertion becomes uniform.
 
 ---
 
@@ -615,3 +859,34 @@ change.
 these in the workspace when VUL-6 lands and leaving the record alone — would have worked, and I
 chose the amendment because a pin that exists only in a `Cargo.toml` has no recorded reason, and
 the provider question would then have been settled by whoever hit the panic.
+
+### A2 — 2026-10-01 — pin corrections, OIDC pins, and A1 assertion 2 restated (§3.7)
+
+**Raised by the work, not by a reviewer.** Forge wrote the manifests on VUL-6 and found that
+§3's pins do not all build: four named a feature that does not exist or whose meaning is the
+opposite of what §3 assumed, and one pair cannot resolve together. Forge escalated those four
+on VUL-39 rather than deciding them, and applied two further corrections (`sqlx`, `kube`)
+inside the manifest without flagging them — those two are the ones that would otherwise have
+been re-litigated, so A2 writes them down.
+
+A2 adds §3.7. It corrects `reqwest`, `aws-sdk-s3`, `aws-config`, `sqlx`, `kube` and
+`testcontainers`; removes `sqlx/migrate` from the workspace pin and scopes it to the
+migration-job crate; decides `k8s-openapi`'s version feature as `v1_32` with the reason;
+records the `webpki-roots`-versus-internal-CA consequence as a required change on `vf-db`;
+closes §3.6's last open pair by pinning `jsonwebtoken 11.1.0` with `aws_lc_rs` and **rejecting
+`openidconnect`**; moves the CI tool pins into the ADR; withdraws `utoipa-swagger-ui`; names
+the two accepted duplicates outside A1's set; and restates A1's second assertion so it is
+evaluated per shipped binary, excludes proc-macro edges, and carries one path-asserted
+`digest` exception instead of an environment-variable escape hatch.
+
+**What it reverses.** §3.1's `utoipa-swagger-ui` pin is withdrawn, and §3.5's "rustls
+everywhere" is corrected from a feature name to a *provider* requirement — on the AWS SDK the
+feature named `rustls` is the `ring` one. §3.6's `STRICT_RUSTCRYPTO` escape hatch (introduced
+in the VUL-6 implementation, never in this document) is deleted. §27 item 17 stays closed:
+A2 corrects how the approved set is spelled and adds two crates to it; it does not reopen
+whether the set is approved.
+
+**What it does not settle.** Whether Aether's control plane is at or above Kubernetes 1.32.
+If it is below, §3.2's `kube 4.2.0` / `k8s-openapi =0.28.0` pair is the wrong pin and §3.2
+needs a new resolution — not a different feature. CEO owns the answer; §24.2 puts the
+Kubernetes surfaces after the services, so it does not block the §24.1 skeleton.
