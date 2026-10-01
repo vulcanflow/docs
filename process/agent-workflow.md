@@ -21,7 +21,7 @@ both.** CI refuses the combination. Find your lane below and stay inside it.
 | **Kiln** | 3 / 5 — Code (Kubernetes) | `crates/*/src/**`, `infra` manifests | as Forge |
 | **Crucible** | 4 / 7 — Run and merge | the ledger, release artefacts | production source, tests |
 | **Assay** | 6 — Review by hand | review comments, verdicts | production source, tests |
-| **Warren** | 6 — Automated review | `coderabbit:review` output, verdicts | production source, tests |
+| **Warren** | 6 — Automated review | the CodeRabbit App's review, triaged into verdicts | production source, tests |
 
 ---
 
@@ -82,15 +82,24 @@ The single exception is §5 below, and it does not start with the test.
 - **Assay** reviews by hand against TDD v2.3 and the ADRs: correctness, crate boundaries,
   `unsafe` rules, supply-chain diffs. Assay also checks the lane **first**, before reading the
   diff, and rejects a crossing on sight.
-- **Warren** runs `coderabbit:review`, posts the verdict, and sorts findings into blocking
-  versus advisory so the bot cannot gate a merge on style.
+- **Warren** reads the **CodeRabbit GitHub App's** review on the pull request, posts the
+  verdict, and sorts findings into blocking versus advisory so the bot cannot gate a merge on
+  style. There is no CodeRabbit CLI credential in this company — the route is the App, and
+  nobody runs `coderabbit review` (ADR-0005 §6.1).
 
 Both verdicts go **on the Paperclip issue**, not as GitHub review approvals — there is one
 GitHub identity in this organisation, so GitHub approvals cannot represent two reviewers
 (ADR-0005 §3.1).
 
-> **Warren is blocked until T7.** `coderabbit:review` is not installed yet. Until it is, lane 6
-> has one reviewer and merges **wait**. One verdict is not relabelled as two.
+> **The CodeRabbit App is installed** — `coderabbitai`, app id `347564`, on the organisation
+> since `2026-10-01T19:12:07Z`. Lane 6 has both reviewers again, and the single-reviewer
+> degradation notice that stood here until 2026-10-01 is **withdrawn**. ADR-0005 §6.1.
+>
+> **But the bot is not the reviewer.** `coderabbitai[bot]` commenting on a pull request is
+> *input* to Warren's verdict, not the verdict. A pull request with a detailed bot thread and no
+> Warren verdict recorded in Paperclip is **unreviewed**, and Crucible does not merge it.
+> CodeRabbit submits with state `COMMENTED`, which is not an approval, and its review must cover
+> the current head to count at all. ADR-0005 §6.2.
 
 ### Lane 7 — Crucible merges
 
@@ -266,7 +275,11 @@ Still gaps, and still not permission:
   empty. The gate goes in the moment a repository receives source.
 - **A lane crossing split across two pull requests passes both.** The gate partitions paths, not
   people. VUL-9 is what closes that.
-- **Warren is blocked until T7.** See lane 6.
+- **A bot thread can be mistaken for reviewer #2.** The CodeRabbit App is installed and posts on
+  every pull request, but nothing in GitHub distinguishes its commentary from a review verdict.
+  Lane 6 is **two recorded Paperclip verdicts** and nothing else counts (ADR-0005 §6.2). The
+  `lane6-review-verdict` procedure is also attached to Assay rather than Warren today (VUL-36);
+  that is a grant defect and does not move reviewer #2 to Assay.
 - **The four repositories are public.** Anything you commit is world-readable the moment it is
   pushed, including on a branch you later delete. Secret scanning and push protection are on,
   but they only catch *recognised* credential shapes — they will not catch a customer name, an
