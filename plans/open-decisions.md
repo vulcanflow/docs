@@ -36,9 +36,16 @@ better than that, and the difference is the point of gathering them:
 ADR — and are counted with the board. Only **D16** (Atlas) and **D17** (CEO via T2) leave
 the board's queue entirely.
 
-So the board is being asked for **15 decisions, one of which actually matters now**, and
-seven of the fifteen can be closed by accepting a recommended default in this document
-without further research.
+So the board is being asked for **15 decisions**, and seven of the fifteen can be closed by
+accepting a recommended default in this document without further research.
+
+Two of the fifteen are urgent, for different reasons, and they should not be confused.
+**D1** is the only one that changes what the next two phases can *prove* — it is the only
+decision with a current verification impact, and it is why D1 has its own section. **D8**
+has no verification impact at all and is needed last, but it is the only item on the
+register whose lead time we do not control, because it depends on outside counsel. D1
+decides what Phase 1 is worth; D8 is the one to start today. The remaining thirteen can
+wait for a batch answer without costing anything.
 
 Breakdown §7 contributed exactly one new decision. That is worth stating plainly: the seven
 "more" items were almost entirely the same product questions §27 already asked, restated in
@@ -124,7 +131,7 @@ rather than argued about.
 
 | Line | |
 |---|---|
-| Recurring | 3–4 additional arm64 worker nodes at ~8 vCPU / 32 GB: **~$400–550/month** (~$5–7k/year), plus ~1 TB block storage for CNPG's 3-instance HA and ClickHouse at ~$100/month. **≈ $550–700/month (~$7–8k/year).** |
+| Recurring | 3–4 additional arm64 worker nodes at ~8 vCPU / 32 GB: **~$400–550/month** (~$5–7k/year), plus ~1 TB block storage for CNPG's 3-instance HA and ClickHouse at ~$100/month. **≈ $500–650/month (~$6–8k/year).** |
 | One-time | As Option A, plus node provisioning. |
 | Settles | Same as Option A. R5 (arm64 reproducibility *on Aether nodes*) is settled only if the new nodes are the same platform. |
 
