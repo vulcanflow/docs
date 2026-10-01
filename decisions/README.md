@@ -9,7 +9,7 @@ Each record states the question, the options considered, the choice, the reason,
 | ADR | Title | Status | Closes |
 |---|---|---|---|
 | [ADR-0001](./ADR-0001-retire-go-scaffold-vf-api.md) | Retire the Go scaffold in `vf-api` PR #1 | Accepted | §27 item 18 |
-| [ADR-0002](./ADR-0002-rust-crate-set-and-phase0-pins.md) | Approved Rust crate set, toolchain pin, and secureCodeBox pin | Accepted | §27 item 17 (and the engineering half of item 5 / §21.3) |
+| [ADR-0002](./ADR-0002-rust-crate-set-and-phase0-pins.md) | Approved Rust crate set, toolchain pin, and secureCodeBox pin | Accepted — amended **A1** | §27 item 17 (and the engineering half of item 5 / §21.3) |
 | [ADR-0003](./ADR-0003-rpc-scb-parser-and-billing-clients.md) | Streaming RPC, secureCodeBox parser/hook language, and billing clients | Accepted | §27 items 19, 20, 21 |
 
 ## Still open
@@ -21,6 +21,11 @@ Each record states the question, the options considered, the choice, the reason,
 
 The §2.5.2 crate table is superseded by ADR-0002 §3 and is no longer `[PROPOSED]`. §24.4's
 gate on "approval of the Rust crate set used on the execution path" is cleared.
+
+**Amendments.** An ADR here is amended in place with an entry in its own amendment-history
+section, never silently edited. ADR-0002 carries **A1** (crypto, TLS and encoding pins — §3.6,
+history in §10). An amendment may add to a closed decision; reversing one needs a new ADR that
+supersedes it.
 
 ## Corrections to TDD v2.3 that fall out of these records
 
