@@ -108,6 +108,19 @@ Exactly four line shapes may appear on stdout, in this order of first appearance
   stdout lines, not their order**, so ordering is never what makes a fixture red.
 - Nothing else on stdout may begin `MODE `, `RANGE `, `OK ` or `L7-`.
 
+**Set, not multiset — answers Scribe's N5, and it is a rule about the detector before it is a
+rule about the harness.** The comparison is a set in both directions: the harness asserts the
+set of stdout lines, and **the detector emits each `(code, repo, sha)` triple at most once per
+commit.** A code that two §6.5 classes could both reach — `L7-PR-UNCHECKED` arises from classes 2
+and 3, `L7-KEY` from any of four keys — is **one finding and one line**, not one per class and
+not one per key. So "`L7-PR-UNCHECKED` for classes 2 and 3" in VUL-56's fixture 31 describes
+*why* the code fires, never *how many times*.
+
+Stating it on the emitting side rather than only the comparing side matters: if it were only a
+harness convention, a detector that printed the same finding twice would still be green, and the
+duplicate would reach the published ledger R5b closes on. One triple, one line, and the harness
+compares sets because that is then the whole truth rather than a tolerance.
+
 **`RANGE` is the answer to item 6, and it is better than a finding code for the empty range.**
 It is emitted for every repository rather than only the empty ones, so the ledger states its
 own scope; it carries the count, so an unexpectedly *short* range is visible too; it is not a
@@ -134,7 +147,7 @@ names the finding class this code implements.
 | `L7-GATE-BARE` | 4 | `Lane-7-Gate: n/a` with no parenthesised reason. |
 | `L7-GATE-VACUOUS` | 4 | `Lane-7-Gate: n/a` in any form on a commit whose tree contains `.github/workflows/lane-gate.yml`. |
 | `L7-GATE-VALUE` | 4 | `Lane-7-Gate` is neither `PASS` nor an `n/a` form — e.g. `FAIL`. |
-| `L7-GATE-UNCONFIRMED` | 8 | `Lane-7-Gate: PASS` is attested and the check-run conclusions on `Lane-7-Head` disagree — any required check failing, missing or still running. |
+| `L7-GATE-UNCONFIRMED` | 8 | `Lane-7-Gate: PASS` is attested and the check-run lookup **ran** without confirming it — any required check failing, still running, or **absent, including the commit having no check runs at all**. Formerly proposed as `L7-GATE-UNTRUE`; renamed, see §9.1. |
 | `L7-GATE-UNCHECKED` | 8 | The check-run lookup could not run, so an attested `PASS` was not confirmed. |
 | `L7-LEDGER-BARE` | 5 | `Lane-7-Ledger: n/a` with no parenthesised reason. |
 | `L7-LEDGER-VACUOUS` | 5 | `Lane-7-Ledger: n/a` on a commit touching `crates/**`. **The one advisory code** (§5). |
@@ -185,6 +198,58 @@ They are four codes and not one because the repairs are four different pieces of
    `L7-VERDICT-MISATTRIBUTED`. Two ends, two codes, because a block can be well-formed and still
    cite the wrong author.
 
+### 4.3 Second-order suppression — answers Forge's item 9 and Scribe's item 10
+
+ADR-0005 §6.5 defines subsumption for **class 1 only**: an absent block suppresses classes 2 and
+4–8 and leaves class 3 alive. Both implementers found the same gap in that, from opposite sides,
+and they are right that it is a spec question rather than either lane's judgment call —
+**fixture 26 establishes that the detector reports a ledger and does not stop at the first
+finding, so neither author may close the gap by short-circuiting.** Three rules, in the order the
+detector applies them.
+
+**Rule A — a check does not run on a value it does not have.** A finding is emitted only by a
+check whose every input is present and well-formed. The consequence, stated per key so that no
+expected set has to be inferred:
+
+| Absent key | Fires | And suppresses |
+|---|---|---|
+| `Lane-7-Head` | `L7-KEY` | **everything that reads `Lane-7-Head`** — `L7-HEAD`, `L7-HEAD-UNRESOLVABLE`, `L7-VERDICT-COVERS`, all four `L7-VERDICT-*` lookup codes, and class 8's `L7-GATE-UNCONFIRMED` / `L7-GATE-UNCHECKED` |
+| `Lane-7-Gate` | `L7-KEY` | the four class-4 codes and both class-8 codes |
+| `Lane-7-Ledger` | `L7-KEY` | both class-5 codes |
+| `Lane-7-Merged-By` | `L7-KEY` | nothing — no other check reads it |
+
+So **fixture 30 is `L7-KEY` alone** and **fixture 31 is `L7-KEY` alone**, and Forge's naive
+reading — one missing `Lane-7-Head` line producing `L7-KEY` *and* `L7-HEAD` *and*
+`L7-VERDICT-COVERS`, two of the three vacuous — is wrong by this rule rather than by taste. This
+is §4.2's rule 2 generalised: that rule closed the empty-sha *lookup*, and the live false pass
+Forge reproduced came from exactly the vacuity this rule forbids. Rule A does not conflict with
+fixture 26, because fixture 26's two findings read two *different* keys, both of which are
+present.
+
+**Rule B — class 3 is never suppressed by anything except its own lookup failing.** §6.5 already
+says class 1 does not suppress it. Nothing else does either: `L7-NOT-PR` is a statement about how
+the commit reached `main`, which no key in the block can make true or false. The one thing that
+suppresses it is `L7-PR-UNCHECKED` — the lookup that would have decided it did not run (§4,
+fixture 40).
+
+**Rule C — a wrong `Lane-7-Head` is present, so it is used.** Rule A turns on *absence*, not on
+*incorrectness*. Fixtures 6, 7, 22 and 26 carry a `Lane-7-Head` that is well-formed and wrong, so
+every check that reads it **does run, against the sha the block names.** This answers Scribe's
+N3, and it answers it in the direction that keeps the detector honest: suppressing class 8
+whenever class 2 fires would mean a commit could attest a false `PASS` *and* a false `Head` and
+have the first go unreported, which is the §6.4 shape twice over.
+
+N3's sharpest limb — fixture 22's `Head` is `ff1e2be`, a `docs` sha that cannot exist in a
+`mktemp -d` fixture repository — **dissolves in the seam rather than needing a rule.** Under
+`LANE7_FIXTURE_DIR` (§6.1) the check-run and pull-request facts are read from files keyed by sha,
+not from git, so the harness writes `check-runs/ff1e2be…` and the lookup succeeds against a sha
+no object store holds. That is the §9 baseline doing its job, and it is why the baseline is
+phrased as *the lookups the detector performs* rather than *the lookups on the real head*.
+
+**What this does not add.** No finding class, and no code. Rules A–C are an application order
+over §6.5's eight classes; §6.5's own subsumption rule is untouched and still wins where they
+meet.
+
 ---
 
 ## 5. The advisory set and the exit code — answers item 5
@@ -229,12 +294,27 @@ existing directory, that is exit `2`.
 |---|---|---|
 | `pulls/<sha>` | one line: the pull-request number, or the literal `none` | the lookup **failed** → `L7-PR-UNCHECKED` |
 | `pull-head/<n>` | one line: the sha `refs/pull/<n>/head` resolves to | the ref does not resolve → `L7-HEAD-UNRESOLVABLE` |
-| `check-runs/<sha>` | one line per required check: `<name> <conclusion>` | the lookup **failed** → `L7-GATE-UNCHECKED` |
+| `check-runs/<sha>` | one line per required check: `<name> <conclusion>`; present and empty = **the lookup ran and the commit has no check runs at all** | the lookup **failed** → `L7-GATE-UNCHECKED` |
 | `verdicts/<VUL-n>` | one line per recorded verdict: `<reviewer> <disposition> <covered-sha>`; present and empty = the issue exists and records none | the issue **does not exist** → `L7-VERDICT-ISSUE-MISSING` |
 
 `<disposition>` is `APPROVE` or `REQUEST_CHANGES` (underscored, because the field is
-whitespace-separated). The distinction between *absent file* and *present-but-empty file* is
-load-bearing and is what fixtures 33 and 34 turn on.
+whitespace-separated).
+
+**The distinction between an absent file and a present-but-empty file is load-bearing in two
+places, not one.** It is the whole of the difference between *the lookup did not happen* and *the
+lookup happened and the answer was nothing* — which is the §6.2-corollary-4 distinction this
+detector exists to keep, expressed in the seam:
+
+| | `verdicts/<VUL-n>` | `check-runs/<sha>` |
+|---|---|---|
+| **absent** — lookup failed | `L7-VERDICT-ISSUE-MISSING` (fixture 33) | `L7-GATE-UNCHECKED` (fixture 39) |
+| **present, empty** — ran, found nothing | `L7-VERDICT-NOT-FOUND` (fixture 34) | `L7-GATE-UNCONFIRMED` (fixture 44) |
+| **present, non-matching** | `L7-VERDICT-NOT-FOUND` (fixture 36) | `L7-GATE-UNCONFIRMED` (fixture 38) |
+
+Fixture 44 is the row this table forced into existence; it is VUL-56's fixture 33 and §9 had
+dropped it. An attested `Lane-7-Gate: PASS` on a commit with **zero** check runs is not an
+unreachable API — it is a required workflow that never ran, which is the more likely real defect
+of the two and the one §6.5 class 8 names first.
 
 ### 6.2 The two credentials — item 3
 
@@ -265,6 +345,29 @@ The honest size of it: this is weaker than having no seam, and it is adopted bec
 alternative is a harness that binds a port in CI — a flaky fixture inside the file whose only job
 is catching a fail-open. If a cleaner separation is later found, the repair is an amendment to
 this document.
+
+### 6.4 Forge's `VF_ATTEST_VERDICT_CMD` — considered, and superseded by §6.1
+
+Forge proposed a single command indirection: `VF_ATTEST_VERDICT_CMD`, invoked with a `VUL-<n>`,
+exit 0 meaning the lookup ran and stdout carrying the record set. It is the same mechanism (3) and
+it was proposed in a ratifiable form, so it gets an answer rather than silence. **`LANE7_FIXTURE_DIR`
+is adopted instead, for two reasons that are about coverage rather than taste.**
+
+- **It is one seam for three endpoints.** Scribe's N6 counted the real surface: `commits/{sha}/pulls`,
+  `commits/{sha}/check-runs` and the Paperclip issue lookup, each needing both a content mode and a
+  failure mode, across more than twenty rows. A verdict-only indirection covers one of the three, and
+  the other two would need their own variables — three seams instead of one, which §6.3's third
+  mitigation is specifically about not having.
+- **`exit 0` plus empty stdout is one state, and the seam needs two.** Forge's table collapses *the
+  issue does not exist* and *the issue exists and records nothing* into the same observation, and §4.1
+  makes those two different findings — `L7-VERDICT-ISSUE-MISSING` and `L7-VERDICT-NOT-FOUND` — with
+  two different owners and two different repairs. The absent-file / empty-file distinction in §6.1
+  expresses both; a command's exit status and stdout cannot without adding a second channel.
+
+**What is adopted from Forge's proposal, because it is the better half of it:** the requirement that
+the run state which mode produced it. That is §3's `MODE live` / `MODE fixture <dir>` line, made
+unconditional and made the *first* stdout line, so a fixture-mode ledger can never be offered as
+evidence for R5b without saying so. Forge asked for it and it is in the contract.
 
 ---
 
@@ -351,25 +454,58 @@ GATE row must be amended in the same change. That amendment is not this document
 is entangled with VUL-68. So, plainly: between Forge's PR landing and that decision,
 `attest-self-test` **runs and reports on every pull request but does not block one**. That is
 weaker than `gate-self-test` and it is recorded as weaker. It is still the difference between the
-40 fixtures being asserted twice ever — once by Crucible confirming red, once by Forge reaching
+44 fixtures being asserted twice ever — once by Crucible confirming red, once by Forge reaching
 green — and being asserted on every pull request forever, which was Assay's actual point.
 
 ---
 
-## 9. The fixture table — 40 rows
+## 9. The fixture table — 44 rows
 
-**Rows 1–28 are unchanged in number and meaning** from VUL-56 as filed, so Scribe's
-one-`check`-per-row-in-table-order commitment survives. Rows 29–40 are added, each for a reason
-given below the table.
+**Rows 1–28 keep the numbers they had in VUL-56 as filed**, so Scribe's
+one-`check`-per-row-in-table-order commitment survives. Rows 29–40 were added by this document's
+first revision; **rows 41–44 are added by its second**, and three of the four are VUL-56 rows this
+document had silently dropped — see the correction note after the table, which is a defect in
+this spec rather than in either implementer's reading of it.
 
-**The baseline every row varies from, so that each row is a single-variable experiment.** Unless
-a row says otherwise: `shape: merge`; a well-formed six-key block with `Lane-7-Gate: PASS`,
-`Lane-7-Ledger: PASS`, Assay and Warren both `APPROVE`, both `covers` equal to `Lane-7-Head`
-equal to the second parent; `tree-has-gate-workflow: no`; `touches-crates: no`; no trailers after
-the block; `LANE7_FIXTURE_DIR` set; both §6.2 credentials set to a dummy value; and fixture files
-present making every lookup succeed and every §6.5 class pass. The expectation column is the
-**complete** set of `L7-*` lines for that commit — a row expecting `OK` expects no `L7-*` line at
-all.
+### 9.0 The field-default rule — answers Scribe's item 9 (N1, N2)
+
+Scribe is right that the expected code *set* is undetermined for 30 of the rows without this, and
+right to refuse to guess it. **One rule, and it is the paragraph below rather than a per-field
+table, because the fields are not independent — `shape` decides which PR facts exist at all.**
+
+**Unless a row says otherwise, every fixture is the baseline with exactly one variable changed:**
+
+- `shape: merge` — two parents, `Lane-7-Head` equal to the second parent;
+- a well-formed six-key block: `Lane-7-Gate: PASS`, `Lane-7-Ledger: PASS`, `Lane-7-Verdict-1`
+  Assay and `Lane-7-Verdict-2` Warren, both `APPROVE`, both citing a `VUL-<n>`, both `covers`
+  equal to `Lane-7-Head`, `Lane-7-Merged-By: Crucible`;
+- the block is the end of the message — **no trailers** (§7);
+- `tree-has-gate-workflow: no`; `touches-crates: no`;
+- `LANE7_FIXTURE_DIR` set; **both** §6.2 credentials set to a dummy non-empty value;
+- and **every lookup the detector actually performs succeeds, keyed on whatever value the block
+  names** — so the `pulls/`, `pull-head/`, `check-runs/` and `verdicts/` files the row does not
+  itself vary are present, and their contents agree with the block.
+
+That last clause is the one doing the work, and it is phrased as *the lookups the detector
+performs* rather than *the lookups on the correct sha* on purpose. It is what makes rows 6, 7, 22
+and 26 — which carry a deliberately **wrong** `Lane-7-Head` — single-variable rather than
+double: the harness writes `check-runs/<the-wrong-head>` with a passing conclusion, so class 8
+runs, succeeds, and reports nothing, and the row asserts class 2's finding alone (§4.3 rule C).
+Scribe's N3 is answered there and not here.
+
+`subject-suffix` has **no baseline value and is never load-bearing**, because §6.3 condition 4's
+route to a pull request is the API and only the API. Rows 41 and 42 exist to assert that, and they
+are the only two rows on which the suffix is mentioned at all.
+
+The expectation column is the **complete** set of `L7-*` lines for that commit — a row expecting
+`OK` expects no `L7-*` line at all — **together with the exit code.**
+
+**The exit code is asserted on every row, not on five.** Scribe offered this and it is accepted:
+it is derivable from §5 with no further ruling, since the advisory set is exactly
+`{L7-LEDGER-VACUOUS}`. So every row expecting `OK` or expecting only `L7-LEDGER-VACUOUS` asserts
+**exit 0**, every row expecting any other finding asserts **exit 1**, and no row in this table
+asserts exit 2. The table still spells the code out on the rows where it is the surprising half
+of the assertion; where it is silent, that rule supplies it rather than leaving it unasserted.
 
 | # | Fixture | Expect |
 |---|---|---|
@@ -413,8 +549,56 @@ all.
 | 38 | `Lane-7-Gate: PASS`, `check-runs/<head>` records `lane-partition failure` | `L7-GATE-UNCONFIRMED` |
 | 39 | `Lane-7-Gate: PASS`, `check-runs/<head>` **absent** | `L7-GATE-UNCHECKED`, **exit 1** |
 | 40 | `pulls/<sha>` **absent** | `L7-PR-UNCHECKED`, **and no `L7-NOT-PR`, `L7-HEAD` or `L7-HEAD-UNRESOLVABLE`** |
+| 41 | Squash, `pulls/<sha>` = `30`, `pull-head/30` = the head, **subject carries no `(#n)` suffix** | `OK` |
+| 42 | Squash, **subject reads `… (#99)`**, `pulls/<sha>` = `none` | `L7-NOT-PR` |
+| 43 | One parent, `pulls/<sha>` = `none`, **and no `Lane-7-*` line at all** | **both `L7-MISSING` and `L7-NOT-PR`** |
+| 44 | `Lane-7-Gate: PASS`, `check-runs/<head>` **present and empty**, `tree-has-gate-workflow: yes` | `L7-GATE-UNCONFIRMED` |
 
-**Why each addition exists.**
+### 9.1 Correction — rows 41–44, and a defect in this document's first revision
+
+**This document's 40-row table was not a superset of VUL-56's 34, and it was presented as one.**
+*"Rows 1–28 are unchanged … rows 29–40 are added"* is true of the numbering and false of the
+content: VUL-56's rows 29–34 were not carried forward, and four of their six cases survived only
+by coincidence of having a near-equivalent among the new rows. Scribe read the amended issue
+table and I read my own additions, and neither of us diffed the two. Found while answering
+Scribe's N1 and N3; the finding is mine, against me.
+
+What was lost, and where it is restored:
+
+| VUL-56 row | Fate in the 40 | Restored as |
+|---|---|---|
+| 29 — squash, PR resolved by API, **suffix absent** → `OK` | **dropped** | **41** |
+| 30 — **suffix lies**, `pr-number: none` → `L7-NOT-PR` | **dropped** | **42** |
+| 31 — `pr-number: unreachable` → `L7-PR-UNCHECKED`, not `L7-NOT-PR` | survived as row **40** | — |
+| 32 — `check-runs: fail` → class 8 | survived as row **38** | — |
+| 33 — `check-runs: none`, tree has the workflow → class 8 | **dropped** | **44** |
+| 34 — `check-runs: unreachable` → `L7-GATE-UNCHECKED` | survived as row **39** | — |
+
+And one more, which is not in that table because it is a *meaning* change rather than a deletion:
+**VUL-56's fixture 9 carried no attestation block**, and its stated expectation was *both*
+`L7-MISSING` *and* `L7-NOT-PR` — the row ADR-0005 §6.5 added specifically to assert that class 3
+survives class 1's subsumption. Row 9 of the 40 inherits the baseline, which includes a
+well-formed block, so class 1 never fires and the row asserts `L7-NOT-PR` alone. **Both rows are
+worth having** — row 9 is now class 3 in isolation, and **row 43 is VUL-56's fixture 9 as
+written**, the subsumption-survival assertion. §6.5's rule is unassertable without it.
+
+**Why the two suffix rows matter more than their count suggests.** 41 and 42 are the only rows in
+the table that can fail an implementation which resolved the pull request by parsing `(#n)` out of
+the subject — 41 goes red with a false `L7-NOT-PR` on a legitimate merge, 42 goes green on a
+commit that reached `main` without one. Every other row in the table is indifferent to how the
+number was obtained. Dropping them removed the only assertion of §6.3 condition 4's
+API-is-the-only-route rule, which §7 item 10's typed merge message is the reason for.
+
+**One code was also renamed and the rename was not called out.** VUL-56's rows 32–34 expect
+`L7-GATE-UNTRUE`; §4's register calls it **`L7-GATE-UNCONFIRMED`**, and splits the unreachable
+case out as `L7-GATE-UNCHECKED`. The register's names are the ones to implement: *untrue* asserts
+the `PASS` is false, and a check run that is **still running** or **absent** does not establish
+that — it establishes that nothing confirmed it, which is what the detector can honestly say.
+`UNCHECKED` for the lookup failing then matches `L7-PR-UNCHECKED` and `L7-VERDICT-UNCHECKED`, so
+one suffix means one thing across all three. **`L7-GATE-UNTRUE` is not a code**; it appears in no
+row of §9 and the harness must not assert on it.
+
+**Why each of rows 29–40 exists.**
 
 - **29** — the only row asserting §7's leniency. Without it the lenient rule is untested and
   the real-world merge shape is unblessed.
@@ -439,7 +623,7 @@ all.
   lookup failure is §6.2 corollary 4 pointed the other way, and only a negative assertion catches
   it.
 
-### 9.1 One case left uncovered, on the record
+### 9.2 One case left uncovered, on the record
 
 Fixtures 2 and 11 both carry a repository name inside `n/a (no workflow on <repo>)`, and
 `L7-GATE-VACUOUS` keys on the commit's tree rather than on whether that name matches the
@@ -453,12 +637,13 @@ for the detector too.
 
 ## 10. Acceptance
 
-**`ci/lane7-attest-test.sh` asserts one verdict per fixture for all 40 fixtures in §9, with the
+**`ci/lane7-attest-test.sh` asserts one verdict per fixture for all 44 fixtures in §9 — each
+verdict comparing the complete set of `L7-*` lines **and** the exit code, per §9.0 — with the
 finding codes as written, and prints an `N passed, M failed` line in `ci/lane-gate-test.sh`'s
-format.** That is the whole of VUL-56.
+format.** That is the whole of VUL-56, and the closing line reads `44 passed, 0 failed`.
 
 **`ci/lane7-attest.sh`, with its manifest at `ci/lane7-attest-floors.txt`, its workflow at
-`.github/workflows/lane7-attest.yml`, and both §6.2 credentials supplied, passes all 40 fixtures
+`.github/workflows/lane7-attest.yml`, and both §6.2 credentials supplied, passes all 44 fixtures
 and reports over the four §6.5 ranges exactly one finding — `L7-MISSING vulcanflow/docs
 b40201b…` — and `OK` or an empty `RANGE` for every other commit in scope.** That is the whole of
 VUL-50.
@@ -495,8 +680,11 @@ Named so that none of it is read as settled here.
 - **The `ci/X.sh` / `ci/X-test.sh` same-diff rule** and the GATE-is-one-diff finding on
   `ci/lane-gate.sh`, `ci/lane-gate-test.sh` and `.github/workflows/lane-gate.yml`. **VUL-68**,
   owner Atlas. §8.1 explains why it is not in scope here.
-- **Whether `attest-self-test` becomes a required status check.** ADR-0005 **R8**, entangled with
-  VUL-68. §8.2 states the consequence of it not being one.
+- **Whether `attest-self-test` becomes a required status check**, and the branch-protection
+  change that would wire it. ADR-0005 **R8**, entangled with VUL-68, and filed as **VUL-75**
+  (ADR-0005 amendment 5), owner Atlas. §8.2 states the consequence of it not being one. Forge is
+  right that wiring a context is org configuration rather than a repository change and that it
+  must not be done unilaterally; it is authorised on VUL-75, not here and not in a pull request.
 - **Whether `main` is corrected forward or reverted** for `b40201b`. ADR-0005 §6.4 consequence 2,
   owner CEO.
 - **Anything ADR-0005 §6.5 fixed** — the four floors, the eight finding classes, first-parent
@@ -517,3 +705,14 @@ Named so that none of it is read as settled here.
 - **The attestation block format changes.** §4's register is keyed to §6.3 condition 4's six
   keys; a seventh key or a renamed one invalidates rows 3–5 and 30–32 and the harness is rewritten
   from the amended table by its original author, on a test-only pull request.
+- **A second repository gains `.github/workflows/lane-gate.yml` without the four required
+  contexts.** Forge measured this one and it is recorded as a revisit trigger rather than a
+  fixture because **it is unreachable today**: at the time of writing only `platform` has the
+  workflow, and `platform` has all four contexts required, while `docs`, `infra` and `vf-api` have
+  branch protection with no `required_status_checks` block at all and `docs` has no
+  `.github/workflows` directory. The gap is the mirror of fixture 11 — a tree that *has* the
+  workflow while nothing requires its checks makes `Lane-7-Gate: PASS` true and worthless, and
+  class 8 would confirm it. **This document deliberately enumerates no code for it**, because a
+  code with no reachable fixture is a code the harness asserts nothing about. The moment the
+  workflow is copied to a second repository, §4 gains a code and §9 gains a row in the same
+  change.
