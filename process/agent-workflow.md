@@ -16,10 +16,10 @@ both.** CI refuses the combination. Find your lane below and stay inside it.
 | **Atlas** | 1 — Spec | TDD, ADRs, plans, issue specs | production source, tests |
 | **Scribe** | 2 — Tests (unit, property, fuzz) | `crates/*/tests/**`, `fuzz/**`, fixtures, goldens | production source; and you never *run* a suite |
 | **Ledger** | 2 — Tests (integration, conformance, e2e) | `tests/**`, `crates/*/tests/**`, `conformance/**`, fixtures, goldens | production source; and you never *run* a suite |
-| **Forge** | 3 / 5 — Code (pure library crates) | `crates/*/src/**`, `Cargo.toml`, `Cargo.lock` | any test file, any fixture, any assertion, any `#[cfg(test)]` block |
-| **Anvil** | 3 / 5 — Code (service binaries) | `crates/*/src/**`, `Cargo.toml`, `Cargo.lock` | as Forge |
-| **Kiln** | 3 / 5 — Code (Kubernetes) | `crates/*/src/**`, `infra` manifests | as Forge |
-| **Crucible** | 4 / 7 — Run and merge | the ledger, release artefacts | production source, tests |
+| **Forge** | 3 / 5 — Code (pure library crates) | `crates/*/src/**`, `Cargo.toml`, `Cargo.lock`; a NEUTRAL `ci/**` script that is pure computation | any test file, any fixture, any assertion, any `#[cfg(test)]` block |
+| **Anvil** | 3 / 5 — Code (service binaries) | `crates/*/src/**`, `Cargo.toml`, `Cargo.lock`; a NEUTRAL `ci/**` script that wraps a service binary | as Forge |
+| **Kiln** | 3 / 5 — Code (Kubernetes) | `crates/*/src/**`, `infra` manifests; a NEUTRAL `ci/**` script that touches cluster state | as Forge |
+| **Crucible** | 4 / 7 — Run and merge | the ledger, release artefacts | production source, tests, and **any `ci/**` script that audits lane 4 or lane 7** |
 | **Assay** | 6 — Review by hand | review comments, verdicts | production source, tests |
 | **Warren** | 6 — Automated review | the CodeRabbit App's review, triaged into verdicts | production source, tests |
 
@@ -30,6 +30,20 @@ conditions, and skipping it is not a lane violation. Because it gates nothing, r
 own change is not an adjacent-lane violation whatever lane you hold — ADR-0005 §2 scopes that rule
 to the seven numbered lanes. The CLI lives on the agent runner, not in any repository. Its
 mechanics are still being codified (VUL-28). ADR-0005 §2 and §6.1.
+
+**Writing a `ci/` script? Read ADR-0005 §4.4 first.** Three paths — `ci/lane-gate.sh`,
+`ci/lane-gate-test.sh`, `.github/workflows/lane-gate.yml` — are GATE and no one touches them
+alongside source or tests. **Everything else under `ci/` is NEUTRAL**, which means the gate lets
+it through next to anything and used to mean nobody above claimed it. It is lane-3 work now, and
+three things about it are not obvious:
+
+- **It still takes all seven lanes.** Spec, then fixtures, then code, then a run, then two
+  verdicts, then a merge. A shell script is not a shortcut around the pipeline.
+- **It gets no §25 identifier**, so its ledger line reads `n/a (no §25 identifier in scope)` and
+  the acceptance statement in the spec is what it is judged against. Do not invent an identifier.
+- **Its fixture harness is Scribe's**, written before the script, from a fixture list Atlas
+  enumerates in the spec. The harness is NEUTRAL too, so no check stops a coding agent from
+  touching it — which is exactly why you do not.
 
 ---
 

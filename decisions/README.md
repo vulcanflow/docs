@@ -11,7 +11,7 @@ Each record states the question, the options considered, the choice, the reason,
 | [ADR-0001](./ADR-0001-retire-go-scaffold-vf-api.md) | Retire the Go scaffold in `vf-api` PR #1 | Accepted | §27 item 18 |
 | [ADR-0002](./ADR-0002-rust-crate-set-and-phase0-pins.md) | Approved Rust crate set, toolchain pin, and secureCodeBox pin | Accepted — amended **A1** | §27 item 17 (and the engineering half of item 5 / §21.3) |
 | [ADR-0003](./ADR-0003-rpc-scb-parser-and-billing-clients.md) | Streaming RPC, secureCodeBox parser/hook language, and billing clients | Accepted | §27 items 19, 20, 21 |
-| [ADR-0005](./ADR-0005-delivery-pipeline-and-lane-enforcement.md) | The delivery pipeline and how its lanes are enforced | Accepted — amended **1**, **2**, **3** | No §27 item — supersedes the enforcement claim in the VUL-1 plan §4 |
+| [ADR-0005](./ADR-0005-delivery-pipeline-and-lane-enforcement.md) | The delivery pipeline and how its lanes are enforced | Accepted — amended **1**, **2**, **3**, **4** | No §27 item — supersedes the enforcement claim in the VUL-1 plan §4 |
 | [ADR-0007](./ADR-0007-repo-level-agent-process-bootstrap.md) | The agent process bootstrap is checked into `vulcanflow/platform` | Accepted | No §27 item — process. Weighs against ADR-0004's definition of what `platform` holds |
 
 **ADR-0004 and ADR-0006 are not on `main` yet.** ADR-0004 is the Cargo workspace repository
@@ -55,6 +55,7 @@ that check.
 | ADR-0005 | **1** | The §8 GitHub plan question decided: option B, repositories public, protection live — §3.2, §8, R2, R7 |
 | ADR-0005 | **2** | Reviewer #2's route is the CodeRabbit **App**, triaged by Warren; bot commentary is not a verdict — §6.1, §6.2, R6 |
 | ADR-0005 | **3** | Lane 7's merge condition has one statement, and the `docs#24` merge is recorded under R5b — §6.3, §6.4, R5a/R5b |
+| ADR-0005 | **4** | NEUTRAL `ci/**` is lane-3 work with four agents excluded by name, and the attestation detector's floor is four named commits — §4.4, §6.5, §7 items 10–11, R5b, R8 |
 
 ## Corrections to TDD v2.3 that fall out of these records
 

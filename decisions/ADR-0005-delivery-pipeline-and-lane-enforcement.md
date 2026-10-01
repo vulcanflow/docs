@@ -79,6 +79,15 @@ author does with the findings, whether it becomes required — are **VUL-28's** 
 board rule of 2026-10-01 19:49Z, and that issue adds the row if the answer is that it should have
 one. Until then, read the absence of a row as "not yet codified", not as "not a lane".
 
+**This table assigns lanes, not path classes, and the difference bit once.** A reader looking for
+who may touch a given file will not always find the answer here: the rows say what each agent's
+lane *is*, while §4.2 says what the gate *does* with a path, and the two are not the same
+partition. `ci/**` outside the three GATE paths is the case where that gap was load-bearing — it
+is NEUTRAL, so the gate waves it through, and no row above claimed it. **§4.4 settles it** and is
+the authority on NEUTRAL `ci/**` authorship; this table is not amended to carry a path column,
+because the next such gap would then look like an omission in the table rather than a question
+for §4.
+
 ### 2.1 The prohibitions, stated in the negative
 
 - **Forge, Anvil, Kiln** change production source only. Never a test file, a fixture, a golden
@@ -231,6 +240,60 @@ test declarations (`#[test]`, `#[tokio::test]`, `#[test_case`, `#[rstest`, `prop
 `fuzz_target!`) across the entire tree at the base and at the head, and fails if the number
 falls. That catches a deleted test file, a test commented out, and a test quietly moved out of
 the suite — while allowing a test to be *renamed or relocated*, because the count is preserved.
+
+### 4.4 Who authors a NEUTRAL `ci/**` script — added 2026-10-01
+
+§4.2 classifies every `ci/` script other than the three GATE paths as **NEUTRAL**, so authoring
+one crosses no lane: `lane-partition` permits NEUTRAL alone and NEUTRAL alongside anything. But
+"crosses no lane" is not the same as "has an owner", and no row of §2's table or of
+`process/agent-workflow.md` §1 claims `ci/**` at all. §6.5's detector is the first such script
+anyone has needed, and §6.3 flagged the gap as an open lane-1 question rather than let it be
+filled in by whoever picked the work up. It is settled here, and settled generally, because the
+detector will not be the last one.
+
+**A NEUTRAL `ci/**` script is lane-3 work and moves through all seven lanes like code.** It gets a
+lane-1 spec, a lane-2 fixture harness written first, a lane-3 implementation, a lane-4 run, two
+lane-6 verdicts and a lane-7 merge. The one thing it does not get is a **§25 identifier**: §25 is
+a traceability matrix over product requirements, and all 45 of its identifiers map to a
+requirement in §2–§23 — none to the delivery pipeline's own tooling. The ledger entry is therefore
+`n/a (no §25 identifier in scope)` under §6.3 condition 2, and the lane-1 acceptance statement is
+the whole of the acceptance. Inventing an identifier would be worse than having none: the §25
+mapping is injective in both directions, and a fabricated row would break it in order to record
+something §25 does not describe.
+
+**Within lane 3 the agent is chosen by subject**, on the same axis that already separates the
+three coding agents in `process/agent-workflow.md` §1:
+
+| Subject of the script | Owner | Why |
+|---|---|---|
+| Pure computation over its inputs — parses, compares, reports; no service, no cluster | **Forge** | Forge's lane is the pure library crates. A script that is a function of its inputs is the same kind of artefact. |
+| Wraps, launches or exercises a service binary | **Anvil** | Anvil's lane is the service binaries. |
+| Touches cluster state, manifests or a deployment | **Kiln** | Kiln's lane is Kubernetes and the `infra` manifests. |
+
+**Four agents are excluded by name, each for a reason that is not availability:**
+
+- **Crucible** may not author a `ci/**` script whose subject is lane 4 or lane 7 — that is, its
+  own conduct. §6.2 corollary 2 already refuses to let one agent supply both lane-6 verdicts; the
+  same principle refuses to let the audited party build its own auditor. Crucible still *runs*
+  it, because lane 4's monopoly on execution is absolute; §6.5 names what makes that tolerable
+  and what it leaves open.
+- **Atlas** may not author it. Lanes 1 and 3 are adjacent under §2, and the spec exists precisely
+  so that the implementer does not get to choose what the script must catch.
+- **Assay** and **Warren** may not author it. They would then review their own artefact in lane
+  6, which is the pairing §2's adjacency rule exists to prevent — even though 3 and 6 are not
+  adjacent by number, so the rule as written does not reach it and this bullet is why.
+
+**The fixture harness is lane 2, and it is not a TEST-class path.** `ci/lane-gate-test.sh` is the
+precedent and it is GATE, not TEST, so §4.2 has never classified a gate script's own self-test as
+a test file; a NEUTRAL script's harness is NEUTRAL for the same reason. `test-erosion` counts Rust
+test declarations, so it does not see a shell fixture either. The harness is therefore
+**mechanically reachable by a coding agent** — which is exactly the loophole §2.1 exists to close,
+so say plainly where the control actually sits. It is not the gate; it is lane 1: **the fixture
+set is enumerated in the spec by Atlas, and written by Scribe before the implementation exists.**
+An implementer who cannot choose its own fixtures cannot weaken them, and a reviewer can check the
+delivered harness against the spec's list by counting. That is weaker than the path partition,
+and it is recorded as weaker rather than presented as equivalent; it is the strongest arrangement
+available for a file class the partition deliberately waves through.
 
 ---
 
@@ -480,13 +543,13 @@ is not the commit merged, or naming a verdict that does not exist at the cited i
 defective without needing to reconstruct a timeline from issue threads. That converts this gate
 from advisory-and-unobservable to advisory-and-observable, which is the strongest step available
 here and is the precondition for a CI check over `main` later. **The detector is specified on
-VUL-48, owner Atlas for the spec**; it is not yet written and this section does not claim it is.
-It is named by issue rather than as "a follow-up item" because R5b's closure depends on it, and a
-trigger whose closure depends on unowned work is a preference. One thing the spec has to settle
-and this section will not settle in passing: a script under `ci/` other than the three GATE paths
-is **NEUTRAL** by §4.2, so authoring it crosses no lane — but no row of §2's table assigns NEUTRAL
-`ci/**` to an agent, and which lane implements it is therefore an open lane-1 question, not an
-omission to be filled in by whoever picks it up.
+VUL-48, owner Atlas for the spec, and §6.5 records what the spec fixed at record level**; it is
+not yet written and this section does not claim it is. It is named by issue rather than as "a
+follow-up item" because R5b's closure depends on it, and a trigger whose closure depends on
+unowned work is a preference. The one thing this section flagged as unsettled — a script under
+`ci/` other than the three GATE paths is **NEUTRAL** by §4.2, so authoring it crosses no lane, but
+no row of §2's table assigned NEUTRAL `ci/**` to an agent — **is now answered in §4.4**: it is
+lane-3 work, chosen by subject, with four agents excluded by name.
 
 **What this supersedes, named so the old readings cannot be cited.** §2's lane-7 row said "two
 approving verdicts" — right about `APPROVE`, silent on head coverage. §6's bullet and
@@ -564,6 +627,103 @@ board's decision log, which is as load-bearing as code. It also does not attribu
 an agent: §3.1 means GitHub cannot tell us who merged, which is the point of §6.3 condition 4
 and is why no attribution appears above.
 
+### 6.5 The attestation detector — the history it starts from, and what it asserts — added 2026-10-01
+
+§6.3 names the detector as the thing that converts condition 4 from a typed block into an audit,
+and R5b stays live until it exists and runs. Two parts of it are design-of-record rather than
+implementation, and they are fixed here so that the implementer inherits them instead of choosing
+them: **where the assertion starts**, and **what it asserts**. Everything else — the script's
+structure, its output format, its enumerated fixture table — is the lane-1 spec on VUL-48 and the
+child issues that issue names.
+
+**The floor is four named commits, not a run-time flag.** §7 item 10 said the detector "reads
+forward from the first attested merge". That is wrong in a way worth recording rather than
+quietly fixing, because it was written before §6.4 was: there is no attested merge in any
+repository yet, so a floor defined that way points into the future — and the first commit it would
+exclude is `b40201b`, the one commit §6.4 records as known-defective and the one a detector must
+flag in order to be a detector at all. A floor chosen at run time is also not part of the record,
+so whoever runs the script can move it.
+
+**The detector asserts over `git rev-list --first-parent <floor>..refs/heads/main`, exclusive of
+the floor, for each of these four repositories:**
+
+| Repository | Floor — the newest commit **not** asserted on | What that commit is |
+|---|---|---|
+| `vulcanflow/docs` | `b31ddfeca0ad88cb481929f7eacd64d7e8194ac0` | `docs#30`, ADR-0007. Chosen so that `b40201b` — its only child on `main` — is the **first** commit asserted on, and §6.4's defect is therefore *derived* by the detector rather than hard-coded into it as a known exception. |
+| `vulcanflow/platform` | `41506ad3bea5282473207a725b00625c5f65e0aa` | `platform#2`, the lane gate — a §9 bootstrap merge, and that repository's current `main`. |
+| `vulcanflow/infra` | `304b300e01e0c9ad8210977d80986afe65517daa` | `Initialize main`, the initial commit and current `main`. |
+| `vulcanflow/vf-api` | `45d7ded9d32d0fff8e60a17c97c725c475748497` | `chore: initialize repository`, the initial commit and current `main`. |
+
+All four were read back with `git log --first-parent` against each repository's protected `main`
+on 2026-10-01, not recalled. On that date the asserted range is **exactly one commit** — `docs`
+`b40201b` — and empty in the other three. That is what makes VUL-48's acceptance statement
+judgable the day the script lands, and it is the reason the floors are published now rather than
+chosen later against a longer history.
+
+Two rules keep the manifest honest. **Moving a floor is an amendment to this record**, not an
+edit to a file. And a repository that gains a protected default branch with **no row above is not
+silently skipped** — the detector reports the absence as a finding, because an unmanifested
+repository and a clean one are otherwise indistinguishable in its output.
+
+**First-parent only, and why.** A true merge commit's second-parent subtree is the pull request's
+own branch history, which never carried an attestation and was never asked to; walking all parents
+would report every branch commit ever merged as unattested. `docs`'s `main` holds both shapes —
+true merges and squashes — and, below the floor, one commit (`53f907a`) that arrived by neither.
+That third shape is in the finding classes below even though no instance of it is in range today,
+because branch protection (§8.2) is younger than that commit and the detector should not assume
+protection was always on.
+
+**What it asserts, per commit in range.** Each is a separate finding class, so a run produces a
+ledger rather than a verdict:
+
+1. The attestation block is **present**, and carries all six of condition 4's keys.
+2. `Lane-7-Head` equals **the commit actually merged** — the second parent for a true merge, and
+   for a squash the pull-request head resolved through `refs/pull/<n>/head`, which GitHub retains
+   after the branch is deleted. §6.4's branch was deleted at merge, so this is not hypothetical.
+3. The commit **arrived by a pull-request merge at all.** One parent and no resolvable pull
+   request means it reached `main` by neither route, which is its own finding.
+4. `Lane-7-Gate` is `PASS`, or an `n/a` **carrying its reason**. A bare `n/a` is a finding under
+   §6.3. So is an `n/a` in any form on a commit whose tree contains
+   `.github/workflows/lane-gate.yml` — §6.3 calls that case itself the gate defect, and the tree
+   is what makes it mechanically checkable.
+5. `Lane-7-Ledger` is `PASS`, or an `n/a` carrying its reason, on the same rule.
+6. **Two** `Lane-7-Verdict-*` lines, naming two **distinct** reviewers drawn from {Assay,
+   Warren}, each with the disposition exactly `APPROVE`, each citing a Paperclip issue, and each
+   with `covers <sha>` equal to `Lane-7-Head`.
+7. `Lane-7-Merged-By` is `Crucible`.
+
+**What it cannot assert, recorded so the output never implies otherwise.** Three things, and they
+are limits of the medium rather than of the implementation:
+
+- **Zero unresolved blocking findings** — §6.3 condition 3's second clause — leaves no trace in
+  the block and cannot be reconstructed from `main`. The detector is silent on it, and silence
+  here is not a pass.
+- **That the cited verdict exists and reads `APPROVE`** is a fact about a Paperclip issue, not
+  about git. The detector checks the citation's *shape* with no credential and its *contents*
+  only when given an API token; without one it reports `UNCHECKED` rather than passing. A check
+  that passes silently when it could not run is the shape of §6.2 corollary 4, and of §6.4.
+- **Whether a change engaged a §25 identifier** is a spec judgment. The detector can see a commit
+  touching `crates/**` while claiming `Lane-7-Ledger: n/a` and reports that as advisory for lane
+  6 to adjudicate; it cannot decide it.
+
+**Where it lives, and who runs it.** `vulcanflow/platform`, as `ci/lane7-attest.sh` with its
+floors in a checked-in manifest transcribing the table above and its harness at
+`ci/lane7-attest-test.sh` — all three **NEUTRAL** by §4.2, authored in lane 3 by **Forge** under
+§4.4, against fixtures written first by **Scribe**. It runs from a workflow in `platform` and
+clones the other three repositories, which it can do with no credential because §8 made them
+public. Centralising it in `platform` is deliberate and not merely convenient: adding a workflow
+to `docs`, `infra` or `vf-api` would engage **R2**'s standing obligation to wire that repository's
+first checks as required, which is a separate decision from this one.
+
+**The residue, named rather than left for a reader to notice.** Crucible runs the detector, and
+the detector audits Crucible. Lane 4's monopoly on execution is absolute, so this cannot be
+arranged away. What makes it tolerable is that the detector's input is public git history and its
+output is a mechanical ledger, so **Assay reproduces the run independently in lane 6** over the
+same four ranges and compares. Two parties over a reproducible-by-anyone input is still not an
+independent auditor, and that is the honest size of it: if a run is ever reported clean and a §6.3
+defect is later found inside its range, that is a second R5b event, and R5b already says where a
+second event goes.
+
 ---
 
 ## 7. Consequences
@@ -594,9 +754,15 @@ and is why no attribution appears above.
     the merge is taken through an API call or a message-editing UI rather than a one-click
     squash, because the block has to be typed. That is the price of being able to audit lane 7
     from `main`'s history instead of from issue threads, and it is paid on every merge. The
-    history before 2026-10-01 carries no attestations and cannot be made to — the detector reads
-    forward from the first attested merge, and `b40201b` is specifically known-defective (§6.4)
-    rather than merely unattested.
+    history before 2026-10-01 carries no attestations and cannot be made to, so the detector
+    starts from a **named floor per repository** — the four commits in §6.5, not "the first
+    attested merge", which is what this item said before §6.5 and which would have excluded
+    `b40201b`, the one commit §6.4 records as known-defective.
+11. **A NEUTRAL `ci/**` script now has an owner** (§4.4). It is lane-3 work chosen by subject,
+    its fixture harness is lane-2 work enumerated in the lane-1 spec, and Crucible, Atlas, Assay
+    and Warren are each excluded from authoring one for a stated reason. The cost is that the
+    cheapest-looking artefact in the repository — a shell script nothing classifies as code —
+    takes six handoffs like everything else.
 
 ---
 
@@ -776,11 +942,16 @@ Named, so this record is revisited on evidence rather than on mood.
     and (ii) a way to see the defect from `main` afterwards, which is §6.3 condition 4's
     attestation and the detector that reads it. **This limb stays live until that detector
     exists and runs over `main`'s history** — it is specified on **VUL-48**, owner Atlas for the
-    spec, named so this limb's closure is owned rather than hoped for. A second R5b event before
-    the detector exists is evidence that
-    a recorded condition is not enough and that lane 7 needs a mechanism outside this
-    organisation's own compliance — bring it back to Atlas with both events, not a third
-    restatement of the rule.
+    spec, and §6.5 fixes its floors and its assertion set, so this limb's closure is owned rather
+    than hoped for. **The closure condition, stated as something a person can run:** `Forge` has
+    landed `ci/lane7-attest.sh` in `platform`; its harness passes every fixture the VUL-48 spec
+    enumerates; and Crucible has published a run over all four §6.5 ranges whose only finding is
+    `docs b40201b` — attestation block absent — which Assay has independently reproduced in lane
+    6. When that ledger exists, R5b closes with it cited. Until then it is live no matter how
+    completely §6.3 is written, because §6.3 is the rule and this limb is about seeing the rule
+    broken. A second R5b event before the detector exists is evidence that a recorded condition
+    is not enough and that lane 7 needs a mechanism outside this organisation's own compliance —
+    bring it back to Atlas with both events, not a third restatement of the rule.
 - **R6 — reviewer #2's automated route changes.** ✅ **The install half is closed 2026-10-01.**
   The CodeRabbit GitHub App is installed (§6.1), the single-reviewer degradation is withdrawn,
   and lane 6 is back to two reviewers. What remains is narrower and still live. Each limb below
@@ -824,6 +995,18 @@ Named, so this record is revisited on evidence rather than on mood.
   month at one filled seat — which restores private repositories with every protection in §8.2
   intact. Note what reverting does **not** undo: anything already cloned, forked or indexed
   stays out. Treat the public history as permanent and make the decision on that basis.
+- **R8 — a NEUTRAL `ci/**` script starts gating something.** §4.4 puts NEUTRAL `ci/**` in lane 3
+  on the premise that it gates nothing: the three GATE paths in §4.2 are an exhaustive list, and
+  `lane-partition` waves a NEUTRAL-only diff straight through. The moment such a script becomes a
+  **required status check** on any protected branch, or any other check's verdict depends on its
+  exit code, that premise is void — it is then part of the gate, it can be weakened in the same
+  pull request as the thing it would have caught, and §4.2's GATE row must be amended to name it.
+  Observable: the script's job name appears in
+  `GET /repos/vulcanflow/<repo>/branches/main/protection` → `required_status_checks.contexts`.
+  **Owner: whoever wires the check**, who files the amendment in the same change rather than
+  afterwards. This is live from the moment §6.5's detector lands, because making it required is
+  the obvious next thing to want and is exactly where §4.1's second rule stops applying by
+  accident.
 
 ---
 
@@ -852,3 +1035,4 @@ Named, so this record is revisited on evidence rather than on mood.
 | 1 | 2026-10-01 | **The §8 plan question is decided: the board chose option B.** The four active repositories are public, branch protection is applied to all four with `enforce_admins: true`, and `platform`'s four lane-gate checks are required. §3.2 rewritten as a resolved constraint; §7 items 8–9 replaced; §8 rewritten as a decision with the pre-publication secret scan (§8.1), the applied settings and why zero required approvals (§8.2), the disclosure cost (§8.3) and two observed refusals (§8.4); R2 closed and narrowed to wiring checks per repository; R7 added as the route back to private. §7 item 4 corrected: 21 fixture verdicts, not 17. Recorded by CEO under VUL-2. |
 | 2 | 2026-10-01 | **Reviewer #2's route corrected, and the independence rule stated.** The CodeRabbit GitHub App (`coderabbitai`, app id `347564`, installation `166977157`, installed `2026-10-01T19:12:07Z`, `repository_selection: all`) is installed, so the "`coderabbit:review` is not installed … merges wait" sentence in §6 is withdrawn — quoted in §6.1 rather than deleted, because the degraded period was real and agents cited it. New **§6.1** records lane 6's route as the App's review on the pull request, read and triaged by Warren with no tool run; separates that from the authenticated CodeRabbit **CLI** (`0.8.2`, seat assigned), which is the author's pre-flight under the board rule of 2026-10-01 19:49Z and is codified as lane 5.5 on VUL-28 — a CLI review is never reviewer #2's verdict (this row's own draft qualified that as *author-run*; row 3 redraws the boundary on the **surface** rather than on who ran it, and row 3 is the operative form); and records that `COMMENTED` is not approval and that a review counts only when `coveredCommitId` equals `head.sha`. New **§6.2** states the rule the install correction was hiding: **the App posting on a pull request is input to lane 6, not satisfaction of it** — lane 6 is two attributable Paperclip verdicts, a bot thread with no Warren verdict is an unreviewed pull request, and the `lane6-review-verdict` skill sitting in Assay's catalog (VUL-36) does not make Assay reviewer #2. §2's lane-6 row updated to match; **R6** closed on the install half and the live remainder restated as **four limbs, each naming the observable that fires it and the agent who hits it first** — App removed or suspended; App installed and unsuspended but **silently not reviewing** (the mode that reads healthy and produces nothing, which the other limbs do not cover); the subscription lapsing, owned by the CEO, with the earlier draft's **shared App/CLI seat assertion withdrawn as unsupported by either read-back** and the `Advanced (trial)` clock recorded as having **no end date exposed by `auth status`**; and CodeRabbit changing its severity vocabulary or dropping the `final_review_risk_coverage` anchors. §6.1's CLI path **rooted to the agent runner** (`…/companies/<company-id>/tools/bin/coderabbit`, a wrapper over `coderabbit.bin`) with the note that it is in **no repository** — an earlier draft wrote it unrooted, where it read as repository-relative. **Lane 5.5 named in §2 and in `process/agent-workflow.md` §1 as a deliberate non-row** — owner is the change's author, surface is the CLI, it **gates nothing**, and its mechanics are VUL-28's — because §6.1 names a lane that the lane tables did not. `plans/open-decisions.md` **D17's Rider row withdrawn**, with its superseded sentence quoted rather than deleted and the §6.2 hazard put in its place; that row reached `main` in docs#24 before this amendment and was the last surviving recitation. `process/agent-workflow.md` §1, lane 6 and §7 updated in the same change. **Revised in lane 6 before merge, from reviewer #1's findings on `b573391` and `aba73a9`** (VUL-38, VUL-44): §2's adjacency rule **scoped to the seven numbered lanes**, because as written it forbade every exercise of lane 5.5 by the only owner lane 5.5 has — the rule protects against one agent holding both the production of a thing and the gate that clears it, and a lane that clears nothing cannot be half of that pair; §6.4 consequence 1 restated as **six open findings plus one withdrawn here** rather than seven, since commit `c7bb4af` in this same change withdraws D17's Rider and a record asserting a count its own commit falsifies is the failure class this amendment exists to close; §6.2 corollary 3's advisory set given **a present label reading `none`** beside the absent label, closing the last divergence from the skill's §3 table; §6.3's attestation detector and R5b's closure condition given an owner and an issue — **VUL-48**, Atlas for the spec — with the note that which lane implements a NEUTRAL `ci/**` script is an open §2 question rather than an omission; §9's claim that amendments 2 and 3 "went through lane 6" **forward-tensed**, because what records that they did is condition 4's attestation in `git log`, not this record asserting it in advance; `process/agent-workflow.md`'s `6 → 7` transition cell reduced to a pointer after it restated three of condition 3's four clauses and dropped **Independently attributable**; and `decisions/README.md`'s amendment marker stated to be **each record's own label**, quoted rather than normalised. Recorded by Atlas under VUL-37. |
 | 3 | 2026-10-01 | **Lane 7's merge condition has one statement, and the merge that exposed its absence is recorded.** New **§6.3** is the sole statement of the merge condition: lane gate green on the commit merged; ledger with no FAIL and no MISSING against that commit; two verdicts, one each from Assay and Warren, every one of them `APPROVE` with zero unresolved blocking findings, stating a covered sha equal to `head.sha` at merge, and independently attributable on that reviewer's own lane-6 issue; and a merge attestation in the commit message naming the head, the gate and ledger dispositions and both verdicts. Conditions 1 and 2 are satisfied **vacuously** on a repository with no workflow or a change engaging no §25 identifier, but only via an explicit `n/a` in the attestation, never by silence; conditions 3 and 4 are never vacuous — "it is only documentation" is not a lane-7 argument, and §6.4's change was Markdown. §2's lane-7 row, §6's bullets and `process/agent-workflow.md` lane 7 are rewritten as pointers to §6.3 rather than as three independent statements — the three prior statements ("two approving verdicts"; "Assay's verdict and Warren's verdict"; the VUL-32 board directive's "a CLEAN CodeRabbit verdict at the current head") are withdrawn in §6.3. New **§6.4** records, under R5b, that `docs#24` merged to `main` at 2026-10-01T20:59:26Z (`b40201b`) over a `REQUEST CHANGES` verdict with seven blocking findings unresolved on an already-superseded head, with no reviewer #2 verdict in existence — explicitly **not** filed as a §9 exception, and not sanctioned retrospectively. §10 R5 split into R5a (lane crossing — repair is a `ci/lane-gate-test.sh` fixture) and R5b (merge taken against §6.3 — repair is §6.3 plus an attestation detector over `main`), with R5b live until that detector runs. §6.1's CLI boundary redrawn on the **surface** rather than on who ran it, with the §6.3 condition-3 reason: a CLI run emits no coverage anchors, so its coverage is unperformable, so a Warren-run CLI review is still lane 5.5. §6.1's withdrawal quote restored to full text including the lead clause "Warren is blocked until T7." and its `docs#24` citation corrected from "correctly held" to Warren's decline. §6.2 corollary 1's verb changed from *count* to evaluation against §6.3; corollary 3's severity set given `Nitpick` and the absent-label case as advisory. `decisions/README.md`'s index row for this record corrected — it read a bare "Accepted" through amendments 1 and 2, so the index was itself a stale statement of the design of record; the amendment markers now sit in the status column with a per-amendment table beside the in-place-amendment rule. Recorded by Atlas under VUL-40. |
+| 4 | 2026-10-01 | **NEUTRAL `ci/**` gets an owner, and the attestation detector gets a floor it cannot choose.** Closes the two questions amendment 3 left open on VUL-48. New **§4.4**: a `ci/` script outside the three GATE paths is **lane-3 work** moving through all seven lanes, with the agent chosen by subject on the axis that already separates the coding agents (pure computation → Forge, service binaries → Anvil, cluster and manifests → Kiln) and **four agents excluded by name** — Crucible from any script auditing lanes 4 or 7, because §6.2 corollary 2's principle refuses to let the audited party build its auditor; Atlas as lane-1-adjacent; Assay and Warren because they would review their own artefact, which §2's adjacency rule does not reach by number and so is stated here. It gets **no §25 identifier**: all 45 map to a product requirement in §2–§23, so the ledger reads `n/a (no §25 identifier in scope)` and the lane-1 acceptance statement is the whole acceptance — fabricating a row would break §25's injective mapping to record something §25 does not describe. §4.4 also states where the control on the **fixture harness** actually sits: the harness is NEUTRAL, not TEST, so no check sees it and a coding agent can mechanically reach it — so the fixtures are **enumerated by Atlas in the spec and written by Scribe first**, and that is recorded as weaker than the path partition rather than presented as equivalent. New **§6.5** fixes the detector's **floor as four named commits** read back from each protected `main` on 2026-10-01 (`docs` `b31ddfec`, `platform` `41506ad`, `infra` `304b300e`, `vf-api` `45d7ded9`), asserting `--first-parent` **exclusive of the floor**; `docs`'s floor is chosen so `b40201b` is the **first** commit asserted on and §6.4's defect is *derived* rather than hard-coded, which is why **§7 item 10's "reads forward from the first attested merge" is corrected** — that floor points into the future and would have excluded the only known event. §6.5 states the seven finding classes, the **three things the detector cannot assert** (zero unresolved blocking findings leaves no trace; verdict existence is a Paperclip fact and degrades to `UNCHECKED`, never to a pass; §25 scope is a spec judgment), that moving a floor is an amendment and an unmanifested protected repository is itself a finding, that it lives in `platform` so as not to engage **R2** on the other three, and **the residue**: Crucible runs the thing that audits Crucible, which lane 4's monopoly makes unavoidable, mitigated by Assay reproducing the run in lane 6 and recorded as still not an independent auditor. **R5b's closure condition restated as something a person can run** — harness green on every enumerated fixture, plus a Crucible run over all four ranges whose only finding is `docs b40201b`, reproduced by Assay. New **R8**: the moment a NEUTRAL `ci/**` script becomes a required status check, §4.4's premise that it gates nothing is void and §4.2's GATE row must be amended in the same change. §2 gains a note that the lane table assigns **lanes, not path classes**, which is the gap `ci/**` fell through. Recorded by Atlas under VUL-48. |
