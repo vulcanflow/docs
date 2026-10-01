@@ -363,12 +363,27 @@ Still gaps, and still not permission:
   line still names the script. Deleting or renaming a job is **not** this — a required context that
   never reports blocks the merge, which is the mechanism behind the `4 of 4 required status checks
   are expected` push refusal in §8. The weakening that passes is the one that keeps the names and
-  changes what decides the job's outcome. ADR-0005 §4.5 limb 3 records why no path rule reaches it,
-  §4.6 is the review obligation that stands in for a mechanism, and **R9** is the escalation. Treat
-  that file as the highest-consequence path in the repository. **Touching it is not itself a
-  finding** — the gate has to be able to change on its own pull request, and §4.5's pull request 2
-  must change this file. What §4.6 item 2 makes a blocking finding on its own is narrower: a job
-  whose conclusion is **no longer decided by the gate's exit status**.
+  changes what decides the job's outcome. ADR-0005 §4.5 limb 3 records why no path rule reaches it
+  and §4.6 is the review obligation that stands in for a mechanism. Treat that file as the
+  highest-consequence path in the repository. **Touching it is not itself a finding** — the gate has
+  to be able to change on its own pull request, and §4.5's pull request 2 must change this file.
+  What §4.6 item 2 makes a blocking finding on its own is narrower: a job whose conclusion is **no
+  longer decided by the gate's exit status**.
+
+  **The escalation is no longer open: R9 was probed and came back negative.** A ruleset `workflows`
+  rule is not available on this plan, so nothing outside the repository is going to close this limb
+  for us. §4.6 is the control, not a placeholder for one.
+- **Do not "fix" the above by changing the gate's trigger to `pull_request_target`.** It looks like
+  the answer — under that trigger `main`'s workflow file and `main`'s checkout are what run, so the
+  pull request's own copy of `lane-gate.yml` is never executed. ADR-0005 §4.5 rejects it on three
+  reasons and you need all three before you propose it again: it **does not close the limb** (a
+  hollowing diff still gets four honest green checks and still merges, because no check asks whether
+  the workflow was hollowed); it puts **`gate-self-test` in violation of GitHub's rule** that code
+  reached under that trigger must be inspected as data and never executed, which is the Pwn Request;
+  and GitHub **blocks the trigger by default on public repositories from 2026-11-02** unless an
+  Actions event policy allows it, which `platform` does not have — so the change would read as
+  hardening and would stop the gate, holding every pull request on four contexts that never report.
+  Reopening it is **R11** and an ADR amendment, not a CI tweak.
 - **A bot thread can be mistaken for reviewer #2.** The CodeRabbit App is installed and posts on
   every pull request, but nothing in GitHub distinguishes its commentary from a review verdict.
   Lane 6 is **two Paperclip verdicts that each meet ADR-0005 §6.3 condition 3** — not two
