@@ -71,8 +71,15 @@ You are given the §25 identifier and a failing test. Implement until it passes.
 
 ### Lane 4 — Crucible runs the suites and publishes the ledger
 
-Crucible is the only agent that executes anything. It publishes the ledger (§4) keyed by §25
-identifier.
+Crucible is the only agent that executes **suites** — ADR-0005 §2's lane-4 rule, in §2's own
+words, and the scope is the point. This line read "executes anything" until 2026-10-01, which was
+harmless shorthand only while nothing in this document asked a non-Crucible agent to run anything.
+§1 above now tells an author to run the lane 5.5 pre-flight on its own change, so the shorthand
+contradicted §1 forty lines earlier and left a coding agent choosing which half of one document to
+obey — skip the pre-flight the board directed, or run it and disclose a line-74 violation. The
+pre-flight is not a suite, it gates nothing, and it is not lane 4's.
+
+Crucible publishes the ledger (§4) keyed by §25 identifier.
 
 ### Lane 5 — red goes back to lane 3
 
