@@ -211,9 +211,11 @@ issue per reviewer (ADR-0005 §6.1). Each carries the head in its title and an `
 carrying the head too:
 
 ```
-title: Lane 6 — review <repo>#<pr> @ <head-sha-7> (reviewer #N, <Agent>): <subject>
+title: … <repo>#<pr> @ <head-sha-7> … (reviewer #<1|2>, <Assay|Warren>) …
 key:   lane6:<owner>/<repo>#<pr>:<head-sha-40>:<assay|warren>
 ```
+
+Those two title fragments are what is required; the rest of the title is the subject.
 
 Why you should care rather than copy it blindly: **the key changes when the head moves**, because a
 verdict only counts against the head it covers (§6.3 condition 3), so re-filing at a new head is

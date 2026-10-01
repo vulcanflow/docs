@@ -296,11 +296,19 @@ count of live pairs at a head, not the response.
 
 **Staleness is read from the title, not from the key, because the key is not stored on the issue.**
 `GET /api/issues/{id}` exposes no idempotency field — checked on VUL-84, 2026-10-01 — so the head
-stays in the title, in the form lane 6 already uses:
+goes in the title. **Two fragments are load-bearing and the rest of the title is the subject:**
 
 ```
-Lane 6 — review <repo>#<pr> @ <head-sha-7> (reviewer #N, <Agent>): <subject>
+… docs#<pr> @ <head-sha-7> …            the pull request and the head it covers
+… (reviewer #<1|2>, <Assay|Warren>) …   which half of the pair this is
 ```
+
+Lane 6 already writes titles this way — compare VUL-84, `Lane 6 — review docs#36 @ a342155
+(reviewer #1, Assay): …`, and VUL-85, `Lane 6 — CodeRabbit review of docs#36 @ a342155 (reviewer #2,
+Warren): …`. The two differ in the middle and that is fine; **this section fixes the two fragments
+and deliberately does not fix the whole string**, because a prescribed title that practice already
+diverges from gets cited as a defect in the practice rather than read as the convention it was meant
+to capture.
 
 A pair whose title sha is not the pull request's current head is stale **by inspection**. That is
 what instance (i) needed and could not get, because the route it reached for was a withdrawal and the
