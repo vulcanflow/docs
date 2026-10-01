@@ -121,12 +121,10 @@ conditions are called, because a second phrasing is how `docs#24` came to merge 
 `REQUEST CHANGES` with no reviewer #2 verdict at all (ADR-0005 §6.4). Read §6.3 before every
 merge.
 
-The four conditions, by name only: **(1)** lane gate green *on the commit being merged*;
-**(2)** ledger with no FAIL and no MISSING *against that same commit*; **(3)** two verdicts,
-one from Assay and one from Warren, each `APPROVE`, each with zero unresolved blocking findings,
-each stating a covered sha equal to `head.sha` at merge, each on its own reviewer's issue;
-**(4)** the merge commit message carries §6.3's attestation block naming the head and both
-verdicts.
+The four conditions are called, in order: **(1)** the **lane gate**, **(2)** the **ledger**,
+**(3)** the **two reviewer verdicts**, **(4)** the **merge attestation**. What each one requires
+is ADR-0005 §6.3 and is not reproduced here — the paragraph above forbids a second phrasing, and
+a list of names that looked close enough to a summary is how the second phrasing gets back in.
 
 Missing any one of those, Crucible refuses and says which one. Nothing merges by any other
 route — including by whoever has admin. An unattested merge on `main` is a recorded gate defect
