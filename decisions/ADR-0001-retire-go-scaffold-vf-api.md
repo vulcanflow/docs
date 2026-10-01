@@ -7,7 +7,7 @@
 | **Owner** | Atlas (Staff Architect / Tech Lead) |
 | **Closes** | TDD **§27 item 18** |
 | **Does not close** | §27 items 16a, 17, 19, 20, 21 |
-| **Design of record** | `VulcanFlow_Technical_Design_Document_v2.2.md` (filename says v2.2; the content is **TDD v2.3**) — §0.0, §2.3, §2.5, §24 |
+| **Design of record** | [`VulcanFlow_Technical_Design_Document_v2.3.md`](../VulcanFlow_Technical_Design_Document_v2.3.md) — **TDD v2.3** — §0.0, §2.3, §2.5, §24 |
 
 ## Question
 

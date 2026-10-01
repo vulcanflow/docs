@@ -9,7 +9,7 @@
 | **Also settles** | the engineering half of **§27 item 5** and the `[OPEN — eng]` secureCodeBox paragraph in **§21.3** (selected release, digests, arm64, CRD type generation) |
 | **Does not close** | §27 items 16a, 18 (see [ADR-0001](./ADR-0001-retire-go-scaffold-vf-api.md)), 19, 20, 21 (see [ADR-0003](./ADR-0003-rpc-scb-parser-and-billing-clients.md)) |
 | **Supersedes** | the `[PROPOSED]` crate table in TDD §2.5.2 |
-| **Design of record** | `VulcanFlow_Technical_Design_Document_v2.2.md` (filename says v2.2; the content is **TDD v2.3**) — §2.5, §21.3, §24.2, §24.4, §25 |
+| **Design of record** | [`VulcanFlow_Technical_Design_Document_v2.3.md`](../VulcanFlow_Technical_Design_Document_v2.3.md) — **TDD v2.3** — §2.5, §21.3, §24.2, §24.4, §25 |
 | **Issue** | VUL-3 |
 
 ## Question

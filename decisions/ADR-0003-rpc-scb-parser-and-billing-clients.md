@@ -8,7 +8,7 @@
 | **Closes** | TDD **§27 items 19, 20 and 21** |
 | **Depends on** | [ADR-0002](./ADR-0002-rust-crate-set-and-phase0-pins.md) — the crate set and the secureCodeBox v5.9.0 pin |
 | **Does not close** | §27 items 16a, and the Product halves of items 2, 4 and 11 that bear on paid use |
-| **Design of record** | `VulcanFlow_Technical_Design_Document_v2.2.md` (filename says v2.2; the content is **TDD v2.3**) — §2.5.2, §2.5.3, §9, §17.5, §21.3, §24.2–24.4 |
+| **Design of record** | [`VulcanFlow_Technical_Design_Document_v2.3.md`](../VulcanFlow_Technical_Design_Document_v2.3.md) — **TDD v2.3** — §2.5.2, §2.5.3, §9, §17.5, §21.3, §24.2–24.4 |
 | **Issue** | VUL-3 |
 
 These three items are grouped into one record because each is a *language or client-shape*
