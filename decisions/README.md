@@ -12,12 +12,16 @@ Each record states the question, the options considered, the choice, the reason,
 | [ADR-0002](./ADR-0002-rust-crate-set-and-phase0-pins.md) | Approved Rust crate set, toolchain pin, and secureCodeBox pin | Accepted — amended **A1** | §27 item 17 (and the engineering half of item 5 / §21.3) |
 | [ADR-0003](./ADR-0003-rpc-scb-parser-and-billing-clients.md) | Streaming RPC, secureCodeBox parser/hook language, and billing clients | Accepted | §27 items 19, 20, 21 |
 | [ADR-0005](./ADR-0005-delivery-pipeline-and-lane-enforcement.md) | The delivery pipeline and how its lanes are enforced | Accepted | No §27 item — supersedes the enforcement claim in the VUL-1 plan §4 |
+| [ADR-0007](./ADR-0007-repo-level-agent-process-bootstrap.md) | The agent process bootstrap is checked into `vulcanflow/platform` | Accepted | No §27 item — process. Weighs against ADR-0004's definition of what `platform` holds |
 
-**ADR-0004 is not on `main` yet.** It is PR docs#23, closed unmerged and pending T1. The number
-is reserved for it; the gap here is not a missing record.
+**ADR-0004 and ADR-0006 are not on `main` yet.** ADR-0004 is the Cargo workspace repository
+layout — docs#23 was closed unmerged and it is re-filed as PR docs#27. ADR-0006 is the
+false-positive equivalence fields and alias semantics, PR docs#26. Both numbers are reserved;
+the gaps here are not missing records.
 
 ADR-0005's operational companion is [`process/agent-workflow.md`](../process/agent-workflow.md),
-which is what an agent reads mid-task.
+which is what an agent reads mid-task. ADR-0007's is `CLAUDE.md` at the root of
+`vulcanflow/platform`, which every session rooted at that checkout reads at startup.
 
 ## Still open
 
