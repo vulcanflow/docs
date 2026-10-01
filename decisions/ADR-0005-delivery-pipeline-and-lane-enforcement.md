@@ -48,6 +48,18 @@ two adjacent lanes on the same change.
 | 6 | **Review** | Assay **and** Warren — both required | Assay reviews by hand against TDD v2.3 and the ADRs, and rejects any lane crossing on sight before reading the diff. Warren triages the **CodeRabbit GitHub App's** review of the pull request into a verdict, splitting findings into blocking versus advisory (§6.1). Both verdicts are recorded in Paperclip; bot commentary is not itself a verdict (§6.2). |
 | 7 | **Merge** | Crucible | Merge to the default branch only when §6.3's four conditions all hold. Nothing merges by any other route. §6.3 is the only statement of that condition in this record; this cell deliberately does not restate it. |
 
+**Lane 5.5 — the author's pre-pull-request pre-flight — is a real lane and is deliberately not a
+row above.** §6.1 names it and this table is the authority on lanes, so its absence would
+otherwise be a gap rather than a choice. Three things about it are settled here and nothing else
+is: its owner is **the change's author**, whichever lane that author normally holds; its surface
+is the CodeRabbit **CLI** on the runner, never the App's review on the pull request; and **it
+gates nothing** — it is not a review lane, it produces no verdict, it is not one of §6.3's four
+conditions, and skipping it is not a lane violation. It sits between lanes 5 and 6 only in the
+sense that it happens before the pull request exists. Its mechanics — when it must run, what the
+author does with the findings, whether it becomes required — are **VUL-28's** scope, under the
+board rule of 2026-10-01 19:49Z, and that issue adds the row if the answer is that it should have
+one. Until then, read the absence of a row as "not yet codified", not as "not a lane".
+
 ### 2.1 The prohibitions, stated in the negative
 
 - **Forge, Anvil, Kiln** change production source only. Never a test file, a fixture, a golden
@@ -284,10 +296,15 @@ Three things follow, and the first is the one that keeps being got wrong:
   `coderabbit:review` capability from an agent's tool catalog is not a blocker on this lane.
 
   **There are two CodeRabbit surfaces in this company and they belong to different lanes.** A
-  CodeRabbit **CLI** also exists and is authenticated — version `0.8.2` at
-  `tools/bin/coderabbit`, `auth status` reporting `Organization: vulcanflow`, `Seat: assigned`,
-  plan Advanced (trial), read from the runner at 2026-10-01. It is signed in through a GitHub
-  OAuth seat, not a `CODERABBIT_API_KEY`. That surface is a **pre-pull-request pre-flight owned
+  CodeRabbit **CLI** also exists and is authenticated — version `0.8.2`, installed by the CEO on
+  2026-10-01. It lives **on the agent runner and in no repository**: the path is rooted at the
+  Paperclip company tools directory, `…/companies/<company-id>/tools/bin/coderabbit`, a wrapper
+  over `coderabbit.bin` in the same directory. Do not read it as a repository-relative path —
+  `tools/bin/coderabbit` does not exist in a clone of this repository or of `platform`, and an
+  earlier draft of this section wrote it unrooted. Read back from the runner at 2026-10-01:
+  `--version` → `0.8.2`; `auth status` → `Provider: GitHub`, `Organization: vulcanflow`,
+  `Default: vulcanflow/zozo6015`, `Plan: Advanced (trial)`, `Seat: assigned`. It is signed in
+  through a GitHub OAuth seat, not a `CODERABBIT_API_KEY`. That surface is a **pre-pull-request pre-flight owned
   by the change's author**, per the board rule of 2026-10-01 19:49Z, and it is being codified as
   **lane 5.5** on VUL-28; its mechanics are that issue's scope and not this section's. What this
   section settles is the boundary, and it is drawn on the **surface**, not on who ran it: **a
@@ -725,16 +742,41 @@ Named, so this record is revisited on evidence rather than on mood.
     restatement of the rule.
 - **R6 — reviewer #2's automated route changes.** ✅ **The install half is closed 2026-10-01.**
   The CodeRabbit GitHub App is installed (§6.1), the single-reviewer degradation is withdrawn,
-  and lane 6 is back to two reviewers. What remains of this trigger is narrower and still live,
-  and §6.1 is reopened on any of it: the App is **removed or suspended** (a
-  `GET /orgs/vulcanflow/installations` that no longer lists `coderabbitai`, or a non-null
-  `suspended_at`); the CodeRabbit **seat** that the lane 5.5 CLI and the App both draw on lapses
-  — the plan reads `Advanced (trial)` today, so this one has a clock on it; or
-  CodeRabbit changes its severity vocabulary or stops emitting the
-  `final_review_risk_coverage` anchors the coverage check in §6.1 depends on. Note what does
-  **not** reopen it: the `lane6-review-verdict` skill being attached to the wrong agent is a
-  grant problem (VUL-36), and §6.2 corollary 3 already settles that it changes nothing about who
-  reviewer #2 is.
+  and lane 6 is back to two reviewers. What remains is narrower and still live. Each limb below
+  names the observable that fires it, because a trigger nobody can check is a preference:
+
+  1. **The App is removed or suspended.** Observable: `GET /orgs/vulcanflow/installations` no
+     longer lists `coderabbitai`, or lists it with a non-null `suspended_at`. Anyone with
+     organisation read can check; **Warren** hits it first, because the App stops reviewing.
+  2. **The App stays installed and unsuspended but stops reviewing.** This limb is listed
+     separately because limb 1 does not cover it and it is the failure mode that looks like
+     success: the installation reads healthy and no walkthrough ever arrives, or one arrives
+     whose `final_review_risk_coverage.coveredCommitId` never advances past a superseded head.
+     Observable, on any open pull request: no `coderabbitai[bot]` walkthrough comment, or a
+     walkthrough whose `coveredCommitId` does not equal `head.sha` and does not update on a
+     re-trigger. **Warren** owns the observation and the immediate response is §6.2 corollary 4
+     — report the lane unsatisfied and let the merge wait — and then raise R6 to **Atlas**. Do
+     not reach for the CLI; §6.1 forbids it as a substitute for exactly this case.
+  3. **The CodeRabbit subscription lapses.** Observable, from the runner:
+     `…/tools/bin/coderabbit auth status` stops reporting `Seat: assigned`, or reports a plan
+     with no review access. **Owner: CEO**, who installed it. Two honest limits on this limb.
+     The plan reads **`Advanced (trial)`** today and `auth status` **exposes no trial end
+     date**, so there is no date to record here and the check is a poll rather than a diary
+     entry — which is why limb 2 exists as the independent signal. And whether the App and the
+     CLI draw on the **same** seat is **not established**: `auth status` reports a seat for the
+     CLI, the installations endpoint reports no seat at all, and an earlier draft of this limb
+     asserted a shared seat that neither read-back supports. Treat limb 3 as a signal about the
+     CLI that **may** also predict the App, and confirm against limb 2 before concluding
+     anything about lane 6.
+  4. **CodeRabbit changes its severity vocabulary, or stops emitting the
+     `final_review_risk_coverage` anchors** the coverage check in §6.1 depends on. Observable:
+     a severity label outside the set in §6.2 corollary 3, or a walkthrough with no coverage
+     block. **Warren** hits both first — corollary 3 already says to block on an unrecognised
+     label, so the lane fails closed while this is raised to **Atlas**.
+
+  Note what does **not** reopen it: the `lane6-review-verdict` skill being attached to the wrong
+  agent is a grant problem (VUL-36), and §6.2 corollary 3 already settles that it changes nothing
+  about who reviewer #2 is.
 - **R7 — the project needs to be private again.** Any of: a disclosure concern raised about a
   specific file now public, the first external contributor or fork the project does not want, or
   simply the approach to GA. The route back is option A in §8 — GitHub Team, roughly $4 per
@@ -767,5 +809,5 @@ Named, so this record is revisited on evidence rather than on mood.
 |---|---|---|
 | — | 2026-10-01 | Accepted as recorded. |
 | 1 | 2026-10-01 | **The §8 plan question is decided: the board chose option B.** The four active repositories are public, branch protection is applied to all four with `enforce_admins: true`, and `platform`'s four lane-gate checks are required. §3.2 rewritten as a resolved constraint; §7 items 8–9 replaced; §8 rewritten as a decision with the pre-publication secret scan (§8.1), the applied settings and why zero required approvals (§8.2), the disclosure cost (§8.3) and two observed refusals (§8.4); R2 closed and narrowed to wiring checks per repository; R7 added as the route back to private. §7 item 4 corrected: 21 fixture verdicts, not 17. Recorded by CEO under VUL-2. |
-| 2 | 2026-10-01 | **Reviewer #2's route corrected, and the independence rule stated.** The CodeRabbit GitHub App (`coderabbitai`, app id `347564`, installation `166977157`, installed `2026-10-01T19:12:07Z`, `repository_selection: all`) is installed, so the "`coderabbit:review` is not installed … merges wait" sentence in §6 is withdrawn — quoted in §6.1 rather than deleted, because the degraded period was real and agents cited it. New **§6.1** records lane 6's route as the App's review on the pull request, read and triaged by Warren with no tool run; separates that from the authenticated CodeRabbit **CLI** (`0.8.2`, seat assigned), which is the author's pre-flight under the board rule of 2026-10-01 19:49Z and is codified as lane 5.5 on VUL-28 — an author-run CLI review is never reviewer #2's verdict; and records that `COMMENTED` is not approval and that a review counts only when `coveredCommitId` equals `head.sha`. New **§6.2** states the rule the install correction was hiding: **the App posting on a pull request is input to lane 6, not satisfaction of it** — lane 6 is two attributable Paperclip verdicts, a bot thread with no Warren verdict is an unreviewed pull request, and the `lane6-review-verdict` skill sitting in Assay's catalog (VUL-36) does not make Assay reviewer #2. §2's lane-6 row updated to match; R6 closed on the install half and narrowed to App removal or suspension, the Advanced trial seat lapsing, or CodeRabbit **changing its severity vocabulary or** dropping the `final_review_risk_coverage` coverage anchors. `process/agent-workflow.md` §1, lane 6 and §7 updated in the same change. Recorded by Atlas under VUL-37. |
+| 2 | 2026-10-01 | **Reviewer #2's route corrected, and the independence rule stated.** The CodeRabbit GitHub App (`coderabbitai`, app id `347564`, installation `166977157`, installed `2026-10-01T19:12:07Z`, `repository_selection: all`) is installed, so the "`coderabbit:review` is not installed … merges wait" sentence in §6 is withdrawn — quoted in §6.1 rather than deleted, because the degraded period was real and agents cited it. New **§6.1** records lane 6's route as the App's review on the pull request, read and triaged by Warren with no tool run; separates that from the authenticated CodeRabbit **CLI** (`0.8.2`, seat assigned), which is the author's pre-flight under the board rule of 2026-10-01 19:49Z and is codified as lane 5.5 on VUL-28 — a CLI review is never reviewer #2's verdict (this row's own draft qualified that as *author-run*; row 3 redraws the boundary on the **surface** rather than on who ran it, and row 3 is the operative form); and records that `COMMENTED` is not approval and that a review counts only when `coveredCommitId` equals `head.sha`. New **§6.2** states the rule the install correction was hiding: **the App posting on a pull request is input to lane 6, not satisfaction of it** — lane 6 is two attributable Paperclip verdicts, a bot thread with no Warren verdict is an unreviewed pull request, and the `lane6-review-verdict` skill sitting in Assay's catalog (VUL-36) does not make Assay reviewer #2. §2's lane-6 row updated to match; **R6** closed on the install half and the live remainder restated as **four limbs, each naming the observable that fires it and the agent who hits it first** — App removed or suspended; App installed and unsuspended but **silently not reviewing** (the mode that reads healthy and produces nothing, which the other limbs do not cover); the subscription lapsing, owned by the CEO, with the earlier draft's **shared App/CLI seat assertion withdrawn as unsupported by either read-back** and the `Advanced (trial)` clock recorded as having **no end date exposed by `auth status`**; and CodeRabbit changing its severity vocabulary or dropping the `final_review_risk_coverage` anchors. §6.1's CLI path **rooted to the agent runner** (`…/companies/<company-id>/tools/bin/coderabbit`, a wrapper over `coderabbit.bin`) with the note that it is in **no repository** — an earlier draft wrote it unrooted, where it read as repository-relative. **Lane 5.5 named in §2 and in `process/agent-workflow.md` §1 as a deliberate non-row** — owner is the change's author, surface is the CLI, it **gates nothing**, and its mechanics are VUL-28's — because §6.1 names a lane that the lane tables did not. `plans/open-decisions.md` **D17's Rider row withdrawn**, with its superseded sentence quoted rather than deleted and the §6.2 hazard put in its place; that row reached `main` in docs#24 before this amendment and was the last surviving recitation. `process/agent-workflow.md` §1, lane 6 and §7 updated in the same change. Recorded by Atlas under VUL-37. |
 | 3 | 2026-10-01 | **Lane 7's merge condition has one statement, and the merge that exposed its absence is recorded.** New **§6.3** is the sole statement of the merge condition: lane gate green on the commit merged; ledger with no FAIL and no MISSING against that commit; two verdicts, one each from Assay and Warren, every one of them `APPROVE` with zero unresolved blocking findings, stating a covered sha equal to `head.sha` at merge, and independently attributable on that reviewer's own lane-6 issue; and a merge attestation in the commit message naming the head, the gate and ledger dispositions and both verdicts. Conditions 1 and 2 are satisfied **vacuously** on a repository with no workflow or a change engaging no §25 identifier, but only via an explicit `n/a` in the attestation, never by silence; conditions 3 and 4 are never vacuous — "it is only documentation" is not a lane-7 argument, and §6.4's change was Markdown. §2's lane-7 row, §6's bullets and `process/agent-workflow.md` lane 7 are rewritten as pointers to §6.3 rather than as three independent statements — the three prior statements ("two approving verdicts"; "Assay's verdict and Warren's verdict"; the VUL-32 board directive's "a CLEAN CodeRabbit verdict at the current head") are withdrawn in §6.3. New **§6.4** records, under R5b, that `docs#24` merged to `main` at 2026-10-01T20:59:26Z (`b40201b`) over a `REQUEST CHANGES` verdict with seven blocking findings unresolved on an already-superseded head, with no reviewer #2 verdict in existence — explicitly **not** filed as a §9 exception, and not sanctioned retrospectively. §10 R5 split into R5a (lane crossing — repair is a `ci/lane-gate-test.sh` fixture) and R5b (merge taken against §6.3 — repair is §6.3 plus an attestation detector over `main`), with R5b live until that detector runs. §6.1's CLI boundary redrawn on the **surface** rather than on who ran it, with the §6.3 condition-3 reason: a CLI run emits no coverage anchors, so its coverage is unperformable, so a Warren-run CLI review is still lane 5.5. §6.1's withdrawal quote restored to full text including the lead clause "Warren is blocked until T7." and its `docs#24` citation corrected from "correctly held" to Warren's decline. §6.2 corollary 1's verb changed from *count* to evaluation against §6.3; corollary 3's severity set given `Nitpick` and the absent-label case as advisory. Recorded by Atlas under VUL-40. |

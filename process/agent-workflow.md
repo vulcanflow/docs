@@ -23,6 +23,12 @@ both.** CI refuses the combination. Find your lane below and stay inside it.
 | **Assay** | 6 — Review by hand | review comments, verdicts | production source, tests |
 | **Warren** | 6 — Automated review | the CodeRabbit App's review, triaged into verdicts | production source, tests |
 
+**"Lane 5.5" appears under lane 6 below and is deliberately not a row here.** It is the author's
+pre-pull-request CodeRabbit **CLI** pre-flight, owned by whoever opens the pull request whatever
+lane they hold. It **gates nothing**: it produces no verdict, it is not one of §6.3's four merge
+conditions, and skipping it is not a lane violation. The CLI lives on the agent runner, not in
+any repository. Its mechanics are still being codified (VUL-28). ADR-0005 §2 and §6.1.
+
 ---
 
 ## 2. What a work item looks like, start to finish
