@@ -85,13 +85,17 @@ The single exception is §5 below, and it does not start with the test.
 - **Warren** reads the **CodeRabbit GitHub App's** review on the pull request, posts the
   verdict, and sorts findings into blocking versus advisory so the bot cannot gate a merge on
   style. Warren runs no tool to produce this: lane 6's route is the App's review on the pull
-  request. The authenticated CodeRabbit **CLI** is a different surface — the change author's
-  pre-flight, lane 5.5 — and an author-run CLI review is never reviewer #2's verdict
-  (ADR-0005 §6.1).
+  request. The authenticated CodeRabbit **CLI** is a different surface — the pre-pull-request
+  pre-flight, lane 5.5 — and **a CLI review is never reviewer #2's verdict, whoever runs it,
+  including Warren**: it emits no coverage anchors, so §6.3's head-coverage check on the verdict
+  cannot be performed at all (ADR-0005 §6.1).
 
-Both verdicts go **on the Paperclip issue**, not as GitHub review approvals — there is one
-GitHub identity in this organisation, so GitHub approvals cannot represent two reviewers
-(ADR-0005 §3.1).
+Each verdict goes **on that reviewer's own lane-6 issue** — one issue per reviewer, so the two
+are separately attributable — and not as a GitHub review approval, because there is one GitHub
+identity in this organisation and GitHub approvals cannot represent two reviewers
+(ADR-0005 §3.1). Your verdict states a disposition in these words — **`APPROVE`** or
+**`REQUEST CHANGES`** — and the commit sha it covers. A verdict missing either is not a verdict
+(ADR-0005 §6.3).
 
 > **The CodeRabbit App is installed** — `coderabbitai`, app id `347564`, on the organisation
 > since `2026-10-01T19:12:07Z`. Lane 6 has both reviewers again, and the single-reviewer
@@ -105,15 +109,22 @@ GitHub identity in this organisation, so GitHub approvals cannot represent two r
 
 ### Lane 7 — Crucible merges
 
-Crucible merges only with all four of:
+**The merge condition has exactly one statement and it is ADR-0005 §6.3.** This section does not
+restate it, summarise it, or add to it — it tells you where to read it and what the four
+conditions are called, because a second phrasing is how `docs#24` came to merge over a
+`REQUEST CHANGES` with no reviewer #2 verdict at all (ADR-0005 §6.4). Read §6.3 before every
+merge.
 
-1. the lane gate green (all four checks);
-2. a ledger with **no FAIL and no MISSING** for the identifiers in scope;
-3. Assay's verdict;
-4. Warren's verdict.
+The four conditions, by name only: **(1)** lane gate green *on the commit being merged*;
+**(2)** ledger with no FAIL and no MISSING *against that same commit*; **(3)** two verdicts,
+one from Assay and one from Warren, each `APPROVE`, each with zero unresolved blocking findings,
+each stating a covered sha equal to `head.sha` at merge, each on its own reviewer's issue;
+**(4)** the merge commit message carries §6.3's attestation block naming the head and both
+verdicts.
 
 Missing any one of those, Crucible refuses and says which one. Nothing merges by any other
-route — including by whoever has admin.
+route — including by whoever has admin. An unattested merge on `main` is a recorded gate defect
+under ADR-0005 §10 R5b, not a judgement call that turned out differently.
 
 ---
 
@@ -142,7 +153,7 @@ The lane transitions that exist:
 | 3 → 4 | code written, needs a run | Forge / Anvil / Kiln | Crucible |
 | 4 → 6 | suite green; review | Crucible | Assay **and** Warren |
 | 4 → 3 | suite red; code defect | Crucible | Forge / Anvil / Kiln |
-| 6 → 7 | both verdicts in | Assay / Warren | Crucible |
+| 6 → 7 | both verdicts `APPROVE` at the current head, zero blocking findings open (§6.3 cond. 3) | Assay / Warren | Crucible |
 | 6 → 3 | review found a defect | Assay / Warren | Forge / Anvil / Kiln |
 | 2 → 1 | the test may be asserting something unspecified | Scribe / Ledger | Atlas (see §5) |
 
@@ -265,10 +276,17 @@ push; there isn't one.
 - **Nobody can approve your pull request, and nothing requires them to.** There is one GitHub
   identity for all agents, and GitHub refuses an author's own approval, so required approvals
   are set to zero (ADR-0005 §8.2). This is not permission to skip review: **Assay's and
-  Warren's verdicts live on the Paperclip issue and Crucible checks for them there.** A green
-  GitHub merge button is not an approval.
+  Warren's verdicts live on their own lane-6 Paperclip issues and Crucible checks each of them
+  against ADR-0005 §6.3.** A green GitHub merge button is not an approval.
 
 Still gaps, and still not permission:
+
+- **Nothing in GitHub stops a merge that ignores the verdicts, and this has happened.** The
+  merge button is green whenever protection and required checks are satisfied; it knows nothing
+  about `REQUEST CHANGES`, about a missing reviewer #2, or about a verdict covering a commit
+  that is no longer the head. `docs#24` merged on 2026-10-01 over all three at once — ADR-0005
+  §6.4 records it under R5b. Until the attestation detector in §6.3 condition 4 exists, the only
+  thing between a verdict and `main` is whoever is at the keyboard reading §6.3. Read it.
 
 - **`docs`, `infra` and `vf-api` have no required checks** — they have no CI workflow on `main`
   yet. They are protected, so pull requests are still mandatory. If you add the first workflow
@@ -279,7 +297,8 @@ Still gaps, and still not permission:
   people. VUL-9 is what closes that.
 - **A bot thread can be mistaken for reviewer #2.** The CodeRabbit App is installed and posts on
   every pull request, but nothing in GitHub distinguishes its commentary from a review verdict.
-  Lane 6 is **two recorded Paperclip verdicts** and nothing else counts (ADR-0005 §6.2). The
+  Lane 6 is **two Paperclip verdicts that each meet ADR-0005 §6.3 condition 3** — not two
+  comments, and not two of anything merely being present (ADR-0005 §6.2 corollary 1). The
   `lane6-review-verdict` procedure is also attached to Assay rather than Warren today (VUL-36);
   that is a grant defect and does not move reviewer #2 to Assay.
 - **The four repositories are public.** Anything you commit is world-readable the moment it is
