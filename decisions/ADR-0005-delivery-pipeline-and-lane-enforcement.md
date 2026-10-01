@@ -238,8 +238,11 @@ decision is a platform control, not a sentence here. Carrying its substance into
 what the control is, what it covers, what it does not, and which issues may override it — is
 **VUL-91** (Atlas), deliberately a separate amendment: it is a change to what holds the line in
 §2.3, not a correction to this amendment's own text, and bundling it here would be a third
-amendment on one pull request. Until VUL-91 lands, read the bullets above as good practice that
-was the whole control at the time they were written.
+amendment on one pull request. **Until VUL-91 lands the bullets above are mandatory and nothing
+here softens them.** What VUL-91 adds is a platform control *behind* them; it does not convert a
+rule into advice, and a draft of this paragraph that called them "good practice" is withdrawn for
+exactly the reason §6.2 corollary 3 records three sections later — weakening a rule's grammatical
+mood is a weakening of the rule.
 
 ---
 
