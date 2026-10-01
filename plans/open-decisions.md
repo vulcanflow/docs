@@ -29,11 +29,15 @@ better than that, and the difference is the point of gathering them:
 | …of which an ADR already settled | 1 |
 | …genuinely new | **1** (the `infra` cluster hold) |
 | **Live register rows** | **17** |
-| …of which the **board** owns | 14 |
-| …of which an **agent** owns — engineering questions in disguise | 3 |
+| …of which the **board** owns | 15 |
+| …of which an **agent** owns outright — engineering questions in disguise | 2 |
 
-So the board is being asked for **14 decisions, one of which actually matters now**, and
-seven of the fourteen can be closed by accepting a recommended default in this document
+**D5** and **D15** are joint — the board answers the default, Atlas files the supporting
+ADR — and are counted with the board. Only **D16** (Atlas) and **D17** (CEO via T2) leave
+the board's queue entirely.
+
+So the board is being asked for **15 decisions, one of which actually matters now**, and
+seven of the fifteen can be closed by accepting a recommended default in this document
 without further research.
 
 Breakdown §7 contributed exactly one new decision. That is worth stating plainly: the seven
@@ -73,7 +77,7 @@ answer changes what the next two phases can prove. It gets its own section.
 |---|---|
 | **Item** | Do we stand up a Kubernetes environment for Phase 1, and if so which one? |
 | **Source** | Breakdown §7.7 (the only genuinely new item in that section). Risk register in ADR-0002 §7 (R1–R6). The §27 item 5 residue that ADR-0002 and ADR-0003 explicitly did **not** close. |
-| **Blocks** | Nothing in Phase 0 or Phase 1 *delivery*. It blocks **verification**: six named risks and ten §25 identifiers (table in §1.3) cannot be closed at full strength without it, and `infra#1` stays unmerged. |
+| **Blocks** | Nothing in Phase 0 or Phase 1 *delivery*. It blocks **verification**: six named risks and twelve §25 identifiers (table in §1.3) cannot be closed at full strength without it, and `infra#1` stays unmerged. |
 | **Needed by** | Phase 2 forces a partial answer (secureCodeBox operator must run somewhere). Phase 4 forces a complete one (`recovery/restore`, `deletion/all-stores-restore`, `release/analysis`, `abuse/egress-stop` have no non-cluster form at all). |
 | **Owner** | Board. |
 
@@ -113,7 +117,7 @@ rather than argued about.
 |---|---|
 | Recurring | **~$0 incremental.** Capacity already paid for; this is a namespace and quota allocation. |
 | One-time | ~2–4 agent-days to confirm Kubernetes minor, registry hostname, GitOps destinations, S3 endpoint and secret-store wiring, then unmark the `UNCONFIRMED` pins. |
-| Settles | R1–R6 and all ten identifiers in §1.3, at full strength. |
+| Settles | R1–R6 and all twelve identifiers in §1.3, at full strength. |
 | Risk | The Kubernetes minor may not be in secureCodeBox v5.9.0's compatibility window (that *is* R6). Finding out is the cheapest thing on this list. |
 
 **Option B — Aether exists but has no spare capacity for a dev environment.**
@@ -151,7 +155,7 @@ Phase 4 decision, not this one.
 |---|---|
 | Recurring | $0. |
 | Settles | Nothing. This is the status quo, and it is a legitimate choice through Phase 1. |
-| Cost | The ten identifiers in §1.3 close at reduced strength or not at all, and the §1.3 list is what we would be shipping without. |
+| Cost | The twelve identifiers in §1.3 close at reduced strength or not at all, and the §1.3 list is what we would be shipping without. |
 
 ### 1.3 What stays unverifiable without a cluster
 
@@ -169,7 +173,8 @@ its name claims.
 | **R5** arm64 build reproducibility end to end on Aether nodes | Proves reproducibility on the CI runner. Cannot prove it on the real build and runtime platform. | `build/rust-supply-chain`, `perf/service-baseline` | Crucible |
 | **R6** secureCodeBox v5.9.0 operator against the cluster's actual Kubernetes minor, `garage.enabled: false`, external object store; Harbor mirroring of pinned digests | Proves the hook contract shape. Cannot prove operator / API-server interaction or digest mirroring. **This is the unclosed half of §27 item 5.** | `scb/hook-invocation-contract`, `execution/scan-identity`, `supply-chain/check-catalog` | Kiln |
 
-**Ten identifiers, and four more with no non-cluster form at all** — `deletion/all-stores-restore`
+**Twelve distinct identifiers — thirteen references, because `admission/workload-gate-dryrun`
+is weak under both R1 and R2 — and four more with no non-cluster form at all, sixteen in total** — `deletion/all-stores-restore`
 (needs ClickHouse, object storage *and a real backup restore*), `recovery/restore`,
 `release/analysis`, `abuse/egress-stop`. Those four are Phase 4 and are not an argument for
 deciding now.
@@ -474,7 +479,7 @@ Every source row, accounted for exactly once. This table is the acceptance crite
 
 ### Register total
 
-17 live rows (D1–D17): 14 board-owned, 3 routed to agents. 7 struck items across both
+17 live rows (D1–D17): 15 board-owned (D5 and D15 jointly with Atlas), 2 routed to agents outright. 7 struck items across both
 sources. 16 + 1 new = 17 live. ✓
 
 ---
