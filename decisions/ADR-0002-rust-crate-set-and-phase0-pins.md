@@ -10,6 +10,7 @@
 | **Does not close** | §27 items 16a, 18 (see [ADR-0001](./ADR-0001-retire-go-scaffold-vf-api.md)), 19, 20, 21 (see [ADR-0003](./ADR-0003-rpc-scb-parser-and-billing-clients.md)) |
 | **Supersedes** | the `[PROPOSED]` crate table in TDD §2.5.2 |
 | **Design of record** | `VulcanFlow_Technical_Design_Document_v2.2.md` (filename says v2.2; the content is **TDD v2.3**) — §2.5, §21.3, §24.2, §24.4, §25 |
+| **Amendments** | **A1** (2026-10-01) — adds §3.6: crypto, TLS and encoding pins. See §10. |
 | **Issue** | VUL-3 |
 
 ## Question
@@ -157,6 +158,78 @@ mine.
 - **`object_store` / `rust-s3`** — see §4.4 for why `aws-sdk-s3` won.
 - **`openssl` / `native-tls`** — rustls everywhere; `default-features = false` on anything
   that would otherwise pull OpenSSL in.
+
+---
+
+### 3.6 Crypto, TLS, and encoding — added by amendment A1
+
+These were missing from §3.1–§3.2, and the gap was load-bearing: ADR-0003 §4.4 decided that
+Stripe and Lago webhook signatures are verified in-house with RustCrypto, and described those
+crates as *"already pinned in §2.5.2"*. That is wrong in one word. §2.5.2 **names** rustls,
+`hmac`, `sha2` and `rand`; it pins nothing — the whole table is `[PROPOSED]`, which is the
+thing this document exists to replace. Pins belong here, so here they are.
+
+| Crate | Pin | Role | Notes |
+|---|---|---|---|
+| `hmac` | 0.13.0 | HMAC-SHA256 for webhook signature verification (ADR-0003 §4.4) and the `vf-hook-notify` completion-hook signing in §9 | Verify with `Mac::verify_slice`, **never** by comparing the decoded hex/base64 to a recomputed string — comparison must be constant-time, and `verify_slice` is the constant-time path. A `==` on signature bytes is a required change at review. |
+| `sha2` | 0.11.0 | SHA-256 | |
+| `rand` | 0.10.3 | OS CSPRNG — domain-verification challenge tokens (§5.3), idempotency nonces | `OsRng` only. No seeded or user-space PRNG on any security path; a predictable verification challenge defeats the authorization boundary the product rests on. |
+| `base64` | 0.23.1 | Lago signature decoding, presigned-URL handling | Lago emits **standard base64 with padding** — `engine::general_purpose::STANDARD`, not `URL_SAFE`, not `*_NO_PAD`. ADR-0003 §4.4 read this from upstream source. |
+| `hex` | 0.4.3 | Stripe `v1=` signature decoding, artifact checksum rendering | |
+| `rustls` | 0.23.45 | TLS | Pinned **directly** in the workspace, even though every consumer pulls it transitively, so that one version and **one** crypto provider resolve. See the provider note below. |
+
+#### Resolution cross-check (performed, not assumed)
+
+Declared ranges read from the crates.io API on 2026-10-01:
+
+- `hmac 0.13.0` → `digest ^0.11.2`; `sha2 0.11.0` → `digest ^0.11` ✓ one `digest` generation,
+  so the two resolve as a unit. The previous generation (`hmac 0.12` / `sha2 0.10` /
+  `digest 0.10`) would not.
+- **`aws-sdk-s3 1.151.0` itself declares `hmac ^0.13` and `sha2 ^0.11`.** This is the strongest
+  evidence in the amendment: the crate already pinned in §3.2 brings exactly this generation
+  into the tree, so pinning 0.12/0.10 here would compile two RustCrypto stacks side by side
+  and give us two SHA-256 implementations in one binary.
+- `reqwest 0.13.5` → `base64 ^0.23` ✓ matches the `base64 0.23.1` pin; → `rustls ^0.23.4` ✓
+  matches the `rustls 0.23.45` pin.
+
+#### The rustls crypto provider must be chosen once, and installed explicitly
+
+`rustls 0.23.45` declares **both** providers optional: `aws-lc-rs ^1.18` and `ring ^0.17`.
+Feature unification across dependents is what picks them, and if any two dependents enable
+different providers both get compiled; rustls then cannot determine a process-level default
+and panics on the first TLS handshake rather than at build time. We reach rustls through at
+least `reqwest`, `sqlx`, `kube` and `aws-sdk-s3`, so this is not a hypothetical.
+
+**Decision:** one provider workspace-wide — **`aws-lc-rs`**, rustls 0.23's own default, because
+it is the path upstream tests and because `ring` would have to be opted into deliberately by
+every dependent. And each binary calls
+`rustls::crypto::aws_lc_rs::default_provider().install_default()` once in `main`, before any
+client is constructed. Installing explicitly means the behaviour is ours rather than a
+property of feature resolution, and a provider collision surfaces as a startup error on the
+line that caused it.
+
+**The limit, stated:** this is read from `rustls 0.23.45`'s declared features, not from a built
+dependency tree. What it does not tell me is whether our actual tree pulls `ring` in anyway
+through something I have not enumerated.
+
+**Executable confirmation:** once the workspace exists, `cargo tree -i ring` must come back
+empty and `cargo tree -d` must show no duplicated `rustls`, `hmac`, `sha2` or `digest`.
+Wire it into the workspace CI gate as part of `build/rust-supply-chain`. Owner **Crucible** to
+run it; **Forge** to make it pass. Tracked on **VUL-6**, not deferred to a phase.
+
+#### What this amendment deliberately does not pin
+
+A1's scope is the crypto and encoding gap ADR-0003 opened. §2.5.2 names other crates —
+`pgvector`, `clickhouse`, `redis`/`fred`, `idna`/`url`, a Public Suffix List crate, a cron
+crate, `jsonschema`, `ammonia`, `chromiumoxide`, `wasm-bindgen` — that stay unpinned and stay
+off the approved set until the phase that needs them starts. Each gets pinned by amendment, at
+the same evidence bar as §3.
+
+One of those is closer than the rest and should not be allowed to drift: **`jsonwebtoken` and
+`openidconnect`** (§4.1 OIDC / JWKS). The walking skeleton in §24.1 terminates an
+authenticated request, so these are Phase 1, not later. Owner **Atlas**; trigger is the first
+`vf-api` PR that validates a bearer token, and that PR should not be the place the versions get
+decided.
 
 ---
 
@@ -499,6 +572,8 @@ every one of them is a test that should exist and fail before the code that make
   configured around — that reopens the client choice in §4.4.
 - A secureCodeBox release that changes a CRD group or version — §6.3 regeneration plus a
   compatibility review.
+- A dependency pulling in a second rustls crypto provider, which `cargo tree -i ring` and
+  `cargo tree -d` are the detectors for — §3.6.
 - Stable Rust raising its MSRV past what a pinned crate supports.
 
 ---
@@ -511,3 +586,32 @@ GitHub contents API at tag `v5.9.0`; the Docker Hub registry manifest API; and
 `static.rust-lang.org/dist/channel-rust-stable.toml`. Where a claim rests on source
 inspection rather than execution, §4 says so at the point of the claim and names the test
 that will execute it.
+
+---
+
+## 10. Amendment history
+
+Amendments are recorded here rather than silently edited in, so that a reader who reviewed an
+earlier revision can see exactly what moved.
+
+### A1 — 2026-10-01 — crypto, TLS and encoding pins (§3.6)
+
+**Raised by CEO** in review of this document on VUL-3: ADR-0003 §4.4 asserts that `hmac` and
+`sha2` are "already pinned in §2.5.2", and §3 of this document did not list them.
+
+The assertion was wrong in both directions worth recording. §2.5.2 names those crates but pins
+nothing — it is the `[PROPOSED]` table this document supersedes, so "pinned in §2.5.2" could not
+have been true of anything. And §3 was genuinely incomplete: a decision to write signature
+verification in-house (ADR-0003 §4.4) is a decision to take a direct dependency, and a direct
+dependency without a pin is the exact debt §27 item 17 exists to clear.
+
+A1 adds §3.6 with pins for `hmac`, `sha2`, `rand`, `base64`, `hex` and `rustls`, a resolution
+cross-check against the already-pinned `aws-sdk-s3` and `reqwest`, and a decision on the rustls
+crypto provider that the pin exposed. ADR-0003 §4.4's cross-reference is corrected in the same
+change.
+
+**It changes no acceptance criterion of VUL-3 and reverses nothing.** §27 item 17 stays closed;
+§3.6 is an addition to the set it approved, not a revision of it. CEO's alternative — pinning
+these in the workspace when VUL-6 lands and leaving the record alone — would have worked, and I
+chose the amendment because a pin that exists only in a `Cargo.toml` has no recorded reason, and
+the provider question would then have been settled by whoever hit the panic.
