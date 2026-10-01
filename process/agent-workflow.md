@@ -21,7 +21,15 @@ both.** CI refuses the combination. Find your lane below and stay inside it.
 | **Kiln** | 3 / 5 — Code (Kubernetes) | `crates/*/src/**`, `infra` manifests | as Forge |
 | **Crucible** | 4 / 7 — Run and merge | the ledger, release artefacts | production source, tests |
 | **Assay** | 6 — Review by hand | review comments, verdicts | production source, tests |
-| **Warren** | 6 — Automated review | `coderabbit:review` output, verdicts | production source, tests |
+| **Warren** | 6 — Automated review | the CodeRabbit App's review, triaged into verdicts | production source, tests |
+
+**"Lane 5.5" appears under lane 6 below and is deliberately not a row here.** It is the author's
+pre-pull-request CodeRabbit **CLI** pre-flight, owned by whoever opens the pull request whatever
+lane they hold. It **gates nothing**: it produces no verdict, it is not one of §6.3's four merge
+conditions, and skipping it is not a lane violation. Because it gates nothing, running it on your
+own change is not an adjacent-lane violation whatever lane you hold — ADR-0005 §2 scopes that rule
+to the seven numbered lanes. The CLI lives on the agent runner, not in any repository. Its
+mechanics are still being codified (VUL-28). ADR-0005 §2 and §6.1.
 
 ---
 
@@ -63,8 +71,20 @@ You are given the §25 identifier and a failing test. Implement until it passes.
 
 ### Lane 4 — Crucible runs the suites and publishes the ledger
 
-Crucible is the only agent that executes anything. It publishes the ledger (§4) keyed by §25
-identifier.
+Crucible is the only agent that executes **suites** — ADR-0005 §2's lane-4 rule, in §2's own
+words, and the scope is the point. This line read "executes anything" until 2026-10-01, which was
+harmless shorthand only while nothing asked a non-Crucible agent to run anything. §1 above now
+*permits* an author to run the lane 5.5 pre-flight on its own change — note what §1 does and does
+not do: it grants a permission and says explicitly that skipping the pre-flight is not a lane
+violation, so it issues no instruction and nobody was choosing which half of this document to obey.
+The tension was between that permission plus the board rule of 2026-10-01 19:49Z, which lives
+outside this document, and "anything" read as a prohibition on it. An earlier version of this
+paragraph located the tension inside §1 and cited a bare line number, which manufactured an
+obligation to run the pre-flight that §1 denies and pointed at a line that moves with its own edit
+(ADR-0005 §6.4 on citing sections rather than lines). The pre-flight is not a suite, it gates
+nothing, and it is not lane 4's.
+
+Crucible publishes the ledger (§4) keyed by §25 identifier.
 
 ### Lane 5 — red goes back to lane 3
 
@@ -82,27 +102,49 @@ The single exception is §5 below, and it does not start with the test.
 - **Assay** reviews by hand against TDD v2.3 and the ADRs: correctness, crate boundaries,
   `unsafe` rules, supply-chain diffs. Assay also checks the lane **first**, before reading the
   diff, and rejects a crossing on sight.
-- **Warren** runs `coderabbit:review`, posts the verdict, and sorts findings into blocking
-  versus advisory so the bot cannot gate a merge on style.
+- **Warren** reads the **CodeRabbit GitHub App's** review on the pull request, posts the
+  verdict, and sorts findings into blocking versus advisory so the bot cannot gate a merge on
+  style. Warren runs no tool to produce this: lane 6's route is the App's review on the pull
+  request. The authenticated CodeRabbit **CLI** is a different surface — the pre-pull-request
+  pre-flight, lane 5.5 — and **a CLI review is never reviewer #2's verdict, whoever runs it,
+  including Warren**: it emits no coverage anchors, so §6.3's head-coverage check on the verdict
+  cannot be performed at all (ADR-0005 §6.1).
 
-Both verdicts go **on the Paperclip issue**, not as GitHub review approvals — there is one
-GitHub identity in this organisation, so GitHub approvals cannot represent two reviewers
-(ADR-0005 §3.1).
+Each verdict goes **on that reviewer's own lane-6 issue** — one issue per reviewer — and not as a
+GitHub review approval, because there is one GitHub identity in this organisation and GitHub
+approvals cannot represent two reviewers (ADR-0005 §3.1).
 
-> **Warren is blocked until T7.** `coderabbit:review` is not installed yet. Until it is, lane 6
-> has one reviewer and merges **wait**. One verdict is not relabelled as two.
+**What a verdict must contain to count is ADR-0005 §6.3 condition 3, and this section does not
+restate it** — the same rule lane 7 below is written under, for the same reason. Read it before
+you post, every time. It is four clauses, and one of them is why a verdict you have already
+posted can stop counting without anyone editing it.
+
+> **The CodeRabbit App is installed** — `coderabbitai`, app id `347564`, on the organisation
+> since `2026-10-01T19:12:07Z`. Lane 6 has both reviewers again, and the single-reviewer
+> degradation notice that stood here until 2026-10-01 is **withdrawn**. ADR-0005 §6.1.
+>
+> **But the bot is not the reviewer.** `coderabbitai[bot]` commenting on a pull request is
+> *input* to Warren's verdict, not the verdict. A pull request with a detailed bot thread and no
+> Warren verdict recorded in Paperclip is **unreviewed**, and Crucible does not merge it.
+> CodeRabbit submits with state `COMMENTED`, which is not an approval, and its review must cover
+> the current head to count at all. ADR-0005 §6.2.
 
 ### Lane 7 — Crucible merges
 
-Crucible merges only with all four of:
+**The merge condition has exactly one statement and it is ADR-0005 §6.3.** This section does not
+restate it, summarise it, or add to it — it tells you where to read it and what the four
+conditions are called, because a second phrasing is how `docs#24` came to merge over a
+`REQUEST CHANGES` with no reviewer #2 verdict at all (ADR-0005 §6.4). Read §6.3 before every
+merge.
 
-1. the lane gate green (all four checks);
-2. a ledger with **no FAIL and no MISSING** for the identifiers in scope;
-3. Assay's verdict;
-4. Warren's verdict.
+The four conditions are called, in order: **(1)** the **lane gate**, **(2)** the **ledger**,
+**(3)** the **two reviewer verdicts**, **(4)** the **merge attestation**. What each one requires
+is ADR-0005 §6.3 and is not reproduced here — the paragraph above forbids a second phrasing, and
+a list of names that looked close enough to a summary is how the second phrasing gets back in.
 
 Missing any one of those, Crucible refuses and says which one. Nothing merges by any other
-route — including by whoever has admin.
+route — including by whoever has admin. An unattested merge on `main` is a recorded gate defect
+under ADR-0005 §10 R5b, not a judgement call that turned out differently.
 
 ---
 
@@ -131,7 +173,7 @@ The lane transitions that exist:
 | 3 → 4 | code written, needs a run | Forge / Anvil / Kiln | Crucible |
 | 4 → 6 | suite green; review | Crucible | Assay **and** Warren |
 | 4 → 3 | suite red; code defect | Crucible | Forge / Anvil / Kiln |
-| 6 → 7 | both verdicts in | Assay / Warren | Crucible |
+| 6 → 7 | both verdicts satisfy ADR-0005 §6.3 condition 3 | Assay / Warren | Crucible |
 | 6 → 3 | review found a defect | Assay / Warren | Forge / Anvil / Kiln |
 | 2 → 1 | the test may be asserting something unspecified | Scribe / Ledger | Atlas (see §5) |
 
@@ -254,10 +296,17 @@ push; there isn't one.
 - **Nobody can approve your pull request, and nothing requires them to.** There is one GitHub
   identity for all agents, and GitHub refuses an author's own approval, so required approvals
   are set to zero (ADR-0005 §8.2). This is not permission to skip review: **Assay's and
-  Warren's verdicts live on the Paperclip issue and Crucible checks for them there.** A green
-  GitHub merge button is not an approval.
+  Warren's verdicts live on their own lane-6 Paperclip issues and Crucible checks each of them
+  against ADR-0005 §6.3.** A green GitHub merge button is not an approval.
 
 Still gaps, and still not permission:
+
+- **Nothing in GitHub stops a merge that ignores the verdicts, and this has happened.** The
+  merge button is green whenever protection and required checks are satisfied; it knows nothing
+  about `REQUEST CHANGES`, about a missing reviewer #2, or about a verdict covering a commit
+  that is no longer the head. `docs#24` merged on 2026-10-01 over all three at once — ADR-0005
+  §6.4 records it under R5b. Until the attestation detector in §6.3 condition 4 exists, the only
+  thing between a verdict and `main` is whoever is at the keyboard reading §6.3. Read it.
 
 - **`docs`, `infra` and `vf-api` have no required checks** — they have no CI workflow on `main`
   yet. They are protected, so pull requests are still mandatory. If you add the first workflow
@@ -266,7 +315,12 @@ Still gaps, and still not permission:
   empty. The gate goes in the moment a repository receives source.
 - **A lane crossing split across two pull requests passes both.** The gate partitions paths, not
   people. VUL-9 is what closes that.
-- **Warren is blocked until T7.** See lane 6.
+- **A bot thread can be mistaken for reviewer #2.** The CodeRabbit App is installed and posts on
+  every pull request, but nothing in GitHub distinguishes its commentary from a review verdict.
+  Lane 6 is **two Paperclip verdicts that each meet ADR-0005 §6.3 condition 3** — not two
+  comments, and not two of anything merely being present (ADR-0005 §6.2 corollary 1). The
+  `lane6-review-verdict` procedure is also attached to Assay rather than Warren today (VUL-36);
+  that is a grant defect and does not move reviewer #2 to Assay.
 - **The four repositories are public.** Anything you commit is world-readable the moment it is
   pushed, including on a branch you later delete. Secret scanning and push protection are on,
   but they only catch *recognised* credential shapes — they will not catch a customer name, an
