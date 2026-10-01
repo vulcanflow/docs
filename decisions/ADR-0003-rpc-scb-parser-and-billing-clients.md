@@ -352,8 +352,12 @@ double-count.
 
 ### 4.4 Webhook signature verification — implemented in-house, to these observed schemes
 
-**Decision: verify signatures in VulcanFlow with RustCrypto (`hmac`, `sha2`, already pinned
-in §2.5.2), not through a vendor SDK.** Both schemes are small, both were read from the
+**Decision: verify signatures in VulcanFlow with RustCrypto (`hmac`, `sha2`), not through a
+vendor SDK.** Both are pinned in [ADR-0002 §3.6](./ADR-0002-rust-crate-set-and-phase0-pins.md)
+— an earlier revision of this paragraph said "already pinned in §2.5.2", which was wrong: §2.5.2
+names them but pins nothing, and ADR-0002 §3 did not list them until amendment A1 added §3.6.
+The constant-time comparison requirement and the base64/hex encoding details below are pinned
+there too. Both schemes are small, both were read from the
 providers' own source, and a signature verifier is exactly the kind of code that should be
 ours, property-tested, and not reached through a dependency whose stable line we already
 rejected.
