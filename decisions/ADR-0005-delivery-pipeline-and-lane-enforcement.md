@@ -324,7 +324,15 @@ Four corollaries, each closing a specific way this gets broken:
    attached to Assay and to nobody else. That is a tooling defect, tracked on VUL-36 — not a
    transfer of reviewer #2 to Assay. Lane 6's second verdict is Warren's by this record
    regardless of whose catalog the instructions sit in, and an Assay-authored CodeRabbit triage
-   is one reviewer doing both jobs, which §2 forbids.
+   is one reviewer doing both jobs, which §2 forbids. The resolution is to attach the skill to
+   Warren and then detach it from Assay, in that order, so the procedure is never nowhere while
+   the lane is live — VUL-36 owns the grant. **Until it lands, §6.1 and §6.2 are the authority
+   Warren works from, and they are sufficient**: read the three App surfaces, check
+   `coveredCommitId` against `head.sha`, treat Critical and Major as blocking and Minor, Trivial
+   and Info as advisory while **blocking on any severity label not in that set**, dismiss a
+   blocking finding only against a quoted TDD §n or ADR, and post the verdict with its counts
+   stated even when they are zero. A missing skill attachment is a reason to work from this
+   section, not a reason to decline the lane.
 4. **An honest "unsatisfied" is a valid outcome.** If the review did not run, ran against a stale
    head, or cannot be read, Warren says so and the merge waits. Zero findings from a review that
    did not finish is not evidence that the code is clean.
