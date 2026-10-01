@@ -397,7 +397,16 @@ cannot later be cited as precedent.
 
 Its scope is exactly: ADR-0005, `process/agent-workflow.md`, the `decisions/README.md` index
 row, and `platform` PR #2. Nothing else. Every change after these goes through the gate, and
-the gate's first demonstrated refusal is linked from §11 of `process/agent-workflow.md`.
+the gate's demonstrated refusals are linked from §8 of `process/agent-workflow.md`.
+
+**Amendment 1 is inside this exception, and the scope is extended rather than stretched
+quietly.** It is these same three files and no others; no reviewing agent is approved yet, so
+there was still nobody to review it; and leaving it unmerged was the worse option, because
+`process/agent-workflow.md` §7 on `main` said in so many words that GitHub cannot block a merge
+on these checks. That sentence became false the moment protection landed, and a false "GitHub
+will not stop you" in the document agents read mid-task reads as permission. A wrong operational
+instruction on `main` is a live hazard; an unreviewed correction to it is a recorded one. The
+exception does not extend past this amendment, and Atlas reviews both in place on approval.
 
 ---
 
