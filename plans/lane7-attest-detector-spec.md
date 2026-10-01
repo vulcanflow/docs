@@ -3,11 +3,19 @@
 **Issue:** VUL-48 (lane 1, Atlas). **Lane 2:** VUL-56, Scribe. **Lane 3:** VUL-50, Forge.
 **Status:** authoritative on merge. Until then it is a proposal and the two implementers work
 from it at the risk named in §9.
+**Revision 4** — Assay's lane-6 review of revision 2, adjudicated. One blocking finding survives
+revision 3 and is accepted: **`Lane-7-Ledger` had no value check**, so a block typing the one
+word §6.3 condition 2 forbids was published as clean. The repair is a **27th code**,
+`L7-LEDGER-VALUE` (**§4**), and **fixture 47** (§9.4). Assay's second blocking finding was
+already closed by revision 3 — see §9.3 — so its proposed numbering is superseded and the new row
+is **47, not 45**. Three advisories accepted (**§4.3** rule B's converse, **§8.2** reworded,
+VUL-56's description corrected) and one declined on the record with a revisit trigger
+(**§9.5**). The table is **47 rows**.
+
 **Revision 3** — Forge's two lane-1 items and one phrasing tension, raised on VUL-56 and
 adjudicated here: rule A reaches a verdict line's own fields (**§4.3**, transcription — no
 fixture moves), an absent credential is a finding and never exit 2 (**§6.2**), and
-`LANE7_GITHUB_TOKEN` gains the rows it never had (**fixtures 45 and 46**, §9.3). The table is
-**46 rows**.
+`LANE7_GITHUB_TOKEN` gains the rows it never had (**fixtures 45 and 46**, §9.3).
 
 ADR-0005 §6.5 fixes two things about the detector at record level — **where the assertion
 starts** and **what it asserts** — and delegates the rest by name: *"Everything else — the
@@ -137,7 +145,7 @@ of fixture 28's positive assertion.
 
 ## 4. The finding-code register — answers items 4 and 8
 
-Twenty-six codes. **The code is the contract**; the prose after ` -- ` is not. The §6.5 column
+Twenty-seven codes. **The code is the contract**; the prose after ` -- ` is not. The §6.5 column
 names the finding class this code implements.
 
 | Code | §6.5 | Fires when |
@@ -156,6 +164,7 @@ names the finding class this code implements.
 | `L7-GATE-UNCHECKED` | 8 | The check-run lookup could not run, so an attested `PASS` was not confirmed. |
 | `L7-LEDGER-BARE` | 5 | `Lane-7-Ledger: n/a` with no parenthesised reason. |
 | `L7-LEDGER-VACUOUS` | 5 | `Lane-7-Ledger: n/a` on a commit touching `crates/**`. **The one advisory code** (§5). |
+| `L7-LEDGER-VALUE` | 5 | `Lane-7-Ledger` is neither `PASS` nor an `n/a` form — e.g. `FAIL`, or `MISSING`. Added by revision 4; see §4.4. |
 | `L7-VERDICT-COUNT` | 6 | The number of `Lane-7-Verdict-*` lines in a present block is not exactly two — including **zero**. |
 | `L7-VERDICT-DUP` | 6 | Two verdict lines name the same reviewer. |
 | `L7-VERDICT-WHO` | 6 | A verdict line names an agent outside {Assay, Warren}. |
@@ -220,7 +229,7 @@ expected set has to be inferred:
 |---|---|---|
 | `Lane-7-Head` | `L7-KEY` | **everything that reads `Lane-7-Head`** — `L7-HEAD`, `L7-HEAD-UNRESOLVABLE`, `L7-VERDICT-COVERS`, all four `L7-VERDICT-*` lookup codes, and class 8's `L7-GATE-UNCONFIRMED` / `L7-GATE-UNCHECKED` |
 | `Lane-7-Gate` | `L7-KEY` | the four class-4 codes and both class-8 codes |
-| `Lane-7-Ledger` | `L7-KEY` | both class-5 codes |
+| `Lane-7-Ledger` | `L7-KEY` | all **three** class-5 codes (`L7-LEDGER-BARE`, `L7-LEDGER-VACUOUS`, `L7-LEDGER-VALUE` — three since revision 4, §4.4) |
 | `Lane-7-Merged-By` | `L7-KEY` | nothing — no other check reads it |
 
 So **fixture 30 is `L7-KEY` alone** and **fixture 31 is `L7-KEY` alone**, and Forge's naive
@@ -272,6 +281,30 @@ the commit reached `main`, which no key in the block can make true or false. The
 suppresses it is `L7-PR-UNCHECKED` — the lookup that would have decided it did not run (§4,
 fixture 40).
 
+**Rule B's converse — class 3 firing leaves class 2 with no referent — revision 4, and it was
+already forced.** Assay's advisory A1 is correct that fixtures 9, 42 and 43 had their class-2
+expectation *inferred* rather than stated, which is the one thing §4.3 promises not to leave to
+the reader. Stating it:
+
+`L7-HEAD` compares `Lane-7-Head` against **the commit actually merged** — the second parent on a
+merge, `pull-head/<n>` on a squash. On a commit that reached `main` by neither, which is the
+case `L7-NOT-PR` names, **that referent does not exist**, so by rule A's lead sentence the class-2
+comparison does not run: `L7-HEAD` is silent whatever the block says, and
+`L7-HEAD-UNRESOLVABLE` is unreachable by its own wording in §4, which requires that the pull
+request *was* identified. So **fixtures 9 and 42 are `L7-NOT-PR` alone** and **43 is `L7-MISSING`
+and `L7-NOT-PR`**, exactly as §9 states them.
+
+This also settles the fixture *data* on those rows, which is the half that would otherwise be
+guessed: §9.0's baseline defines `Lane-7-Head` as the second parent, and a one-parent commit has
+none. On a row with no referent, **`Lane-7-Head` may carry any well-formed sha and is not
+load-bearing** — the `verdicts/` and `check-runs/` files are keyed on whatever it names, per
+§9.0's last clause, so they still agree and still report nothing.
+
+Note the asymmetry against rule C, because it is the distinction an implementation gets wrong:
+rule C is about a `Lane-7-Head` that is **present and wrong** against a referent that **exists**,
+so the comparison runs and fails. This converse is about a referent that does **not exist**, so
+there is no comparison to run. Fixture 6 and fixture 9 are the pair.
+
 **Rule C — a wrong `Lane-7-Head` is present, so it is used.** Rule A turns on *absence*, not on
 *incorrectness*. Fixtures 6, 7, 22 and 26 carry a `Lane-7-Head` that is well-formed and wrong, so
 every check that reads it **does run, against the sha the block names.** This answers Scribe's
@@ -286,9 +319,46 @@ not from git, so the harness writes `check-runs/ff1e2be…` and the lookup succe
 no object store holds. That is the §9 baseline doing its job, and it is why the baseline is
 phrased as *the lookups the detector performs* rather than *the lookups on the real head*.
 
-**What this does not add.** No finding class, and no code. Rules A–C are an application order
-over §6.5's eight classes; §6.5's own subsumption rule is untouched and still wins where they
-meet.
+**What this does not add.** No finding class, and no code. Rules A–C and rule B's converse are
+an application order over §6.5's eight classes; §6.5's own subsumption rule is untouched and
+still wins where they meet.
+
+### 4.4 `L7-LEDGER-VALUE` — the asymmetry that published a `FAIL` as clean
+
+**Assay's blocking finding B1 is accepted in full, and the defect is mine.** Class 4 yields three
+codes — `L7-GATE-BARE`, `L7-GATE-VACUOUS` and `L7-GATE-VALUE`, the last for a value that is
+*"neither `PASS` nor an `n/a` form — e.g. `FAIL`"*. ADR-0005 §6.5 says class 5 follows **the same
+rule**. Until revision 4 it yielded **two**: `L7-LEDGER-BARE` and `L7-LEDGER-VACUOUS`. There was
+no `L7-LEDGER-VALUE`.
+
+Trace the baseline with `Lane-7-Ledger: FAIL` through the register as it stood:
+
+- `L7-KEY` does not fire — the key is present.
+- `L7-LEDGER-BARE` does not fire — `FAIL` is not `n/a`.
+- `L7-LEDGER-VACUOUS` does not fire — the commit touches no `crates/**`, and it is advisory in
+  any case, so even firing it would leave exit `0`.
+- Nothing else reads the key (§4.3 rule A, `Lane-7-Merged-By` row's reasoning applied one key
+  over).
+
+The commit prints `OK` and the run exits `0`. **§6.3 condition 2 is literally "the ledger has no
+`FAIL` and no `MISSING`"** — so a merge that types the one word the condition forbids, into the
+field that names it, was published as clean by the instrument built to publish exactly that. §3
+makes stdout the whole ledger and §4 makes the code the contract, so the omission is not
+recoverable by a reader: there is no line to read. That is §6.4's shape occurring inside §6.4's
+own repair, which is the second time this document has had to record that (§4.1 is the first).
+
+**The repair, and it is the minimum one.** A 27th code, `L7-LEDGER-VALUE`, worded as
+`L7-GATE-VALUE`'s parallel and non-advisory, so it exits `1` (§5's advisory set is unchanged and
+is still exactly `{L7-LEDGER-VACUOUS}`). Rule A's class-5 suppression count goes from two to
+three. **Fixture 47** asserts it, parallel to fixture 12 field for field.
+
+**One code and not two, deliberately.** §6.3 condition 2 names both `FAIL` and `MISSING`, and
+both are the same branch: the value is not `PASS` and not an `n/a` form. §9.4's fixture uses
+`FAIL` because it is the value that makes the published-as-clean trace concrete and because it
+makes 47 and 12 the same experiment twice; a detector that handles `FAIL` and mishandles
+`MISSING` is not a reachable implementation of the rule as written. Enumerating a second code
+would also break §4.1's own test — four codes exist there because four *repairs* differ, and
+`FAIL` and `MISSING` have one repair.
 
 ---
 
@@ -488,9 +558,27 @@ already holds the merged-code finding that `ci/lane-gate.sh`, `ci/lane-gate-test
 ### 8.2 Item 9 — a new workflow, two jobs, neither of them required yet
 
 Assay is right that nothing on items 1–8 created a runner, and right that it is the same question
-as item 7. **A new file, `.github/workflows/lane7-attest.yml` in `platform`** — NEUTRAL by §4.2
-("other workflows"), so it does not drag the harness into a GATE diff, which adding a job to
-`lane-gate.yml` would.
+as item 7. **A new file, `.github/workflows/lane7-attest.yml` in `platform`**, NEUTRAL by §4.2
+("other workflows").
+
+**That is not a separation claim, and revision 4 stops it reading as one.** Scribe raised it and
+Assay filed it as advisory A3; both are right and the previous sentence here was wrong. §4.2
+permits GATE and NEUTRAL in one diff, so `lane-partition` refuses **neither** arrangement — a job
+in `lane-gate.yml` would make the runner move inside a GATE diff, and a NEUTRAL file of its own
+lets the runner ride with anything at all, **including PROD**. Neither is a partition and the new
+file is the weaker of the two on that axis. The decision stands on two other reasons, which do
+not claim to be gates:
+
+- **Coupling, honestly named.** `lane-gate.yml` is GATE. A job added to it puts the attestation
+  runner's credential wiring inside the file that defines the gate, and puts every later edit to
+  the runner inside a GATE-class diff. That is real coupling even though no check refuses it.
+- **Blast radius.** `lane-gate.yml` carries all four required contexts. A malformed job added to
+  that file can break the required checks for every pull request in `platform`; a job in a
+  separate NEUTRAL workflow cannot. This is the reason that would survive even if §4.2 did
+  partition them.
+
+The separation both reviewers actually want is the `ci/X.sh` / `ci/X-test.sh` same-diff rule
+shape, which is **VUL-68** (§8.1, §11) — not something this file's name can supply.
 
 | Job | Trigger | Runs |
 |---|---|---|
@@ -511,12 +599,12 @@ GATE row must be amended in the same change. That amendment is not this document
 is entangled with VUL-68. So, plainly: between Forge's PR landing and that decision,
 `attest-self-test` **runs and reports on every pull request but does not block one**. That is
 weaker than `gate-self-test` and it is recorded as weaker. It is still the difference between the
-46 fixtures being asserted twice ever — once by Crucible confirming red, once by Forge reaching
+47 fixtures being asserted twice ever — once by Crucible confirming red, once by Forge reaching
 green — and being asserted on every pull request forever, which was Assay's actual point.
 
 ---
 
-## 9. The fixture table — 46 rows
+## 9. The fixture table — 47 rows
 
 **Rows 1–28 keep the numbers they had in VUL-56 as filed**, so Scribe's
 one-`check`-per-row-in-table-order commitment survives. Rows 29–40 were added by this document's
@@ -524,10 +612,12 @@ first revision; **rows 41–44 are added by its second**, and three of the four 
 document had silently dropped — see the correction note after the table, which is a defect in
 this spec rather than in either implementer's reading of it. **Rows 45 and 46 are added by its
 third**, and they close the one credential the table did not assert; §9.3 says why they are two
-rows and not one.
+rows and not one. **Row 47 is added by its fourth** — Assay's blocking finding B1, the
+`Lane-7-Ledger` value check that did not exist (§4.4, §9.4).
 
-**Rows 1–44 are unchanged by revision 3.** No expected set, no code and no exit code moves. The
-only additions are 45 and 46; everything else revision 3 does is transcription (§4.3, §6.2).
+**Rows 1–46 are unchanged by revision 4.** No expected set, no code and no exit code moves. The
+only addition is 47; everything else revision 4 does is transcription (§4.3's rule B converse)
+or prose repair (§8.2).
 
 ### 9.0 The field-default rule — answers Scribe's item 9 (N1, N2)
 
@@ -617,6 +707,7 @@ of the assertion; where it is silent, that rule supplies it rather than leaving 
 | 44 | `Lane-7-Gate: PASS`, `check-runs/<head>` **present and empty**, `tree-has-gate-workflow: yes` | `L7-GATE-UNCONFIRMED` |
 | 45 | Baseline block and **merge** shape, `LANE7_GITHUB_TOKEN` **unset**; `pulls/`, `pull-head/` and `check-runs/` all present and complete | **both** `L7-PR-UNCHECKED` and `L7-GATE-UNCHECKED`, **and no `L7-NOT-PR`, `L7-HEAD`, `L7-HEAD-UNRESOLVABLE` or `L7-VERDICT-*`**, exit 1 |
 | 46 | **Squash**, `LANE7_GITHUB_TOKEN` **unset**; `pulls/`, `pull-head/` and `check-runs/` all present and complete | **exactly one** `L7-PR-UNCHECKED` and one `L7-GATE-UNCHECKED`, **and no `L7-HEAD-UNRESOLVABLE`, `L7-HEAD` or `L7-NOT-PR`**, exit 1 |
+| 47 | `Lane-7-Ledger: FAIL` | `L7-LEDGER-VALUE`, **exit 1** |
 
 ### 9.1 Correction — rows 41–44, and a defect in this document's first revision
 
@@ -727,17 +818,58 @@ rows 2, 7, 8, 41 and 42 already do. 45 is kept as offered rather than folded int
 merge path and the squash path degrade differently and a row that passed for either reason would
 not say which.
 
+### 9.4 Row 47, and why it is 47 and not the 45 the review asked for
+
+**Row 47 is Assay's B1 repair** (§4.4): the baseline with `Lane-7-Ledger: FAIL`, expecting
+`L7-LEDGER-VALUE` and exit `1`. It is fixture 12 with one key changed, which is the point — 12
+and 47 are the same experiment run against the two keys §6.5 says follow the same rule, and an
+implementation that has class 4 right and class 5 wrong fails exactly one of them.
+
+**The renumber is called out because this document has twice shipped a numbering defect and
+neither was caught by the author.** Assay's review proposed the ledger-value row as **45** and
+the `LANE7_GITHUB_TOKEN` row as **46**. It was written against head `213a749` — revision 2 — and
+revision 3 landed first, taking **45 and 46** for the credential rows (§9.3). Assay's B2 is
+therefore **already closed by revision 3**, not by this one: §9.3's row 45 is Forge's row field
+for field, which is Assay's B2 repair word for word, and row 46 is the squash variant that makes
+45's negative clauses non-vacuous. **B1's row is 47.** Rows 1–46 do not move, and a harness
+written against revision 3 appends one `check` call.
+
+### 9.5 Declined on the record — rows 38 and 44 keep one code
+
+**Assay's advisory A2 is declined, and the reasoning is recorded rather than the conclusion
+alone.** The finding: fixtures 38 (a required check reporting `failure`) and 44 (the commit has
+no check runs at all) are two different events with two different owners — a lane-3/lane-4
+defect, and a required workflow that never ran — and they share `L7-GATE-UNCONFIRMED`. §3 makes
+the prose after ` -- ` explicitly unassertable, so the published ledger, which is R5b's whole
+value, cannot distinguish them by contract. Assay is right that §4.1's own argument — *four codes
+because four different pieces of work* — cuts toward splitting.
+
+It is declined for two reasons, neither of which is that the point is weak:
+
+- **ADR-0005 §6.5 class 8 sanctions the single code**, and §11's last bullet is that this
+  document implements §6.5 and does not revisit it. Splitting class 8 is an ADR-0005 amendment
+  authored against evidence, not a spec edit made before the detector has run once.
+- **The behaviour is asserted either way.** 38 and 44 are two rows with two different fixture
+  states, so a detector that conflates the *inputs* still fails one of them. What is lost is a
+  machine-readable distinction in the ledger — and today nothing routes a repair off the code
+  alone; a human reads the prose, which carries it.
+
+**The revisit trigger is specific, and it is the evidence that would overturn this:** a published
+`attest-history` ledger in which an `L7-GATE-UNCONFIRMED` line has to be opened by hand to decide
+who owns the repair. At that point §6.5 class 8 is amended to two codes and §4 and §9 gain one
+each in the same change. Recorded in §12.
+
 ---
 
 ## 10. Acceptance
 
-**`ci/lane7-attest-test.sh` asserts one verdict per fixture for all 46 fixtures in §9 — each
+**`ci/lane7-attest-test.sh` asserts one verdict per fixture for all 47 fixtures in §9 — each
 verdict comparing the complete set of `L7-*` lines **and** the exit code, per §9.0 — with the
 finding codes as written, and prints an `N passed, M failed` line in `ci/lane-gate-test.sh`'s
-format.** That is the whole of VUL-56, and the closing line reads `46 passed, 0 failed`.
+format.** That is the whole of VUL-56, and the closing line reads `47 passed, 0 failed`.
 
 **`ci/lane7-attest.sh`, with its manifest at `ci/lane7-attest-floors.txt`, its workflow at
-`.github/workflows/lane7-attest.yml`, and both §6.2 credentials supplied, passes all 46 fixtures
+`.github/workflows/lane7-attest.yml`, and both §6.2 credentials supplied, passes all 47 fixtures
 and reports over the four §6.5 ranges exactly one finding — `L7-MISSING vulcanflow/docs
 b40201b…` — and `OK` or an empty `RANGE` for every other commit in scope.** That is the whole of
 VUL-50.
@@ -792,6 +924,13 @@ Named so that none of it is read as settled here.
   than silent.
 - **`attest-self-test` is wired as a required check.** R8 fires; §4.2's GATE row and §8.2 of this
   document are both amended in that change.
+- **An `L7-GATE-UNCONFIRMED` line in a published ledger has to be opened by hand to decide who
+  owns the repair.** Fixtures 38 and 44 are two events — a required check reporting `failure`,
+  and a commit with no check runs at all — sharing one code, and §3 makes the prose that
+  distinguishes them unassertable. §9.5 declines the split today because ADR-0005 §6.5 class 8
+  sanctions the single code and both inputs are still asserted. The first ledger line that costs
+  a human that lookup is the evidence; §6.5 class 8 is amended to two codes, and §4 and §9 gain
+  one each in that change.
 - **A §6.3 defect is found inside a range a published run reported clean.** That is a second R5b
   event, and it means a finding class or a fixture is missing — re-open §4 and §9 together.
 - **`LANE7_FIXTURE_DIR` appears in a production invocation.** The seam has leaked; §6.3's three
