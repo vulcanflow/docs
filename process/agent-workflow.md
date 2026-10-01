@@ -295,12 +295,17 @@ asserting the new behaviour, and under an ADR-0005 revisit trigger. A gate edit 
 change it would permit is itself refused — **that is the bundled form only, and the solitary form
 is permitted; ADR-0005 §4.5 is what guards it.**
 
-The fixture and the classifier change it asserts go in the **same** pull request, not in two.
-`gate-self-test` is a required check, so a fixture asserting behaviour the classifier does not yet
-have is a red required check and cannot merge at all (ADR-0005 **R10**). This is the one place in
-the pipeline where lane 2 does not precede lane 3, it applies to GATE paths and nothing else, and
-§4.5's monotonicity sub-check is why it is not a weakening: what your pull request must survive is
-the fixture set already on `main`.
+**Changing what the gate does takes three pull requests, in this order, and this is the one place
+in the pipeline where lane 2 does not precede lane 3.** `gate-self-test` is a required check, so a
+fixture asserting behaviour the classifier does not yet have is a red required check and cannot
+merge at all (ADR-0005 **R10**). So: **(1)** Scribe lands fixtures for the behaviour the gate
+*already* has, green; **(2)** Forge lands the change to `ci/lane-gate.sh`, green because it is
+additive; **(3)** Scribe lands fixtures for the new behaviour, green because it now exists. Nobody
+crosses a lane and nothing is ever red. Only step 3 is inverted, it applies to GATE paths and
+nothing else, and §4.5's monotonicity sub-check is why the inversion is not a weakening: what your
+pull request must survive is the fixture set already on `main`. Step 3's fixtures are enumerated
+**with their outcomes** in the lane-1 spec before step 2 is written — that enumeration and §4.6
+item 4 are the whole control, because there is no mechanism for it.
 
 ---
 
