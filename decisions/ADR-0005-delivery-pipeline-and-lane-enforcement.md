@@ -410,10 +410,27 @@ at the moment of merge:**
 
    ```
    Lane-7-Head: <sha being merged>
+   Lane-7-Gate: PASS | n/a (no workflow on <repo>)
+   Lane-7-Ledger: PASS | n/a (no §25 identifier in scope)
    Lane-7-Verdict-1: APPROVE  Assay    <paperclip issue>  covers <sha>
    Lane-7-Verdict-2: APPROVE  Warren   <paperclip issue>  covers <sha>
    Lane-7-Merged-By: Crucible
    ```
+
+**Conditions 1 and 2 on a change that has neither.** `docs` has no CI workflow and the lane gate
+is live on `platform` only (§7 item 5); a Markdown-only change engages no §25 identifier. Those
+two conditions are then satisfied **vacuously, and only on an explicit finding** — the `n/a`
+form in condition 4's block, never silence. This is written down because both alternative
+readings are wrong: that §6.3 forbids every `docs` merge, which is absurd and would be
+reinterpreted ad hoc the first time it bit; or that the conditions may be skipped without saying
+so, which is how a real FAIL gets absorbed into "it was only docs". A bare `n/a` on a repository
+that *does* have a workflow, or on a change that *does* touch a §25 identifier, is itself the
+gate defect.
+
+**Vacuous satisfaction is never available to conditions 3 and 4.** A documentation change is
+reviewed and attested exactly like code. The change that provoked §6.4 was Markdown, in `docs`,
+with conditions 1 and 2 legitimately inert — and it is the clearest evidence in this record that
+"it is only documentation" is not a lane-7 argument.
 
 **Why condition 4 exists.** §3.1 means one GitHub identity serves all nine agents, so nothing in
 GitHub distinguishes a Crucible merge from any other, and §6's named weakness has no mechanical
@@ -448,13 +465,32 @@ was not necessary. Filing it in §9 would make it the thing §9 exists to preven
 | 20:36:16 | Warren records **no reviewer #2 verdict** on `docs#24` @ `5168c5c`, correctly, under the superseded sentence quoted in §6.1 (VUL-32) |
 | 20:37:57 | `docs#24`'s review target moves `5168c5c` → `ff1e2be` |
 | 20:43:18 | Assay posts **REQUEST CHANGES** on `docs#24`, 7 blocking and 7 advisory, head read `5168c5c` (VUL-31) |
-| **20:59:26** | **`docs#24` is merged to `main`** — squash commit `b40201b`, via the GitHub web UI, branch `ceo/vul-8-open-decision-register` deleted |
+| **20:59:26** | **`docs#24` is merged to `main`** — head `ff1e2be` squashed to `b40201b`, branch `ceo/vul-8-open-decision-register` deleted |
 | 21:02:10 | VUL-32 is still asking Warren for the reviewer #2 verdict, 164 seconds after the merge |
+
+Read back from the GitHub API at 2026-10-01 while writing this amendment, not inferred from the
+issue threads:
+
+```
+GET /repos/vulcanflow/docs/pulls/24
+  merged true   merged_at "2026-10-01T20:59:26Z"
+  merge_commit_sha "b40201b23d5514998f28e1c9e564da33dc4eb263"
+  head.ref "ceo/vul-8-open-decision-register"   head.sha "ff1e2be7…"
+  base.ref "main"   changed_files 1   additions 706
+GET /repos/vulcanflow/docs/branches/ceo/vul-8-open-decision-register  → 404
+GET /repos/vulcanflow/docs/contents/plans/open-decisions.md?ref=main  → sha 1743f81…
+GET /repos/vulcanflow/docs/commits/b40201b…  → message carries no attestation block
+```
+
+Note the head mismatch that condition 3's **Current** clause is about: the commit merged was
+`ff1e2be`, and the only verdict in existence covered `5168c5c`.
 
 Against §6.3, at the moment of merge: condition 3 failed on **three** of its four clauses at
 once — reviewer #1's verdict was `REQUEST CHANGES` with seven blocking findings unresolved and
 covered `5168c5c`, a head superseded 22 minutes earlier; reviewer #2's verdict did not exist and
-never has. Condition 4 did not exist yet. Conditions 1 and 2 are inert on a documentation change.
+never has. Condition 4 did not exist yet. Conditions 1 and 2 were vacuously satisfied, correctly
+— `docs` has no workflow and no §25 identifier was in scope — and that is the whole of what the
+change had going for it.
 
 **Two consequences, and neither is closed by this amendment:**
 
@@ -732,4 +768,4 @@ Named, so this record is revisited on evidence rather than on mood.
 | — | 2026-10-01 | Accepted as recorded. |
 | 1 | 2026-10-01 | **The §8 plan question is decided: the board chose option B.** The four active repositories are public, branch protection is applied to all four with `enforce_admins: true`, and `platform`'s four lane-gate checks are required. §3.2 rewritten as a resolved constraint; §7 items 8–9 replaced; §8 rewritten as a decision with the pre-publication secret scan (§8.1), the applied settings and why zero required approvals (§8.2), the disclosure cost (§8.3) and two observed refusals (§8.4); R2 closed and narrowed to wiring checks per repository; R7 added as the route back to private. §7 item 4 corrected: 21 fixture verdicts, not 17. Recorded by CEO under VUL-2. |
 | 2 | 2026-10-01 | **Reviewer #2's route corrected, and the independence rule stated.** The CodeRabbit GitHub App (`coderabbitai`, app id `347564`, installation `166977157`, installed `2026-10-01T19:12:07Z`, `repository_selection: all`) is installed, so the "`coderabbit:review` is not installed … merges wait" sentence in §6 is withdrawn — quoted in §6.1 rather than deleted, because the degraded period was real and agents cited it. New **§6.1** records lane 6's route as the App's review on the pull request, read and triaged by Warren with no tool run; separates that from the authenticated CodeRabbit **CLI** (`0.8.2`, seat assigned), which is the author's pre-flight under the board rule of 2026-10-01 19:49Z and is codified as lane 5.5 on VUL-28 — an author-run CLI review is never reviewer #2's verdict; and records that `COMMENTED` is not approval and that a review counts only when `coveredCommitId` equals `head.sha`. New **§6.2** states the rule the install correction was hiding: **the App posting on a pull request is input to lane 6, not satisfaction of it** — lane 6 is two attributable Paperclip verdicts, a bot thread with no Warren verdict is an unreviewed pull request, and the `lane6-review-verdict` skill sitting in Assay's catalog (VUL-36) does not make Assay reviewer #2. §2's lane-6 row updated to match; R6 closed on the install half and narrowed to App removal or suspension, the Advanced trial seat lapsing, or CodeRabbit **changing its severity vocabulary or** dropping the `final_review_risk_coverage` coverage anchors. `process/agent-workflow.md` §1, lane 6 and §7 updated in the same change. Recorded by Atlas under VUL-37. |
-| 3 | 2026-10-01 | **Lane 7's merge condition has one statement, and the merge that exposed its absence is recorded.** New **§6.3** is the sole statement of the merge condition: lane gate green on the commit merged; ledger with no FAIL and no MISSING against that commit; two verdicts, one each from Assay and Warren, every one of them `APPROVE` with zero unresolved blocking findings, stating a covered sha equal to `head.sha` at merge, and independently attributable on that reviewer's own lane-6 issue; and a merge attestation in the commit message naming the head and both verdicts. §2's lane-7 row, §6's bullets and `process/agent-workflow.md` lane 7 are rewritten as pointers to §6.3 rather than as three independent statements — the three prior statements ("two approving verdicts"; "Assay's verdict and Warren's verdict"; the VUL-32 board directive's "a CLEAN CodeRabbit verdict at the current head") are withdrawn in §6.3. New **§6.4** records, under R5b, that `docs#24` merged to `main` at 2026-10-01T20:59:26Z (`b40201b`) over a `REQUEST CHANGES` verdict with seven blocking findings unresolved on an already-superseded head, with no reviewer #2 verdict in existence — explicitly **not** filed as a §9 exception, and not sanctioned retrospectively. §10 R5 split into R5a (lane crossing — repair is a `ci/lane-gate-test.sh` fixture) and R5b (merge taken against §6.3 — repair is §6.3 plus an attestation detector over `main`), with R5b live until that detector runs. §6.1's CLI boundary redrawn on the **surface** rather than on who ran it, with the §6.3 condition-3 reason: a CLI run emits no coverage anchors, so its coverage is unperformable, so a Warren-run CLI review is still lane 5.5. §6.1's withdrawal quote restored to full text including the lead clause "Warren is blocked until T7." and its `docs#24` citation corrected from "correctly held" to Warren's decline. §6.2 corollary 1's verb changed from *count* to evaluation against §6.3; corollary 3's severity set given `Nitpick` and the absent-label case as advisory. Recorded by Atlas under VUL-40. |
+| 3 | 2026-10-01 | **Lane 7's merge condition has one statement, and the merge that exposed its absence is recorded.** New **§6.3** is the sole statement of the merge condition: lane gate green on the commit merged; ledger with no FAIL and no MISSING against that commit; two verdicts, one each from Assay and Warren, every one of them `APPROVE` with zero unresolved blocking findings, stating a covered sha equal to `head.sha` at merge, and independently attributable on that reviewer's own lane-6 issue; and a merge attestation in the commit message naming the head, the gate and ledger dispositions and both verdicts. Conditions 1 and 2 are satisfied **vacuously** on a repository with no workflow or a change engaging no §25 identifier, but only via an explicit `n/a` in the attestation, never by silence; conditions 3 and 4 are never vacuous — "it is only documentation" is not a lane-7 argument, and §6.4's change was Markdown. §2's lane-7 row, §6's bullets and `process/agent-workflow.md` lane 7 are rewritten as pointers to §6.3 rather than as three independent statements — the three prior statements ("two approving verdicts"; "Assay's verdict and Warren's verdict"; the VUL-32 board directive's "a CLEAN CodeRabbit verdict at the current head") are withdrawn in §6.3. New **§6.4** records, under R5b, that `docs#24` merged to `main` at 2026-10-01T20:59:26Z (`b40201b`) over a `REQUEST CHANGES` verdict with seven blocking findings unresolved on an already-superseded head, with no reviewer #2 verdict in existence — explicitly **not** filed as a §9 exception, and not sanctioned retrospectively. §10 R5 split into R5a (lane crossing — repair is a `ci/lane-gate-test.sh` fixture) and R5b (merge taken against §6.3 — repair is §6.3 plus an attestation detector over `main`), with R5b live until that detector runs. §6.1's CLI boundary redrawn on the **surface** rather than on who ran it, with the §6.3 condition-3 reason: a CLI run emits no coverage anchors, so its coverage is unperformable, so a Warren-run CLI review is still lane 5.5. §6.1's withdrawal quote restored to full text including the lead clause "Warren is blocked until T7." and its `docs#24` citation corrected from "correctly held" to Warren's decline. §6.2 corollary 1's verb changed from *count* to evaluation against §6.3; corollary 3's severity set given `Nitpick` and the absent-label case as advisory. Recorded by Atlas under VUL-40. |
