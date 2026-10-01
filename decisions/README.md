@@ -14,21 +14,30 @@ Each record states the question, the options considered, the choice, the reason,
 | [ADR-0005](./ADR-0005-delivery-pipeline-and-lane-enforcement.md) | The delivery pipeline and how its lanes are enforced | Accepted | No §27 item — supersedes the enforcement claim in the VUL-1 plan §4 |
 | [ADR-0006](./ADR-0006-false-positive-equivalence-and-alias-semantics.md) | False-positive equivalence fields, alias semantics, revocation, and scanner-version invalidation | Accepted | §27 item 6 |
 
-**ADR-0004 is not on `main` yet.** It is PR docs#23, closed unmerged and pending T1. The number
-is reserved for it; the gap here is not a missing record.
+**ADR-0004 and ADR-0006 are not on `main` yet.** ADR-0004 is the Cargo workspace repository
+layout — docs#23 was closed unmerged and it is re-filed as PR docs#27. ADR-0006 is the
+false-positive equivalence fields and alias semantics, PR docs#26. Both numbers are reserved;
+the gaps here are not missing records.
 
 ADR-0005's operational companion is [`process/agent-workflow.md`](../process/agent-workflow.md),
-which is what an agent reads mid-task.
+which is what an agent reads mid-task. ADR-0007's is `CLAUDE.md` at the root of
+`vulcanflow/platform`, which every session rooted at that checkout reads at startup.
 
 ## Still open
 
 | §27 item | Owner | Blocks |
 |---|---|---|
-| — (not §27) | Board | **The GitHub plan decision.** `vulcanflow` is on the free plan with private repositories, so branch protection and rulesets are unavailable and the lane gate cannot be made a *required* check. ADR-0005 §8 sets out the three options and recommends upgrading to GitHub Team. Until it is taken, `main` is directly writable and force-pushable on all four repositories |
 | 5 (cluster half) | Engineering | First automatic cascade — Harbor artifacts and node Kubernetes compatibility for the pinned secureCodeBox v5.9.0. Needs a cluster; ADR-0002 §7 risk R6 |
 | 13 | Engineering | DNS risk labels — external-resolution evidence, and the stronger evidence a confirmed dangling-resource finding needs. ADR-0006 §4.3 covers the DNS *record* observation class only; item 13 **blocks** any `dnsx/dangling-*` check class, because ADR-0006 §11 forbids a new check class creating or receiving a suppression until its equivalence row exists |
 | 16a | Engineering leadership | Phase 0 schedule — team Rust capability and schedule impact |
 | — (not §27) | Needs an owner | **The product-facing severity model.** `findings-schema.json` at secureCodeBox v5.9.0 restricts `severity` to `INFORMATIONAL \| LOW \| MEDIUM \| HIGH`, so no conformant parser can emit `CRITICAL`, and the v5.9.0 nuclei parser collapses `CRITICAL → HIGH` before the artifact is written. §10.3's `KEV → EPSS → CVSS` enrichment is the mechanism; what a customer sees is undecided. ADR-0003 A1 §7.2, ADR-0006 §8.4.5 |
+
+**Closed 2026-10-01 — the GitHub plan decision.** The board took option B of ADR-0005 §8: the
+four active repositories (`docs`, `platform`, `infra`, `vf-api`) are **public**, which unlocks
+branch protection on the free plan. `main` is protected on all four with `enforce_admins: true`,
+`allow_force_pushes: false` and `allow_deletions: false`, and `platform`'s four lane-gate checks
+are required. Recorded as ADR-0005 amendment 1; the disclosure cost is §8.3 and the route back to
+private is R7.
 
 The §2.5.2 crate table is superseded by ADR-0002 §3 and is no longer `[PROPOSED]`. §24.4's
 gate on "approval of the Rust crate set used on the execution path" is cleared.

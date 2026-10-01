@@ -239,25 +239,54 @@ change it would permit is itself refused.
 
 ---
 
-## 7. Known gaps — do not mistake these for permission
+## 7. What GitHub now enforces, and what it still does not
 
-- **GitHub cannot currently block a merge on these checks.** The organisation is on the free
-  plan with private repositories, so branch protection and rulesets are unavailable
-  (ADR-0005 §3.2). The checks run and go red; GitHub will not stop you. **Crucible's refusal is
-  the gate.** Treat a red check as blocking, because it is.
-- **`main` is force-pushable and directly writable** for the same reason. Do not. Every change
-  goes through a pull request.
-- **The gate is on `platform` only.** `docs` has no code; `infra` and `vf-api` are empty. The
-  gate goes in the moment a repository receives source.
+**`main` is protected on `docs`, `platform`, `infra` and `vf-api`.** Do not plan around a direct
+push; there isn't one.
+
+- **You cannot push to `main`.** Not with a merge commit, not with an empty commit, not as
+  admin. `enforce_admins` is on. Every change arrives as a pull request.
+- **You cannot force-push or delete `main`.** History on the default branch is append-only.
+- **On `platform`, a red lane-gate check blocks the merge.** All four checks are required, and
+  the merge API returns `405` while any one of them is failing. The branch must also be current
+  with `main` before it can merge — use "Update branch", do not force-push your own branch over
+  a reviewed diff.
+- **Nobody can approve your pull request, and nothing requires them to.** There is one GitHub
+  identity for all agents, and GitHub refuses an author's own approval, so required approvals
+  are set to zero (ADR-0005 §8.2). This is not permission to skip review: **Assay's and
+  Warren's verdicts live on the Paperclip issue and Crucible checks for them there.** A green
+  GitHub merge button is not an approval.
+
+Still gaps, and still not permission:
+
+- **`docs`, `infra` and `vf-api` have no required checks** — they have no CI workflow on `main`
+  yet. They are protected, so pull requests are still mandatory. If you add the first workflow
+  to one of them, you also wire its checks as required (ADR-0005 R2).
+- **The lane gate itself is on `platform` only.** `docs` has no code; `infra` and `vf-api` are
+  empty. The gate goes in the moment a repository receives source.
+- **A lane crossing split across two pull requests passes both.** The gate partitions paths, not
+  people. VUL-9 is what closes that.
 - **Warren is blocked until T7.** See lane 6.
+- **The four repositories are public.** Anything you commit is world-readable the moment it is
+  pushed, including on a branch you later delete. Secret scanning and push protection are on,
+  but they only catch *recognised* credential shapes — they will not catch a customer name, an
+  internal hostname or an unreleased detail you did not mean to publish.
 
 ---
 
 ## 8. The gate, demonstrated
 
-A gate nobody has seen fail is a claim. The deliberate probe — one production file and one test
-file in a single pull request — and the resulting refusal are linked from the VUL-2 issue and
-from `platform` PR #3.
+A gate nobody has seen fail is a claim. Two refusals have been observed and both are linked from
+the VUL-2 issue:
+
+- **`platform` PR #3** — the lane-partition check going red on a deliberate crossing, back when
+  red had no consequence.
+- **`platform` PR [#4](https://github.com/vulcanflow/platform/pull/4)** — the same crossing after
+  protection landed: `lane-partition` ❌, the other three ✅, `mergeable_state: blocked`, and
+  `PUT .../merge` → `405 Required status check "lane-partition" is failing`. A direct push to
+  `main` was refused in the same session as repository admin (`GH006`).
+
+Details and exact output in ADR-0005 §8.4.
 
 ---
 

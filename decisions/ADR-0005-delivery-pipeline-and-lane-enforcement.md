@@ -118,10 +118,15 @@ because it does not depend on what Paperclip would mint — a GitHub approving r
 from an account with access to the repository, and there is exactly one such account. The
 residual uncertainty is carried as revisit trigger **R1** in §10.
 
-### 3.2 Constraint two — branch protection is not available on this plan
+### 3.2 Constraint two — branch protection was not available on this plan, and is now
 
-`vulcanflow` is on the **free** plan and all four active repositories are **private**. GitHub
-gates both branch protection and rulesets behind a paid plan for private repositories:
+**This constraint has been resolved. It is kept here because the resolution changed the
+disclosure posture of the whole project, and that is not a detail anyone should have to
+reconstruct from a settings page.**
+
+As first recorded, `vulcanflow` was on the **free** plan with all four active repositories
+**private**, and GitHub gates both branch protection and rulesets behind a paid plan for
+private repositories:
 
 ```
 GET  /repos/vulcanflow/docs/branches/main/protection  → 403 "Upgrade to GitHub Pro or make
@@ -130,17 +135,18 @@ GET  /repos/vulcanflow/docs/rulesets                  → 403  enable this featu
 GET  /orgs/vulcanflow/rulesets                        → 403 "Resource not accessible by integration"
 ```
 
-The `PUT` was attempted, not merely the `GET`, so this is a confirmed write refusal and not a
-read permission artefact. GitHub **Actions**, by contrast, works normally on these
-repositories:
+The `PUT` was attempted, not merely the `GET`, so this was a confirmed write refusal and not a
+read permission artefact. GitHub **Actions**, by contrast, worked normally throughout:
 
 ```
 GET /repos/vulcanflow/docs/actions/permissions → {"enabled": true, "allowed_actions": "all"}
 ```
 
-So the gate can **run** and go red on every pull request. What GitHub cannot currently do is
-*refuse the merge* on it, or refuse a force-push, or refuse an admin bypass. That is a billing
-decision, not an engineering one, and it is escalated rather than decided here — see §8.
+So the gate could **run** and go red on every pull request, while GitHub would not *refuse the
+merge* on it, nor refuse a force-push, nor refuse an admin bypass. That was a billing decision
+rather than an engineering one, and it was escalated to the board. **The board chose option B
+of §8: make the four active repositories public.** The three enforcement powers are now live.
+§8 records the decision and what it cost.
 
 ---
 
@@ -251,8 +257,9 @@ proceeding on one verdict relabelled as two.
 2. **Every change costs more pull requests.** A feature is now at least two: the test, then the
    code. This is the intended price and it is paid on every item.
 3. **Unit tests move out of `src`.** See §5.
-4. **The gate itself is tested.** `gate-self-test` asserts 17 fixture verdicts, so a future edit
-   that silently guts the gate fails the gate.
+4. **The gate itself is tested.** `gate-self-test` asserts 21 fixture verdicts
+   (`ci/lane-gate-test.sh ci/lane-gate.sh` → `21 passed, 0 failed`), so a future edit that
+   silently guts the gate fails the gate.
 5. **The gate is live on `platform` only.** `docs` has no code; `infra` and `vf-api` are empty
    repositories whose `main` is an initial commit. The gate is added to each the moment it
    receives source; a Markdown-only repository has no lane to cross.
@@ -261,27 +268,123 @@ proceeding on one verdict relabelled as two.
    `lane-partition` passes it. T1 should confirm before merging that it introduces no
    `#[cfg(test)]` module, or `inline-test-modules` will fail it.
 7. **This record and the gate merged without the gate.** See §9.
-8. **Branch protection, force-push refusal and admin-bypass refusal do not exist yet.** Until
-   §8 is decided, `main` on all four repositories is writable directly and rewritable by
-   force. The gate detects lane crossings on pull requests; it does not stop a direct push.
+8. **Branch protection, force-push refusal and admin-bypass refusal are live on all four
+   repositories.** `main` is no longer writable directly on any of them, by anyone, including
+   the org owner. See §8 for the settings and the evidence, and §8.3 for what this cost.
+9. **The four active repositories are public.** Anyone can read the source, the pinned
+   dependency set, the infrastructure manifests and the design record — including the TDD and
+   every ADR. That is a standing condition of the project now, not a phase. See §8.3.
 
 ---
 
-## 8. Open, and escalated: the plan decision
+## 8. Decided: the plan question, and what the decision cost
 
 Deliverable 3 of VUL-2 — branch protection on every active repository with
-`enforce_admins: true` and `allow_force_pushes: false` — **cannot be applied on the current
-GitHub plan** (§3.2). Three ways forward, in the order recommended:
+`enforce_admins: true` and `allow_force_pushes: false` — could not be applied on the free plan
+with private repositories (§3.2). Three ways forward were put to the board:
 
 | | Option | Cost | Effect |
 |---|---|---|---|
-| **A** | Upgrade `vulcanflow` to **GitHub Team** | list price ≈ $4 per user per month; one seat is filled today | Unlocks branch protection and rulesets on private repositories. All four required checks become genuinely required; force-push, branch deletion and admin bypass become refusable. Repositories stay private. |
-| **B** | Make the four repositories **public** | free | Same enforcement unlocked, but publishes a pre-GA security product's source, its pinned dependency set and its infrastructure manifests. |
-| **C** | Change nothing | free | The gate still runs and still goes red, visibly, on every pull request. GitHub will not block the merge on it; Crucible's refusal (§6) is the only thing holding the gate, and `main` stays force-pushable. |
+| **A** | Upgrade `vulcanflow` to **GitHub Team** | list price ≈ $4 per user per month; one seat is filled today | Unlocks branch protection and rulesets on private repositories. Repositories stay private. |
+| **B** | Make the four repositories **public** | free, in money | Same enforcement unlocked, but publishes a pre-GA security product's source, its pinned dependency set and its infrastructure manifests. |
+| **C** | Change nothing | free | The gate runs and goes red, visibly, but GitHub will not block the merge on it; Crucible's refusal (§6) is the only thing holding the gate, and `main` stays force-pushable. |
 
-**A** is recommended: it is the only option that buys real enforcement without disclosure, and
-at one seat the cost is negligible against the cost of one silently-edited test reaching `main`.
-The decision is the board's, and it is open until they take it.
+**The board chose B on 2026-10-01.** CEO applied it. `docs`, `platform`, `infra` and `vf-api`
+are public; `private: false` on all four, confirmed by read-back. The eleven empty `vf-*` and
+`scanners` repositories were **left private** — they hold no commits, so publishing them buys
+nothing.
+
+### 8.1 What was checked before publishing
+
+Visibility is effectively irreversible: a public repository is cloned, forked and indexed by
+third parties within minutes, and flipping it back private does not retrieve those copies.
+So the full history of all four repositories — 39, 20, 6 and 2 commits respectively, every
+reachable ref, not just `main` — was scanned before the flip for credential material:
+GitHub tokens in all five prefixes, AWS access-key IDs, PEM private-key blocks, Slack tokens,
+OpenAI and Anthropic keys, GitLab PATs, Google API keys, JWTs, and assignment-shaped
+`password`/`secret`/`api_key`/`token`/`credential` values. **No match in any repository.**
+`infra/docs/secrets-and-signing.md` appears in history but not on any live ref, and every
+`values.yaml` under `infra/platform/**` was checked for `adminPassword`, `clientSecret`,
+`privateKey` and `bootstrapToken` — clean.
+
+**Secret scanning and push protection were then enabled on all four repositories**, which the
+free plan allows once a repository is public. Push protection is the part that matters going
+forward: it refuses a push containing a recognised credential, which is a guard the project did
+not have while the repositories were private and which it now needs more.
+
+### 8.2 The settings applied
+
+Identical on all four repositories, `PUT /repos/vulcanflow/{repo}/branches/main/protection`:
+
+| Setting | Value | Buys |
+|---|---|---|
+| `enforce_admins` | `true` | The shared identity (§3.1) is also the org owner. Without this, every rule below is advisory again. |
+| `required_pull_request_reviews.dismiss_stale_reviews` | `true` | A new commit voids prior approval. No approving a diff then changing it. |
+| `required_pull_request_reviews.required_approving_review_count` | `0` | Deliberate, and not a weakening — see below. |
+| `allow_force_pushes` | `false` | History on `main` cannot be rewritten. |
+| `allow_deletions` | `false` | `main` cannot be deleted. |
+| `restrictions` | `null` | No push allowlist; the pull-request requirement does the work. |
+
+On `platform` only, additionally:
+
+| Setting | Value |
+|---|---|
+| `required_status_checks.contexts` | `lane-partition`, `test-erosion`, `inline-test-modules`, `gate-self-test` |
+| `required_status_checks.strict` | `true` — the branch must be current with `main` before merging |
+
+`docs`, `infra` and `vf-api` have no workflow on `main`, so they have no required checks. A
+required check that no workflow produces blocks every merge forever; the checks are wired per
+repository as each gains CI, which is the same rule as §7 item 5.
+
+**Why zero required approvals.** GitHub refuses a pull request author's own approval, and §3.1
+established that there is exactly one identity. A requirement of one approval would therefore
+be unsatisfiable — nothing could ever merge. Zero keeps the part that is satisfiable: no direct
+push to `main`, every change arrives as a pull request, and the required checks run on it.
+Review authority is not abandoned; it lives in Paperclip (§6), and R1 in §10 is what moves it
+back into GitHub if per-agent identities ever appear.
+
+### 8.3 What the decision cost, stated plainly
+
+Option B bought enforcement with disclosure rather than with money. The VulcanFlow TDD, all six
+ADRs, the open-decision register, the Rust workspace with its pinned toolchain and dependency
+set, and the complete GitOps manifests for the platform — ArgoCD, Kargo, Keycloak, Harbor,
+CloudNativePG, ClickHouse, SecureCodeBox — are now world-readable. For a pre-GA security
+product this is a real cost in two ways: it hands a competitor the design, and it hands an
+attacker a map of the infrastructure the product will run on. Nothing published contains a
+credential (§8.1), so the exposure is of design, not of access.
+
+This is recorded as the board's decision, not as a neutral default, so that a later reader does
+not mistake an open repository for an absence of thought about it. **Option A remains available
+for roughly $4 per month and is the only way back to private with enforcement intact** — see
+R7 in §10.
+
+### 8.4 The evidence that it works
+
+Branch protection that nobody has watched refuse something is a settings screenshot, not a
+control. Two refusals were observed, both as the org owner and repository admin:
+
+**A direct push to `main` on `platform`:**
+
+```
+remote: error: GH006: Protected branch update failed for refs/heads/main.
+remote: - Changes must be made through a pull request.
+remote: - 4 of 4 required status checks are expected.
+ ! [remote rejected] main -> main (protected branch hook declined)
+```
+
+**A merge of a deliberate lane crossing** — platform PR [#4](https://github.com/vulcanflow/platform/pull/4),
+one production file and one test file in one diff. `lane-partition` ❌ failed; `test-erosion`,
+`inline-test-modules` and `gate-self-test` ✅ passed, so the gate refused the specific violation
+rather than the pull request wholesale. `mergeable_state` was `blocked`, and the merge API
+refused outright:
+
+```
+PUT /repos/vulcanflow/platform/pulls/4/merge  →  405
+{"message": "Required status check \"lane-partition\" is failing."}
+```
+
+PR #4 is closed unmerged and its branch deleted. It is the successor to PR #3, which showed the
+check going red back when red had no consequence; #4 is the half that was missing.
 
 ---
 
@@ -294,7 +397,16 @@ cannot later be cited as precedent.
 
 Its scope is exactly: ADR-0005, `process/agent-workflow.md`, the `decisions/README.md` index
 row, and `platform` PR #2. Nothing else. Every change after these goes through the gate, and
-the gate's first demonstrated refusal is linked from §11 of `process/agent-workflow.md`.
+the gate's demonstrated refusals are linked from §8 of `process/agent-workflow.md`.
+
+**Amendment 1 is inside this exception, and the scope is extended rather than stretched
+quietly.** It is these same three files and no others; no reviewing agent is approved yet, so
+there was still nobody to review it; and leaving it unmerged was the worse option, because
+`process/agent-workflow.md` §7 on `main` said in so many words that GitHub cannot block a merge
+on these checks. That sentence became false the moment protection landed, and a false "GitHub
+will not stop you" in the document agents read mid-task reads as permission. A wrong operational
+instruction on `main` is a live hazard; an unreviewed correction to it is a recorded one. The
+exception does not extend past this amendment, and Atlas reviews both in place on approval.
 
 ---
 
@@ -307,10 +419,12 @@ Named, so this record is revisited on evidence rather than on mood.
   `CODEOWNERS` over `tests/**`, `**/tests/**` and `fuzz/**`, and required approving reviews, as
   an *addition* to the path partition — not a replacement, since the partition is strictly
   stronger against a shared account and costs nothing once written.
-- **R2 — the plan question in §8 is decided.** On **A** or **B**, wire all four checks as
-  required status checks on `main` with `enforce_admins: true`, `allow_force_pushes: false`,
-  `allow_deletions: false` and stale approvals dismissed on new commits, on every repository
-  that has a default branch. On **C**, record the acceptance of risk against §7 item 8.
+- **R2 — the plan question in §8 is decided.** ✅ **Closed 2026-10-01.** The board chose B;
+  protection is applied and demonstrated on all four repositories (§8.2, §8.4). What remains of
+  this trigger is narrower and still live: **a repository that gains its first CI workflow must
+  have its checks wired as required at the same time.** `docs`, `infra` and `vf-api` currently
+  have none, so they are protected but have nothing required. Whoever adds the first workflow to
+  one of them owns the `PUT .../branches/main/protection` that makes it required.
 - **R3 — a crate needs to unit-test a private item.** Bring the case to Atlas. The resolution
   is either a narrowed public surface, a `pub(crate)` seam exposed deliberately, or an
   amendment to §5 — never a local `#[cfg(test)]` module.
@@ -321,6 +435,12 @@ Named, so this record is revisited on evidence rather than on mood.
   as a fixture in `ci/lane-gate-test.sh` first, then fix the gate.
 - **R6 — `coderabbit:review` lands (T7).** Lane 6 returns to two reviewers; remove the
   single-reviewer degradation in §6.
+- **R7 — the project needs to be private again.** Any of: a disclosure concern raised about a
+  specific file now public, the first external contributor or fork the project does not want, or
+  simply the approach to GA. The route back is option A in §8 — GitHub Team, roughly $4 per
+  month at one filled seat — which restores private repositories with every protection in §8.2
+  intact. Note what reverting does **not** undo: anything already cloned, forked or indexed
+  stays out. Treat the public history as permanent and make the decision on that basis.
 
 ---
 
@@ -345,4 +465,5 @@ Named, so this record is revisited on evidence rather than on mood.
 
 | | Date | Change |
 |---|---|---|
-| — | 2026-10-01 | Accepted as recorded. No amendments. |
+| — | 2026-10-01 | Accepted as recorded. |
+| 1 | 2026-10-01 | **The §8 plan question is decided: the board chose option B.** The four active repositories are public, branch protection is applied to all four with `enforce_admins: true`, and `platform`'s four lane-gate checks are required. §3.2 rewritten as a resolved constraint; §7 items 8–9 replaced; §8 rewritten as a decision with the pre-publication secret scan (§8.1), the applied settings and why zero required approvals (§8.2), the disclosure cost (§8.3) and two observed refusals (§8.4); R2 closed and narrowed to wiring checks per repository; R7 added as the route back to private. §7 item 4 corrected: 21 fixture verdicts, not 17. Recorded by CEO under VUL-2. |
