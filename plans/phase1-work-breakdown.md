@@ -95,6 +95,56 @@ function to be a property *of*.
 `usage/failure-retry-settlement` · `usage/concurrent-reservations` ·
 `build/rust-supply-chain` · `perf/service-baseline`
 
+#### 3.2.1 `authz/start-barrier-all-paths` carries a scope limit, recorded here rather than found at review
+
+§25's row for this identifier is *"Admission and start checks **including pool**"* (§5.7). §2 puts
+the controlled masscan pool in Phase 2 and lists it as explicitly out of Phase 1 scope. A Phase 1
+test therefore has no live pool to assert the pool path against. This section says what the test
+asserts instead, and what Crucible records when it goes green. **It must not surface as a weakened
+assertion discovered at review.**
+
+**The identifier is not split.** §25's mapping is injective in both directions — one identifier,
+one test function. `authz/start-barrier-all-paths` stays whole, stays in Phase 1, stays Ledger's.
+Splitting its pool half into a second Phase 2 identifier was the alternative and it loses: it would
+put two test functions behind one §25 row, which is the property the whole mapping rests on.
+
+**What the pool path asserts in Phase 1 — against the admission contract, not a live pool.** A
+replayed `AdmissionReview` carrying a pool-dispatched `Scan` — pool namespace, pool service
+account, no tenant approval and no allowance reservation — must be **denied** by `vf-admission`,
+through the same §5.7 gate and with the same denial reason as the tenant path. That is the whole of
+the barrier as a property of our handler, and it is fully assertable with the recorded-JSON
+mechanism ADR-0002 §4.2 established. No cluster, no pool, no Phase 2 dependency.
+
+**What it does not assert, and who carries the residue.** That the real pool dispatcher actually
+goes through admission — that no path exists by which a pool-originated `Scan` reaches the API
+server without hitting the webhook. That is a property of the Phase 2 pool's deployment, not of our
+handler. It is **ADR-0002 §7 risk R6** and **TDD §27 item 5**, which names *"atomic candidate
+reservation and actual start barrier in tenant **and pool** execution"*.
+
+**What Crucible records.** When this identifier goes green in Phase 1 the ledger entry is:
+
+```
+authz/start-barrier-all-paths   PASS (scope: pool path asserted against the admission
+                                contract; no live pool — breakdown §3.2.1)
+```
+
+**A bare `PASS` on this identifier in Phase 1 is a ledger defect**, and Crucible should reject it
+rather than record it. The point of the qualifier is that the limit is visible in the artifact a
+reader trusts, not only in this document.
+
+**Phase 2's closing gate owns removing it.** Phase 2 stands up the controlled pool; its closing gate
+must re-run the same test function with the live pool dispatching and drop the qualifier. Until it
+does, the identifier is **not** fully discharged, and **Phase 2 cannot close with the qualifier
+still attached.** That is a Phase 2 gate obligation, recorded in §3.4.
+
+**`execution/gates-before-start` does not get the same qualifier, and the difference is the point.**
+It shares the identical R6 residue — ADR-0002 §7 names the pool half of both — but its §25 row is
+*"No scan before approval or allowance reservation"* (§5.7, §8.1) and does not promise pool
+coverage. Its Phase 1 green is complete against what §25 asks of it, and the pool residue is tracked
+as R6 rather than as a ledger scope limit. A scope qualifier is owed where a §25 row's own words
+reach past what Phase 1 can assert; inventing one where they do not would make the ledger noisier
+without making it more honest.
+
 ### 3.3 The seven ADR-derived identifiers (VUL-23, Ledger)
 
 ADR-0002 and ADR-0003 approved the crate set *conditionally*, on executable confirmations
@@ -133,6 +183,14 @@ is cross-visible in production.
 | `deletion/all-stores-restore` | 4 | §3.6. The *mechanism* is Phase 1 (`TenantTx`, RLS), but the test needs ClickHouse, object storage **and a real backup restore**, and §3.6 defers the retention policy to §27 (CEO). §24.2 puts full isolation and recovery evidence in Phase 4. |
 | `release/analysis` | 4 | §21 promotion gate. |
 | `recovery/restore` | 4 | §21.4 DR. Needs real infrastructure. |
+
+**One Phase 2 gate obligation that is not a deferral, recorded next to them so it is not read as
+one.** `authz/start-barrier-all-paths` is **in** Phase 1 and is **not** in the table above. What
+Phase 2 owns is removing its scope qualifier: re-running the same test function with the live
+controlled pool dispatching, and dropping the
+`PASS (scope: … no live pool)` recorded in Phase 1. See §3.2.1. Phase 2 cannot close with that
+qualifier still attached. The identifier count is unaffected — 27 + 18 = 45 either way, because
+nothing moved phase.
 
 27 in scope + 18 deferred = 45. The `[PROPOSED — owner review]` AAAA cases in §5.9 are not a
 named identifier; the behaviour they describe is covered by `execution/ipv4-only`, and §24.4's
