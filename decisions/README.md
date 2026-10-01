@@ -52,10 +52,14 @@ that check.
 | ADR | Amendment | What it changed |
 |---|---|---|
 | ADR-0002 | **A1** | Crypto, TLS and encoding pins — §3.6, history in §10 |
-| ADR-0005 | **1** | The §8 GitHub plan question decided: option B, repositories public, protection live — §3.2, §8, R2, R7 |
-| ADR-0005 | **2** | Reviewer #2's route is the CodeRabbit **App**, triaged by Warren; bot commentary is not a verdict — §6.1, §6.2, R6 |
-| ADR-0005 | **3** | Lane 7's merge condition has one statement, and the `docs#24` merge is recorded under R5b — §6.3, §6.4, R5a/R5b |
-| ADR-0005 | **4** | NEUTRAL `ci/**` is lane-3 work with four agents excluded by name, and the attestation detector's floor is four named commits — §4.4, §6.5, §7 items 10–11, R5b, R8 |
+| ADR-0005 | **1** | The §8 GitHub plan question decided: option B, repositories public, protection live — §3.2, §7 items 8–9, §8, R2, R7 |
+| ADR-0005 | **2** | Reviewer #2's route is the CodeRabbit **App**, triaged by Warren; bot commentary is not a verdict; lane 5.5 named — §2, §6.1, §6.2, R6, plus `process/agent-workflow.md` and `plans/open-decisions.md` D17 |
+| ADR-0005 | **3** | Lane 7's merge condition has one statement, the `docs#24` merge is recorded under R5b, and every merge now owes an attestation — §2, §2.3, §6.1–§6.4, §7 item 10, §9, R5a/R5b, plus `process/agent-workflow.md` and this index |
+| ADR-0005 | **4** | NEUTRAL `ci/**` is lane-3 work with four agents excluded by name, and the attestation detector's floor is four named commits — §2, §4.4, §6.1, §6.5, §7 items 10–11, R5b, R6, R8, plus `process/agent-workflow.md` |
+
+Each row is a **pointer into that record's own amendment history**, which is the authority on what
+an amendment changed. It is deliberately not a summary: a summary here would be a second statement
+of the record, which is the defect ADR-0005 §6.3 exists to end.
 
 ## Corrections to TDD v2.3 that fall out of these records
 

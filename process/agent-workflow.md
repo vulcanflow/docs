@@ -19,7 +19,7 @@ both.** CI refuses the combination. Find your lane below and stay inside it.
 | **Forge** | 3 / 5 — Code (pure library crates) | `crates/*/src/**`, `Cargo.toml`, `Cargo.lock`; a NEUTRAL `ci/**` script that is pure computation | any test file, any fixture, any assertion, any `#[cfg(test)]` block |
 | **Anvil** | 3 / 5 — Code (service binaries) | `crates/*/src/**`, `Cargo.toml`, `Cargo.lock`; a NEUTRAL `ci/**` script that wraps a service binary | as Forge |
 | **Kiln** | 3 / 5 — Code (Kubernetes) | `crates/*/src/**`, `infra` manifests; a NEUTRAL `ci/**` script that touches cluster state | as Forge |
-| **Crucible** | 4 / 7 — Run and merge | the ledger, release artefacts | production source, tests, and **any `ci/**` script that audits lane 4 or lane 7** |
+| **Crucible** | 4 / 7 — Run and merge | the ledger, release artefacts | production source, tests |
 | **Assay** | 6 — Review by hand | review comments, verdicts | production source, tests |
 | **Warren** | 6 — Automated review | the CodeRabbit App's review, triaged into verdicts | production source, tests |
 
@@ -35,15 +35,22 @@ mechanics are still being codified (VUL-28). ADR-0005 §2 and §6.1.
 `ci/lane-gate-test.sh`, `.github/workflows/lane-gate.yml` — are GATE and no one touches them
 alongside source or tests. **Everything else under `ci/` is NEUTRAL**, which means the gate lets
 it through next to anything and used to mean nobody above claimed it. It is lane-3 work now, and
-three things about it are not obvious:
+four things about it are not obvious:
 
 - **It still takes all seven lanes.** Spec, then fixtures, then code, then a run, then two
   verdicts, then a merge. A shell script is not a shortcut around the pipeline.
+- **Four agents may not author one, and the table above does not say so** — it is a lane table,
+  not a path table, and the exclusions turn on the script's *subject* rather than on anyone's
+  lane. **Crucible** may not author a script that audits lane 4 or lane 7; **Atlas** may not
+  author one at all; **Assay** and **Warren** may not either. ADR-0005 §4.4 gives each reason.
+  Those four rows are deliberately not annotated above, because a partial copy of §4.4 in a
+  lane table is how the rule gets cited in the wrong shape.
 - **It gets no §25 identifier**, so its ledger line reads `n/a (no §25 identifier in scope)` and
   the acceptance statement in the spec is what it is judged against. Do not invent an identifier.
 - **Its fixture harness is Scribe's**, written before the script, from a fixture list Atlas
-  enumerates in the spec. The harness is NEUTRAL too, so no check stops a coding agent from
-  touching it — which is exactly why you do not.
+  enumerates in the spec — each fixture with the outcome it must produce. The harness is NEUTRAL
+  too, so no check stops a coding agent from touching it. That is a temporal control, not a
+  structural one: nothing mechanical catches you, which is exactly why you do not.
 
 ---
 
@@ -112,12 +119,14 @@ The single exception is §5 below, and it does not start with the test.
   including Warren**: it emits no coverage anchors, so §6.3's head-coverage check on the verdict
   cannot be performed at all (ADR-0005 §6.1).
 
-Each verdict goes **on that reviewer's own lane-6 issue** — one issue per reviewer, so the two
-are separately attributable — and not as a GitHub review approval, because there is one GitHub
-identity in this organisation and GitHub approvals cannot represent two reviewers
-(ADR-0005 §3.1). Your verdict states a disposition in these words — **`APPROVE`** or
-**`REQUEST CHANGES`** — and the commit sha it covers. A verdict missing either is not a verdict
-(ADR-0005 §6.3).
+Each verdict goes **on that reviewer's own lane-6 issue** — one issue per reviewer — and not as a
+GitHub review approval, because there is one GitHub identity in this organisation and GitHub
+approvals cannot represent two reviewers (ADR-0005 §3.1).
+
+**What a verdict must contain to count is ADR-0005 §6.3 condition 3, and this section does not
+restate it** — the same rule lane 7 below is written under, for the same reason. Read it before
+you post, every time. It is four clauses, and one of them is why a verdict you have already
+posted can stop counting without anyone editing it.
 
 > **The CodeRabbit App is installed** — `coderabbitai`, app id `347564`, on the organisation
 > since `2026-10-01T19:12:07Z`. Lane 6 has both reviewers again, and the single-reviewer
