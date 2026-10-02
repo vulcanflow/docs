@@ -6,7 +6,8 @@
 | **Date** | 2026-10-01 |
 | **Owner** | Atlas (Staff Architect / Tech Lead) |
 | **Closes** | TDD **§27 items 19, 20 and 21** |
-| **Amendments** | **A1** (2026-10-01) — two factual corrections from re-reading the v5.9.0 scanner tree: §3.2's custom-parser claim, and §3.5's severity remedy. Neither reverses a decision. See §7. |
+| **Also settles** | §27 item 5's *"exact scan-ID field"* limb — `metadata.uid`, decided in §3.4 and recorded in A1 §7.4. Item 5's other limbs are elsewhere: release/digests/node compatibility and CRD inputs in ADR-0002 §6, the start barrier in §5.7 and ADR-0002 §7 R6 |
+| **Amendments** | **A1** (2026-10-01) — four corrections, none of which reverses a decision: §3.2's custom-parser claim and §3.5's severity remedy (both factual, from re-reading the v5.9.0 scanner tree), §3.3's mixed `argv` index bases (presentational), and §3.4's circular citation for the scan-fingerprint field (citation; the field choice is now stated in this ADR's own voice). See §7. |
 | **Depends on** | [ADR-0002](./ADR-0002-rust-crate-set-and-phase0-pins.md) — the crate set and the secureCodeBox v5.9.0 pin |
 | **Does not close** | §27 items 16a, and the Product halves of items 2, 4 and 11 that bear on paid use |
 | **Design of record** | `VulcanFlow_Technical_Design_Document_v2.2.md` (filename says v2.2; the content is **TDD v2.3**) — §2.5.2, §2.5.3, §9, §17.5, §21.3, §24.2–24.4 |
@@ -216,23 +217,39 @@ is not JavaScript.
 getting it wrong would mean building `vf-hook-notify` as an HTTP listener that is never
 called.
 
+**One index base, stated once, used everywhere below.** Three index bases exist upstream for
+the same four URLs, and mixing them is precisely the off-by-one this section exists to
+prevent. **Every `argv[n]` in this section is absolute — the index into the process's own
+argument vector, with the binary's path at `argv[0]`.** That is `std::env::args().nth(n)` in
+Rust and `os.Args[n]` in Go. Converting between the bases, once:
+
+| | Index of the **first** presigned URL | General rule |
+|---|---|---|
+| **This section (absolute)** | `argv[1]` | — |
+| Rust, `std::env::args()` | `.nth(1)` | `.nth(n)` |
+| Go SDK, which slices `os.Args[1:]` and then indexes the slice | slice position `0` | slice position **`n − 1`** |
+| Node parser wrapper, where `process.argv[0]` is the interpreter and `[1]` the script | `process.argv[2]` | **`process.argv[n + 1]`** |
+
+Nothing below uses a slice-relative or a Node index. Where upstream's own wording is quoted
+it is converted to the absolute base, and the quote says so.
+
 | Channel | Contract |
 |---|---|
 | Env `SCAN_NAME` | **Required.** The Go SDK's `NewClient` errors if empty. |
 | Env `NAMESPACE` | **Required.** Same. |
-| `argv[1..]` | **Positional presigned URLs, in this exact order:** `[0]` raw-results **download**, `[1]` findings **download**, `[2]` raw-results **upload**, `[3]` findings **upload**. The Go SDK documents it as "(rawResults, findings, rawResultsUpload, findingsUpload), in that order". |
-| ReadOnly vs ReadAndWrite | **Distinguished only by how many URLs are passed.** A `ReadOnly` hook receives 2; the SDK's `urlAt(index)` returns `""` past the end and `UpdateRawResults` then fails with "cannot update raw results in a ReadOnly hook". There is no mode flag to read. |
-| Findings download | `argv[2]` → `GET`, parse as a **JSON array** of `Finding`, each element validated. |
+| `argv[1]` … `argv[4]` | **Positional presigned URLs, in this exact order:** `argv[1]` raw-results **download**, `argv[2]` findings **download**, `argv[3]` raw-results **upload**, `argv[4]` findings **upload**. The Go SDK documents the same list over `os.Args[1:]` as "(rawResults, findings, rawResultsUpload, findingsUpload), in that order" — slice positions `0`–`3`, which are absolute `argv[1]`–`argv[4]`. |
+| ReadOnly vs ReadAndWrite | **Distinguished only by how many URLs are passed.** A `ReadOnly` hook receives **2** — `argv[1]` and `argv[2]` are present, `argv[3]` and `argv[4]` are absent. The SDK's `urlAt(index)` returns `""` past the end and `UpdateRawResults` then fails with "cannot update raw results in a ReadOnly hook". There is no mode flag to read. |
 | Raw-results download | `argv[1]` → `GET`, as text. |
-| Writes (ReadAndWrite only) | `PUT` to the upload URL; `UpdateFindings` additionally **patches the `Scan` status** with the new finding statistics via the Kubernetes API. |
+| Findings download | `argv[2]` → `GET`, parse as a **JSON array** of `Finding`, each element validated. |
+| Writes (ReadAndWrite only) | `PUT` to the upload URL — `argv[3]` for raw results, `argv[4]` for findings. `UpdateFindings` additionally **patches the `Scan` status** with the new finding statistics via the Kubernetes API. |
 | Exit | Non-zero exit is hook failure. There is no response body. |
 
-**Note the argv index shift.** The Node parser wrapper reads `process.argv[2]` and
-`process.argv[3]` because Node's `argv[0]` is the interpreter and `argv[1]` is the script.
-The Go SDK reads `os.Args[1:]`. In a Rust binary the first URL is
-**`std::env::args().nth(1)`**. Transcribing the Node indices into Rust is an off-by-one that
-yields a confusing runtime failure rather than a compile error, so it is called out here and
-is a required check at review of `vf-hook-notify`.
+**Why the base is called out rather than left implicit.** Transcribing a Node index into Rust
+yields an off-by-one that is a confusing runtime failure, not a compile error:
+`std::env::args().nth(2)` in a Rust hook reads the *findings* download URL while the author
+believes it is reading raw results, and both are valid presigned URLs, so the first symptom is
+a parse error far from the cause. **A `vf-hook-notify` PR whose argv indices are not absolute,
+or which does not read as if `argv[1]` is the first URL, is a required change at review.**
 
 ### 3.4 Decision — hooks are Rust
 
@@ -250,8 +267,40 @@ arguments and HTTP GETs, and the Go SDK above is the conformance reference.
   (§2.5.2 already forbids `unwrap` on external input paths).
 - **Idempotency is required, not optional.** §8.4 requires ingest retries to be idempotent
   and §25 names `findings/replayed-artifact`. The hook can be invoked more than once for one
-  scan; the scan fingerprint (§21.3, `metadata.uid` of the Scan object per ADR-0002's
-  reading of §21.3) is the deduplication key, not the hook invocation.
+  scan; the **scan fingerprint** is the deduplication key, not the hook invocation.
+  §10.2 is `[CONFIRMED]` that the fingerprint *"is the unique identifier of the secureCodeBox
+  Scan"*, is stored unchanged, is not derived from finding contents and is never reused for
+  another execution; §6.2 separates it from the pipeline-run and finding identities, and
+  §6.3's `scans` table carries `UNIQUE (tenant_id, scan_fingerprint)`.
+  **Which Scan field that is, the TDD does not say, and this ADR decides it:
+  `metadata.uid`.** The API server assigns it, it is unique and never reused, and that is
+  what §10.2's no-reuse requirement needs — where `metadata.name` cannot serve, because the
+  deterministic objects §8.1 adopts on retry are unique only within a namespace and the name
+  is reusable after delete. The §25 identifier that asserts the fingerprint is
+  `execution/scan-identity` (§6.2, §21.3).
+- **What the bullet above does not decide: how `vf-hook-notify` obtains the uid.** The hook's
+  inputs are `SCAN_NAME`, `NAMESPACE` and the argv URLs (§3.3) — **the uid is not among
+  them** — while §8.4 requires the notification the hook sends to contain *"tenant/work
+  identity, actual scan fingerprint, node identity, artifact reference, and checksum"*. As
+  §8.4 is written, the fingerprint is in the hook's own payload, so the hook has to get it
+  from somewhere. Two routes exist and this amendment decides neither:
+  **(i)** the hook reads the `Scan` object by name and namespace and takes `metadata.uid`
+  from it — which puts a Kubernetes client inside a binary whose minimal surface is the §3.4
+  argument for writing it in Rust at all; or
+  **(ii)** §8.1's outbox worker, which already *"binds actual SCB fingerprints to work
+  units"*, is the only component that handles the uid, the hook's payload carries
+  `SCAN_NAME`/`NAMESPACE` as the correlation key, and `vf-ingest` resolves the fingerprint
+  from its own work records. Route (ii) keeps the hook free of a Kubernetes client, and it is
+  **not** free: it needs §8.4's payload sentence amended, because a notification that carries
+  a correlation key rather than the fingerprint is not what §8.4 says. That is a TDD
+  amendment and therefore mine, not an implementation choice.
+  Route (ii) must not be built on the assumption that `SCAN_NAME` identifies the attempt:
+  §8.1 adopts deterministic objects on retry, so a name can span more than one `metadata.uid`
+  over time, and correlating on it without the namespace and the work unit is how two
+  attempts collapse into one record. Whichever route is taken, `execution/scan-identity`
+  asserts the result, and the choice belongs in the `vf-hook-notify` work item's spec —
+  recorded here as **open and named** rather than left for whoever writes the binary to settle
+  by implementing it.
 
 **Executable confirmation.** Test ID `scb/hook-invocation-contract`: invoke the built
 `vf-hook-notify` binary as a subprocess with `SCAN_NAME` and `NAMESPACE` set and a local
@@ -468,7 +517,9 @@ generation (§4.2) becomes the better trade.
   Engineering leadership, and a staffing question rather than a technical one.
 - **§27 item 5's cluster half** — Harbor artifacts and node Kubernetes compatibility for the
   pinned secureCodeBox release. Risk R6 in ADR-0002 §7; it needs a cluster, and that hold is
-  CEO's to lift.
+  CEO's to lift. Item 5's *"exact scan-ID field"* limb **is** touched, in §3.4 — see the
+  header's "Also settles" row and A1 §7.4 — and its start-barrier limb is §5.7 work tracked
+  as R6, not a documentation gap.
 - **The Product halves of items 2, 4 and 11** — package limits, billing-period edges and
   delivery consent. These block paid use alongside §4 above; this ADR decides only the
   client shape, not the commercial policy it will carry.
@@ -498,8 +549,14 @@ owner above.
 ## 7. Amendment history
 
 Amendments are recorded here rather than silently edited in, so a reader who reviewed an earlier
-revision can see what moved. Both entries below are **factual corrections**; neither reverses a
-decision, and reversing one would need a new ADR that supersedes this record.
+revision can see what moved. §7.1 and §7.2 are **factual corrections**; §7.3 is a **presentational
+correction** — it changes how §3.3 states a contract, not what the contract is; §7.4 is a
+**citation correction**, which turned out to carry a decision that had never been stated in this
+ADR's own voice. None of the four reverses a decision, and reversing one would need a new ADR
+that supersedes this record.
+
+All four are entries under the single amendment **A1**. There is one amendment history on this
+record, not one per correction.
 
 ### 7.1 A1 §1 — §3.2's custom-parser claim is wrong (2026-10-01)
 
@@ -560,3 +617,93 @@ and **Atlas owns the record**, which must also name the fallback for findings ca
 most of Phase 1's output. Corrected here because `decisions/README.md` and this paragraph disagreed
 about the owner inside one commit (advisory A15); the README row is the design of record for status,
 and the item stays open until its ADR is accepted. Also named in ADR-0006's "Does not close" row.
+
+### 7.3 A1 §3 — §3.3 mixed two `argv` index bases in adjacent rows (2026-10-01)
+
+**Raised by me** in review of the open-decision register (docs#24). §3.3 exists for exactly one
+reason: to stop a Rust author transcribing a Node `argv` index and producing a silent off-by-one
+in `vf-hook-notify`'s presigned-URL handling. It mixed index bases while doing it.
+
+**What was there.** The `argv[1..]` row numbered the four URLs **slice-relative**:
+
+> `argv[1..]` | **Positional presigned URLs, in this exact order:** `[0]` raw-results
+> **download**, `[1]` findings **download**, `[2]` raw-results **upload**, `[3]` findings
+> **upload**.
+
+Two rows below, the download rows cited the same URLs **absolute** — *"Findings download |
+`argv[2]`"* and *"Raw-results download | `argv[1]`"*.
+
+**Both statements were correct.** Slice position `0` *is* absolute `argv[1]`, and slice position
+`1` *is* absolute `argv[2]`. Nothing was wrong; the two bases simply sat four lines apart with
+nothing saying they were different bases. A reader who took the first row's `[1]` as the findings
+download — which is what that row literally says, in its own base — and then wrote
+`std::env::args().nth(1)` would read the **raw-results** URL believing it was findings. That is
+the exact failure §3.3 was written to prevent, reachable by reading §3.3 carefully.
+
+**What changed.** §3.3 now opens with a conversion table that fixes one base — absolute, the
+process's own argument vector with the binary at `argv[0]` — and gives the general rule for the
+Go SDK's slice (`n − 1`) and the Node wrapper (`n + 1`) once. Every row below uses absolute
+indices only; the Go SDK's quoted wording is retained and marked as converted. The raw-results
+and findings download rows were also reordered to match index order, and the writes row now names
+`argv[3]` and `argv[4]` explicitly instead of saying "the upload URL".
+
+**Nothing about the contract moved.** The four URLs, their order, the two-URL `ReadOnly` case,
+`urlAt` returning `""` past the end, and the `std::env::args().nth(1)` conclusion are all
+unchanged, and the review rule is unchanged in substance — it is restated in terms of the fixed
+base so it can be applied without re-deriving it.
+
+**Why this one is rewritten in place rather than annotated.** `decisions/README.md` requires an
+amended paragraph to be annotated rather than rewritten, and §7.1 and §7.2 follow that rule. This
+entry does not, deliberately: the defect *is* the presentation, so leaving the mixed-base table in
+place under a blockquote saying "these two rows use different bases" would preserve the trap in
+the one section whose purpose is to close it. The before-state is quoted verbatim above, which is
+what the annotate-in-place rule is for — a reader who reviewed the earlier revision can see
+exactly what moved.
+
+**§25 and test impact: none.** `scb/hook-invocation-contract` (§3.4) already asserts that the
+binary reads `argv[1]` and `argv[2]`, in the absolute base, and that it tolerates receiving only
+two URLs. The test is unchanged and no test author needs to act on this amendment. It is an
+input to the implementer and to the reviewer of `vf-hook-notify`, not to the test.
+
+### 7.4 A1 §4 — §3.4's scan-fingerprint citation was circular (2026-10-01)
+
+**Raised by CEO** on VUL-41, reviewing the open-decision register (advisory 7).
+
+**What was there.** §3.4's idempotency bullet sourced the deduplication key like this:
+
+> the scan fingerprint (§21.3, `metadata.uid` of the Scan object per ADR-0002's reading of
+> §21.3) is the deduplication key, not the hook invocation.
+
+**ADR-0002 has no such reading.** It contains no `metadata.uid`, no scan-ID field choice, and —
+as it stands on `main` — no mention of a scan fingerprint at all. What it settles about
+secureCodeBox, in §6, is the pinned release, the digests, arm64 and CRD type generation; the
+only place a fingerprint appears in that document is amendment A3's §7.2 note, which is about
+this very mis-attribution and is not yet merged. The citation pointed at a
+document that says nothing on the subject, which left the only substantive claim in the bullet —
+*which field is the fingerprint* — resting on nothing. A reader following the reference finds no
+answer and has to guess, which for a deduplication key is the worst available outcome: guessing
+`metadata.name` yields a key that is reusable after delete, and the duplicate it then suppresses
+is a real second scan whose findings are silently dropped.
+
+**What changed.** The bullet now separates what the TDD confirms from what this ADR decides.
+The TDD confirms the *concept*: §10.2 `[CONFIRMED]` that the fingerprint is the unique
+identifier of the secureCodeBox Scan, stored unchanged, never derived from finding contents and
+never reused for another execution; §6.2 separating it from pipeline-run and finding identity;
+§6.3's `UNIQUE (tenant_id, scan_fingerprint)`. It does not name a field. **This ADR decides the
+field — `metadata.uid` — and now says so in its own voice**, with the reason (API-server
+assigned, cluster-unique, never reused) and the rejected alternative (`metadata.name`, which
+§8.1's deterministic objects make reusable after delete and unique only within a namespace).
+
+**One thing the correction surfaced, recorded rather than resolved.** The hook's inputs are
+`SCAN_NAME`, `NAMESPACE` and the argv URLs, and the uid is not among them — while §8.4 requires
+the hook's notification to carry the actual fingerprint. §3.4 now names that gap and the two
+candidate resolutions, and assigns it to the `vf-hook-notify` work item's spec. **It is not
+decided in this amendment**, because which component reads the uid is a service-boundary
+question and a bullet in a language decision is the wrong place to settle one.
+
+**§25 and test impact: none, and this is the second entry where that is worth saying.**
+`scb/hook-invocation-contract` asserts argv handling, required environment and two-URL
+tolerance. It does not assert deduplication, and ADR-0002 A3 §7.2 was corrected on docs#28 to
+stop claiming it feeds `findings/replayed-artifact` for that reason. The field decision above is
+asserted by `execution/scan-identity`, which is a §25 identifier and already owned by Ledger per
+§3.4. No test moves and no test author acts.
