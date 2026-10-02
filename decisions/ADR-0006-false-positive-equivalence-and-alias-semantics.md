@@ -3,7 +3,7 @@
 | | |
 |---|---|
 | **Status** | Accepted |
-| **Date** | 2026-10-01 |
+| **Date** | 2026-10-01; revised 2026-10-02 in lane 6 review — see §15 |
 | **Owner** | Atlas (Staff Architect / Tech Lead) |
 | **Closes** | TDD **§27 item 6** |
 | **Depends on** | [ADR-0002](./ADR-0002-rust-crate-set-and-phase0-pins.md) §6.1 — the secureCodeBox **v5.9.0** pin, which is the ref every field name below was read at; [ADR-0003](./ADR-0003-rpc-scb-parser-and-billing-clients.md) §3 — parsers stay on the upstream JavaScript SDK, so the per-scanner `attributes` shapes are upstream's for `subfinder`/`nuclei` and ours for `dnsx`/`httpx` |
@@ -33,8 +33,13 @@ than reopening them.
 - **§6.3 fixes the storage.** `false_positive_decisions` already has `match_version integer` and
   `match_scope jsonb`; `findings` already has `false_positive_match jsonb` ("canonical matching
   input, not scan fingerprint") and `applied_fp_decision_id`; `false_positive_events.action` is
-  already `CHECK (action IN ('revoked'))`. **This record specifies the contents of those columns and
-  requires no schema change.**
+  already `CHECK (action IN ('revoked'))`. **This record specifies the contents of those columns. No
+  new table and no new column is required for the match key itself** — but two migrations do fall out
+  of it, and they are named rather than left for Phase 1 planning to discover:
+  **(1)** `false_positive_events.reason text` for §6's recorded revocation reason, which §6.3 has
+  nowhere to put; **(2)** the stored generated column or expression index §3.6 requires, either of
+  which is DDL. The original claim — *"requires no schema change"* — was broader than the evidence
+  and is withdrawn to this narrower one.
 
 What was missing is the only part §10.2 deferred: *which fields*, per scanner, for the
 `subfinder → dnsx → httpx → nuclei` pipeline of §24.1. Without it `findings/fp-only-persistence` is
@@ -60,7 +65,8 @@ too narrow produces noise; a matcher that is too wide produces silence. Prefer n
 | 4 | Alias semantics | Aliases map `check_id` **only**; **directed, non-transitive, equal-or-narrower, evidence-bearing, versioned, cross-scanner forbidden**, evaluated at match time and never written back into a stored decision (§5). |
 | 5 | Revocation | Append-only; affects **future** matching only; never rewrites a past applied record or a saved report; never reactivates (§6). |
 | 6 | Scanner version bump | A bump alone invalidates nothing. A **declared field-semantics change** does: per-scanner `field_semantics_version`, bumped in the scanner-pin PR, **stales** every decision stored under the prior value — retained and visible, suppressing nothing (§7). |
-| 7 | Evidence | Ten worked negative examples in §8, at least two per scanner, each with the loose key that collapses the pair and the consequence of the collapse. The nuclei case ships as an **upstream fixture file** Ledger can use verbatim. |
+| 7 | Evidence | **Eleven** worked negative examples in §8, at least two per scanner, each with the loose key that collapses the pair and the consequence of the collapse. Two of them (§8.4.1, §8.4.7) ship as **upstream fixture files** Ledger can use verbatim. |
+| 8 | Schema | No new table or column for the match key itself; **two** migrations named in §1 — `false_positive_events.reason text` (§6) and §3.6's generated column or expression index. |
 
 ### 2.1 Acceptance statement
 
@@ -93,7 +99,7 @@ object. `match_version` on the decision carries the integer in the first row.
 | `port` | component | u16, resolved per §3.3. `NotApplicable` for checks with no port dimension. |
 | `protocol` | component | Lowercase scheme or transport, per §4. `NotApplicable` where the check has no protocol dimension. |
 | `location` | component | Normalized path-and-query per §3.3. `NotApplicable` where the check has no sub-host location. |
-| `discriminator` | component | The per-scanner remainder named in §4 — the part that carries "which of the several findings this check can produce on one location is this one". `NotApplicable` where §4 says so. |
+| `discriminator` | component | The per-scanner remainder named in §4 — the part that carries "which of the several findings this check can produce on one location is this one". An **ordered sequence** of the sub-values §4 names for that scanner, serialized by the tag-and-length rule in §3.3; one component, one slot, one encoding. `NotApplicable` only where §4 says the scanner has no discriminator dimension at all. |
 
 ### 3.1.1 The comparison rule — eleven components equal, one aliasable
 
@@ -143,6 +149,18 @@ short. Where a rule is omitted, the omission is stated and its consequence is na
 false`, then ASCII-lowercase; strip **exactly one** trailing `.`; reject empty labels, a label over
 63 octets, or a name over 253 octets.
 
+> **"Reject" means the component is `Unknown`, not that the key is silently short one field.** A
+> value that does not canonicalize to a hostname has not been understood, and §3.4 then makes the
+> whole key non-storable and non-matchable. Stating this is not pedantry: §4.5's `canonical_host`
+> source can carry a `host:port` string (see §4.5's row), and the difference between "rejected" and
+> "`Unknown`" is the difference between an implementer inventing a fallback and one returning 422.
+
+> *Why NFKC here and NFC for set elements below.* Hostnames are **identifiers** and UTS-46 is
+> defined over NFKC, so compatibility folding is what the resolver will do anyway. Set elements are
+> **opaque payloads** — an extracted string, a TXT record — where NFKC would fold distinct bytes
+> together (`ﬁ` → `fi`) and merge two different findings into one key. Different jobs, different
+> forms, on purpose. (Advisory A3.)
+
 > **This must be the same canonicalizer as §5.3 scope matching, in `vf-core`.** Not a second one.
 > A second host canonicalizer is a design failure: the two would drift, and the drift would be a
 > suppression that applies to a host the scope matcher considers different. §25's
@@ -154,10 +172,14 @@ false`, then ASCII-lowercase; strip **exactly one** trailing `.`; reject empty l
 compression, no leading zeros). Set only when the finding's subject is an IP literal rather than a
 name.
 
-**`port`.** Taken from the URL when present; otherwise defaulted **from the scheme** — `http`→80,
-`https`→443. If the check has a port dimension and neither a port nor a known scheme is available,
-the component is `Unknown` (§3.4). Default-port folding is required, not optional: without it
-`https://example.com` and `https://example.com:443` are two keys for one service.
+**`port`.** Taken from the URL when present; otherwise defaulted **from the scheme**, using exactly
+this table and no other: `http`→80, `https`→443. **No other scheme defaults** — not `ftp`, not
+`ssh`, and in particular not the nuclei `type` values `dns`, `ssl`, `tcp`, `javascript`, which are
+not schemes at all. If the check **has** a port dimension and neither a port nor a defaulting scheme
+is available, the component is `Unknown` (§3.4); if the check has **no** port dimension it is
+`NotApplicable`, and which checks those are is named per scanner in §4, not inferred here.
+Default-port folding is required, not optional: without it `https://example.com` and
+`https://example.com:443` are two keys for one service.
 
 **`location`.** Path **and query**, fragment stripped (a fragment is never sent on the wire).
 Empty path becomes `/`. Otherwise **verbatim**: no percent-decoding, no case folding, no collapsing
@@ -167,16 +189,58 @@ of repeated separators, no trailing-slash normalization.
 > Case folding merges `/Admin` with `/admin`, which are different resources. The query must be in
 > the key because §10.2 names *parameter* as a location discriminator, and for an injection template
 > `?id=1` and `?id=2` are two findings. **Omitted on purpose:** query-parameter *ordering* is not
-> normalized, so `?a=1&b=2` and `?b=2&a=1` are two keys. That can only under-suppress, and the
-> scanners emit parameters deterministically, so the extra rule is not worth its collision risk.
+> normalized, so `?a=1&b=2` and `?b=2&a=1` are two keys. **The omission is justified by its
+> direction alone:** order-insensitivity could only ever *merge* two keys into one, which is the
+> direction §1 forbids, so the missing rule can only cost noise. It is **not** justified by scanner
+> determinism, which does not hold across all four: it holds vacuously for `subfinder` and `dnsx`
+> (`location` is `NotApplicable`), and for `httpx` (`location` derives from `url`, which echoes the
+> request we built from our own `targets` row) — but **not for `nuclei`**, whose `location` derives
+> from `attributes.matched_at`, a value the scanned host can influence (§4.5a) and which carries
+> generated parameters for `fuzzing:`/`payloads:` templates. Stating this matters because the record
+> is precedent: "the scanners emit it deterministically" must not be reusable as a reason to drop the
+> next rule.
 
 **Set-valued components** (`discriminator` inputs that are arrays — DNS record values, nuclei
-`extracted_results`). Digest = SHA-256 over the concatenation of each element, NFC-normalized,
-sorted by its normalized bytes, and **length-prefixed** with a `u32` big-endian octet count.
+`extracted_results`). The digest is:
 
-> Sorting because no scanner guarantees array order. Length-prefixing because plain concatenation is
-> ambiguous: `["ab","c"]` and `["a","bc"]` both yield `abc`, and an attacker who controls one
-> extracted value controls which other finding it collides with.
+> SHA-256 over the concatenation of, **for each element in ascending order of its NFC-normalized
+> bytes**, a `u32` big-endian octet count **of that element** followed by that element's
+> NFC-normalized bytes.
+
+The length prefix is **per element**, not one prefix over the whole concatenation. That distinction
+is the entire point of the rule, so it is spelled out rather than implied: a single prefix over the
+concatenation gives `["ab","c"]` and `["a","bc"]` the same total length `3` and therefore the
+identical digest, which is the collision the rule exists to stop. Sorting is required because no
+scanner guarantees array order; per-element length-prefixing is required because plain concatenation
+is ambiguous, and an attacker who controls one extracted value would otherwise control which other
+finding it collides with.
+
+**Duplicates are kept, not deduplicated.** `["a","a"]` and `["a"]` digest differently. Two records
+carrying the same value is an observable difference in the answer a resolver gave or in what a
+template extracted, and collapsing it could only ever *merge* two keys — the direction §1 forbids.
+The cost is accepted and named: a set whose multiplicity changes between scans re-surfaces as `new`.
+
+**`discriminator` is a sequence, and its serialization is specified here, not left to Forge.** §4
+defines, per scanner, an **ordered list of sub-values** for this component — one for `dnsx`, two for
+`nuclei`, none for `subfinder` and `httpx`. Because the key is compared by byte equality, a
+multi-sub-value component with an unstated delimiter is not a specification. The canonical form is:
+
+> For each sub-value, in the order §4 lists it: one tag octet — `0x00` for `NotApplicable`, `0x01`
+> for `Present` — followed, **only when `Present`**, by a `u32` big-endian octet count and that
+> sub-value's bytes. A sub-value that is itself a set is first reduced to its 32-octet set digest
+> above and carried as `Present` with the digest as its bytes. The component's `Present(String)` value
+> (§3.4) is the lowercase hex of this byte sequence.
+
+Three consequences, all deliberate:
+
+- The component is `NotApplicable` **only** where §4 says the scanner has no discriminator at all. A
+  sequence in which *every* sub-value happens to be `NotApplicable` is `Present` — the two tag octets
+  `0x00 0x00` — and does **not** equal `NotApplicable`. "This template has no matcher name and
+  extracted nothing" and "this scanner has no discriminator dimension" are different statements and
+  must not share a key.
+- Any sub-value that is `Unknown` makes the whole component `Unknown`, and §3.4 then applies.
+- The tag octets mean the four `(matcher_name, extracted_results)` combinations in §4.5 are four
+  distinct byte strings, with no delimiter to collide with a sub-value's own bytes.
 
 ### 3.4 Absence is a typed third state, and `Unknown` is fatal
 
@@ -205,13 +269,21 @@ And for subfinder it is an outright trap: `attributes.domain` is the *root queri
 finding's host (§8.1.2). Using our own authorized target row removes both problems and is the
 tenant-scoped, trustworthy source by construction.
 
+**The cost, named rather than discovered later.** `scope_root` can over-narrow. If one host resolves
+to a *different* `targets` row between scans — a target reorganised, or deleted and re-added at a
+different scope — `scope_root` changes and every stored decision on that host stops matching. The
+user re-marks. That is the direction §1 permits and the component stays, but it is a real behaviour a
+support engineer will see and should not have to rediscover: **"I deleted and re-added the target and
+all my false-positive marks came back"** is expected, not a bug. (Advisory A2.)
+
 ### 3.6 Matching must be an index lookup
 
 §10.5 requires the findings path to stay interactive, and §10.4 applies matching to **every**
 observation of **every** scan. The canonical serialization of §3.1 is therefore required to be a
 deterministic byte string, and matching is equality on it (or on its digest) — never a `jsonb`
 containment scan over the tenant's decisions. Whether that lands as a stored generated column or an
-expression index is Forge's call; that it is not a per-row scan is not.
+expression index is Forge's call; that it is not a per-row scan is not. **Either choice is DDL**, and
+it is one of the two migrations enumerated in §2's "no schema change" row — see §6 for the other.
 
 **The §3.1.1 alias clause does not weaken this, because it is resolved before the lookup, not during
 it.** Aliasing substitutes one component of the probe, so it turns one equality lookup into a small
@@ -305,7 +377,24 @@ SOA, PTR`. One observation per (name, record type) actually returned.
 | `port` | — | `NotApplicable`, except `SRV`, whose port is part of the record value and therefore of the `discriminator`, not of this component |
 | `protocol` | — | Always `NotApplicable`. The DNS transport (UDP/TCP/DoH) is not part of the finding's identity |
 | `location` | — | Always `NotApplicable` |
-| `discriminator` | **Set digest (§3.3) of the record values for that type**, each lowercased for name-valued types (`cname`, `mx`, `ns`, `ptr`, `srv`, `soa.ns`) and with a single trailing `.` stripped; verbatim for `txt` and `caa`; normalized per `canonical_addr` rules for `a`/`aaaa` | Never `NotApplicable`. If the values could not be read, `Unknown` — and §3.4 applies |
+| `discriminator` | **One sub-value** (§3.3): the set digest of the record values for that type, each lowercased for name-valued types (`cname`, `mx`, `ns`, `ptr`, `srv`) and with a single trailing `.` stripped; verbatim for `txt` and `caa`; normalized per `canonical_addr` rules for `a`/`aaaa`; for `soa`, the per-element string defined in §4.3.1 | Never `NotApplicable`. If the values could not be read, `Unknown` — and §3.4 applies |
+
+### 4.3.1 `soa` is a struct, not a string — and only three of its eight fields are identity
+
+`retryabledns` `v1.0.116` declares `SOA` as a struct, not a string:
+`name`, `ns`, `mailbox`, `serial`, `refresh`, `retry`, `expire`, `minttl` (`client.go:760–769`, read
+at that tag). `DNSData.soa` is therefore `[]SOA`, the only record array that is not `[]string`. A rule
+that names only `soa.ns` leaves seven fields undefined, and one of them — `serial` — increments on
+**every zone edit**, so "include everything" and "include `ns` only" differ by a feature that churns
+on every DNS change versus a record type keyed far more narrowly than every other.
+
+**The per-element string for an `soa` observation is `name ‖ 0x1F ‖ ns ‖ 0x1F ‖ mailbox`**, each of
+the three lowercased with a single trailing `.` stripped, before the §3.3 set digest is taken.
+`serial`, `refresh`, `retry`, `expire` and `minttl` are **excluded**: they are timers and counters —
+"time, not identity", the same reason §4.3 already gives for `ttl`. `mailbox` is kept because it is
+identity-bearing: a zone's responsible mailbox changing is a change in who owns the zone, which is
+exactly the kind of thing a suppression should not outlive. `0x1F` (unit separator) cannot occur in a
+DNS name, so no escaping rule is needed.
 
 **Deliberately excluded.** `ttl`, `timestamp`, `query-time` — time, not identity. `resolver` — which
 resolver answered is evidence about the measurement, not about the record. `cdn`, `cdn-name`,
@@ -313,6 +402,18 @@ resolver answered is evidence about the measurement, not about the record. `cdn`
 the value and make the key move when a CDN re-labels an IP range. `status_code` / `status_code_raw` —
 a `NOERROR` and a later `SERVFAIL` for the same name are not the same observation, but a failed
 lookup produces no record observation at all, so this never reaches the key.
+**`all`** (`DNSData.AllRecords`, `json:"all"`) — the flattened list of every record across **all**
+types. This one is named explicitly because it is the single most inviting wrong answer in the
+struct: an implementer reaching for it as the discriminator source merges A and CNAME values into one
+digest, which is precisely the collapse §8.2.2 exists to prevent, reached by *reading* §4.3 rather
+than by ignoring it. Also excluded: `raw`, `raw_resp`, `trace`, `axfr` — wire-level evidence;
+`internal_ips`, `has_internal_ips`, `hosts_file` — derived labels about the measurement environment.
+
+> **And the list does not have to be exhaustive to be safe:** *any `DNSData` field not named in the
+> §4.3 table above is excluded from the key by construction.* The table is the allowlist; this
+> paragraph only explains the ones a reasonable implementer would reach for anyway. The distinction
+> matters more here than for `subfinder`/`nuclei`, because §4.1/A1 §7.1 established that **we** write
+> this parser — §4.3 is the only specification its author has.
 
 > *Note the mixed JSON conventions in dnsx's output, so a parser author does not guess:* `DNSData`
 > uses snake_case (`status_code`, `has_internal_ips`) while the `ResponseData` wrapper added by dnsx
@@ -330,15 +431,43 @@ Check class: `httpx/http-service`. One class at `match_version = 1`.
 | `port` | `port`, else defaulted from `scheme` per §3.3 | `Unknown` if neither — §3.4 applies |
 | `protocol` | `scheme`, lowercased | `Unknown` if absent |
 | `location` | `path` (plus query) from **`url`** — **never `final_url`** | Empty → `/`. See §8.3.1 |
-| `discriminator` | — | `NotApplicable` at `match_version = 1` |
+| `discriminator` | — | Always `NotApplicable` at `match_version = 1`; httpx has no discriminator dimension |
+
+**`failed` and `error` are preconditions, not key components** — the §4.5 `matcher_status` rule, for
+the scanner that needs it just as much. `runner.Result` carries `failed bool` (`json:"failed"`) and
+`error string` (`json:"error,omitempty"`), and `port`, `scheme` and `url` are all `omitempty`. A
+`Result` with `failed: true` or a non-empty `error` is a **measurement failure, not a service
+observation**: it must not become an observation, and so it never reaches the matcher. Without this
+rule a failed probe becomes an observation whose `port` and `protocol` are `Unknown`, which under
+§3.4 returns 422 when a user tries to mark it — a finding that cannot be marked a false positive,
+with nothing in the product able to explain why.
 
 **Deliberately excluded.** `final_url` — attacker-influenceable and a mass-collapse primitive
-(§8.3.1). `host_ip`, `a`, `aaaa`, `cname`, `asn.*`, `cdn*` — address-level, and §6.2 is explicit that
+(§8.3.1). **`location`** — and this one needs saying out loud, because it name-collides with the key
+component called `location` and is the more direct form of the same defect: `Result.Location` is the
+**raw `Location` response header**, assigned `resp.GetHeaderPart("Location", ";")` at
+`runner/runner.go:2685`, `v1.12.0`. §8.3.1's whole argument is that `final_url` must stay out because
+it is *derived from* that header; the header's own field is §8.3.1 with the indirection removed, and
+an implementer reading the `location` row of the table above and reaching for `Result.location` would
+put an attacker-set value straight into the key. **`sni`** — a plausible and wrong `canonical_host`
+source: it is the name we sent, not the name the finding is about, and it is empty on plain HTTP.
+`host_ip`, `a`, `aaaa`, `cname`, `asn.*`, `cdn*` — address-level, and §6.2 is explicit that
 *"IP/port alone is not a universal asset identity"* (§8.3.2). `status_code`, `title`, `webserver`,
 `tech`, `cpe`, `content_length`, `words`, `lines`, `favicon*`, `hash`, `jarm_hash`, `body_preview`,
 `time` — response content and fingerprints, which change on any deploy; a key that moves when the
 page changes would silently drop every suppression on the next release. `input` — our own echo, see
-§3.5. `vhost` — a boolean about the *host*, already carried by `canonical_host`.
+§3.5. `vhost` — a boolean about the *host*, already carried by `canonical_host`. Also excluded, one
+reason for the group: `method`, `content_type`, `csp`, `tls`, `chain`, `chain_status_codes`,
+`extracts`, `extract_regex`, `header`, `raw_header`, `request`, `body`, `headless_body`,
+`body_fqdn`, `body_domains`, `knowledgebase`, `trace`, `resolvers`, `timestamp`, `websocket`,
+`http2`, `pipeline`, `wordpress`, `screenshot_*`, `stored_response_path`, `favicon_md5`,
+`favicon_path`, `favicon_url` — response content, probe configuration or measurement evidence, none
+of them part of *which service at which location* this observation is about.
+
+> **Same closer as §4.3, and for the same reason:** *any `runner.Result` field not named in the §4.4
+> table above is excluded from the key by construction.* We write this parser (§4.1), so §4.4 is the
+> only specification its author has, and an allowlist that fails closed is the only safe shape for
+> it.
 
 ### 4.5 `nuclei` — template findings
 
@@ -348,12 +477,98 @@ to `finding["template-id"]` verbatim.
 | Key component | Source field | When absent |
 |---|---|---|
 | `check_id` | `nuclei/` + `attributes.template_id` (= envelope `category`) | Never absent; required by the envelope schema |
-| `canonical_host` | `attributes.hostname` — the parser's `parseHostname(finding.host)`, which strips the scheme when `finding.host` is URL-shaped | `NotApplicable` if it is an IP literal, which then goes to `canonical_addr` |
+| `canonical_host` | `attributes.hostname`, **after the §4.5b shape rules** — the parser's `parseHostname(finding.host)` returns the host verbatim when it carries no `scheme://`, and `null` on falsy or unparseable input, so it is not always a hostname | `NotApplicable` if it is an IP literal, which then goes to `canonical_addr`. `Unknown` when §4.5b says so |
 | `canonical_addr` | `attributes.hostname` when it is an IP literal. **Never `attributes.ip_addresses`** | See §8.4.4 |
-| `port` | Parsed from `attributes.matched_at`, else defaulted from `attributes.type`/scheme per §3.3 | `Unknown` if the protocol has a port dimension and neither is available |
+| `port` | **Only** per the §4.5c port-dimension table — from the `:port` in `attributes.hostname` (§4.5b), else the port in `attributes.matched_at` **when §4.5a admits it**, else the §3.3 scheme default | `NotApplicable` for `type: dns`; `Unknown` where §4.5a/§4.5c say so |
 | `protocol` | `attributes.type` (`http`, `dns`, `ssl`, `tcp`, `javascript`, …), lowercased | `Unknown` if absent. See §8.4.2 |
-| `location` | Path-and-query of `attributes.matched_at`, per §3.3 | `NotApplicable` when `attributes.type` has no sub-host location (`dns`, `ssl`) |
-| `discriminator` | **`attributes.matcher_name` ⧺ the set digest (§3.3) of `attributes.extracted_results`.** Both are part of the finding's identity | `matcher_name` is `null` for single-matcher templates — that is a genuine `NotApplicable`, not `Unknown`. An empty `extracted_results` is likewise `NotApplicable` |
+| `location` | Path-and-query of `attributes.matched_at`, per §3.3, **when §4.5a admits it** | `NotApplicable` per the §4.5c table; `Unknown` where §4.5a says so |
+| `discriminator` | A **two-sub-value sequence** (§3.3), in this order: **(1)** `attributes.matcher_name`, **(2)** the set digest of `attributes.extracted_results`. Both are part of the finding's identity | Each sub-value is independently `NotApplicable` — `matcher_name` is `null` for single-matcher templates, and `extracted_results` is often empty. Per §3.3 the component itself is still `Present`: `0x00 0x00` for the both-absent case, which is **not** the same as `NotApplicable` |
+
+### 4.5a `matched_at` may name a different host than `attributes.hostname` — and then the key is not storable
+
+This is the one place where §8.3.1's standard was applied to `httpx` and not to `nuclei`, and
+upstream's own fixture at the cited ref contains the case.
+`scanners/nuclei/parser/__testFiles__/example-com-test.jsonl` at secureCodeBox `v5.9.0`, last line:
+
+```
+template-id: azure-domain-tenant   type: http
+host:        https://example.com
+matched-at:  https://login.microsoftonline.com:443/example.com/v2.0/.well-known/openid-configuration
+ip:          40.126.32.140
+```
+
+Under §4.5's table as originally written that observation keys as `canonical_host = example.com`
+(from `attributes.hostname`) with `port = 443` and
+`location = /example.com/v2.0/.well-known/openid-configuration` — **a port and a path on a host where
+neither exists**. The record gave no rule for the divergence, so two implementers would do two
+different things and the text would not call either wrong.
+
+**The rule.** Canonicalize `matched_at`'s host under §3.3 and compare it to the observation's
+`canonical_host` (or `canonical_addr`). If they differ, `port` and `location` are **`Unknown`**, and
+§3.4 then makes the whole key non-storable and non-matchable: `POST …/state` returns 422 and the
+observation matches nothing. A finding whose location belongs to a host we did not key is a finding we
+cannot fully locate, and §3.4 already says such a finding must not be suppressed and must not be
+suppressed *with*.
+
+The alternative — key `port`/`location` only when the hosts agree and `NotApplicable` otherwise — is
+**rejected**: it collapses every third-party-probe template on one host into one key, which is the
+§8.4.1 collapse with a different cause.
+
+**And the same field is attacker-influenceable in the §8.3.1 sense, so there is a second control.**
+`matched_at` is the URL where the match occurred, which under redirect following is the
+**post-redirect** URL — a value the scanned host chooses. §8.3.1 excludes httpx's `final_url` for
+exactly this property and concludes that *"a key component an outside party can set is a suppression
+primitive."* Therefore: **the VulcanFlow nuclei `ScanType` must disable redirect following**, as a
+property of the approved check/template catalog (§21.3), and `supply-chain/check-catalog` is the
+identifier that has to assert it. With redirects off, `matched_at`'s host is stable for `http`
+templates and the §4.5a rule above is the backstop rather than the primary control. The worked
+negative example is §8.4.7.
+
+> Precision about evidence: the **host divergence is confirmed** from the fixture above, read at
+> `v5.9.0` on 2026-10-02. The **redirect behaviour is an inference** from nuclei's documented
+> `-follow-redirects` option, not something executed here — this record runs no suites (ADR-0005
+> lane 4). The control is specified as a `ScanType` property precisely because it is cheap to assert
+> statically and does not depend on that inference being right.
+
+### 4.5b The two non-URL shapes `attributes.hostname` actually takes
+
+`parseHostname` (`scanners/nuclei/parser/parser.js:96–118`, `v5.9.0`) returns the input **verbatim**
+unless it matches `/^[a-zA-Z][a-zA-Z0-9+.-]*:\/\//`, and returns **`null`** on falsy input or on a
+scheme-bearing string `new URL()` cannot parse. So `attributes.hostname` is not always a hostname:
+
+- **No scheme.** Upstream ships this case as its own fixture — `hostname-without-port.jsonl` at
+  `v5.9.0` is a `caa-fingerprint` finding with `host: example.com`, which `parseHostname` returns
+  unchanged. Harmless: it is already a bare hostname and §3.3 accepts it.
+- **`host:port` with no scheme.** The nuclei convention for `network`/`tcp` templates is
+  `example.com:8443`, which has no `://` and is therefore returned verbatim. **Rule:** split a single
+  trailing `:<port>` off `attributes.hostname` **before** §3.3 canonicalization and feed it to the
+  `port` component. Without this rule §3.3 rejects the value (a `:` makes an invalid label) → `Unknown`
+  → 422, and **no nuclei `tcp`/`network` finding could ever be marked a false positive** — for a
+  protocol §4.5's own `protocol` row lists. It fails safe, which is why it is a required fix and not a
+  defect in the field, but it silently disables the feature for a protocol this record claims.
+- **`null`.** Maps to **`Unknown`**, explicitly. §3.4 applies: non-storable, non-matchable, 422.
+
+### 4.5c Which nuclei `type` values have a port dimension and a location dimension
+
+§4.3 gets this right for `dnsx` by saying `NotApplicable` outright; §4.5 left `port` to be inferred
+and the fixture shows the cost. `cname-fingerprint` in `secureCodeBox-test.jsonl` is `type: dns` with
+`matched-at: https://www.securecodebox.io`, so the original rule — *"parsed from `matched_at`, else
+defaulted from the scheme"* — gives a DNS observation **port 443**, off an `https` scheme on a finding
+that never touched TCP 443. The other available reading yields `Unknown` → 422, making DNS nuclei
+findings unsuppressible. One reading produces a nonsense key; the other disables the feature. Neither
+is acceptable, and the fix is to stop inferring:
+
+| `attributes.type` | `port` | `location` |
+|---|---|---|
+| `http` | Present (from `matched_at` per §4.5a, else §3.3's `http`→80 / `https`→443) | Present (path-and-query, §4.5a) |
+| `ssl` | Present (from `matched_at`/`hostname`, else `https`→443) | `NotApplicable` |
+| `tcp`, `network` | Present (from the `:port` in `attributes.hostname`, §4.5b; `Unknown` if absent — a TCP check with no port is not located) | `NotApplicable` |
+| `dns` | **`NotApplicable`** | `NotApplicable` |
+| any other `type` | `Unknown` | `Unknown` |
+
+The last row is deliberate and is the §3.4 posture applied to our own ignorance: a `type` this record
+has not specified (`javascript`, `websocket`, `whois`, anything upstream adds) is a check class we
+cannot locate, so it gets no suppression until an amendment adds its row. Noise, not silence.
 
 **`matcher_status` is a precondition, not a key component.** The parser passes
 `attributes.matcher_status` straight through, and nuclei only emits `false` under `-matcher-status`.
@@ -375,7 +590,10 @@ with every template-pack release and would stale every key monthly for no identi
 `attributes.template`, `attributes.template_url` — the path and URL the template was loaded from;
 `template_id` is the identity, the path is where it happened to live. `attributes.timestamp`,
 `attributes.request`, `attributes.response`, `attributes.curl_command`, `attributes.matched_line` —
-evidence. Envelope `location` (= `finding.host` verbatim) — §8.4.2. Envelope `severity` — §8.4.5.
+evidence. `attributes.path` — the parser emits `finding.path || null` and it is `null` in all five
+v5.9.0 fixtures; the located path comes from `matched_at` under §4.5a, and this is the one
+`attributes.*` key the tables above would otherwise neither use nor exclude. Envelope `location`
+(= `finding.host` verbatim) — §8.4.2. Envelope `severity` — §8.4.5.
 
 ---
 
@@ -440,6 +658,23 @@ Cycles are rejected at load. A `from_check_id` appearing on more than one edge v
 depend on row order. An edge whose `scanner_id` does not match both check ids' prefixes is rejected.
 Withdrawing an edge is append-only, like a revocation, and takes effect on future matching only.
 
+### 5.8 Phase 1 has no use for this machinery, and that is the right outcome
+
+Worth stating so the next reader does not reach §8.4.1a and conclude the registry is broken. Across
+the four Phase-1 scanners, `check_id` is a **constant** for `subfinder` and `httpx`, an **RRTYPE** for
+`dnsx` (never renamed), and `nuclei/<template-id>` — and the one upstream rename this record
+documents from refs, `permission-policy` → `permissions-policy` (§8.4.1a), is a **matcher-name**
+rename under an unchanged `template-id`. `matcher_name` lives in the `discriminator`, and §5.1 forbids
+aliasing a discriminator, so the registry cannot express it.
+
+That is not a gap to close. **Matcher-name renames are out of scope for aliasing**, deliberately: a
+matcher is *which of several findings this check produced*, and carrying a decision across it would be
+a broadening of exactly the kind §10.2 forbids. The correct handling is §5.6's default — no carry-over,
+the user re-marks, which is noise — plus §7.2's staling when the template pack's
+`field_semantics_version` moves. So §5 is expected to sit unused in Phase 1. The machinery exists
+because the first alias anyone proposes will be proposed under pressure, and the constraints are
+cheaper to write now than to argue about then.
+
 ---
 
 ## 6. Revocation
@@ -462,8 +697,14 @@ existing `false_positive_events` row with `action = 'revoked'`.
   countable in advance, and so is suppression: the UI states how many currently-suppressed
   observations a decision covers. A user who cannot see what a suppression reaches cannot be said to
   have reviewed it.
-- **Reason recorded.** `false_positive_decisions.reason` exists for the decision; the revocation
-  event carries its own actor, and a reason field for it is a UI requirement, not a schema change.
+- **Reason recorded — and this one needs a column.** `false_positive_decisions.reason` exists for the
+  decision. The revocation event carries its own actor and timestamp, but TDD §6.3's
+  `false_positive_events` is `(id, tenant_id, decision_id, action, actor_id, created_at)`: there is no
+  column a revocation reason can be written to. So either the reason is not persisted — in which case
+  this bullet is unsatisfied and §10.2's audit trail is incomplete — or `false_positive_events` gains
+  **`reason text`**. This record takes the second: the reason is part of the audit trail, and the
+  migration is named in §1 rather than described as a UI concern. An earlier draft of this bullet
+  called it *"a UI requirement, not a schema change"*; that was wrong and is corrected here.
 
 ---
 
@@ -489,8 +730,18 @@ Decisions stored under a superseded value become **stale**: retained, shown to t
 the version that produced them, and **suppressing nothing**. Stale is not revoked — the record of the
 user's judgment survives — and re-affirming is a new decision under §6.
 
+**Where the *current* value lives.** The stored value is in `match_scope`; staleness is a comparison
+against a current value, and that value is **committed configuration in `vulcanflow/platform`, in the
+same CI-validated file set as the §5 alias registry** — not a database row and not an environment
+variable. That is what keeps §7.2 free of the migrations §1 now enumerates, it is what makes the
+increment reviewable in the scanner-pin PR that causes it, and it gives
+`supply-chain/check-catalog` something concrete to assert against: the file exists, every
+`scanner_id` in §3.1's enum has a row, and the pin PR that changes an image digest either leaves the
+row alone or increments it. (Advisory A6.)
+
 This hangs off the existing bump checklist in ADR-0002 §6.3 and the approved check/template catalog
-in §21.3, and it is the behaviour §25's `supply-chain/check-catalog` has to cover for templates.
+in §21.3, and it is the behaviour §25's `supply-chain/check-catalog` has to cover for templates. The
+nuclei `ScanType`'s redirect-following setting (§4.5a) is a property of that same catalog.
 
 ### 7.3 Why this gate is mandatory and not advisory — the httpx `host` case
 
@@ -535,7 +786,8 @@ is why §7 is part of this record rather than a note in an operations runbook.
 ## 8. Negative examples — pairs that look equivalent and must not be
 
 Each case states the pair, the loose key that collapses it, and the consequence. These are the corpus
-for `findings/fp-only-persistence` (§9).
+for `findings/fp-only-persistence` (§9). Eleven cases: at least two per scanner, plus §8.4.7, which
+was added in review because §4.5a is the rule a reviewer held the merge for.
 
 ### 8.1 subfinder
 
@@ -673,6 +925,16 @@ throughout. Under §4.5 each of them yields a different `discriminator` and ther
 which is the correct outcome and is noise, not silence. The one case these refs do *not* show is a
 matcher body broadened under an unchanged name, which is exactly the case §7.2's gate exists for.
 
+**8.4.1b — and a third pack is in the same directory, which is why §7.2's gate is about *declared*
+semantics and not about release numbers.** `example-com-test.jsonl` at the **same** `v5.9.0` ref
+carries **seventeen** `http-missing-security-headers` findings for one host: §8.4.1's sixteen matcher
+names **plus** `strict-transport-security`. So one upstream tree contains two fixtures captured at two
+different template packs (16 and 17 matchers) and the pinned pack `v10.4.9` is a third (12). "New
+relative to the fixture's pack" is the only claim §8.4.1a makes, and this is why it is worded that
+way: "new since v5.9.0" would be false, because v5.9.0 itself contains two different packs' output.
+A record that keyed anything to a *release number* rather than to a declared
+`field_semantics_version` (§7.2) would already be wrong inside one upstream tag.
+
 **8.4.2 — `location` is URL-shaped even when the finding is not HTTP, so `protocol` must be in the
 key.** In the same fixture, `cname-fingerprint` has `type: dns`, `tls-version` and `ssl-dns-names`
 have `type: ssl`, and the rest have `type: http` — and **all** of them carry
@@ -701,9 +963,12 @@ positive: that address is published on purpose.
   (which extracted `docs.securecodebox.io` and `www.securecodebox.io` here) will re-surface when a
   certificate is reissued with a different SAN set. That is noise.
 
-**8.4.4 — `ip_addresses`.** The fixture's findings all carry `ip: 34.159.58.69`, which the parser
-maps to `attributes.ip_addresses`. Keying on it reproduces §8.3.2 exactly: two hostnames behind one
-address become one key. Excluded, per §4.5.
+**8.4.4 — `ip_addresses`.** In `secureCodeBox-test.jsonl` at `v5.9.0`, **21 of the 22** findings carry
+`ip: 34.159.58.69` — every finding but the `dns` one, `cname-fingerprint`, which has no `ip` key at
+all and for which the parser emits `ip_addresses: []`. (An earlier draft said *"all"*; counted at the
+tag on 2026-10-02, it is 21 of 22. The argument is unaffected and the exception is itself useful: the
+one finding with no address is the one whose observation class has no address dimension.) Keying on it
+reproduces §8.3.2 exactly: two hostnames behind one address become one key. Excluded, per §4.5.
 
 **8.4.5 — severity is not an identity, and cannot be made into one.** `findings-schema.json` at
 `v5.9.0` restricts `severity` to `INFORMATIONAL | LOW | MEDIUM | HIGH`, and the v5.9.0 nuclei parser's
@@ -727,6 +992,32 @@ broadening what an existing matcher detects produces an unchanged key, and an ex
 applying to a check that now detects more. The key cannot see it; §7.2's bump gate is the only
 control, which is why that gate is in this record.
 
+**8.4.7 — `matched_at` on a host that is not the finding's host. (Upstream fixture, eleventh example,
+and it is the one §4.5a exists for.)** `scanners/nuclei/parser/__testFiles__/example-com-test.jsonl`
+at secureCodeBox `v5.9.0` — same directory as §8.4.1's fixture — ends with the `azure-domain-tenant`
+finding quoted in §4.5a: `host: https://example.com`, but
+`matched-at: https://login.microsoftonline.com:443/example.com/v2.0/.well-known/openid-configuration`
+and `ip: 40.126.32.140`. The finding is *about* `example.com`; the match happened on Microsoft's
+login endpoint.
+
+- **Loose key** sources `port` and `location` from `matched_at` without checking its host, and keys
+  the observation as `example.com:443/example.com/v2.0/.well-known/openid-configuration`. Two
+  different templates that each probe a different third-party endpoint on behalf of the same tenant
+  domain can then share `canonical_host`, `check_id`-adjacent structure and a path neither host
+  serves; worse, the stored key asserts a location that does not exist on the host it names, so
+  nobody auditing the decision can tell what was actually suppressed.
+- **Correct key** applies §4.5a: `matched_at`'s canonicalized host (`login.microsoftonline.com`) is
+  not the observation's `canonical_host` (`example.com`), so `port` and `location` are `Unknown`, and
+  §3.4 makes the observation non-storable and non-matchable — 422 on an attempt to mark it, and no
+  match ever.
+- **Consequence of the collapse:** the second, sharper form is the redirect case in §4.5a. `T` fires
+  at `https://app.example.com/legacy/debug` and is marked a false positive; later `T` fires on a newly
+  exposed `/v2/debug` on the same host which 302s to `/legacy/debug`; with redirect following on,
+  `matched_at` becomes the suppressed path and the key is byte-identical. **The host operator chooses
+  which of our findings disappear.** That is §8.3.1's "suppression primitive", not merely a collapse —
+  which is why §4.5a both disables redirect following in the `ScanType` and makes the divergent-host
+  key unstorable. One control for the mistake, one for the adversary.
+
 ---
 
 ## 9. What has to be built and tested, and by whom
@@ -742,7 +1033,8 @@ used for `scb/hook-invocation-contract`:
 
 | Test id | Asserts | Author |
 |---|---|---|
-| `findings/fp-match-key-canonicalization` | §3.3 exactly: IDNA/case/trailing-dot, default-port folding, fragment stripping, no percent-decoding, length-prefixed set digests (including the `["ab","c"]` vs `["a","bc"]` case), and `Unknown` → 422 on create and no match at read | Scribe (unit + proptest) |
+| `findings/fp-match-key-canonicalization` | §3.3 exactly: IDNA/case/trailing-dot, a rejected host yielding `Unknown`, default-port folding **and that no scheme outside `http`/`https` defaults**, fragment stripping, no percent-decoding, **per-element** length-prefixed set digests (the `["ab","c"]` vs `["a","bc"]` case **and** `["a","a"]` vs `["a"]` digesting differently), the §3.3 `discriminator` tag-and-length serialization including all four nuclei sub-value combinations and `0x00 0x00` ≠ `NotApplicable`, and `Unknown` → 422 on create and no match at read | Scribe (unit + proptest) |
+| `findings/fp-nuclei-field-shapes` | §4.5a/§4.5b/§4.5c, the rules review added: `matched_at` host ≠ `canonical_host` ⇒ `port`/`location` `Unknown` ⇒ 422 and no match (the §8.4.7 fixture row); `hostname` of the form `host:port` splits before §3.3 and populates `port`; `hostname` `null` ⇒ `Unknown`; `type: dns` ⇒ `port` **and** `location` `NotApplicable`; an unspecified `type` ⇒ `Unknown` | Scribe (unit, table-driven over the two upstream fixtures) |
 | `findings/fp-alias-non-transitive` | §3.1.1, §5.2 and §5.7: `check_id` is the only aliasable component — an edge-shaped difference in any of the other eleven matches nothing; one hop only, so `A→B, B→C` does not match `A` against `C`; reverse direction does not match; cycles and duplicate `from_check_id` rejected at registry load; cross-scanner edge rejected; §3.6's precedence rule — exact hit beats alias hit, and lowest `(created_at, id)` among several alias hits | Scribe |
 | `findings/fp-revocation-not-retroactive` | §6: revoked decision matches nothing afterwards; already-applied observations keep `applied_fp_decision_id` and their state history; no reactivation path | Ledger (integration) |
 | `findings/fp-scanner-semantics-stale` | §7.2: a decision stored at `field_semantics_version = 1` suppresses nothing once the scanner is at 2, is retained and reported stale, and is not revoked | Ledger |
@@ -753,8 +1045,10 @@ anything up (**crate purity**). Application at ingest and the 422 path: **Anvil*
 Unit and property tests: **Scribe**. Integration, conformance and the §8 corpus: **Ledger**.
 Execution and the PASS/FAIL/MISSING ledger: **Crucible**. Review: **Assay** and **Warren**.
 
-**Fixtures.** The nuclei corpus is upstream's own file at a pinned ref
-(`secureCodeBox/secureCodeBox` `v5.9.0`, `scanners/nuclei/parser/__testFiles__/secureCodeBox-test.jsonl`).
+**Fixtures.** The nuclei corpus is upstream's own files at a pinned ref
+(`secureCodeBox/secureCodeBox` `v5.9.0`,
+`scanners/nuclei/parser/__testFiles__/secureCodeBox-test.jsonl` for §8.4.1–§8.4.5, and
+`…/example-com-test.jsonl` for §8.4.7 and `…/hostname-without-port.jsonl` for §4.5b).
 The subfinder, dnsx and httpx cases are constructed from the field tables in §4 and need no cluster
 and no network. `findings/fp-only-persistence` must not require a running scanner.
 
@@ -778,6 +1072,9 @@ is Phase 2 (§24.2) and is listed in "Does not close".
 | **Invalidate all decisions on any scanner bump** | Template packs move monthly (§7.1); users would stop marking false positives and start disabling checks, which produces less evidence, not more. |
 | **Excluding `extracted_results` from the nuclei key** | Suppresses findings carrying a different extracted value under the same template (§8.4.3). Rejected under §1's asymmetry. |
 | **`NULL` or `""` for absent components** | `NULL = NULL` is `UNKNOWN`, so a key would not equal itself; `""` merges "not applicable" with "could not determine" (§3.4). |
+| **Splitting `discriminator` into two named components** (so nuclei's `matcher_name` and `extracted_results` each get a §3.1 row) | The reviewer's preferred remedy for the ambiguity §3.3 now fixes, and a close call. It lost on generality: it writes one scanner's shape into the generic key, leaves `subfinder` and `httpx` carrying two permanently-`NotApplicable` rows, and still would not escape per-scanner serialization — `dnsx`'s `SRV` discriminator is itself multi-valued (§4.3.1). A single component with a specified tag-and-length serialization keeps §3.1 scanner-agnostic and puts the shape where the shapes live, in §4. §3.4 applies unchanged either way, because the serialized sequence is one `Present(String)`. |
+| **Keying nuclei `port`/`location` from `matched_at` whenever the hosts disagree** | Asserts a port and a path on a host where neither exists, and makes the key settable by whoever controls the redirect (§4.5a, §8.4.7). |
+| **Dropping `port`/`location` to `NotApplicable` when `matched_at`'s host diverges** | The other way to handle §4.5a, and rejected: it collapses every third-party-probe template on one host into one key — §8.4.1's collapse with a different cause. `Unknown` → 422 is the only answer consistent with §1. |
 
 ---
 
@@ -807,13 +1104,24 @@ is Phase 2 (§24.2) and is listed in "Does not close".
   Amass (§27 item 16). Each needs its own §4 row, its own `field_semantics_version`, and at least one
   negative example **before** it may create decisions. Required amendment, not an implementation
   detail.
-- **Any confirmed case of a decision applying to a finding a user says they never reviewed.** That is
-  a P1 and reopens §3–§4 immediately, whatever else is in flight. It is the failure this record
-  exists to prevent, so a single instance is evidence that the specification, not just the code, was
-  wrong.
-- **Sustained complaints about re-surfacing** traced to `extracted_results` being in the nuclei key
-  (§4.5). The fix would be a per-template `extraction_is_evidence` allowlist behind a
-  `match_version` bump — not an ad-hoc exclusion, and not a silent one.
+- **A decision whose reach grows — measured, not waited for.** The original wording of this trigger
+  was *"any confirmed case of a decision applying to a finding a user says they never reviewed"*,
+  which is the exact failure §1 says this record exists to prevent and had **no observable signal**:
+  it fires only when a customer notices and reports it, which is the discovery path §3.4 rejects in
+  terms (*"it would be found by a customer, not by us"*). A revisit trigger we cannot observe is a
+  hope, not a trigger. The instrument already exists — §6 requires the UI to state **how many
+  currently-suppressed observations a decision covers** — so the trigger is that count:
+  **alert when a single decision's applied-observation count exceeds a configured N, or when it grows
+  in any scan after the one in which the decision was created.** A decision whose reach keeps growing
+  is the definition of a suppression that travelled. A confirmed user report remains a P1 that reopens
+  §3–§4 immediately; it is now the backstop rather than the detector.
+- **Re-surfacing, made countable.** The original *"sustained complaints about re-surfacing"* had no
+  threshold and no measure, which makes it a preference rather than a decision input. The measurable
+  form: **the rate of `new` observations whose key differs from a suppressed one in the
+  `extracted_results` sub-value of the `discriminator` and in nothing else** (§4.5). That is the exact
+  signal, not a proxy for it, and it is computable from the keys we already store. If it is high, the
+  fix is a per-template `extraction_is_evidence` allowlist behind a `match_version` bump — not an
+  ad-hoc exclusion, and not a silent one.
 - **`findings-schema.json` changing** at a secureCodeBox bump: the `severity` enum, the `location`
   description, or any constraint on `attributes`. Part of ADR-0002 §6.3's checklist.
 - **Upstream secureCodeBox adding `dnsx` or `httpx` scanners.** That would replace our parsers and
@@ -827,12 +1135,17 @@ is Phase 2 (§24.2) and is listed in "Does not close".
 
 ## 13. Provenance
 
-Every field name, enum value, default, and quoted line above was read on **2026-10-01** from
-`raw.githubusercontent.com` and the GitHub contents API at the exact refs named:
+Every field name, enum value, default, and quoted line above was read from
+`raw.githubusercontent.com` and the GitHub contents API at the exact refs named — the original set on
+**2026-10-01**, and the material added in review on **2026-10-02**: the `example-com-test.jsonl` and
+`hostname-without-port.jsonl` fixtures and the `parseHostname` body (§4.5a, §4.5b, §8.4.7), the `SOA`
+struct's eight fields and `DNSData.AllRecords` (§4.3.1, §4.3), httpx's `Location`, `SNI`, `Failed` and
+`Error` tags with `Location`'s assignment at `runner/runner.go:2685` (§4.4), and the §8.4.4 recount
+(21 of 22, not 22 of 22). Nothing in this record is recalled:
 
 | Ref | Files read |
 |---|---|
-| `secureCodeBox/secureCodeBox` @ **`v5.9.0`** | `parser-sdk/nodejs/findings-schema.json`; `scanners/` directory listing (which is how §4.1's missing-scanner fact was established); `scanners/subfinder/parser/parser.js`; `scanners/nuclei/parser/parser.js`; `scanners/nuclei/parser/__testFiles__/` listing; `scanners/nuclei/parser/__testFiles__/secureCodeBox-test.jsonl`; `scanners/subfinder/values.yaml` |
+| `secureCodeBox/secureCodeBox` @ **`v5.9.0`** | `parser-sdk/nodejs/findings-schema.json`; `scanners/` directory listing (which is how §4.1's missing-scanner fact was established); `scanners/subfinder/parser/parser.js`; `scanners/nuclei/parser/parser.js` (including `parseHostname`, lines 96–118, for §4.5b); `scanners/nuclei/parser/__testFiles__/` listing; `scanners/nuclei/parser/__testFiles__/secureCodeBox-test.jsonl`; `scanners/nuclei/parser/__testFiles__/example-com-test.jsonl` (§4.5a, §8.4.7); `scanners/nuclei/parser/__testFiles__/hostname-without-port.jsonl` (§4.5b); `scanners/subfinder/values.yaml` |
 | `projectdiscovery/httpx` @ **`v1.12.0`** | `runner/types.go` (the `Result` struct and its JSON tags); `runner/runner.go` (`Host: parsed.Hostname()`, `HostIP: ip`) |
 | `projectdiscovery/httpx` @ **`v1.3.5`**, **`v1.6.0`** | `runner/runner.go` (`Host: ip`) — the §7.3 meaning change |
 | `projectdiscovery/dnsx` @ **`v1.3.1`** | `libs/dnsx/dnsx.go` (`ResponseData`, `AsnResponse`); `go.mod` (`retryabledns v1.0.116`) |
@@ -855,3 +1168,45 @@ depends on VulcanFlow's own code running instead carries a test id and an owner 
 
 None. The amendment filed alongside this record is **ADR-0003 A1**, which corrects ADR-0003 §3.2 and
 §3.5 as described in §4.1 and §8.4.5.
+
+Revisions made **before acceptance**, during lane 6 review, are §15 — not amendments. An amendment
+records a change to an accepted record; these are the review's effect on the record being accepted,
+and the distinction matters because §5.4 and §6 both turn on what "stored" means.
+
+---
+
+## 15. Pre-acceptance revisions (lane 6, 2026-10-02)
+
+Fourteen findings against the `4ec50a2` draft, all routed to the author: one from the automated
+reviewer and thirteen (twelve blocking, six advisory, of which five are taken) from the hand review.
+No decision in §2 is reversed by any of them. What changed:
+
+| # | Section(s) | Change |
+|---|---|---|
+| Bot-1 | §2.1, §3.1, **§3.1.1** (new), §3.6 | The acceptance statement required every component byte-equal *and* admitted an aliased `check_id`. Unsatisfiable. The comparison rule is now stated once and normatively: eleven components byte-equal, `check_id` aliasable, and the alias resolved as a bounded set of equality probes with a stated precedence rule. |
+| R1 | **§4.5a** (new), §4.5 table, §10, **§8.4.7** (new) | `matched_at` can name a different host than `attributes.hostname` — upstream's own fixture contains the case. Divergence now makes `port`/`location` `Unknown` (⇒ 422, no match), and the nuclei `ScanType` must disable redirect following. §8.3.1's standard now applies to both scanners instead of one. |
+| R2 | **§4.5b** (new), §3.3 | `attributes.hostname` is not always a hostname: a trailing `:port` is split off before canonicalization, `null` ⇒ `Unknown`, and §3.3 now says a rejected host yields `Unknown`. Without this, no nuclei `tcp`/`network` finding could ever be marked a false positive. |
+| R3 | **§4.5c** (new), §3.3 | The per-`type` port and location dimensions are named instead of inferred: `dns` ⇒ `NotApplicable` for both; the scheme-default table is closed to `http`/`https`; an unspecified `type` ⇒ `Unknown`. |
+| R4 | §3.3 | The set digest's length prefix is **per element**, written out; duplicates are kept, with the reason. |
+| R5 | §3.3, §3.1, §10 | `discriminator` is an ordered sequence with a specified tag-and-length serialization, so its four nuclei sub-value combinations are four distinct byte strings. The reviewer's preferred split-into-two-components remedy is in §10 with why it lost. |
+| R6 | **§4.3.1** (new) | `soa` is a struct of eight fields, not a string. The digest input is `(name, ns, mailbox)`; the five timers and counters are excluded, `serial` because it moves on every zone edit. |
+| R7 | §1, §6, §3.6, §2 row 8 | "Requires no schema change" was broader than the evidence. Two migrations are now named: `false_positive_events.reason text`, and §3.6's generated column or expression index. |
+| R8 | §4.3, §4.4 | httpx `location` (the raw `Location` header) and `sni`, and dnsx `all`, are named exclusions with their reasons; both lists now close with *any field not named above is excluded by construction*. We write those two parsers, so those tables are the only spec their authors have. |
+| R9 | §4.4 | `failed`/`error` are preconditions, not key components — the `matcher_status` rule, for httpx. |
+| R10 | §8.4.4, `README.md` | Two factual fixes: 21 of 22 fixture findings carry `ip`, not all 22; and the severity correction is pointed at ADR-0003 §3.5 and the absence of any TDD rule, not at §10.1/§16.3, which do not make the claim. |
+| R11 | §3.3 | The query-order omission keeps its conclusion and loses its false premise: it is justified by direction, not by scanner determinism, which does not hold for nuclei. |
+| R12 | §12 | The two unobservable revisit triggers are now measurable: a decision's applied-observation count exceeding N or growing after its creating scan, and the rate of `new` observations differing from a suppressed one only in the `extracted_results` sub-value. |
+| A1–A4, A6 | §5.8 (new), §3.5, §3.3, §4.5, §7.2 | Aliasing has no Phase 1 use case and says so; `scope_root`'s over-narrowing cost is named; NFKC-vs-NFC is explained; `attributes.path` is excluded explicitly; the current `field_semantics_version` is committed config beside the alias registry. |
+| A5 | **§8.4.1b** (new) | A third template pack is in the same upstream tree (17 matchers), which is why §7.2's gate is about declared semantics and not release numbers. |
+
+One advisory is **not** taken and is recorded as such: the reviewer's R5 remedy of splitting
+`discriminator` into two §3.1 components — see §10 for the reasoning. The reviewer's reading of
+`hostname-without-port.jsonl` is also narrowed in §4.5b: that fixture is a **no-scheme** case
+(`host: example.com`), not a port-in-host case, so §4.5b cites it for the shape it actually
+demonstrates and states the `host:port` convention as a convention rather than as something upstream
+ships a fixture for.
+
+§25 effect of all of the above: `findings/fp-only-persistence` stays **one** test function over an
+eleven-case §8 corpus; `supply-chain/check-catalog` gains the §4.5a redirect setting and the §7.2
+config file as things it must assert; one adjunct id is added (`findings/fp-nuclei-field-shapes`),
+colliding with no §25 name. The §25 mapping remains injective in both directions.

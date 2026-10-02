@@ -70,9 +70,15 @@ meantime.
   **no** `httpx` scanner, so two custom `ScanType`/`ParseDefinition`/parser sets are Phase 1 work.
   §21.3 already anticipated the custom *images*; it is the parsers that were assumed to exist.
   See ADR-0003 A1 §7.1 and ADR-0006 §4.1.
-- **§10.1/§16.3** treat scanner severity as usable as-is. No secureCodeBox finding can be
-  `CRITICAL` (schema enum), and the nuclei parser collapses `CRITICAL → HIGH`. Severity must be
-  derived at ingest from §10.3 enrichment. See ADR-0003 A1 §7.2.
+- **No TDD section specifies where ingest-time severity comes from** — that is the actual gap, and
+  this entry previously mis-stated it as *"§10.1/§16.3 treat scanner severity as usable as-is"*.
+  Neither section says that: §10.1 is three sentences on asset-graph mapping and never mentions
+  severity, and §16.3 lists *"CVE/CWE/CVSS/EPSS/KEV snapshots"* without a claim about scanner
+  severity. The correction stands on its own facts: no secureCodeBox finding can be `CRITICAL` (the
+  `findings-schema.json` enum has no such value) and the v5.9.0 nuclei parser collapses
+  `CRITICAL → HIGH` before the artifact is written, so severity must be derived at ingest from
+  §10.3's `KEV → EPSS → CVSS` enrichment. The claim this corrects is **ADR-0003 §3.5**'s remedy, not
+  a TDD section. See ADR-0003 A1 §7.2 and ADR-0006 §8.4.5.
 
 ## Phase 1 risks that only a real cluster can settle
 
