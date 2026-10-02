@@ -145,7 +145,7 @@ as R6 rather than as a ledger scope limit. A scope qualifier is owed where a §2
 reach past what Phase 1 can assert; inventing one where they do not would make the ledger noisier
 without making it more honest.
 
-### 3.3 The seven ADR-derived identifiers (VUL-23, Ledger)
+### 3.3 The eight ADR-derived identifiers (VUL-23, Ledger)
 
 ADR-0002 and ADR-0003 approved the crate set *conditionally*, on executable confirmations
 that were never filed as issues. Every one of VUL-11, VUL-12, VUL-13, VUL-14 and VUL-16 had a
@@ -154,7 +154,35 @@ production-source issue and no test counterpart. VUL-23 closes that gap:
 `api/openapi-3_1-conformance` · `admission/cascade-gate-delete-oldobject` ·
 `admission/workload-gate-dryrun` · `db/pgbouncer-transaction-pooling-prepared` ·
 `db/tenanttx-set-local-isolation` · `storage/s3-compat-conformance` ·
-`scb/hook-invocation-contract`
+`scb/hook-invocation-contract` · `scb/parser-contract-conformance`
+
+#### 3.3.1 This list said *seven* and was wrong — the adjudication, recorded
+
+An earlier revision of this section listed seven, omitting `scb/parser-contract-conformance`,
+while ADR-0002 amendment A3 §7.1(a) enumerates **eight**. CEO raised the contradiction on
+VUL-41 rather than choosing between them, which is the right call: a plan does not get to pick
+between two design-of-record sources. **The ADR is right and this section was wrong.**
+
+`scb/parser-contract-conformance` is a named test ID in ADR-0003 §3.4, with an author
+(**Ledger**), a stated assertion — that the findings artifact a stock v5.9.0 parser produces
+deserializes into `vf-ingest`'s types, including the id/date and scan-metadata fields the
+wrapper injects — and a §25 target, `execution/scan-identity`, which §3.2 puts **in Phase 1**.
+It needs no cluster and no scanner run: a committed artifact from a stock v5.9.0 parser is a
+fixture, exactly as the replayed `AdmissionReview` JSON of ADR-0002 §4.2 is a fixture.
+
+**Why it was dropped is worth knowing, because the same slip recurs.** This section's own
+preamble enumerates by *production-source issue* — VUL-11, VUL-12, VUL-13, VUL-14, VUL-16 —
+and `scb/parser-contract-conformance` has no crate-approval issue of its own, because the code
+it exercises is upstream and the types it lands in belong to `vf-ingest`. An enumeration keyed
+on implementation issues will always lose the confirmations that assert an upstream contract
+against our own types. **The ADR-derived census is ADR-0002 §7.1(a); this section is a Phase 1
+scope list that reconciles against it, never the reverse.**
+
+**Consequence for Crucible.** The Phase 1 ledger is **35 rows**: 27 §25 identifiers plus 8
+ADR-derived confirmations. Every count in §4 and §5 is corrected to 35 in the same change.
+**The 45 is untouched** — ADR-derived confirmations are not §25 identifiers and are never
+counted into the 45 (ADR-0002 §7.1(a)). ADR-0002 §6.3's CRD-codegen drift gate is a CI job
+with no test identifier; it is not a ninth row and belongs to the CRD-types work item.
 
 `db/tenanttx-set-local-isolation` is the single highest-value test in the set. A bare `SET`
 instead of `SET LOCAL` under PgBouncer transaction pooling leaks tenant context to the next
@@ -210,10 +238,10 @@ An identifier maps to **exactly one** test function, with `/` and `-` replaced b
 | `db/tenanttx-set-local-isolation` | `fn db_tenanttx_set_local_isolation()` |
 
 The file holding it carries a module doc comment `//! §25: <identifier>`, or
-`//! ADR: <identifier>` for the seven in §3.3.
+`//! ADR: <identifier>` for the eight in §3.3.
 
 This exists so that §25 traceability is a **grep**, not a judgement. It is what lets Crucible
-(VUL-37) publish a mechanical `PASS` / `FAIL` / `MISSING` ledger over all 34 identifiers
+(VUL-37) publish a mechanical `PASS` / `FAIL` / `MISSING` ledger over all 35 identifiers
 instead of an opinion about how the run went. An identifier whose test is named anything else
 reads as `MISSING`, which is a finding against its test-author issue.
 
@@ -258,7 +286,7 @@ VUL-6  workspace + pins + CI gates (Forge)
  ├─ VUL-33 vf-api SSE
  ├─ VUL-34 vf-meter service ──← VUL-27, VUL-28
  ├─ VUL-35 vf-ingest ──← VUL-27
- └─ VUL-37 Crucible: the 34-identifier ledger ──← VUL-7, VUL-22, VUL-23
+ └─ VUL-37 Crucible: the 35-identifier ledger ──← VUL-7, VUL-22, VUL-23
 
 VUL-8  walking skeleton epic ──← all 23 of the above
 VUL-9  infra go/no-go (CEO) ──← VUL-8
