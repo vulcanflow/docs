@@ -158,7 +158,7 @@ does and does not verify — and this row does not restate them.
 **This table assigns lanes, not path classes, and the difference bit once.** A reader looking for
 who may touch a given file will not always find the answer here: the rows say what each agent's
 lane *is*, while §4.2 says what the gate *does* with a path, and the two are not the same
-partition. `ci/**` outside the three GATE paths is the case where that gap was load-bearing — it
+partition. `ci/**` outside the six GATE paths of §4.2 is the case where that gap was load-bearing — it
 is NEUTRAL, so the gate waves it through, and no row above claimed it. **§4.4 settles it** and is
 the authority on NEUTRAL `ci/**` authorship; this table is not amended to carry a path column,
 because the next such gap would then look like an omission in the table rather than a question
@@ -563,7 +563,7 @@ Four checks, in `vulcanflow/platform` at `ci/lane-gate.sh`, run by
 | `lane-partition` | any diff containing **both** production source and test files; also any diff that changes the gate itself alongside source or tests |
 | `test-erosion` | any added `#[ignore]`; any removed test declaration; any net fall in the workspace's total test count |
 | `inline-test-modules` | any `#[cfg(test)]` module inside `crates/*/src` |
-| `gate-self-test` | runs the gate against **15 fixture diffs** producing **21 asserted verdicts**, so the gate's own logic is tested **to the extent the harness can construct the case** — §4.5 limb 2 turns on three cases it cannot, which is why §4.6 item 5 makes naming an uncoverable case a review obligation. The two numbers are not interchangeable: a fixture may carry more than one assertion, and conflating them is what put a third, wrong number in this table until amendment 4. §4.5 **specifies** three further sub-checks for this job — refusing a head classifier that *permits* a case the base harness asserted the gate *refuses*, refusing a fall in the harness's assertion count, and refusing a harness that cannot fail against a known-bad classifier — none of which exists yet; they land with pull request 2 of §4.5's sequence |
+| `gate-self-test` | runs the gate against **15 fixture diffs** producing **21 asserted verdicts**, so the gate's own logic is tested **to the extent the harness can construct the case** — §4.5 limb 2 turns on three cases it cannot, which is why §4.6 item 5 makes naming an uncoverable case a review obligation. The two numbers are not interchangeable: a fixture may carry more than one assertion, and conflating them is what put a third, wrong number in this table until amendment 4. §4.5 **specifies** three further sub-checks for this job — refusing a head classifier that *permits* a case the base harness asserted the gate *refuses*, refusing a fall in the harness's assertion count, and refusing a harness that cannot fail against a known-bad classifier — none of which exists yet; they land with pull request 2 of §4.5's sequence. **Both numbers are counted at `platform@41506ad` and both rise with the GATE set**: §4.2's row is six paths from amendment 9, and §4.5's closing subsection sets the floor the enlarged set requires — **27 fixture diffs producing 35 asserted verdicts**, of which **9 assert `fail`** — and names the pull request that reaches each intermediate figure |
 
 ### 4.1 Why `lane-partition` is the load-bearing one
 
@@ -588,7 +588,7 @@ and not production source.
 
 | Class | Paths |
 |---|---|
-| **GATE** | `ci/lane-gate.sh`, `ci/lane-gate-test.sh`, `.github/workflows/lane-gate.yml` |
+| **GATE** | `ci/lane-gate.sh`, `ci/lane-gate-test.sh`, `.github/workflows/lane-gate.yml`, `ci/pre-pr-review-verdict.sh` †, `ci/pre-pr-review-verdict-test.sh` †, `.github/workflows/pre-pr-review-verdict.yml` † |
 | **TEST** | `tests/**`, `crates/*/tests/**`, `fuzz/**`, `conformance/**`, `**/testdata/**`, `**/golden/**`, `*.golden`, `*.snap` |
 | **PROD** | `crates/*/src/**`, `crates/*/build.rs`, `crates/*/Cargo.toml`, `Cargo.toml`, `Cargo.lock`, `rust-toolchain.toml` |
 | **NEUTRAL** | everything else — Markdown, `.gitignore`, other workflows, other `ci/` scripts |
@@ -596,12 +596,27 @@ and not production source.
 At most one of GATE, TEST and PROD may appear in a diff. NEUTRAL may accompany any of them, so
 a code change can carry its own documentation.
 
+**† The GATE row is six paths as specified and three as implemented, and the window between those
+two numbers is deliberate — read it before relying on the row.** The three daggered paths were
+added **2026-10-02 by amendment 9**, which is **R8**'s first firing: `pre-pr-review-verdict`
+(§6.6) is a `ci/**` script that gates from birth, so R8's repair — name it in this row — is owed
+before it is written. `classify_path()` at `platform@41506ad` enumerates the first three literally
+and nothing else, so **until step B of the sequence in §4.5's closing subsection lands, the three
+daggered paths are NEUTRAL in fact**: a diff holding `ci/pre-pr-review-verdict.sh` together with
+production source is specified here as a refusal and is **passed** by the gate that exists. That
+discrepancy is why the merge of the `pre-pr-review-verdict` implementation is blocked on steps
+A–C of that sequence — **B** is the step that makes this row true — and why it is stated here
+rather than left for a reader to discover from a green check.
+
 **That rule partitions *between* classes and says nothing about what travels *within* one, which
-is where it bit.** All three GATE paths in one diff satisfies it — the classifier, the only
-assertion that the classifier is correct, and the file naming the four checks, in a single pull
-request `lane-partition` passes. **§4.5** is the statement of what that permits and what now
-refuses it; the table above is **not** amended, because the defect is not that two files share a
-class and no class split repairs it (§4.5, "What was not adopted").
+is where it bit.** All six GATE paths in one diff satisfies it — both detectors, both of the
+harnesses that are the only assertion each detector is correct, and both workflow files naming
+the required checks, in a single pull request `lane-partition` passes. **§4.5** is the statement of what that permits and
+what now refuses it, and its closing subsection re-derives every one of those arguments over six
+paths rather than three. The row above is amended **only** to add members, because the defect is
+not that two files share a class and no class split repairs it (§4.5, "What was not adopted");
+growing the set does not repair it either, and §4.5's closing subsection says what the growth does
+and does not buy.
 
 ### 4.3 Why `test-erosion` counts the whole tree
 
@@ -613,7 +628,7 @@ the suite — while allowing a test to be *renamed or relocated*, because the co
 
 ### 4.4 Who authors a NEUTRAL `ci/**` script — added 2026-10-01
 
-§4.2 classifies every `ci/` script other than the three GATE paths as **NEUTRAL**, so authoring
+§4.2 classifies every `ci/` script other than the GATE paths as **NEUTRAL**, so authoring
 one crosses no lane: `lane-partition` permits NEUTRAL alone and NEUTRAL alongside anything. But
 "crosses no lane" is not the same as "has an owner", and until this amendment no row of §2's
 table or of `process/agent-workflow.md` §1 claimed `ci/**` at all. Both now carry a pointer here
@@ -696,7 +711,11 @@ made three claims that are false and a wrong operational instruction on `main` i
   enforcement set — the paths whose edit must not ride with the thing they would have caught —
   so putting a script there that gates nothing inverts the classification and pre-empts **R8**,
   which exists precisely to fire when such a script *starts* gating something. R8 now names the
-  GATE reclassification as the repair when that day comes.
+  GATE reclassification as the repair when that day comes. **That day came on 2026-10-02 for a
+  different script** — `pre-pr-review-verdict`, which gates from birth (§6.6) — and the repair is
+  carried out in §4.5's closing subsection, which is the worked model for the next one. It does
+  **not** reach the lane-7 detector: that script still gates nothing, so this bullet's rejection
+  stands for it unchanged until it does.
 
 So: this is weaker than the path partition, it is recorded as weaker rather than presented as
 equivalent, and it is **the arrangement chosen** for a file class the partition deliberately
@@ -735,6 +754,18 @@ written here as *structurally* unclosable; the CEO showed on VUL-68 that it is a
 `pull_request` trigger rather than of the repository, and the overclaim is withdrawn in limb 3
 below. The trigger swap that would change it is rejected there on three reasons and tracked at
 **R11**.
+
+**Everything from here to "Lane assignment" was derived on 2026-10-01 over a GATE set of three
+paths, and the set is six from 2026-10-02 — read the closing subsection before acting on a count
+in between.** It is not a correction: each argument below is a true reading of `platform@41506ad`,
+where `classify_path()` enumerates three paths. It is an **arity** notice. Three of the arguments
+below turn on how many members GATE has or on which files are in it — the central
+`gate=3, prod=0, test=0` observation, the sentinel's "6 fail-asserting fixtures", and limb 3's
+treatment of `.github/workflows/lane-gate.yml` as *the* file that decides whether the gate runs —
+and one of the rejections in "What was not adopted" was argued over a GATE set holding exactly one
+detector/harness pair. **"Re-derived over six GATE paths"**, below, restates each of them, says
+which keep their force unchanged and which are now scoped narrower than they read, and enumerates
+the lane-2 and lane-3 work the growth creates.
 
 **The reading, confirmed against `41506ad`.** `classify_path()` puts `ci/lane-gate.sh`,
 `ci/lane-gate-test.sh` and `.github/workflows/lane-gate.yml` in **GATE**. `cmd_partition()` has
@@ -1094,6 +1125,255 @@ request 3's fixtures **with their outcomes** before pull request 2 is written, a
 Assay checking the delivered harness against that enumeration per fixture. Recorded as weaker than
 the ordinary arrangement, for the same reason §4.4 records its own as weaker.
 
+#### Re-derived over six GATE paths — R8's first firing — added 2026-10-02
+
+**What changed.** §4.2's GATE row grew from three paths to six: the second triple is
+`ci/pre-pr-review-verdict.sh`, `ci/pre-pr-review-verdict-test.sh` and
+`.github/workflows/pre-pr-review-verdict.yml`, the lane-5.5 check specified in §6.6. §6.6 is the
+authority on **why** it must be GATE — it is to be a required status check on two protected
+branches, which is **R8**'s own trigger, and it gates from birth, so it never spends a day as a
+NEUTRAL `ci/**` script and the reclassification is owed before it is written. §6.6 deliberately did
+*not* edit the row, for the reason this subsection exists: **the GATE row is not a list in a
+document, it is a list the gate computes over, and the arguments above count its members.** A
+one-line row edit would have left this record asserting a classification the gate does not
+implement and §4.5 reasoning about a set that no longer has the size its argument uses. This
+subsection is the re-derivation §6.6 scheduled, it is lane-1 work, and it is the **first** of the
+three pieces R8's repair needs; the other two are lane 2 and lane 3 and are enumerated at the end.
+
+**Read back on 2026-10-02 rather than recalled.**
+`vulcanflow/platform@41506ad3bea5282473207a725b00625c5f65e0aa` (`main`): `ci/lane-gate.sh`, blob
+`81a5e09`, and `ci/lane-gate-test.sh`, blob `95dc8d9`. Everything counted below is counted in those
+two files at that commit — the three GATE literals in `classify_path()`, the two refusal conditions
+in `cmd_partition()`, the 15 fixture diffs, the 21 `check` invocations, their 15 `pass` / 6 `fail`
+split, and `setup()` copying only `ci/lane-gate.sh` into the fixture repository while creating
+neither `ci/lane-gate-test.sh` nor `.github/`.
+
+**1. The central observation survives with its number changed, because the number was never doing
+the work — and that is the finding, not a formality.** `cmd_partition()` buckets each changed path
+into one of four counters and then tests exactly two predicates: `prod > 0 && test > 0`, and
+`gate > 0 && (prod > 0 || test > 0)`. **It never compares GATE members to each other and never
+compares the gate count to anything but zero.** So the sentence above — *a diff holding all three
+GATE paths and nothing else gives `gate=3, prod=0, test=0` and `lane-partition` passes it* — reads
+at six as *a diff holding all six gives `gate=6, prod=0, test=0` and passes*, and the general form
+is the one to carry forward: **any non-empty subset of GATE, alone, passes, for any size of GATE.**
+
+What grows is not the argument but its surface. The permitted GATE-only diff shapes go from
+2³−1 = **7** to 2⁶−1 = **63**, and the growth is not uniform in kind, because the six paths are two
+*independent* triples:
+
+- **Within-triple diffs** are what limb 2 is about, and limb 2's three sub-checks reach exactly one
+  triple — see 2 below.
+- **Cross-triple diffs are a shape that did not exist when GATE held one triple**, and nothing
+  looks at them. `ci/lane-gate.sh` together with `.github/workflows/pre-pr-review-verdict.yml` is
+  GATE-only, so `lane-partition` passes it; `erosion` greps `-- '*.rs'` and sees no shell or YAML;
+  `inline-test-modules` is unaffected; and monotonicity, the floor and the sentinel are specified
+  over the lane-gate triple, so they say nothing about the other file in the diff. The control is
+  **§4.6**, which already ranges over *any* GATE path, and nothing else. Fixture "cross-triple gate
+  diff" below asserts this verdict so that it is on the record as permitted-by-design rather than
+  discovered later as a hole.
+
+**2. Limb 2's three sub-checks do not spread across the row, and after this amendment GATE
+membership is no longer uniform.** Monotonicity, the assertion floor and the sentinel are specified
+as steps inside the `gate-self-test` job and are written against `classify_path()`,
+`ci/lane-gate.sh` and `ci/lane-gate-test.sh` **by name**. Adding three paths to a table does not
+give them a second subject. So from this amendment: **three of the six GATE paths carry limb 2's
+mechanism and three carry none of it**, and `pre-pr-review-verdict` shipped on the belief that
+§4.5 covers it would have nothing. This is the same overclaim §4.4 had to withdraw once and §6.6
+refused to make; it is not made here either. What the reclassification does buy is precisely one
+thing — the verdict triple can no longer ride in the same diff as PROD or TEST — and that is worth
+having and is all of it. The interim control for the second triple is `plans/lane5-5-verdict-check-spec.md`
+§5's enumerated 32 fixtures read per fixture by Assay under §4.6 item 4, at the same strength §4.4
+records for a NEUTRAL harness: weaker than the partition, and chosen. Extending the three
+sub-checks to a second pair remains unwritten lane-1 work and is **R8's tail**, not this
+amendment's content.
+
+**3. Monotonicity: growing the GATE set can never trip it, and after step C a *shrink* trips it
+blocking.** Both halves follow from the same lemma, which is worth stating because it governs
+every future row growth and not just this one.
+
+> **Lemma.** Promoting a path from NEUTRAL to GATE can only add refusals. The promotion decrements
+> `neutral` and increments `gate`; `prod` and `test` are untouched. Predicate 1 (`prod>0 && test>0`)
+> is therefore unchanged on every diff, and predicate 2 (`gate>0 && (prod>0 || test>0)`) can only
+> newly become true. **The head classifier refuses a superset of what the base classifier refused.**
+
+- **Forward direction.** Monotonicity blocks on *base asserted `fail`, head gives `pass`*. The
+  lemma makes that transition impossible for a pure row growth, so **step B is monotonicity-green
+  by construction**, and so is any later GATE-row growth. The converse direction — base `pass`,
+  head `fail` — is reported and does not block, which is the right treatment: it is the gate
+  getting stricter, which is the whole point of the promotion.
+- **Reverse direction, which is the part worth having.** Once step C's three fail-asserting
+  fixtures exist, a later diff that quietly deletes the three literals from `classify_path()` —
+  demoting the verdict triple back to NEUTRAL — runs the base harness's "verdict script + prod"
+  fixture, which asserted `fail`, against a head classifier that gives `pass`. That is the blocking
+  direction. **So §4.2's enlarged row stops being merely a document the moment step C lands**, and
+  it is the *fail*-asserting fixtures that do it — the pass-asserting ones would not, for the
+  reason "What was not adopted" already gives about hollowing a pass-asserting fixture.
+- **Both halves are conditional on §4.5's pull request 2, which does not exist yet.** Monotonicity
+  is specified, not implemented. Until it lands, step B is green because nothing checks it, and a
+  silent demotion after step C is caught by nothing. Ordering between the two sequences is
+  unconstrained in either direction and is derived in the table at the end.
+
+**4. The assertion floor: the rule is unchanged, the numbers are not, and the honest coverage
+figure gets worse before it gets better.** The floor forbids a *fall* in `check` invocations
+between base and head; that is a relative test and it needs no re-derivation at six. Three figures
+attached to it do:
+
+- **21 → 35 invocations and 15 → 27 fixture diffs**, by the enumeration below, with the
+  intermediate figure after step A being 32 invocations across 24 fixtures.
+- **The pass/fail split goes 15/6 → 26/9**, which is the sentinel's floor and is item 5.
+- **Constructible GATE coverage, stated plainly because it is the figure that looks worst.** At
+  `41506ad` the harness could build a diff over **one** of the three GATE paths, because `setup()`
+  copies only `ci/lane-gate.sh`. Amending the row to six makes that **one of six** without anyone
+  touching a file — the gap widens by being written down, which is exactly the shape §6.6 refused
+  to create with a one-line edit and is why step A is a precondition rather than a follow-up. Step
+  A closes it to **six of six**.
+
+**5. The sentinel: unchanged in form, with a floor that rises from 6 to 9.** The mutant is a
+`classify_path()` returning `NEUTRAL` for every path — a single function, so nothing about it
+depends on how many literals the real classifier has. What depends on the set is how many fixtures
+must refuse it. Against the mutant, each of the three new fail-asserting fixtures behaves as
+required: "verdict script + prod" becomes NEUTRAL + NEUTRAL, so neither predicate fires and the
+mutant **passes** a fixture that asserts `fail`, so the harness reports a failure, which is
+exactly what the sentinel requires of it; likewise "verdict harness + test" and "verdict
+workflow + prod". So all **9** fail-asserting fixtures refuse the mutant after step C, and the
+sentinel's statement reads *"which every one of the 9 fail-asserting fixtures must refuse"* from
+that point. Until step C it is 6, and the number in sub-check 3 above is the figure at `41506ad`.
+
+**6. Limb 1: the contexts become five on `platform` and one on `docs` at the `PUT` and not at this
+amendment, so until then the new workflow's deletion is silent.** Limb 1 is closed by configuration, not by the repository, and the
+configuration read back on 2026-10-01 pins four contexts on `platform` and **none** on `docs`,
+which has protection but no workflow (§8.2). Adding `.github/workflows/pre-pr-review-verdict.yml`
+to GATE does not add a context. So for the second triple, limb 1's mechanism — *a check that stops
+reporting blocks the merge* — **does not yet hold**, and deleting that workflow file on `docs`
+would be a GATE-only diff that removes a check nothing is waiting for. The repair is R2's live
+remainder, already named in §6.6 as this work's obligation:
+`PUT /repos/vulcanflow/{docs,platform}/branches/main/protection` adding `pre-pr-review-verdict` to
+`required_status_checks.contexts`, owned by whoever lands the check. **Limb 1 covers the second
+triple from that `PUT` and not before**, and the daggered row in §4.2 plus this paragraph are the
+only places that say so.
+
+**7. Limb 3 now ranges over two workflow files, and the superlative survives as a comparison.**
+*"Branch protection pins job names, not job bodies"* is a statement about workflow files, not about
+`lane-gate.yml`, and there are two in GATE from this amendment. A diff touching
+`.github/workflows/pre-pr-review-verdict.yml` alone is GATE-only; replacing its `run:` with
+something that exits zero makes the `pre-pr-review-verdict` context report success while nothing is
+checked — limb 3 exactly, on one context instead of four. `.github/workflows/lane-gate.yml` remains
+**the highest-consequence path in the repository**, and that is now a ranking rather than a property
+of a unique element: four contexts against one, and the four are the lane partition itself.
+`process/agent-workflow.md` §7 and §7 item 12 of this record label the lane-gate workflow and are
+accurate; they are no longer exhaustive, and the sentence that makes them so is this one.
+
+**8. §4.6's five items reach all six paths; three of them name the first triple's files.** §4.6
+opens *"for a diff touching any GATE path"*, so its scope follows §4.2's row automatically and
+needs no edit. Its items 1–3 are written against `lane-gate.yml`'s four job names and the three
+`ci/lane-gate.sh` subcommands, because that was the only workflow in GATE when they were written.
+Applied to a verdict-triple diff they read with the substitution made: item 1 is **one** job name
+matched against **one** required context on each protected repository that has it; item 2 is that
+the job's conclusion is decided by `ci/pre-pr-review-verdict.sh`'s exit status, with the same
+refusal of `|| true`, a masking trailing command or `set +e`; item 3's refusals — `paths:`, `if:`
+at job or step level, `continue-on-error:` at either level, and `pull_request_target` — apply
+verbatim, and `plans/lane5-5-verdict-check-spec.md` §8 independently forbids the last of them.
+Items 4 and 5 are about a fixture harness and reach `ci/pre-pr-review-verdict-test.sh` with the
+spec's §5 enumeration as the outcome of record, which is the role §4.6 item 4 reserves for a
+lane-1 spec where one exists.
+
+**9. "What was not adopted": the pairing rule's first reason was scoped to a one-pair GATE set and
+is narrowed here; the rejection stands on the other two.** The pairing rule — *"`ci/X.sh` and
+`ci/X-test.sh` may not appear in the same diff"* — was rejected on three reasons, and the first was
+that **monotonicity is strictly stronger on the same case and costs less**. That comparison was made
+against a GATE set holding exactly one detector/harness pair, which monotonicity covers. At six
+paths there are two pairs and monotonicity covers one of them, so for the verdict pair the first
+reason compares the pairing rule against a mechanism that pair **does not have**, and it does not
+hold there. Stated rather than left, because a rejection resting on an argument the record
+falsifies is worse than no rejection — §4.5 has already had to retire one such reason from this
+same bullet. **The rejection stands, on reasons two and three, both of which are independent of how
+many pairs GATE holds:** the rule rests on a filename convention, and renaming the harness while
+changing the matching `run:` line is a two-path GATE-only diff the rule itself permits; and the
+sequence sub-check 3 exists to catch is already two separate pull requests, so a rule about what may
+*share* a diff never engages. Reason one is now scoped: *strictly stronger on the lane-gate pair.*
+The class-split rejection is untouched — growing a class is not splitting one, and the defect it
+names (a detector and the only assertion that the detector is correct are the same change) is as
+true of the second pair as of the first.
+
+**10. What the growth does not change.** "What remains open" is unchanged in form: in-place
+relaxation of a fixture is still caught by nothing mechanical and still has §4.6 item 4 as its
+control, over a larger fixture set. The floor is still an endpoint comparison with the
+add-one-remove-one blindness fixture 12's second half documents. And §4.4's lane assignment and
+four exclusions are unchanged: Atlas does not implement, Crucible does not author its own auditor,
+Assay and Warren do not review their own artefact.
+
+**The fixture set the growth requires — enumerated with outcomes, because §4.4 requires the
+outcome and not the name.** `setup()` gains the ability to write all six GATE paths and a
+`.github/workflows/` directory into the fixture repository; the three verdict paths may be stub
+files, since `cmd_partition()` reads names and never contents.
+
+| # | Fixture name | Diff | Sub-command | Expected | Step |
+|---|---|---|---|---|---|
+| 16 | `verdict script alone` | `ci/pre-pr-review-verdict.sh` | partition | **pass** | A |
+| 17 | `verdict harness alone` | `ci/pre-pr-review-verdict-test.sh` | partition | **pass** | A |
+| 18 | `verdict workflow alone` | `.github/workflows/pre-pr-review-verdict.yml` | partition | **pass** | A |
+| 19 | `verdict triple together` | all three verdict paths | partition | **pass** | A |
+| 20 | `verdict script + prod` | `ci/pre-pr-review-verdict.sh` + `crates/vf-core/src/lib.rs` | partition | **fail** | C |
+| 21 | `verdict harness + test` | `ci/pre-pr-review-verdict-test.sh` + `crates/vf-core/tests/sub.rs` | partition | **fail** | C |
+| 22 | `verdict workflow + prod` | `.github/workflows/pre-pr-review-verdict.yml` + `crates/vf-core/src/lib.rs` | partition | **fail** | C |
+| 23 | `all six gate paths` | all six GATE paths | partition / erosion / inline-tests | **pass / pass / pass** | A |
+| 24 | `cross-triple gate diff` | `ci/lane-gate.sh` + `.github/workflows/pre-pr-review-verdict.yml` | partition | **pass** | A |
+| 25 | `gate pair in one diff` | `ci/lane-gate.sh` + `ci/lane-gate-test.sh` | partition | **pass** | A (= §4.5 step 1) |
+| 26 | `gate workflow alone` | `.github/workflows/lane-gate.yml` | partition | **pass** | A (= §4.5 step 1) |
+| 27 | `near-miss ci script + prod` | `ci/pre-pr-review-verdict-helper.sh` + `crates/vf-core/src/lib.rs` | partition | **pass** | A |
+
+Four notes on that table, each of which is the reason a row is in it:
+
+- **Fixture 23 is §4.5's central observation, asserted.** `gate=6, prod=0, test=0` passes, and it
+  passes all three sub-commands, which is what "passes" has to mean for a diff that carries both
+  classifiers and both harnesses. Asserting it is not an endorsement — it is the behaviour the rest
+  of §4.5 exists to compensate for, and an unasserted permission is how limb 2 survived from
+  `41506ad` to VUL-68.
+- **Fixtures 20–22 are the only three whose verdict the promotion changes**, which is what makes the
+  step split below forced rather than stylistic. Every other row asserts a verdict that is identical
+  before and after step B: a NEUTRAL-only diff passes and a GATE-only diff passes, so promoting the
+  path moves the row between two spellings of the same `pass`.
+- **Fixture 27 asserts that the three new literals are matched exactly and not as a prefix or a
+  glob.** `ci/pre-pr-review-verdict-helper.sh` must stay NEUTRAL, so it may accompany production
+  source. Without this row, `ci/pre-pr-review-verdict*)` is an implementation that passes every
+  other fixture and silently pulls arbitrary future `ci/` scripts into GATE.
+- **Fixtures 25 and 26 are the same two fixtures §4.5's own step 1 calls for.** They are counted
+  once. If §4.5's sequence lands first, it contributes the `setup()` extension and those two rows,
+  and step A's content shrinks accordingly; if this sequence lands first, the reverse. **The
+  endpoint is 27 fixtures and 35 invocations either way**, and the attribution is the only thing
+  that moves. Neither sequence blocks the other.
+
+**The order is three pull requests, and it is not the order §6.6 wrote.** §6.6 lists the repair as
+(i) this amendment, (ii) fixtures over the new members *"written first"*, (iii) `classify_path()`
+extended. For fixtures 20–22 that is **wrong on R10's own argument** and is corrected here:
+`gate-self-test` is a required check, so a harness asserting a refusal the classifier does not yet
+perform is a red required check and cannot merge at all. The fixtures that assert *current*
+behaviour do go first; the three that assert *new* behaviour go last. §6.6's clause is superseded by
+this table.
+
+| | Lane | Author | Diff | Why it is green |
+|---|---|---|---|---|
+| A | 2 | **Scribe** | `setup()` gains the other five GATE paths and `.github/workflows/`; fixtures 16–19 and 23–27 | Every one asserts a verdict the gate **already** gives: those paths are NEUTRAL today and a NEUTRAL-only diff passes for the same reason a GATE-only diff does |
+| B | 3 | **Forge** | the three literals added to `classify_path()`'s GATE case | No fixture's verdict changes (the note above), and the lemma in 3 makes it monotonicity-green if §4.5's pull request 2 has landed by then |
+| C | 2 | **Scribe** | fixtures 20–22 | The refusals now exist, so the assertions pass — and from this point a silent demotion of the row is monotonicity-blocking |
+
+**Lane 1 is discharged by this subsection and the ledger line is `n/a (no §25 identifier in
+scope)`** under §6.3 condition 2, for §4.4's reason: all 45 §25 identifiers map to a product
+requirement in §2–§23 and none to the delivery pipeline's own tooling. §4.4's subject table puts
+`ci/lane-gate.sh` with **Forge** — pure computation over its inputs — and its four exclusions apply
+unchanged.
+
+**What this blocks, as an edge and not as advice.** The **merge** of the `pre-pr-review-verdict`
+lane-3 implementation blocks on **all three of A, B and C** — §6.6's edge, unchanged in strength
+and only re-ordered. **B** is the one that makes §4.2 true: the day the check becomes required is
+the day the row is wrong about its paths, and the dagger is the standing admission of it. **C** is
+what keeps it true, by making a later demotion monotonicity-blocking rather than invisible, and it
+is three fixtures. **A** is a precondition of both, since the harness cannot build a diff over the
+new members at all. It does **not** block that implementation's *authoring*, its lane-2 harness, or
+the pull-request template. Requiring the check additionally blocks on the `PUT` in 6 above. Steps
+A–C and §4.5's own three-pull-request sequence are mutually unordered, with the single overlap
+named in the fourth note.
+
 ### 4.6 A GATE-class pull request has a named review obligation — added 2026-10-01
 
 §4.5 limb 3 is not mechanised — under the `pull_request` trigger it cannot be, and §4.5 rejects the
@@ -1102,6 +1382,13 @@ one trigger under which it could on three reasons — so for a diff touching any
 and §4.4's own correction established that a reviewer needs the outcome stated rather than the
 name. Assay's lane-6 verdict on such a pull request states each of these per item and cites the
 line it read.
+
+**Scope note, added 2026-10-02.** "Any GATE path" follows §4.2's row, which is now six paths, so
+this section reaches the `pre-pr-review-verdict` triple without being edited. Items 1–3 below name
+`lane-gate.yml`'s four job names and `ci/lane-gate.sh`'s three sub-commands because that was the
+only workflow in GATE when they were written; **item 8 of §4.5's closing subsection states the
+substitution to make when the diff is a verdict-triple diff**, and nothing in the five items is
+weakened by it.
 
 1. **The four job names in `.github/workflows/lane-gate.yml` are unchanged**, and the same four
    still appear in `required_status_checks.contexts` — quoted from both sides, four and four.
@@ -1646,7 +1933,7 @@ closure depends on them, and a trigger whose closure depends on unowned work is 
 rather than a decision. **What it reports is §6.5's eight finding classes; what it cannot report
 is recorded there too** — condition 3's zero-unresolved-blocking clause leaves no trace in the
 block, so the detector is silent on it and the silence is not a pass. The one thing this section
-flagged as unsettled — a script under `ci/` other than the three GATE paths is **NEUTRAL** by
+flagged as unsettled — a script under `ci/` other than the GATE paths of §4.2 is **NEUTRAL** by
 §4.2, so authoring it crosses no lane, but no row of §2's table assigned NEUTRAL `ci/**` to an
 agent — **is now answered in §4.4**: it is lane-3 work, chosen by subject, with four agents
 excluded by name.
@@ -2116,6 +2403,15 @@ something. This one gates from birth: it is to be a required status check on two
 branches, which is R8's own trigger, so it never spends a day as a NEUTRAL script and the
 reclassification is owed **before** it is written rather than after.
 
+**Done on 2026-10-02 by amendment 9, and the three paragraphs below are the reason it was a
+separate piece of work rather than a row edit inside this amendment — kept, because the reasoning
+is what the next reclassification follows.** §4.2's GATE row now names six paths and §4.5's
+closing subsection re-derives every argument that counts the set. Two clauses below are superseded
+by it: piece **(i)** is no longer owed, and the order of **(ii)** and **(iii)** is the wrong way
+round — fixtures asserting a refusal the classifier does not yet perform are a red required check
+under R10, so the three behaviour-changing fixtures land *after* the classifier and the A/B/C table
+in §4.5's closing subsection is the sequence of record.
+
 **Why the row is not simply edited here.** §4.2's GATE row is not a list in a document; it is a
 list the gate *computes over*, and the arguments built on it count its members. Read back from the
 implementation at `41506ad` and from §4.5: `classify_path()` enumerates the three paths literally;
@@ -2132,10 +2428,17 @@ of quiet weakening, arrived at through tidiness.
 So the reclassification is **a dependency of the lane-3 work rather than a part of this
 amendment**, and it has three pieces in a forced order: (i) a lane-1 amendment to §4.2 and §4.5
 re-deriving both over the larger set — Atlas; (ii) `ci/lane-gate-test.sh` fixtures over the new
-members, written first — Scribe; (iii) `classify_path()` extended — Forge. **The implementation of
+members — Scribe; (iii) `classify_path()` extended — Forge. **The implementation of
 `pre-pr-review-verdict` may not merge before (i)–(iii) have**, because the day it becomes required
 is the day §4.2 is wrong about it. Until then its own paths are NEUTRAL in fact, which is recorded
 here rather than described as something else.
+
+**(i) is discharged — amendment 9, 2026-10-02 — and it split (ii) in two, which is the correction
+noted above.** An earlier draft of this paragraph said the fixtures were *"written first"*. That
+holds for the nine that assert behaviour the gate already gives, and is refused by R10 for the
+three that assert the new refusals, which would be a red required check before (iii) exists. The
+sequence of record is the A/B/C table in §4.5's closing subsection; the merge edge is unchanged
+and still covers all three pieces.
 
 **§4.4 rejected GATE for the lane-7 detector on two reasons; one of them reverses for this script
 and the other does not.** The reason that reverses is the load-bearing one: GATE is §4.1's
@@ -2262,7 +2565,10 @@ that a reader who meets the skill text knows which document to believe.
     everything they run. That file is now the **highest-consequence path in the repository**, and
     the honest shape of the mechanism is that it detects its own weakening everywhere except in
     the one file that decides whether it runs at all. The price is that GATE diffs are slower to
-    review and that §4.1's "closes the obvious hole" is narrowed to bundling.
+    review and that §4.1's "closes the obvious hole" is narrowed to bundling. **From amendment 9
+    the obligation covers six paths and two workflow files**, and limb 3 applies to the second
+    workflow on one required context rather than four — the superlative above is now a ranking
+    and not a property of a unique element (§4.5, "Re-derived over six GATE paths", items 7–8).
 13. **The record repository is inside a lock domain for the first time, and the project is set to
     `serialize`** (§2.3.1, which is the statement; this is the cost). The price is throughput on
     `platform`, paid on every item rather than on the concurrent ones, because a lock cannot tell a
@@ -2592,8 +2898,9 @@ Named, so this record is revisited on evidence rather than on mood.
   month at one filled seat — which restores private repositories with every protection in §8.2
   intact. Note what reverting does **not** undo: anything already cloned, forked or indexed
   stays out. Treat the public history as permanent and make the decision on that basis.
-- **R8 — a NEUTRAL `ci/**` script starts gating something.** §4.4 puts NEUTRAL `ci/**` in lane 3
-  on the premise that it gates nothing: the three GATE paths in §4.2 are an exhaustive list, and
+- **R8 — a NEUTRAL `ci/**` script starts gating something. Fired once, 2026-10-02; still live.**
+  §4.4 puts NEUTRAL `ci/**` in lane 3
+  on the premise that it gates nothing: the GATE paths in §4.2 are an exhaustive list, and
   `lane-partition` waves a NEUTRAL-only diff straight through. The moment such a script becomes a
   **required status check** on any protected branch, or any other check's verdict depends on its
   exit code, that premise is void — it is then part of the gate, it can be weakened in the same
@@ -2613,6 +2920,17 @@ Named, so this record is revisited on evidence rather than on mood.
   wires the check**, who files the amendment in the same change rather than afterwards. This is
   live from the moment §6.5's detector lands, because making it required is the obvious next
   thing to want and is exactly where §4.1's second rule stops applying by accident.
+
+  **The first firing, and what it cost, so the next one is scoped from a worked example rather
+  than from this paragraph.** `pre-pr-review-verdict` (§6.6) gates from birth, so R8 fired before
+  the script existed rather than after. The repair was **not** the one-line row edit this trigger
+  describes: §4.2's row is a list the gate computes over, so growing it to six changed the arity of
+  §4.5's arguments and outran what `ci/lane-gate-test.sh`'s `setup()` can construct. It took a
+  lane-1 amendment (§4.5, "Re-derived over six GATE paths", amendment 9), a lane-2 `setup()`
+  extension with nine fixtures, a lane-3 classifier change and three more fixtures — and the
+  `PUT` that makes the check required, without which limb 1 does not cover the new workflow at
+  all. **Budget that shape, not a row edit.** R8 stays live: §6.5's detector has not fired it, and
+  it fires again for every further `ci/**` script that starts gating.
 
 - **R9 — enforcement that a pull request cannot reach — ANSWERED 2026-10-01, negative.** §4.5
   limb 3 is unmechanised in `platform`: branch protection pins job **names**, not job **bodies**, so
@@ -2926,3 +3244,4 @@ date attached.
 | 5 | 2026-10-01 | **The gate's own weakening has three limbs: one was already closed by configuration, one is closed here by three new sub-checks, and the third is left to review — on a trigger this amendment ends up recording as a decision rather than as unmechanisable.** Closes the §4.2 question Assay raised on VUL-68 against merged code at `platform@41506ad`. The reading is confirmed in full: all three GATE paths in one diff gives `gate=3, prod=0, test=0`, `lane-partition` passes it, `test-erosion` greps `-- '*.rs'` and sees nothing, and `ci/lane-gate-test.sh`'s `setup()` copies only `ci/lane-gate.sh` so the harness cannot construct the diff — fixture 5 is *gate + prod → fail*, fixture 6 is *gate alone → pass*, and there is nothing between them. New **§4.5** splits it into three limbs. **Limb 1, deleting or renaming a check, was already closed by configuration**, which is the fact VUL-68 asked for and could not read: `GET /repos/vulcanflow/platform/branches/main/protection` read back 2026-10-01 returns the four contexts `lane-partition`, `test-erosion`, `inline-test-modules`, `gate-self-test`, `strict: true`, each pinned to `app_id 15368`, with `enforce_admins: true` — the configuration §8.2 records as applied, still in place — so a check that stops reporting leaves a required context expected and never reported and the merge blocks, which is §8.4's *"4 of 4 required status checks are expected"* seen from the other side. VUL-68's conditional severity resolves to its lower branch for that limb only. **Limb 2, the classifier and its own harness in one diff, was open and is closed by two sub-checks** inside the existing `gate-self-test` job, so no new context has to be wired: **monotonicity** — the base harness is run against the head classifier and any case the base asserted the gate *refuses* that head now *permits* is blocking, while the converse is reported and does not block because a stricter gate is not a weakening — and an **assertion floor** on the harness's `check` count, which closes the delete-then-weaken route monotonicity alone leaves open. **Limb 3 is named as unclosable inside the repository and was not in the finding:** branch protection pins job **names**, not job **bodies**, so a diff touching `.github/workflows/lane-gate.yml` **alone** is GATE-only, `lane-partition` permits it, and replacing each job's `run:` with a command that exits zero leaves all four required contexts green while none of the four checks has run — one file, four green checks, no gate, strictly more reachable than the three-file sequence VUL-68 describes and unreachable by any edit to `classify_path()`. Every layer above bottoms out there, monotonicity included, since its step lives in that file. **Two alternatives rejected on the record.** A **pairing rule** (*"`ci/X.sh` and `ci/X-test.sh` may not appear in the same diff"*), which Assay named: monotonicity is strictly stronger on the same case — the pairing rule *splits* a one-pull-request weakening into two and buys legibility where monotonicity *refuses* it — and the pairing rule rests on a filename convention that a GATE-only rename defeats. A third reason this row's own earlier draft gave — that the pairing rule would force the classifier change and its fixture into separate pull requests — is **withdrawn in §4.5 as false**: R10's sequence separates them anyway, so the rejection stands on two reasons and not three. A **class split**, one class per detector: §4.4's *"both would still move together"* is right and applies here, because the defect is not that two files share a class but that a detector and the only assertion that the detector is correct are the same change, so §4.2's table is **unchanged**. **What remains open is stated rather than implied**: in-place relaxation of a fixture — body weakened and expected verdict flipped together, count preserved — is caught by nothing mechanical, and the floor is an endpoint comparison with the same blindness as fixture 12's second half, which Assay flagged, which is deliberate, and which is unchanged. New **§4.6** gives a GATE-class pull request a five-item review obligation, because limb 3's control is lane 6 by construction and "review it carefully" is not a specification: the four job names unchanged and still in `required_status_checks.contexts`; each job's conclusion still decided by the gate's exit status, with a `run:` that reaches the script but discards its verdict a blocking finding on its own; `on:` unchanged with no `if:` and no `continue-on-error:` at either job or step level and no `paths:` filter; every fixture read **against its outcome of record** rather than counted; and any case the harness cannot construct **named in the verdict as uncovered**, which is how limb 2 survived from `41506ad` to VUL-68. **§4.1's second paragraph is narrowed and an overclaim withdrawn** — it closes the *bundled* form of gate-weakening and not the solitary form, and a GATE-only diff is permitted deliberately — and **§4.2 gains a note that its rule partitions *between* classes and says nothing about what travels *within* one**, which is where it bit. New **R9**: limb 3's only real closure is a GitHub control the diff does not contain; two were looked for on 2026-10-01 and neither is in place (`GET /repos/vulcanflow/platform/rulesets` → `[]`, `GET /orgs/vulcanflow` → `plan.name: free`), whether a ruleset `workflows` rule is available on Free for a public repository is **not verified here**, and because that is a plan question of §8's shape the **owner is CEO**. New **R10**: `gate-self-test` being required means the gate's own suite may never be red, so a fixture asserting behaviour the classifier does not yet have is a red required check that cannot merge at all — a standing exception to *tests precede code*, with monotonicity the reason the inversion is not a weakening. §4.5 writes out the **three** pull requests this forces — existing-behaviour fixtures by Scribe, then Forge's implementation, then the new behaviour's fixtures by Scribe — in which **no lane is crossed** and nothing is ever red, only step 3 is inverted, and the control over step 3 is lane 1 plus §4.6 item 4 rather than a mechanism, because §4.4's "written by Scribe before the implementation exists" clause is not satisfiable for a GATE path. **§4 table's fixture count corrected**, which this record contradicted itself on in two places; this amendment first wrote it as 21 fixture diffs, and the forward reconciliation onto docs#33 takes that branch's sharper unit split instead — **21 asserted verdicts across 15 fixture diffs**, the two numbers not interchangeable because a fixture may carry more than one `check` invocation, counted at `41506ad`. The earlier "17 to 21" phrasing in this row was wrong in its unit as well as its number and is withdrawn here. §7 gains item 12. Lane assignment for the work §4.5 creates follows §4.4's subject table extended to GATE paths — classifier **Forge** in lane 3, fixtures **Scribe** in lane 2 enumerated with their outcomes in the lane-1 spec, `n/a (no §25 identifier in scope)` under §6.3 condition 2, in R10's three-pull-request order — and `setup()` must gain the ability to write `ci/lane-gate-test.sh` and `.github/workflows/` into the fixture repository, since the three cases this amendment turns on are the three it cannot build. `process/agent-workflow.md` §6 and §7 updated in the same change. **Corrected in lane 6 before merge, from Forge's independent measurement on VUL-68.** Limb 1's `app_id 15368` was asserted in an uncited parenthetical and is now read: `GET /apps/github-actions` returns `id: 15368`, `slug: github-actions`, and the protection read-back is recorded as corroborated by three reads from two agents over two routes, which is the citation this limb needs because nothing in the repository restates the configuration that closes it. **Every date this amendment stamped on its own read-backs said 2026-10-02 and the reads happened 2026-10-01 UTC**; all eight occurrences are corrected, including this row's own date and §4.5's and §4.6's *added* markers — a record whose provenance dates are a day ahead of its evidence is the same defect class as an uncited pin. And §4.6 gains a closing note on its own strength, from the second datum in the same read: `required_approving_review_count: 0` with `require_code_owner_reviews: false` means GitHub will merge a GATE-class pull request with **no approving review at all**, so all five items are enforced by §6.3 inside Paperclip and by nothing in GitHub — not an argument for raising a count §3.1 makes unsatisfiable, but the reason §4.6 is checkable items rather than an instruction to review carefully. **Corrected in lane 6 before merge, from reviewer #1's verdict at `5860c5a` (VUL-84): seven blocking findings, every one of them against what this amendment said about itself rather than against its substance, and all seven applied here.** A **third sub-check** is added to §4.5 limb 2 — a **sentinel** requiring the head harness to report failure against a committed known-bad classifier — because sub-checks 1 and 2 constrain the classifier and the assertion *count* while trusting the harness's verdict machinery, so two GATE-only pull requests defeated both: gut `check()` or the `[ "$fail_count" -eq 0 ]` exit line with the invocation count held, then weaken `classify_path()` against a base harness that now asserts nothing. The four-shape "Together these refuse" enumeration called itself complete and was not. **§4.6 items 2 and 3 are restated on exit-code authority rather than reachability**: item 2 tested that the `run:` line still reaches the script, which `run: ci/lane-gate.sh partition \|\| true` passes, so it now asks whether a non-zero exit still fails the job; and item 3's refusal list gains **step-level** `if:` and `continue-on-error:` at job and step level, each a one-line single-file GATE-only diff producing four green contexts with no gate — limb 3 at a quarter of the cost, absent from the enumeration that is limb 3's only control. **The claim that hollowing a fixture's body is caught by the existing leg is withdrawn for *pass*-asserting fixtures**, which are 15 of the 21 at `41506ad` (6 assert `fail`, counted there): hollow fixture 6 and the diff is empty, `cmd_partition()` returns `pass`, the assertion is `pass`, and every leg is green — silent coverage loss whose only control is §4.6 item 5. **Three present-tense statements about sub-checks that do not exist are future-tensed** — §4's check table, §7 item 4 and `process/agent-workflow.md` §6's four-check table, the last being the table an agent reads before pushing, which §9 names as the live hazard and which amendment 3 corrected this record for once already. **The "three pull requests" count is narrowed to this change**: R10 forces the *inversion*, which is two — implementation, then fixtures — and the third step exists only because `setup()` at `41506ad` cannot construct the cases needing coverage first, a capability gap and not a rule; §4.5, R10 and the agent-facing sentence all corrected, the same overclaim-by-scope this amendment narrows §4.1 for. **§4.6 item 4 is made performable on the set it governs**: the 21 fixtures predate §4.4's enumerate-with-outcomes rule, so for them the outcome of record is the `check` call's third argument plus its section comment **frozen at `platform@41506ad`**, and the one control the residue rests on is no longer empty exactly where the residue lives. **`process/agent-workflow.md` §7's limb-3 bullet dropped item 2's condition** and made *touching* the workflow file the blocking finding, which contradicts §4.5's own pull request 2 and fixture 6 — the partial-restatement failure mode amendment 3 recorded about §6.3, repeated in the same document; the condition is restored. §4's `gate-self-test` row loses the unqualified *"the gate's own logic is itself tested"* (advisory A1 — the same species of overclaim §4.1 withdrew, surviving one screen above it). §4.5's pull request 2 row gains the two preconditions monotonicity cannot run without (advisory A2): `fetch-depth: 0` and a fetch-base step on the `gate-self-test` job, which has a bare `actions/checkout@v4` at `41506ad` unlike `lane-partition` and `test-erosion`, and a base ref that cannot be resolved must **fail closed, not skip**, since a silent skip reproduces limb 3 inside the sub-check built to close limb 2. `decisions/README.md`'s pointer row gains §4 (advisory A4). The pairing rule's **third** rejection reason is supplied by Assay while upholding the rejection of its own alternative — it would not have caught the sentinel's two-pull-request sequence either, since that sequence never shares a diff — which is stronger than the reason it replaces. Reviewer #1's verdict also re-derived every read-back in this amendment independently and confirmed all eleven, upheld limb 1's decision not to verify the skipped-job semantic (the outright refusal in §4.6 item 3 is stronger than either branch), and walked R10's sequence step by step confirming no lane is crossed and nothing is ever red. Advisory **A3** is not applied here because it is in `platform`, not this repository: `cmd_partition()`'s GATE refusal message names `ci/lane-gate.sh` and `.github/workflows/lane-gate.yml` but omits `ci/lane-gate-test.sh`, which is in the same class — it goes to §4.5's pull request 2. **Corrected in lane 6 before merge, from the CEO's answer to R9 and its second half, which found a false claim in this amendment's most load-bearing sentence.** §4.5 limb 3 said the limb was *structurally* unclosable because *"the workflow file is what decides whether the gate runs"* — **true under `on: pull_request` and false in general, and the overclaim is withdrawn.** Under `on: pull_request_target` the workflow file, the checked-out ref and `GITHUB_SHA` all come from the **default branch** (GitHub's events reference gives `GITHUB_REF` as *"Default branch"*; the changelog of 2025-11-07, effective 2025-12-08, makes it unconditional: *"The workflow file and checkout commit will always be taken from the repository's default branch"*), and a check run from such a run still attaches to the **pull request head SHA** and can satisfy a required context — verified on third-party data because the whole option turns on it: `puppetlabs/puppetlabs-firewall` run `35264886978`, `event: pull_request_target`, `head_sha 97945b9e…` = pull request #1247's head and not that repository's `main` `be2016d7…`, with check run `105349461328` on the same head SHA. Limb 3 is therefore **unmechanised rather than unmechanisable**, the section heading and §4.5's opening paragraph are reworded, and the trigger becomes a recorded decision instead of an inherited default. **The swap itself is rejected on three reasons, and the first is that it would not have closed the limb:** under `pull_request_target` a diff touching `lane-gate.yml` alone draws four *honest* green contexts — `lane-partition` permits a single-class diff deliberately, `erosion` sees no Rust, `inline-test-modules` is unaffected, and `gate-self-test` is running `main`'s harness against `main`'s classifier — so it still merges and `main`'s gate is hollow from the next pull request on, which is **the same merge outcome as today**; the swap converts vacuous-green into honest-but-silent and makes an un-neuterable sub-check *possible*, which is the reclassification and not a closure. The variant the proposal also claims — that a GATE diff can no longer neuter classifier and harness in one pass — holds and does not help, because `gate-self-test` would then never test the pull request at all, relocating limb 2 rather than killing it and leaving monotonicity still required. **Second reason: it is incompatible with all three of limb 2's sub-checks**, on GitHub's own rule — *"Workflows that use these triggers must not explicitly check out untrusted code"* and *"You must ensure the checked-out code is only ever inspected as data and never executed"* — because monotonicity executes the **head** classifier, the sentinel executes the **head** harness, and `gate-self-test` at `41506ad` already runs head against head; sub-check 1's note that the base harness introduces no new trust is true of the harness and silent about the classifier, which is the head-authored file under test. The proposal's own caveat that a diff-only gate is the safe shape is right for three of the four jobs and does not reach `gate-self-test`, which is the fourth required context. **Third reason, and not in the proposal: the trigger is blocked by default on public repositories from 2026-11-02**, per the changelog of 2026-09-17 and the repository-settings reference, both read 2026-10-01 — and the read-back puts us inside that rule: `platform` and `docs` are `visibility: public`, `GET …/actions/policies` returns `{"total_count": 0, "policies": []}` on both, `GET /orgs/vulcanflow/actions/policies` returns `403 Resource not accessible by integration`, on `plan.name: free`. A gate on that trigger stops running on that date; it fails **closed**, which halts delivery rather than hiding a hole, on a date nobody had written down. The partial swap — three diff-only checks on `pull_request_target` in a second file with disjoint job names, `gate-self-test` left behind — is recorded as the only coherent shape the option has and is refused on reasons one and three. **R9 is ANSWERED, negative:** the CEO's probe on VUL-89 returns `422 Validation Failed` for a repository-level ruleset `workflows` rule, invariant across eight payload variants, while control rules created and deleted successfully in the same session; the rule is documented at organisation and enterprise level only, the changelog of 2023-08-02 records it as *"only available on GitHub Enterprise plans"*, `GET /orgs/vulcanflow/rulesets` is `403` for our App regardless, Team at $4 does not carry it and Enterprise Cloud at $21 does — **the board declined, outcome 3 of R7's frame.** R9 stops being a probe and becomes a standing trigger. **One read-back in R9 was wrong and the CEO caught it:** it generalised `platform`'s empty `rulesets` to *"no repository ruleset exists on any of the four repositories' `main`"*, and `vulcanflow/docs` has an **active** ruleset `protect-default`, id `24332832`, created `2026-10-01T20:35:06Z`, scoped `~DEFAULT_BRANCH`, carrying `deletion`, `non_fast_forward`, `code_scanning`, `pull_request` and `required_status_checks` with the single context `CodeRabbit` (`integration_id 347564`) — re-read here rather than transcribed. It does not change R9's answer, since `protect-default` carries no `workflows` rule and could not; it does change what this record claims about the organisation's configuration, and the general statement — **rulesets are available to us on Free for a public repository and one rule inside them is not** — replaces the false one. New **R11** tracks the Actions event policy that would keep `pull_request_target` available past 2026-11-02, **not** as a trigger to adopt the swap (reasons one and two refuse it independently of any policy) but because its availability expires in a way nothing else in this record does, and because any VulcanFlow workflow written on that trigger for any other reason stops running on that date; owner **CEO**, and the `POST` is deliberately **unprobed** — the `GET` is readable to us, and a write to Actions policy on a protected repository is a CI-configuration mutation §4.4's exclusions keep Atlas out of. §4.6 item 3 gains the trigger as a named refusal with the reason, and §4.6's closing note records that R9's negative answer makes §4.6 **the** control on the highest-consequence path rather than an interim measure waiting on a mechanism. `process/agent-workflow.md` §7 gains a bullet carrying all three reasons, because an agent reading only the old bullet would read the swap as the obvious hardening and it is the one change that would look like strengthening the gate while stopping it. **Reconciled forward onto docs#33** under §2.3, three conflicts, all taking that branch's fixture-count unit split. **Corrected in lane 6 before merge, from reviewer #2's verdict at `394fe54` (VUL-85): REQUEST CHANGES, three blocking, one advisory, one dismissed.** Reviewer #2 promoted two Minors to blocking and found the third independently. **§4.4's claim that §4.5's mechanism is inherited by the prospective `ci/lane7-attest.sh` pair is false and is withdrawn:** it said the sub-checks are *"stated over any detector/harness pair rather than over GATE specifically"*, and they are not — all three are steps inside the existing **`gate-self-test`** job, written against `classify_path()`, `ci/lane-gate.sh` and `ci/lane-gate-test.sh` by name, so a second pair shipped on that belief would have **none** of them. What transfers is the argument and not the mechanism; the obligation it creates is **R8**'s, and the second pair's three sub-checks are lane-1 work that does not exist. This is the same overclaim §4.4's final paragraph was corrected for in amendment 4, one paragraph below where it recurred. **R9's four-repository negative rested on a single-repository endpoint**, which reviewer #2 reached independently of the CEO's answer in the same window — and the CEO's read settles it harder than reviewer #2's objection does: the generalisation was not merely unsupported, it was **false**, because `vulcanflow/docs` has an active ruleset. Both reviewers and the board landed on one sentence; the corrected text claims only what each endpoint can establish, per repository. **`decisions/README.md`'s amendment-5 pointer row said limb 2 is closed by *"monotonicity plus an assertion floor"* — two, where §4.5 and §7 item 4 say three** since the sentinel landed in the same commit; a stale second statement of §4.5's content is precisely what that file's own preceding paragraph says a pointer index exists to prevent, and amendments 2, 3 and 4 were each corrected for it. Advisory: an unescaped `\|\|` inside a backtick span in this row broke the table into five cells under strict Markdown parsing, and the pipes are escaped; every table in the three changed files is re-checked for cell-width consistency rather than just this one. Reviewer #2's **dismissal is upheld**: this row's opening clause stays at *"two sub-checks"* because the row is an append-only chronology that then narrates the third being added, §12 makes §4.5 the authority over the row, and rewriting the opening to "three" would make the row contradict its own next sentence. **R11 is ANSWERED before this amendment reached `main`, on both halves, and it closes *positive* — the one answer in this record that turns the opposite way from R9's.** The CEO probed it on VUL-107 on 2026-10-01: a repository-level Actions event policy **is** creatable by our identity on Free (two `422`s against the request body, which sits behind authorisation and plan gating, where the organisation-level endpoint refuses first — **nothing was created**, and the four public repositories read back at `total_count: 0` after the probe), and **no VulcanFlow workflow uses `pull_request_target`** — zero occurrences across all 15 repositories, 4 public and 11 unborn private, every branch and every open pull request's files, so 2026-11-02 is a no-op for us on the state read that day. R11 is restated there as a **live knob with two observables** rather than a dormant probe, with the dated sweep explicitly **not** promoted to a standing invariant; the answer, its evidence and the posture it sets are read in R11 and are not reproduced on this row. **This row's own clause that the `POST` is "deliberately unprobed" is withdrawn in place** — it was true when written and is now the state of the previous day; the probe was performed by the owner this amendment assigned, and §4.4's exclusion that kept Atlas out of it is unchanged. **§4.5 is not reopened**: the positive answer removes the third of its three rejection reasons and reasons one and two refuse the swap independently, so §4.5's own *"unverified"* clause is answered in place with its direction stated, its closing conditional is marked as having its **first conjunct satisfied and its second not**, and §4.6 item 3's *"an Actions event policy this organisation does not have"* is corrected to **creatable, none created** — because "cannot have" and "chose not to create" are different facts and only the second is ours. Also recorded there: the `403` in §4.5's read-back block and the `404` in R11's are the **same endpoint on the same date**, both kept, since they support one conclusion and neither is the reason organisation level is unavailable; and the **first side effect anyone would trip** — creating any applicable policy on `platform` moves it out of the no-policy population the default rule covers and makes this organisation the owner of what `pull_request_target` does there, which is why the posture is zero policies on all four public repositories until a workflow needs one and the first policy is an amendment rather than a settings change. **This R11 pass is filed under VUL-112** and sits on this row rather than opening an amendment 6, because every section it touches — R11, §4.5's third reason, §4.6 item 3 — is one this amendment wrote and has not yet merged. Recorded by Atlas under VUL-68. |
 | 6 | 2026-10-01 | **§2.3's enforcement is a Paperclip workspace lock, and the two procedural halves of the VUL-83 decision are recorded.** Discharges the closing sentence of §2.3, which said that a recurrence meant the fix was outside this record and CEO's. It recurred twice — a fourth and fifth instance — and CEO chose, applied and read back a control on **VUL-83**, which is the authority for §2.3.1; this record binds it rather than restating it. **New §2.3.1:** `executionWorkspacePolicy.sharedWorkspaceConcurrency` on the VulcanFlow project was an **unset field, not a missing feature**, and is now `serialize`, read back from `GET /api/projects/1eb69546-cf8c-4210-a38c-72c66ad345c3` on 2026-10-01 together with the four values that were already in effect; and because the lock's domain is the **workspace** and `vulcanflow/docs` was registered as none, **setting that field alone would have prevented none of the five instances** — `docs` is now a registered project workspace, `30a88b19-1c78-4db0-afe9-d7e66c494858`, `sharedWorkspaceKey: vulcanflow-docs`, `defaultRef: main`, `isPrimary: false`. §2.3's bullets are **restated as binding on an author run, with a violation a blocking finding in lane 6**, and the reason they survive is stated rather than implied: the setting's subject is two runs holding one workspace *at the same time*, a branch outlives a run, so one change / one author run, delegation owned by that same run, one correction commit and reconcile-forward are the only thing addressing the sequential case at all. The **override asymmetry** is recorded as the one deliberate hole — a review-only issue may carry `executionWorkspaceSettings: {"sharedWorkspaceConcurrency": "allow"}` because a reviewer writes nothing to the tree, an **authoring issue may not**, and a second author run let through that way is the breach. The **cost** is throughput on `platform`; the **revert** is one `PATCH` to `auto` and is **CEO's, not Atlas's**. **Whether `serialize` queues a second run or refuses it is left unasserted**, because the API exposes no read of the lock — no holder field, no queue field — and R12 limb 1 is how that gets answered by observation instead. **New §2.3.2:** a record-authoring issue carries `projectWorkspaceId: 30a88b19-…` or it is **outside the control**, since the project default is `platform` and a lock over an unheld workspace refuses nothing; checkable by one read of `GET /api/issues/{id}`. Demonstrated rather than asserted — VUL-91 carries the field and the run that wrote the section was given `PAPERCLIP_WORKSPACE_ID` equal to it with its working directory in the managed `docs` checkout, the first record-authoring run this organisation has done inside a lock domain. A lane-6 review issue **belongs outside that workspace** and is patched back off it after filing, because `create_task` has no workspace field and a child inherits its parent's. **New §2.3.3:** a lane-6 review pair is keyed `lane6:<owner>/<repo>#<pr>:<head-sha-40>:<assay \| warren>` — the **head sha is in the key** because §6.3 condition 3 makes re-filing at a new head correct behaviour that a pull-request-only key would refuse, nothing about the run or the clock is in it, and the reviewer is in it or the pair collapses to one issue. The pair is filed through **`create_task`**, where `idempotencyKey` is a **required** field (schema read 2026-10-01: `minLength 1`, `maxLength 240`, "caller-stable retry key") and which makes the pair children of the authoring issue so the blocker wake costs nothing; **the HTTP route is excluded until verified** — `POST /api/companies/{companyId}/issues` publishes **no request-body schema** in the OpenAPI document and is not among the paths documenting `idempotencyKey`. What the key buys is stated as **one issue per (repository, pull request, head, reviewer) and not a particular status code**, because whether a colliding key returns the existing issue or an error is also not established. And **staleness is read from the title, not the key**, since `GET /api/issues/{id}` exposes no idempotency field (checked on VUL-84) — the `@ <head-sha-7>` form lane 6 already uses is codified for that purpose, which is what instance (i) needed when three review issues were live for one pull request. **New R12**, five limbs: `serialize` refusing rather than deferring (owner CEO, who holds the revert, and the limb exists to answer the question §2.3.1 declines to answer); the `allow` override appearing on an authoring issue (owner Assay, same check it already makes before reading a diff); a record-authoring issue filed without `projectWorkspaceId` (owner Atlas — once is a correction, a pattern means the field should be a default, which is CEO's); and a **seventh instance with all three controls in force**, which would mean the control is in the wrong place rather than advisory, and whose next step is the instance-level isolated-workspace flags on **VUL-93** — `403 {"error":"Board access required"}` to an agent key, read back by CEO with CEO's key and independently with Atlas's, so the board's. §7 gains **item 13**: the record repository is inside a lock domain for the first time, the price is paid on every item rather than only the concurrent ones because a lock cannot tell a race from a coincidence, and this is the first control in the pipeline whose mechanism lives outside both GitHub and the repository — which is why R12 carries more observables than the triggers above it. **Items 2 and 3 of VUL-91 are in this one amendment and not split**, as the issue allowed: all three are the same decision's procedure, they land in adjacent subsections of one section, and two pull requests editing §2.3 concurrently is the defect §2.3 is about. `process/agent-workflow.md` §1 and §3 and `decisions/README.md` updated in the same change. **Corrected in lane 6 before merge, from reviewer #1's verdict at `eb5de61` (VUL-96: 6 blocking, 6 advisory) and the CodeRabbit App's review at the same head (2 Minor, both advisory under §6.2 corollary 3, one of them the same defect reviewer #1 found).** The amendment **asserted an outcome for the setting in six places and had read back none of them**; every one is now a statement about what was *set*, and §2.3.1's *"what is unverified stays unwritten"* is applied to the sentence that broke it. **§2.3.1 gains the first observation taken with the control in force, and it does not show the control working**: three runs held the managed `docs` tree inside twenty-three minutes with `serialize` set, `docs` registered and the authoring issue carrying it, and the tree's `HEAD` moved under a live reviewer, who finished out of the object store. Two readings survive — a second holder admitted, or a holder record that never clears — and **the record resolves neither**, because all 195 execution-workspace records read at ~23:32Z carry `status: active` and `closedAt: null` with the oldest opened five hours earlier, so that route cannot tell a live holder from a finished one. **R12 gains limb 5** for that upstream observable, keyed to the wake banner rather than to the unusable census, owned by whoever receives the banner and reported to CEO; **limb 4 is recorded as not fired**, since two runs on one *working tree* is limb 5 and two runs on one branch, issue or review pair is limb 4, and the repairs differ. Limb 2 gains the **occasion** it was missing — the authoring issue, at the start of every lane-6 review, in the same step as the lane check. **§2.3 now enumerates all five instances with the VUL-83 label beside each**, closing the arithmetic gap: (iv) is the self-merge `aba73a9` and (v) is the 22:45–22:55Z concurrent push, neither of which the first draft described while counting from them. **The `409` is reattributed from instance (i) to instance (iii)**, which is where VUL-83 and §2.3.1's own sentence put it; (i)'s actual need — three live review issues for one pull request and a reviewer told by hand to stop reading — is the better argument for the same mechanism and replaces it. **§2.3.2's claim that the rule does not reach a lane-6 issue was falsified by this amendment's own two review issues**, filed 44 and 73 seconds after the head commit and both carrying the `docs` workspace by inheritance; the subsection now decides the case rather than describing it — the pair is patched to the project default with the review-only `allow` override, by the run that files it, and that inheritance is named as the proximate cause of the three-run tree. **§2.3.3's "the pair is not filable twice" is withdrawn as unsupported**: the evidence was a schema description, no colliding filing has been performed, and the claim is now that the key is the mechanism by which Paperclip is *asked* to refuse one. **R6 limb 2 is resolved as not fired and gains a 20-minute floor**: reviewer #2 correctly reported the lane unsatisfied at ~23:24Z on the evidence then available, and the App's review arrived at 23:28:33Z, 11 minutes after the push — a nudge answered with *"applicable only when automatic reviews are paused"* means a review is already in flight. Advisory repairs: §7 item 13 and `process/agent-workflow.md` §3 reduced to cost-plus-pointer and format-plus-pointer after both restated §2.3.1 and §2.3.3 in part — a *partial* restatement being the more dangerous kind, which is this file's own position; `decisions/README.md` row 6 restored to the full key tuple; and this row's `<assay \| warren>` fragment escaped, since the raw pipe was parsed as a fourth column. **Reconciled forward onto amendment 5's head before merge, and this amendment's new trigger is published as R12 rather than the R11 it was drafted as.** This branch forked at `a342155`, five commits before amendment 5's `f44c479` allocated **R11** to *an Actions event policy allow-listing `pull_request_target` before 2026-11-02*, so §10 here never saw it and both branches reached review carrying an `R11` of their own. **Nothing reports that collision**: the two bullets were added at different points of §10, so the merge is clean and no check and no diff reads as a deletion — which is why VUL-116 filed it rather than leaving it to be found at merge. **Amendment 5's R11 keeps the number.** It is cited by name from §4.5's third reason, §4.6 item 3, row 5 of this table, `decisions/README.md` row 5 and `process/agent-workflow.md` §7, and it is ANSWERED positive under VUL-112, so renumbering it would move five published pointers and one recorded answer. This amendment's trigger is the later fork with the smaller pointer set, so **it is the one that moves: `R11` → `R12` in §2.3.1 (five references), §2.3.2, §7 item 13, §10, this row, `decisions/README.md` row 6 and `process/agent-workflow.md` §1.** The drafted identifier is quoted rather than deleted, because a reader holding the earlier text has to be able to land: *"R11 — the workspace serialization in §2.3.1 is not doing what it was set to do"* is **R12** from here forward, and `R11` in this record means the event policy and nothing else. **Four further overrides, each taken from the base rather than from this branch, because each is a lane-6 correction amendment 5 landed after this branch forked.** §2.3's heading and opening claim take the base's wider subject — *"A change is owned by one author run at a time — its branch and the board writes about it alike"* — so the section is *One change, one author run* and not *one branch*. The base's **fourth bullet**, on delegating and filing being owned the same way as committing, leaves this amendment's *"the three bullets below"*, *"a force-push against bullet 3"*, *"these three are obligations"* and *"none of the three is enforceable"* counting a three-bullet list that no longer exists; the count and the ordinal are corrected, and §2.3.1's enumeration of what addresses the sequential case gains the delegation limb. The *"deliberately not an R5 event"* paragraph takes the base's **one-clause** form with its instance-(ii) near-miss sentence — reviewer-required on amendment 5, and this branch still carried the three-clause form the base had withdrawn. And §2.3's **quotation of its own discharged closing sentence** is corrected to what the base actually says: *one run per change*, not *per branch*, and *a further restatement*, not *a fourth* — a quotation of a sentence the base had itself edited. Reconciled by Atlas under VUL-116; `n/a (no §25 identifier in scope)` under §6.3 condition 2. Recorded by Atlas under VUL-91. |
 | 8 | 2026-10-02 | **Lane 5.5 gets a row, mechanics and a required check, and the board's VUL-34 directive becomes a fifth merge condition.** Discharges amendment 2's own deferral — it said VUL-28 "adds the row if the answer is that it should have one" — on a measurement rather than on a preference: CEO's audit of 2026-10-02 09:14Z found **nine pull requests opened after the board rule of 19:49Z, two carrying the verdict block and seven not**, with the rule living only in a company skill at `attachedAgentCount: 1` and in an issue thread, `platform/.github` holding only `workflows/` and `docs` having no `.github/` at all. §2 gains a **5.5 row**, and the clause of amendment 2 that said lane 5.5 "gates nothing … skipping it is not a lane violation" is **quoted and split**: it gates nothing in lanes 6 and 7, which stands, and it gates **pull-request creation**, which is new — amendment 2 had over-generalised *clears nothing* into *gates nothing*, two different predicates. New **§6.6** is the only statement of the lane's mechanics: the audit as warrant; the per-push rule **settled rather than flagged**, because the skill marked it as its own extension and a head-pinned merge condition leaves no narrower reading available; `findings == 0` with the declined path specified and deliberately unbuilt pending VUL-1; the three finding rules that survive either answer to it; and `pre-pr-review-verdict`'s scope — present, well-formed, head-sha-matching, zero — stated beside **what no CI check can do, which is verify that the CLI ran at all**, since its state lives under `$HOME/.coderabbit` on the agent runner. Lane 5.5 is recorded as **author-attested and mechanically unverifiable**, buying the one thing the audit says was missing: it fires at the moment of omission, and seven of the nine carried no block rather than a false one. The check's lanes are named — §6.6's table, Atlas excluded from authoring it by §4.4 — and its paths are owed a **GATE reclassification that this amendment schedules and does not perform**, because `classify_path()` enumerates three paths literally and §4.5's monotonicity, floor and sentinel arguments count that set, so a one-line row edit would assert a classification the gate does not implement. §4.5's three sub-checks are **not inherited** by the new pair, which is the overclaim §4.4 has already had to withdraw once. **§6.3 gains condition 5** — the App's review of the head reports `Actionable comments posted: 0`, never vacuous, no `n/a` form, with `Lane-7-App` added to condition 4's attestation block while the detector is still unwritten and VUL-48's spec owed a finding class for it. The VUL-34 directive is **adopted rather than withdrawn**, and the distinction from amendment 3's treatment of VUL-32 is stated: condition 3 ranges over Warren's verdict, which §6.2 corollary 3 lets triage a finding advisory, so the directive is a new condition and not a fourth phrasing of an old one. What it removes is named — not Warren's triage but its merge-enabling effect. §7 gains items **14** and **15**; §10 gains **R13** (the seat is on an `Advanced (trial)` and a pre-flight that cannot run must not read as one that ran clean — stop and escalate, do not write a block; plus the verifiable direction, VUL-8), **R14** (the vendor owns the word "actionable") and **R15** (the hourly window's scope is undetermined by the read taken). **A correction to the audit that routed this work**: `coderabbit usage` prints two different numbers, and the audit read the billing one. `Review cap: Not configured` is the monthly cap and is genuinely unconfigured; `Included reviews` separately reports `Remaining: 5 of 10`, `Window: rolling 1 hour`, read 2026-10-02 09:27Z. The conclusion that cost argues for no narrower gate is unaffected; the hourly window argues for **batching** — one push per fix round, the board's own words — which is a different remedy. `CODERABBIT_BIN` is made the only way a repository artefact names the CLI, degrading to a clear error rather than a silent skip, because all four repositories are public (§8). The two subordinate skills' divergences are recorded with their owner: `vulcanflow-pre-pr-review` point 5's hedge, now overtaken, and `lane6-review-verdict` v2.0.0 §0 and Appendix A, which still say this company has no CLI credential. Lane 6 never depended on the CLI; a reviewer reading Appendix A today is told the pre-flight is unavailable. `process/agent-workflow.md` §1 and its lane-7 section updated in the same change, and `plans/lane5-5-verdict-check-spec.md` carries the lane-1 spec the check's lane-2 and lane-3 owners work from. Recorded by Atlas under VUL-28. |
+| 9 | 2026-10-02 | **The GATE set is six paths, not three, and every argument in §4.5 that counts it is re-derived.** **R8's first firing**, carried out before the script that trips it exists: `pre-pr-review-verdict` (§6.6) is a `ci/**` script that gates from birth, so the reclassification is owed before it is written rather than after. §4.2's GATE row adds `ci/pre-pr-review-verdict.sh`, `ci/pre-pr-review-verdict-test.sh` and `.github/workflows/pre-pr-review-verdict.yml`, **daggered**, because the row is six as specified and three as implemented until the lane-3 step lands — a window stated in the table rather than left to be met as a green check. New closing subsection of **§4.5** re-derives the arguments over six, read back from `platform@41506ad` on 2026-10-02: the central `gate=3, prod=0, test=0` observation is **arity-independent** — `cmd_partition()` tests `gate > 0` and never compares members — so it reads `gate=6` and generalises to *any non-empty subset of GATE, alone, passes*, while the permitted shapes go 7 → 63 and acquire a kind that did not exist before, the **cross-triple** diff, which nothing but §4.6 looks at. Limb 2's three sub-checks are named over the first triple and **do not spread**: three of six GATE paths carry the mechanism and three carry none, which is §4.4's withdrawn overclaim not re-made. Monotonicity gets a lemma — NEUTRAL→GATE promotion can only *add* refusals, so a row growth can never block, and after the last step a silent **demotion** does. The floor's rule is unchanged and its numbers are not: 21 → **35** invocations across 15 → **27** fixtures, pass/fail 15/6 → **26/9**, and constructible GATE coverage honestly worsens from one-of-three to one-of-six on the row edit alone before the lane-2 step takes it to six-of-six. The sentinel keeps its form and its floor rises to 9. Limb 1 does **not** cover the new workflow until the `PUT` that makes the check required. Limb 3 ranges over **two** workflow files and the "highest-consequence path" superlative becomes a ranking. The pairing rule's **first** rejection reason is narrowed — it compared against monotonicity, which the second pair does not have — and the rejection stands on reasons two and three. Twelve fixtures are enumerated with their outcomes, two of them shared with §4.5's own step 1 and counted once, and the sequence is **A/B/C**: current-behaviour fixtures, then the classifier, then the three fixtures whose verdict the promotion changes. That **inverts §6.6's "(ii) written first"**, on R10's own argument — a fixture asserting a refusal the classifier does not yet perform is a red required check — and §6.6's clause is superseded. Lane 1 discharged here; A and C are Scribe, B is Forge, §4.4's four exclusions unchanged, ledger line `n/a (no §25 identifier in scope)`. The merge edge is unchanged in strength: `pre-pr-review-verdict`'s implementation may not merge before A, B and C have. Raised and scheduled by §6.6; filed as its own item for the reason §6.6 gives — the GATE row is a list the gate computes over, so growing it is an arity change and not a row edit. (VUL-153) |
