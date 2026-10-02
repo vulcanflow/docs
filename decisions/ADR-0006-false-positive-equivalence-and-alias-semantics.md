@@ -54,7 +54,7 @@ too narrow produces noise; a matcher that is too wide produces silence. Prefer n
 
 | # | Question | Decision |
 |---|---|---|
-| 1 | What is the equivalence key? | A **ten-component versioned tuple** (§3), compared by byte equality after a single canonicalization pass. `match_version = 1`. |
+| 1 | What is the equivalence key? | A **twelve-component versioned tuple** (§3.1), compared component-wise after a single canonicalization pass. Eleven components admit **byte equality only**; `check_id` admits byte equality **or** exactly one directed §5 alias edge, and is the only component that does (§3.1.1). `match_version = 1`. |
 | 2 | Which fields, per scanner? | Named concretely in §4, read from the v5.9.0 parser source (`subfinder`, `nuclei`) and from the upstream tools' own output structs (`dnsx`, `httpx`, for which secureCodeBox v5.9.0 ships **no** scanner — §4.1). |
 | 3 | What is "absent"? | A typed third state. Components are `Present(v)` / `NotApplicable` / `Unknown`. **Never SQL `NULL`, never `""`.** An `Unknown` in any component makes the key **non-storable and non-matchable** (§3.4). |
 | 4 | Alias semantics | Aliases map `check_id` **only**; **directed, non-transitive, equal-or-narrower, evidence-bearing, versioned, cross-scanner forbidden**, evaluated at match time and never written back into a stored decision (§5). |
@@ -64,11 +64,12 @@ too narrow produces noise; a matcher that is too wide produces silence. Prefer n
 
 ### 2.1 Acceptance statement
 
-> A stored false-positive decision suppresses a later observation **if and only if** every component
-> of the §3 match key is byte-equal after §3.3 canonicalization, the stored and current
-> `field_semantics_version` for the producing scanner agree, the decision is not revoked, and — where
-> the two `check_id`s differ — exactly one directed alias edge admitted by §5 connects the stored
-> `check_id` to the observation's. Every other later observation is `new`.
+> A stored false-positive decision suppresses a later observation **if and only if** all four of the
+> following hold: every component of the §3 match key **other than `check_id`** is byte-equal after
+> §3.3 canonicalization; the two `check_id`s are byte-equal **or** exactly one directed alias edge
+> admitted by §5 runs from the stored `check_id` to the observation's; the stored and current
+> `field_semantics_version` for the producing scanner agree; and the decision is not revoked. Every
+> other later observation is `new`.
 
 ---
 
@@ -85,7 +86,7 @@ object. `match_version` on the decision carries the integer in the first row.
 | `tenant_id` | uuid | Partition, stored for audit — see §3.2. |
 | `scanner_id` | enum | `subfinder` \| `dnsx` \| `httpx` \| `nuclei`. Closed set; a fifth value requires an amendment adding its §4 row. |
 | `field_semantics_version` | integer | The producing scanner's field-semantics generation (§7). **1** for all four at this record's refs. |
-| `check_id` | string | The check class. Per-scanner source field in §4. Verbatim bytes, **no case folding**. |
+| `check_id` | string | The check class. Per-scanner source field in §4. Verbatim bytes, **no case folding**. The **only** component that may differ between a stored decision and an observation it suppresses, and only through one §5 alias edge — see §3.1.1. |
 | `scope_root` | string | The canonical form of the **authorized target row** (`findings.target_id` → `targets`) the observation is attributed to — *not* any scanner-supplied echo of our own input. See §3.5. |
 | `canonical_host` | component | Canonical hostname per §3.3, or `NotApplicable` when the finding's subject is an IP literal. |
 | `canonical_addr` | component | Normalized IP literal, `Present` **only** when `canonical_host` is `NotApplicable`. The two are mutually exclusive and at least one must be `Present`. |
@@ -93,6 +94,37 @@ object. `match_version` on the decision carries the integer in the first row.
 | `protocol` | component | Lowercase scheme or transport, per §4. `NotApplicable` where the check has no protocol dimension. |
 | `location` | component | Normalized path-and-query per §3.3. `NotApplicable` where the check has no sub-host location. |
 | `discriminator` | component | The per-scanner remainder named in §4 — the part that carries "which of the several findings this check can produce on one location is this one". `NotApplicable` where §4 says so. |
+
+### 3.1.1 The comparison rule — eleven components equal, one aliasable
+
+The §3.1 table has **twelve** rows. (Earlier drafts of this record and the issue comment that
+announced it said *"ten-component"*; that was a miscount of the same table, corrected here before
+acceptance. Nothing downstream depended on the number — §9's tests enumerate the components by name.)
+
+The key is compared **component-wise**, not as one opaque blob, because exactly one component has a
+weaker rule than the rest:
+
+1. **`match_version`, `tenant_id`, `scanner_id`, `field_semantics_version`, `scope_root`,
+   `canonical_host`, `canonical_addr`, `port`, `protocol`, `location`, `discriminator` — byte
+   equality, no exceptions.** No alias, no widening, no normalization beyond §3.3. `NotApplicable`
+   equals `NotApplicable`; `Unknown` equals nothing, including itself (§3.4).
+2. **`check_id` — byte equality, or exactly one directed §5 alias edge from the stored value to the
+   observed one.** §5.7 already guarantees *at most* one admissible edge between a given stored
+   `check_id` and the observed one, so "exactly one" only excludes the zero case: no edge means no
+   match, and the observation is `new`. Chaining two edges to reach the observed id is never a match
+   (§5.2). Where several *different* stored `check_id`s each hold one valid edge into the observed
+   one, §3.6 states which decision applies.
+
+Stated the other way: an alias is the **only** mechanism in this record by which a stored decision
+reaches an observation it is not byte-identical to, and it reaches exactly one component. That is why
+§5 constrains aliases harder than anything else here, and why §5.1 forbids an alias on any of the
+other components — an alias on `canonical_host` or `location` would be a widening of *where*, which
+§10.2 forbids outright.
+
+> **A matcher that compares all twelve components by byte equality and then also honours aliases is not
+> implementable** — the two clauses contradict each other whenever the `check_id`s differ. The rule
+> above is the normative one; §2.1 is its acceptance form. If a test asserts the stricter reading,
+> the test is asserting behaviour this record does not promise.
 
 ### 3.2 `tenant_id` is a partition *and* a stored component
 
@@ -180,6 +212,30 @@ observation of **every** scan. The canonical serialization of §3.1 is therefore
 deterministic byte string, and matching is equality on it (or on its digest) — never a `jsonb`
 containment scan over the tenant's decisions. Whether that lands as a stored generated column or an
 expression index is Forge's call; that it is not a per-row scan is not.
+
+**The §3.1.1 alias clause does not weaken this, because it is resolved before the lookup, not during
+it.** Aliasing substitutes one component of the probe, so it turns one equality lookup into a small
+fixed set of them:
+
+1. Serialize the observation's own key and look it up. A hit is a match with no alias edge recorded.
+2. On a miss, consult the §5 registry for edges **into** the observation's `check_id` that are valid
+   at this `(match_version, field_semantics_version)`. For each such edge `A → observed`, serialize
+   the same key with `check_id` replaced by `A` and look that up. A hit records the edge and
+   `registry_version` in `false_positive_match` (§5.4).
+
+The probe count is `1 + indegree(check_id)` equality lookups, bounded by the committed registry file
+rather than by tenant data, and the registry is small and CI-validated (§5.7). §5.7's rule that a
+`from_check_id` appears on at most one valid edge bounds the *out*-degree, which is what makes step 2
+deterministic. An in-degree above one is admissible — several retired checks may alias into one
+survivor — so more than one probe can hit, and the tie needs a stated rule rather than row order:
+
+> **Precedence.** Step 1's exact hit always wins over any step-2 hit. If two or more step-2 probes
+> hit, the applied decision is the one with the lowest `(created_at, id)`, and the edge recorded is
+> that decision's. Suppression itself is not in question in that case — every matching decision is a
+> false-positive mark on an equal-or-narrower check (§5.3) — so the rule exists to make
+> `applied_fp_decision_id` and the recorded edge **deterministic and auditable**, not to decide
+> whether to suppress. Revoking the applied decision (§6) re-runs this resolution on the next
+> observation, which may then apply a different one; that is correct, and it is why §6 is future-only.
 
 ---
 
@@ -687,7 +743,7 @@ used for `scb/hook-invocation-contract`:
 | Test id | Asserts | Author |
 |---|---|---|
 | `findings/fp-match-key-canonicalization` | §3.3 exactly: IDNA/case/trailing-dot, default-port folding, fragment stripping, no percent-decoding, length-prefixed set digests (including the `["ab","c"]` vs `["a","bc"]` case), and `Unknown` → 422 on create and no match at read | Scribe (unit + proptest) |
-| `findings/fp-alias-non-transitive` | §5.2 and §5.7: one hop only; `A→B, B→C` does not match `A` against `C`; reverse direction does not match; cycles and duplicate `from_check_id` rejected at registry load; cross-scanner edge rejected | Scribe |
+| `findings/fp-alias-non-transitive` | §3.1.1, §5.2 and §5.7: `check_id` is the only aliasable component — an edge-shaped difference in any of the other eleven matches nothing; one hop only, so `A→B, B→C` does not match `A` against `C`; reverse direction does not match; cycles and duplicate `from_check_id` rejected at registry load; cross-scanner edge rejected; §3.6's precedence rule — exact hit beats alias hit, and lowest `(created_at, id)` among several alias hits | Scribe |
 | `findings/fp-revocation-not-retroactive` | §6: revoked decision matches nothing afterwards; already-applied observations keep `applied_fp_decision_id` and their state history; no reactivation path | Ledger (integration) |
 | `findings/fp-scanner-semantics-stale` | §7.2: a decision stored at `field_semantics_version = 1` suppresses nothing once the scanner is at 2, is retained and reported stale, and is not revoked | Ledger |
 
