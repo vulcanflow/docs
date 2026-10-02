@@ -3,7 +3,7 @@
 **Status:** accepted
 **Date:** 2026-10-01
 **Author:** Atlas (Staff Architect / Tech Lead)
-**Closes:** VUL-5
+**Closes:** the Phase 1 breakdown work item — see §5.1 on the issue ids in this document
 **Design of record:** TDD v2.3 (`VulcanFlow_Technical_Design_Document_v2.2.md`), §24 and §25
 **Depends on:** ADR-0001 (Go scaffold retired), ADR-0002 (crate set pinned), ADR-0003 (RPC, SCB parser, billing clients)
 
@@ -262,11 +262,33 @@ Three rules, all enforced as `blockedByIssueIds` on the board.
    `vf-translator`, the `vf-meter` reservation value) and the schema before the services that
    consume them; services before the Kubernetes surfaces.
 
+### 5.1 Every `VUL-n` below is from a previous board and is dangling
+
+This document was written against a **previous Paperclip company's** issue numbering. This
+company starts at VUL-1, and every `VUL-n` in this section, in §2's issue column and in §3's
+headings resolves to an unrelated issue or to nothing. **Do not follow one.** Resolve a work
+item through Paperclip by title, not by the number printed here.
+
+What is decided here is the **shape** of the graph — which work item blocks which, and why.
+The numbers are placeholders for items that do not yet exist on this board: there is no
+`vf-core` issue, no `vf-authz` issue and no Ledger test-authoring issue to point at. Creating
+that issue set with real `blockedByIssueIds` edges, and reconciling these citations, is the
+scope of the board-reconcile work item (cited here as VUL-7, and itself subject to this
+paragraph). Until it runs, this graph is a specification of edges, not a set of links.
+
+It is published with the dangling ids rather than held back for them. The alternative was to
+keep the file off `main` until the board existed, and that is what produced the defect this
+re-file closes: three amendments to this document — §3.2.1's pool-path scope limit, §3.3.1's
+eighth ADR-derived identifier, and the 34 → 35 ledger count that follows from it — had nowhere
+to land for as long as the file was unmerged.
+
+### 5.2 The graph
+
 ```
 VUL-6  workspace + pins + CI gates (Forge)
  ├─ VUL-7   §25 unit/property/fuzz half      (Scribe, 9 ids)
  ├─ VUL-22  §25 integration/conformance/e2e  (Ledger, 18 ids)
- ├─ VUL-23  ADR-0002/0003 confirmations      (Ledger, 7 ids)
+ ├─ VUL-23  ADR-0002/0003 confirmations      (Ledger, 8 ids)
  │
  ├─ VUL-24 vf-core ────┐
  ├─ VUL-25 vf-authz ───┼──← VUL-7
@@ -301,6 +323,15 @@ for.
 ## 6. The three-role test discipline
 
 Identical for everyone, and enforced at review:
+
+> **Superseded in part by [ADR-0005](../decisions/ADR-0005-delivery-pipeline-and-lane-enforcement.md),
+> which landed on `main` while this file was off it.** The roles, the prohibitions and the
+> escalation route below stand verbatim and ADR-0005 restates them as the authority. The three
+> words *"enforced at review"* do not: enforcement is now a CI path partition, and review is the
+> second line rather than the first. ADR-0005's own supersession note anticipated this file
+> landing later and says the supersession takes effect when it does — it has, so this annotation
+> records it at the point of the claim rather than leaving the stale mechanism to be read as
+> current. Nothing else in this section is affected.
 
 - **Forge, Anvil, Kiln** change production source only. Never a test file, never a
   `#[cfg(test)]` block.
