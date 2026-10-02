@@ -37,6 +37,15 @@ branch protection on the free plan. `main` is protected on all four with `enforc
 are required. Recorded as ADR-0005 amendment 1; the disclosure cost is §8.3 and the route back to
 private is R7.
 
+**Closed 2026-10-02 — the other eleven repositories.** The ten `vf-*` service repositories and
+`scanners` are private, and the Free plan refuses branch protection on a private repository. The
+board **deferred** the GitHub Team upgrade, on the ground that all eleven are empty and so have
+nothing to protect. The deferral is not left to memory: `ci/repo-protection-audit.sh` on
+`platform` fails if any repository in the organisation holds code without protection, and the
+daily "Org repo protection audit" routine runs it and puts a finding back on the decisions desk.
+Recorded in ADR-0005 **§8.5**, with a revisit trigger whose identifier is allocated at merge —
+see that amendment's history row for why it is not guessed here.
+
 The §2.5.2 crate table is superseded by ADR-0002 §3 and is no longer `[PROPOSED]`. §24.4's
 gate on "approval of the Rust crate set used on the execution path" is cleared.
 

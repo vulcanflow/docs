@@ -274,6 +274,13 @@ proceeding on one verdict relabelled as two.
 9. **The four active repositories are public.** Anyone can read the source, the pinned
    dependency set, the infrastructure manifests and the design record — including the TDD and
    every ADR. That is a standing condition of the project now, not a phase. See §8.3.
+10. **The eleven private repositories are unprotected, and stay that way until something is
+    pushed into one.** The board deferred the fix on 2026-10-02 (§8.5). The first push into a
+    `vf-*` or `scanners` repository creates a repository holding code whose `main` is directly
+    writable, force-pushable and admin-bypassable, with no required checks. It converts the
+    deferral into an open decision; the daily audit is what raises it, within a day, whether or
+    not the agent that pushed noticed. Nobody may treat that state as acceptable because it was
+    deferred — deferral was granted for *empty* repositories.
 
 ---
 
@@ -386,6 +393,71 @@ PUT /repos/vulcanflow/platform/pulls/4/merge  →  405
 PR #4 is closed unmerged and its branch deleted. It is the successor to PR #3, which showed the
 check going red back when red had no consequence; #4 is the half that was missing.
 
+### 8.5 Decided: the eleven private repositories stay on Free, and the deferral has a control
+
+Option B covered four of the organisation's fifteen repositories. The other eleven — the ten
+`vf-*` service repositories and `scanners` — stayed private, and on the Free plan a private
+repository cannot be protected at all. The same three options applied to them, and they were put
+to the board on 2026-10-02 with option A recommended.
+
+**The board chose to defer on 2026-10-02.** The organisation stays on Free; the eleven stay
+private and unprotected; the question is revisited at the first push rather than now.
+
+The reasoning that makes deferring defensible is narrow, and worth stating exactly because it
+expires: **all eleven repositories are empty.** Not "nearly empty" —
+`GET /repos/vulcanflow/{repo}/commits` answers `409 Git Repository is empty` on every one of
+them, and none has been touched since 2026-09-09. A repository with no commits has no history to
+force-push, no `main` to bypass and no lane to cross. The protection those eleven lack is
+protection of nothing.
+
+That stops being true at the first push, and nothing about a push announces itself. A deferral
+whose safety depends on somebody remembering to look is not a control, so the deferral was given
+one:
+
+- **`ci/repo-protection-audit.sh`** on `platform` asks the organisation one question — *is there
+  a repository that holds code and is not protected?* — and exits non-zero if there is. An empty
+  unprotectable private repository reads as `watch`; the same repository with one commit in it
+  reads as `GAP`. It also reports a repository that has pull-request workflows and **zero**
+  required status checks, which is the mechanical half of **R2**.
+- It **cannot** run as a pull-request check: it reads every repository in the organisation, and
+  the per-repository `GITHUB_TOKEN` in Actions cannot. It runs from the Paperclip routine **"Org
+  repo protection audit"**, daily at 07:00 UTC, assigned to CEO, whose instructions put a `GAP`
+  back on the decisions desk as the same A/B/C choice rather than letting whoever is on shift
+  improvise a fix.
+- **It has been seen to fail**, to the standard §8.4 sets. It cannot be demonstrated against the
+  live organisation without creating the gap it looks for, so it is demonstrated against fixture
+  organisations: `ci/repo-protection-audit-test.sh` drives it through a stub `gh` and asserts
+  thirteen verdicts, among them *code pushed into an unprotectable private repository* → `GAP`,
+  `enforce_admins: false` → `GAP`, a force-pushable `main` → `GAP`, workflows with zero required
+  checks → `GAP`, and an **unreadable organisation → exit 2, never 0**. That harness is hermetic,
+  so unlike the audit it does run in CI, as the `audit-self-test` job.
+- Live verdict on the day of the decision: `4 ok, 11 watched (empty, unprotectable), 0 gap(s)`.
+
+**Two things in this subsection are proposals and not decisions, because they fall inside
+sections other open amendments are rewriting.** They are named here so they are reviewed rather
+than absorbed:
+
+1. `audit-self-test` is **not yet a required check** on `platform`. Making a check required
+   before its job exists on `main` blocks every open pull request whose branch predates it, on a
+   check that can never report. The `PUT` is CEO's and comes after platform#8 merges. Until then
+   §4's table is correct as it stands and this check is reporting only.
+2. Classifying `ci/repo-protection-audit.sh` and its harness as **GATE** is proposed in
+   platform#8 and is **not** recorded in §4.2 here. It is the same question §4.4 (docs#33) and
+   §4.5 (docs#36) are deciding for detector/harness pairs under `ci/**`, and §4.5's position is
+   explicitly that the mechanism is stated over any detector/harness pair *without reclassifying
+   anything*. Whoever lands those two owns whether the audit pair is GATE, NEUTRAL-with-a-named
+   owner, or covered by §4.5's mechanism; platform#8's classifier change is reviewable on its own
+   merits and is reversible in one line. The lane-gate harness's assertion count also moves with
+   platform#8 — three new fixtures, three new asserted verdicts — and reconciling the numbers in
+   §4 and §7 item 4 belongs to amendment 5, which is rewriting both.
+
+**What this decision does not buy.** The eleven repositories are not protected, and the audit does
+not protect them — it notices. Between a push landing and the answer to the card it raises, `main`
+in that repository is directly writable, force-pushable and admin-bypassable, and the lanes there
+are advisory. The audit shortens that window to at most a day; it does not close it. Closing it
+costs either roughly $4 a month (option A) or that repository's privacy (option B), and the board
+has decided to pay neither until there is something to protect.
+
 ---
 
 ## 9. The bootstrap, stated plainly
@@ -441,6 +513,19 @@ Named, so this record is revisited on evidence rather than on mood.
   month at one filled seat — which restores private repositories with every protection in §8.2
   intact. Note what reverting does **not** undo: anything already cloned, forked or indexed
   stays out. Treat the public history as permanent and make the decision on that basis.
+- **R-next — the first commit lands in one of the eleven private repositories.** The deferral in
+  §8.5 rests entirely on those repositories being empty, so the trigger is the moment one of them
+  is not. The daily "Org repo protection audit" routine fires it: its `GAP` goes back to the
+  decisions desk as option A, option B for that one repository, or an explicitly owned accepted
+  risk. Two responses are **not** acceptable — publishing the repository without the §8.1
+  pre-publication check, and widening the audit's tolerance until it reads green. If the audit is
+  wrong, that is a defect in `ci/repo-protection-audit.sh` and it earns a fixture in
+  `ci/repo-protection-audit-test.sh` before it earns a fix. Stand the routine down when every
+  repository holding code is protected; the audit itself stays, as R2's mechanical half.
+  *(Identifier deliberately unallocated — see the amendment-history row. Four amendments with
+  unmerged `R`-number allocations are open; amendment 6's own row records what collided last time
+  this was guessed. Whoever merges this assigns the next free number and updates the three
+  references to it: here, §8.5, and `decisions/README.md`.)*
 
 ---
 
@@ -467,3 +552,4 @@ Named, so this record is revisited on evidence rather than on mood.
 |---|---|---|
 | — | 2026-10-01 | Accepted as recorded. |
 | 1 | 2026-10-01 | **The §8 plan question is decided: the board chose option B.** The four active repositories are public, branch protection is applied to all four with `enforce_admins: true`, and `platform`'s four lane-gate checks are required. §3.2 rewritten as a resolved constraint; §7 items 8–9 replaced; §8 rewritten as a decision with the pre-publication secret scan (§8.1), the applied settings and why zero required approvals (§8.2), the disclosure cost (§8.3) and two observed refusals (§8.4); R2 closed and narrowed to wiring checks per repository; R7 added as the route back to private. §7 item 4 corrected: 21 fixture verdicts, not 17. Recorded by CEO under VUL-2. |
+| **(number unallocated)** | 2026-10-02 | **The eleven private repositories are decided: the board deferred, and the deferral has a control.** New **§8.5** — the decision; why deferring is defensible while all eleven answer `409 Git Repository is empty`; exactly when that expires; `ci/repo-protection-audit.sh` and the daily "Org repo protection audit" routine as the thing that notices, demonstrated against thirteen fixture organisations because it cannot be demonstrated live without creating the gap it looks for; and what the decision does **not** buy — the audit notices, it does not protect, and the window between a push and an answer is up to a day wide. New **§7 item 10**. One new revisit trigger, **identifier unallocated**. `decisions/README.md` gains the closed-decision paragraph. **Scope held deliberately narrow.** §4, §4.2 and §7 item 4 are **not touched**, although the work behind this amendment bears on all three: `audit-self-test` is a reporting check until CEO wires it after platform#8 merges, the GATE classification of the audit pair is the question §4.4 (docs#33) and §4.5 (docs#36) are deciding and §8.5 records it as a proposal rather than as a decision, and the lane-gate harness's assertion count moves with platform#8 but reconciling §4's and §7's numbers belongs to amendment 5, which is rewriting both. **The amendment number and the trigger identifier are left unallocated on purpose.** Amendments 2 through 6 are allocated on four unmerged pull requests (docs#32, #33, #36, #37) and a seventh is drafting on VUL-105; amendment 6's own row records what happened the last time two branches each guessed an `R` number. Whoever merges this allocates both and updates the references. Drafted by CEO under VUL-2, in a scratch clone rather than the managed `docs` workspace, by a run holding the `platform` workspace — which is outside the §2.3.2 control and is disclosed here rather than left to be found. The §9 bootstrap exception does **not** cover it: all nine hires are approved, so it goes through lane 6 and lane 7 like any other change, and Atlas owns the framing. |

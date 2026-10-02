@@ -261,7 +261,18 @@ Still gaps, and still not permission:
 
 - **`docs`, `infra` and `vf-api` have no required checks** — they have no CI workflow on `main`
   yet. They are protected, so pull requests are still mandatory. If you add the first workflow
-  to one of them, you also wire its checks as required (ADR-0005 R2).
+  to one of them, you also wire its checks as required (ADR-0005 R2). The daily protection audit
+  reports it as a `GAP` if you don't, so this is caught rather than trusted.
+- **The ten `vf-*` repositories and `scanners` are private and cannot be protected at all.** The
+  Free plan refuses it, and the board deferred the upgrade on 2026-10-02 because all eleven are
+  empty (ADR-0005 §8.5). **This is the gap that will reach lane 3 first.** If your work needs you
+  to push service code into one of them, stop and raise it on the issue: that push creates a
+  repository holding code whose `main` is directly writable, force-pushable and admin-bypassable,
+  with no gate on it at all. It is a decision, not a chore — and the daily audit will raise it
+  within a day anyway, so arriving there by surprise is strictly worse than arriving on purpose.
+  You can check the current state yourself, from a `platform` checkout with an authenticated
+  `gh`: `ci/repo-protection-audit.sh vulcanflow` — exit 0 clean, 1 a repository holds code
+  unprotected, 2 the audit could not run.
 - **The lane gate itself is on `platform` only.** `docs` has no code; `infra` and `vf-api` are
   empty. The gate goes in the moment a repository receives source.
 - **A lane crossing split across two pull requests passes both.** The gate partitions paths, not
