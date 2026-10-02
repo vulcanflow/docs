@@ -604,12 +604,27 @@ add nothing.
 | `db/pgbouncer-transaction-pooling-prepared` | §4.3 | `isolation/background-queries`, `isolation/all-stores` |
 | `db/tenanttx-set-local-isolation` | §4.3 | `isolation/background-queries`, `isolation/all-stores` |
 | `storage/s3-compat-conformance` | §4.4 | `isolation/all-stores` (object-store half); `deletion/all-stores-restore` in Phase 4 |
-| `scb/hook-invocation-contract` | ADR-0003 §3.4 | `findings/replayed-artifact` (§8.4 idempotency, via the scan fingerprint) |
+| `scb/hook-invocation-contract` | ADR-0003 §3.4 | **None.** Its assertions are argv positions, the required environment and ReadOnly two-URL tolerance — not duplicate delivery. See the note below |
 | `scb/parser-contract-conformance` | ADR-0003 §3.4 | `execution/scan-identity` — stated there explicitly |
 
 **The direction of the edge matters.** An ADR-derived confirmation going green does not make
 the §25 identifier it feeds green; it removes one way for that identifier to fail. Counting a
 feed edge as coverage of the §25 row is the error this table exists to prevent.
+
+**Two rows read "None", and the second one is the instructive case.**
+`api/openapi-3_1-conformance` is the easy one: it confirms a crate's output shape and §25 has
+no row about OpenAPI versions. `scb/hook-invocation-contract` is the trap. ADR-0003 §3.4 states
+an idempotency *obligation* — "the scan fingerprint is the deduplication key, not the hook
+invocation" — in the same subsection that names the test, and it reads as though the test
+carries it. It does not. The confirmation invokes the built binary with `SCAN_NAME` and
+`NAMESPACE` set against a local HTTP server and asserts three things: that it reads the argv
+positions §3.3 names, that it exits non-zero with a clear message when `SCAN_NAME` is absent,
+and that two URLs do not make it index past the end. **All three pass against a `vf-ingest`
+that persists a replayed artifact twice.** §8.4 idempotency is asserted by the §25 identifier
+`findings/replayed-artifact` on its own, which is complete without any ADR-derived feed; an
+edge drawn from this confirmation to that identifier would claim coverage that no test
+provides, which is precisely the error the paragraph above names. Writing an obligation into
+this table as if it were an assertion is how that error gets made.
 
 **Blocking status.** §24.4's gate on "approval of the Rust crate set used on the execution
 path" is cleared by §3. The executable confirmations in §4 are required Phase 1 work, listed
@@ -717,6 +732,20 @@ cluster bears on an ADR-derived confirmation: `storage/s3-compat-conformance` ru
 the assertion is unweakened and the deployment coverage is incomplete, which makes the correct
 ledger entry a PASS whose scope names the backend it ran against — not a silent green.
 
+**One edge in the first draft of this amendment did not exist, and the correction is kept here
+rather than quietly applied.** The draft §7.2 row for `scb/hook-invocation-contract` read
+*"`findings/replayed-artifact` (§8.4 idempotency, via the scan fingerprint)"*. CodeRabbit's
+review of docs#28 rejected it, and it was right: ADR-0003 §3.4 states the idempotency
+obligation next to the test but does not put it inside the test, whose assertions are argv
+positions, required environment and two-URL tolerance. The row now reads **None**, with the
+reasoning under §7.2. The error is worth recording because it is the mirror image of the one
+A3 was filed to fix — §7 omitted edges that §4 states, and the first attempt to add them
+invented one §4 does not. **A missing edge and an invented edge are the same defect**, and
+only reading the named test's assertions distinguishes them.
+
 **Revisit trigger for A3 specifically.** Any new executable confirmation added to §4, or any new
 risk added to §7, must land with its §7.2 feed edge in the same change. A confirmation whose
-feed edge is stated only in §4 reproduces the exact defect this amendment fixes.
+feed edge is stated only in §4 reproduces the exact defect this amendment fixes. **None** is a
+legitimate value for that edge and is not a gap to be filled; what it requires is the same
+thing every other value requires — that the edge be read off the test's stated assertions and
+not off the prose surrounding them.
