@@ -3,6 +3,19 @@
 **Issue:** VUL-48 (lane 1, Atlas). **Lane 2:** VUL-56, Scribe. **Lane 3:** VUL-50, Forge.
 **Status:** authoritative on merge. Until then it is a proposal and the two implementers work
 from it at the risk named in §9.
+**Revision 5** — the lane-5.5 pre-flight on `ac27fa6` (VUL-143), two findings, both accepted and
+both the same species: a lookup whose **key** this document named two different ways. (1) **Class
+8's required-check inventory had no source**, so the *missing* limb — a declared applicable job with
+no check run of that name — was unimplementable and unexercised; the seam gains
+**`expected-checks/<sha>`** (§6.1) and the table gains **fixture 48** (§9.6). ADR-0005 §6.5 class 8
+now scopes that inventory to the workflow triggers applicable to the merged commit, and this
+document follows it. (2) **The verdict-contents lookup keys on `Lane-7-Head`, not on the verdict
+line's own `covers` sha** — §4's register always said so and §4.3's input list did not, which left
+rows 22, 26 and 37 with two readings and different fixture *contents* under each. The key is stated,
+and **fixture 37 leaves the suppression table**: with `Lane-7-Head` as the key, a malformed `covers`
+does not deprive the lookup of one. **No row's expected set moves, including 37's.** The table is
+**48 rows**.
+
 **Revision 4** — Assay's lane-6 review of revision 2, adjudicated. One blocking finding survives
 revision 3 and is accepted: **`Lane-7-Ledger` had no value check**, so a block typing the one
 word §6.3 condition 2 forbids was published as clean. The repair is a **27th code**,
@@ -10,7 +23,7 @@ word §6.3 condition 2 forbids was published as clean. The repair is a **27th co
 already closed by revision 3 — see §9.3 — so its proposed numbering is superseded and the new row
 is **47, not 45**. Three advisories accepted (**§4.3** rule B's converse, **§8.2** reworded,
 VUL-56's description corrected) and one declined on the record with a revisit trigger
-(**§9.5**). The table is **47 rows**.
+(**§9.5**). The table is **47 rows** before revision 5, **48** after it.
 
 **Revision 3** — Forge's two lane-1 items and one phrasing tension, raised on VUL-56 and
 adjudicated here: rule A reaches a verdict line's own fields (**§4.3**, transcription — no
@@ -243,16 +256,23 @@ present.
 **Rule A also reaches the fields *inside* a verdict line — revision 3, and it was already the
 ruling.** Forge is right that rule A's table enumerates the four single-valued keys and stops,
 while the verdict-contents lookup reads two further inputs that live inside a
-`Lane-7-Verdict-*` line: its **disposition** and its **`covers` sha**. Three rows turn on
-whether rule A reaches them, and **fixture 37 settles it** — under the reading where the lookup
-runs anyway, the harness must write `Assay APPROVE deadbeefzz` into `verdicts/VUL-<n>`, that
-record does not cover the head, `L7-VERDICT-NOT-FOUND` joins the expected set, and the row as
-written goes red. Fixture 19 is unsatisfiable the same way. So the table below is a transcription
-of what §9 already asserts, not a new rule, and **it changes no row and no expected set.**
+`Lane-7-Verdict-*` line: its **disposition** and — revision 4 said — its **`covers` sha**. The
+ruling stands for the **disposition** and **fixture 19 settles it**: under the reading where the
+lookup runs anyway, the harness must write `Assay REQUEST CHANGES <Lane-7-Head>` into
+`verdicts/VUL-<n>`, that record is not an `APPROVE`, `L7-VERDICT-NOT-FOUND` joins the expected set,
+and the row as written goes red. **The `covers` sha is struck from that list by revision 5** — the
+lookup does not read it, so rule A has nothing to reach there, and the argument revision 3 ran from
+fixture 37 is withdrawn below. So the table below is a transcription of what §9 already asserts, not
+a new rule, and **it changes no row and no expected set.**
 
-The verdict-contents lookup's inputs are the cited issue, the reviewer, the disposition
-`APPROVE`, and the `covers` sha. A class-6 code that fires because one of those is not in the
-shape the lookup needs **suppresses the lookup**:
+The verdict-contents lookup's inputs are the cited issue, the reviewer, the disposition `APPROVE`,
+and **`Lane-7-Head`** — *not* the verdict line's own `covers` sha. §4's register is where that was
+always stated (`L7-VERDICT-NOT-FOUND`: the issue "records **no `APPROVE` covering `Lane-7-Head`**
+by the reviewer named"), and revision 4's input list here said `covers` instead, which is the one
+substantive thing revision 5 repairs. The two are the same value on a well-formed block and differ
+on exactly the rows that exist to make them differ, so the ambiguity was invisible in the register
+and decisive in the harness: it decides what the fixture **writes**. A class-6 code that fires
+because one of those four inputs is not in the shape the lookup needs **suppresses the lookup**:
 
 | Firing code | Why the lookup has no well-formed input | Suppresses |
 |---|---|---|
@@ -261,19 +281,34 @@ shape the lookup needs **suppresses the lookup**:
 | `L7-VERDICT-WHO` (18) | the reviewer named is not one the lookup can ask about | all four |
 | `L7-VERDICT-DISP` (19, 20) | `APPROVE` is the only disposition the detector can confirm; anything else leaves the comparison without a left-hand side | all four |
 | `L7-VERDICT-ISSUE` (21) | no `VUL-<n>` is a lookup with no key — this one already fell out of the general clause | all four |
-| `L7-VERDICT-COVERS`, **malformed value** (37) | `deadbeefzz` is not a sha, so nothing can be keyed on it | all four |
 
-**Fixture 22 against fixture 37 is the clean statement of rule C's boundary**, and the pair is
-the reason this is one table rather than one sentence:
+**`L7-VERDICT-COVERS` is not in that table, and revision 4 had it there.** Revision 4 listed
+fixture 37's malformed `covers` as suppressing all four lookup codes, on the reason that
+*"`deadbeefzz` is not a sha, so nothing can be keyed on it."* That reason is false once the key is
+`Lane-7-Head`: a malformed `covers` is a malformed **value being checked**, not a malformed key, and
+`Lane-7-Head` is well-formed on both 22 and 37. The lookup runs on both.
+
+**Fixtures 22 and 37 therefore share one mechanism, and revision 4 said they were the pair that
+proved two.** Both fire `L7-VERDICT-COVERS` alone, and both do it through class 6's own check rather
+than through rule A:
 
 - **22** — `covers` is a *well-formed* sha that is simply **wrong** (`5168c5c` against head
-  `ff1e2be`). Rule C: present, so used. §9.0's baseline keys `verdicts/VUL-<n>` on the value the
-  block names, the lookup runs and **succeeds**, and `L7-VERDICT-COVERS` fires alone.
-- **37** — `covers` is **malformed**. Rule A: no well-formed input, the lookup does not run, and
-  `L7-VERDICT-COVERS` fires alone.
+  `ff1e2be`): it "does not match `Lane-7-Head`".
+- **37** — `covers` is **malformed**: it "is not 7–40 lowercase hex".
 
-Same expected set, two different mechanisms, and an implementation that confuses them fails
-exactly one of the two. That is the property the pair exists to have.
+Those are the two limbs of `L7-VERDICT-COVERS` in §4's register, and keeping both rows is still
+worth it — an implementation that checks the match and forgets the format passes 22 and fails 37.
+What the pair is **not** is a rule-A/rule-C boundary, and the claim that it was is withdrawn.
+
+**The argument revision 3 made from fixture 37 goes with it.** That argument ran: under the reading
+where the lookup runs anyway, the harness must write `Assay APPROVE deadbeefzz`, that record does
+not cover the head, `L7-VERDICT-NOT-FOUND` joins the expected set, and row 37 goes red. Every step
+is sound and the premise is not — the harness writes `Assay APPROVE <Lane-7-Head>`, because the
+**key is the head**. So fixture 37 settles nothing about rule A's reach, and the conclusion rule A
+reaches a verdict line's own fields survives on `L7-VERDICT-DISP` alone, which is where it is real:
+a block whose disposition is not `APPROVE` leaves the comparison with no left-hand side no matter
+what it is keyed on, and fixture 19 is unsatisfiable without that suppression. One of two arguments
+for the same ruling was load-bearing; the other was keyed on the wrong field.
 
 **Rule B — class 3 is never suppressed by anything except its own lookup failing.** §6.5 already
 says class 1 does not suppress it. Nothing else does either: `L7-NOT-PR` is a statement about how
@@ -404,7 +439,8 @@ existing directory, that is exit `2`.
 |---|---|---|
 | `pulls/<sha>` | one line: the pull-request number, or the literal `none` | the lookup **failed** → `L7-PR-UNCHECKED` |
 | `pull-head/<n>` | one line: the sha `refs/pull/<n>/head` resolves to | the ref does not resolve → `L7-HEAD-UNRESOLVABLE` |
-| `check-runs/<sha>` | one line per required check: `<name> <conclusion>`; present and empty = **the lookup ran and the commit has no check runs at all** | the lookup **failed** → `L7-GATE-UNCHECKED` |
+| `check-runs/<sha>` | one line per check run **observed** on that sha: `<name> <conclusion>`; present and empty = **the lookup ran and the commit has no check runs at all** | the lookup **failed** → `L7-GATE-UNCHECKED` |
+| `expected-checks/<sha>` | one line per **expected** job name, no conclusion; present and empty = the tree declares no applicable job | **not** a lookup failure — defaults from `tree-has-gate-workflow` (§6.1.1) |
 | `verdicts/<VUL-n>` | one line per recorded verdict: `<reviewer> <disposition> <covered-sha>`; present and empty = the issue exists and records none | the issue **does not exist** → `L7-VERDICT-ISSUE-MISSING` |
 
 `<disposition>` is `APPROVE` or `REQUEST_CHANGES` (underscored, because the field is
@@ -425,6 +461,61 @@ Fixture 44 is the row this table forced into existence; it is VUL-56's fixture 3
 dropped it. An attested `Lane-7-Gate: PASS` on a commit with **zero** check runs is not an
 unreachable API — it is a required workflow that never ran, which is the more likely real defect
 of the two and the one §6.5 class 8 names first.
+
+### 6.1.1 `expected-checks/<sha>` — the inventory class 8 compares against
+
+**Revision 4's seam could not express class 8's *missing* limb at all, and that is why this file
+exists.** `check-runs/<sha>` was described as *"one line per required check"*, which conflates the
+**observed** set with the **expected** one: a check run the commit does not have has no line to be
+written on, so the one case §6.5 class 8 calls the *missing* limb — a declared applicable job with no
+check run of that name on `Lane-7-Head` — was unrepresentable in a fixture and unasserted by any row.
+A limb of a finding class that no fixture can construct is a limb no implementation has to get right.
+
+**In production the inventory is read from the tree, not from the fixture dir and not from branch
+protection.** ADR-0005 §6.5 class 8 decides this and this document only transcribes it: the expected
+set is the jobs declared by the workflow files in the tree at `Lane-7-Head` **whose triggers apply to
+that commit** — `on:` events with any `branches`, `paths` or `paths-ignore` filters evaluated against
+the event that produced the commit. `required_status_checks.contexts` is rejected there as
+present-tense and unretained, and this document adds no route to it.
+
+**Under `LANE7_FIXTURE_DIR` the fixture supplies that set directly**, because the fixture repository
+has no workflow files and resolving `on:` filters is not what these 48 rows are testing:
+
+| State of `expected-checks/<sha>` | Means |
+|---|---|
+| **present, non-empty** | each line is one expected job name |
+| **present, empty** | the tree declares no applicable job |
+| **absent**, `tree-has-gate-workflow: no` | the same — no applicable job |
+| **absent**, `tree-has-gate-workflow: yes` | the four job names of `.github/workflows/lane-gate.yml`: `lane-partition`, `test-erosion`, `inline-test-modules`, `gate-self-test` |
+
+**Absence is a default rather than a lookup failure, and that is a deliberate exception to §6.1's
+rule.** The other four files answer a question put to a remote service, so "no file" means "no
+answer" and the detector must report `UNCHECKED`. The inventory is computed from the commit's own
+tree, which the detector always has: there is no state in which it cannot be derived, so it gets no
+`UNCHECKED` and no code. The default is keyed on `tree-has-gate-workflow` and not on nothing, because
+that field already means *the tree declares `lane-gate.yml`* and the applicable jobs of that file are
+those four — so **every one of rows 1–47 keeps its setup and its expected set verbatim**, which is
+the test of whether this file was added correctly.
+
+**Class 8's comparison is then two limbs over two sets, and only the first consults the inventory.**
+When `Lane-7-Gate: PASS` is attested:
+
+- **missing** — a name in `expected-checks/<sha>` with no line in `check-runs/<sha>`;
+- **failing or still-running** — **any** line in `check-runs/<sha>` whose conclusion is not
+  `success`, whether or not that name is expected.
+
+Both are `L7-GATE-UNCONFIRMED`. The second limb is deliberately *not* scoped to the expected set: an
+attested `PASS` over a check run that actually went red is false whichever inventory the job appears
+in, and scoping it would let an unexpected red check excuse the claim. The inventory exists to make
+**absence** detectable, which is the one thing the observed set cannot express — not to license
+anything the observed set already contradicts. A check run that is `success` and unexpected is
+reported by nothing: it is neither a weakening nor a claim the block makes.
+
+This is why fixtures 38 and 44 keep their one code each and need no new field: **38** has a red
+observed run and fires the second limb with an empty inventory, **44** has an empty observed set
+against the four-name default and fires the first. They were already the two limbs; revision 4 just
+had no vocabulary that distinguished them, which is also why §9.5's declining to split the code
+survives revision 5 unchanged.
 
 ### 6.2 The two credentials — item 3
 
@@ -599,12 +690,12 @@ GATE row must be amended in the same change. That amendment is not this document
 is entangled with VUL-68. So, plainly: between Forge's PR landing and that decision,
 `attest-self-test` **runs and reports on every pull request but does not block one**. That is
 weaker than `gate-self-test` and it is recorded as weaker. It is still the difference between the
-47 fixtures being asserted twice ever — once by Crucible confirming red, once by Forge reaching
+48 fixtures being asserted twice ever — once by Crucible confirming red, once by Forge reaching
 green — and being asserted on every pull request forever, which was Assay's actual point.
 
 ---
 
-## 9. The fixture table — 47 rows
+## 9. The fixture table — 48 rows
 
 **Rows 1–28 keep the numbers they had in VUL-56 as filed**, so Scribe's
 one-`check`-per-row-in-table-order commitment survives. Rows 29–40 were added by this document's
@@ -613,11 +704,17 @@ document had silently dropped — see the correction note after the table, which
 this spec rather than in either implementer's reading of it. **Rows 45 and 46 are added by its
 third**, and they close the one credential the table did not assert; §9.3 says why they are two
 rows and not one. **Row 47 is added by its fourth** — Assay's blocking finding B1, the
-`Lane-7-Ledger` value check that did not exist (§4.4, §9.4).
+`Lane-7-Ledger` value check that did not exist (§4.4, §9.4). **Row 48 is added by its fifth** — the
+lane-5.5 finding that class 8's *missing* limb had no inventory to compare against and so no fixture
+(§6.1.1, §9.6).
 
 **Rows 1–46 are unchanged by revision 4.** No expected set, no code and no exit code moves. The
 only addition is 47; everything else revision 4 does is transcription (§4.3's rule B converse)
 or prose repair (§8.2).
+
+**Rows 1–47 are unchanged by revision 5, in setup as well as in expectation.** The only addition is
+**48**, and §6.1.1's absent-file default is built the way it is specifically so that no earlier row
+acquires a field — see §9.6. Everything else revision 5 does is in §4.3 and §6.1 and moves no row.
 
 ### 9.0 The field-default rule — answers Scribe's item 9 (N1, N2)
 
@@ -636,7 +733,11 @@ table, because the fields are not independent — `shape` decides which PR facts
 - `LANE7_FIXTURE_DIR` set; **both** §6.2 credentials set to a dummy non-empty value;
 - and **every lookup the detector actually performs succeeds, keyed on whatever value the block
   names** — so the `pulls/`, `pull-head/`, `check-runs/` and `verdicts/` files the row does not
-  itself vary are present, and their contents agree with the block.
+  itself vary are present, and their contents agree with the block; **the verdict lookup's key is
+  `Lane-7-Head`** (§4.3), so `verdicts/VUL-<n>` reads `<reviewer> APPROVE <Lane-7-Head>` even on the
+  rows that carry a wrong or malformed `covers` — 22, 26 and 37;
+- `expected-checks/<sha>` is **not written**, so §6.1.1's default applies and follows
+  `tree-has-gate-workflow`;
 
 That last clause is the one doing the work, and it is phrased as *the lookups the detector
 performs* rather than *the lookups on the correct sha* on purpose. It is what makes rows 6, 7, 22
@@ -708,6 +809,7 @@ of the assertion; where it is silent, that rule supplies it rather than leaving 
 | 45 | Baseline block and **merge** shape, `LANE7_GITHUB_TOKEN` **unset**; `pulls/`, `pull-head/` and `check-runs/` all present and complete | **both** `L7-PR-UNCHECKED` and `L7-GATE-UNCHECKED`, **and no `L7-NOT-PR`, `L7-HEAD`, `L7-HEAD-UNRESOLVABLE` or `L7-VERDICT-*`**, exit 1 |
 | 46 | **Squash**, `LANE7_GITHUB_TOKEN` **unset**; `pulls/`, `pull-head/` and `check-runs/` all present and complete | **exactly one** `L7-PR-UNCHECKED` and one `L7-GATE-UNCHECKED`, **and no `L7-HEAD-UNRESOLVABLE`, `L7-HEAD` or `L7-NOT-PR`**, exit 1 |
 | 47 | `Lane-7-Ledger: FAIL` | `L7-LEDGER-VALUE`, **exit 1** |
+| 48 | `Lane-7-Gate: PASS`, `tree-has-gate-workflow: yes`, `expected-checks/<head>` lists all four `lane-gate.yml` jobs, `check-runs/<head>` records **three** of them `success` and **omits `gate-self-test`** | `L7-GATE-UNCONFIRMED`, **exit 1** |
 
 ### 9.1 Correction — rows 41–44, and a defect in this document's first revision
 
@@ -858,6 +960,33 @@ It is declined for two reasons, neither of which is that the point is weak:
 `attest-history` ledger in which an `L7-GATE-UNCONFIRMED` line has to be opened by hand to decide
 who owns the repair. At that point §6.5 class 8 is amended to two codes and §4 and §9 gain one
 each in the same change. Recorded in §12.
+
+**Revision 5 strengthens the case for declining rather than weakening it.** §6.1.1 now states the two
+limbs as two different comparisons over two different sets, so an implementation cannot satisfy 38
+and 44 by accident — but the two limbs still share `L7-GATE-UNCONFIRMED`, and naming them in prose
+while they share a code is exactly the arrangement this subsection defends. Row 48 is a third fixture
+on the missing limb and does not change that: three rows, two limbs, one code.
+
+### 9.6 Row 48 — the limb the seam could not express
+
+**Row 48 exists because revision 4's fixture table asserted class 8's *failing* limb three times and
+its *missing* limb never.** Fixtures 38, 39 and 44 are a red observed run, an unreachable lookup and
+an empty observed set; none of them is the case §6.5 class 8 states first — *a declared applicable
+job with no check run of that name on `Lane-7-Head`* — because `check-runs/<sha>` carried only what
+was observed and nothing carried what was expected. The limb was not merely unasserted; it was
+**unimplementable from this document**, which is a lane-1 defect and not a lane-2 or lane-3 one.
+
+**The row is the one shape that separates a set comparison from a conclusion scan**: four expected
+jobs, three of them present and `success`, the fourth simply absent. There is no red conclusion
+anywhere in the fixture, so an implementation that reads `check-runs/<sha>` and looks for a
+non-`success` line passes 38, 39 and 44 and fails only this row. Fixture 44 does not catch it —
+with *zero* observed runs, "scan what is there" and "compare against what is expected" happen to
+agree.
+
+**It is 48 and nothing renumbers.** Revisions 2 and 4 both shipped numbering defects in this
+document, so: rows 1–47 keep their numbers and their setups, §6.1.1's default is keyed on
+`tree-has-gate-workflow` precisely so that 44 does not have to gain a field, and a harness written
+against revision 4 appends one `check` call.
 
 ---
 
