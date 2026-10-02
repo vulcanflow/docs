@@ -168,11 +168,35 @@ incident, not a cache miss. Belt and braces, deliberately, under **blast radius*
 Every rule below is a chance for two distinct things to become one key, so the list is deliberately
 short. Where a rule is omitted, the omission is stated and its consequence is named.
 
-**`canonical_host`.** **UTS-46 Processing applied to the original input**, with
-`UseSTD3ASCIIRules = true`, `Transitional_Processing = false`, `CheckHyphens = true`,
-`CheckBidi = true` and `CheckJoiners = true`, followed by ToASCII (Punycode) on each label; then strip
-**exactly one** trailing `.`; reject empty labels, a label over 63 octets, or a name over 253 octets.
-Any error UTS-46 records makes the component `Unknown`.
+**`canonical_host`.** One canonicalizer, one UTS-46 configuration, and exactly **one** parameter — the
+**name kind**, which is `Hostname` or `DnsOwnerName`. Applied to the original input, in this order:
+
+1. **UTS-46 Processing** with `Transitional_Processing = false`, `CheckHyphens = true`,
+   `CheckBidi = true`, `CheckJoiners = true`, and **`UseSTD3ASCIIRules = false`**.
+2. **ToASCII** (Punycode) on each label.
+3. Strip **exactly one** trailing `.`.
+4. **Permitted-character validation, per label, over the ASCII result** — the one parameterized step,
+   and the only difference between the two kinds:
+   - `Hostname` — every label matches `^[A-Za-z0-9-]+$` (LDH).
+   - `DnsOwnerName` — every label matches `^[A-Za-z0-9_-]+$` (LDH **plus `_`**).
+5. Reject an empty label, a label over 63 octets, or a name over 253 octets.
+
+Any error UTS-46 records, and any label step 4 rejects, makes the component `Unknown` — and §3.4 then
+makes the key non-storable and non-matchable (422 on an attempt to mark, no match ever).
+
+**The kind is a property of the observation class, not of the key.** It is named per source in §4.2–§4.5
+and is a function of `scanner_id` (and, for nuclei, `type`) — both determined at ingest, and
+`scanner_id` is already a §3.1 component. So the kind adds no component, no new dimension, and nothing
+to `match_version`. It is `DnsOwnerName` for exactly three sources — `subfinder` (§4.2), `dnsx` (§4.3)
+and nuclei findings with `type: dns` (§4.5) — and `Hostname` everywhere else, including §3.5's
+`scope_root` and §5.3's scope matching.
+
+**And the two kinds stay comparable, which §5.3 needs.** Both produce a sequence of ASCII labels; they
+differ in what they *admit*, not in their output alphabet. So §5.3 comparing a `DnsOwnerName`
+observation host against a `Hostname`-canonicalized `scope_root` is still a comparison between like
+things — `_dmarc.example.com` is in scope for `example.com` on the same label-suffix rule as any other
+name. A kind mismatch cannot produce a false *match*; the strict kind can only reject, which is §1's
+direction.
 
 > **There is no NFKC pre-pass, and an earlier version of this rule had one — which was a
 > key-collapse primitive, not a harmless redundancy.** The rule read *"NFKC, then IDNA 2008 ToASCII
@@ -197,9 +221,48 @@ Any error UTS-46 records makes the component `Unknown`.
 > chosen by whoever supplies the name. Without the pre-pass UTS-46 records an error, the component is
 > `Unknown`, and §3.4 makes the key non-storable: noise, not silence.
 >
-> `UseSTD3ASCIIRules = true` is part of the fix and not decoration — several dot-like characters are
-> `disallowed_STD3_mapped`, which means *mapped to `.`* when that flag is false and *rejected* when it
-> is true. Under §1 we take the rejection.
+> **The `UseSTD3ASCIIRules = true` that arrived with this fix made every underscore-prefixed DNS name
+> unsuppressible, and the reason the record gave for the flag was false.** Both halves are blocking
+> finding B8 and the second half I found while answering it. The paragraph here previously read
+> *"`UseSTD3ASCIIRules = true` is part of the fix and not decoration — several dot-like characters are
+> `disallowed_STD3_mapped`, which means mapped to `.` when that flag is false and rejected when it is
+> true."*
+>
+> **There is no such character.** Scanning the whole of `IdnaMappingTable.txt` at Unicode 15.1.0
+> (`https://www.unicode.org/Public/idna/15.1.0/IdnaMappingTable.txt`, dated 2023-08-10, read
+> 2026-10-02): **exactly three** code points map to U+002E — `3002`, `FF0E`, `FF61` — and all three are
+> plain `mapped`, a class `UseSTD3ASCIIRules` does not touch. **Zero** `disallowed_STD3_mapped` entries
+> produce U+002E. The dot-like characters that motivated this fix are `disallowed`
+> (`2024..2026`, `FE52`, and `2488..249B ; disallowed` — DIGIT ONE FULL STOP..NUMBER TWENTY FULL STOP),
+> which UTS-46 rejects **with the flag either way**. So the flag contributed nothing to Bot-3.1's
+> collapse fix, and that fix is fully preserved by the rule above.
+>
+> What the flag actually did was reject `disallowed_STD3_valid`, and `005B..0060 ; disallowed_STD3_valid`
+> contains **U+005F**. Underscore-prefixed names are DNS owner names *by specification*, not by
+> accident — `_dmarc` (RFC 7489), `<selector>._domainkey` (RFC 6376), `_acme-challenge` (RFC 8555),
+> `_sip._tcp` (RFC 2782) — and §4.3's RRTYPE set is where they live (`TXT`, `SRV`, `CAA`). With the flag
+> on, **no DMARC, DKIM, ACME-challenge or SRV observation could ever be marked a false positive**: a
+> whole specified class silently outside the feature, in Phase 1, for a parser we write ourselves.
+> §4.5b treated the identical shape of gap for nuclei `tcp`/`network` as a gap to close rather than a
+> cost to absorb, and this record does not get to apply that standard to one scanner and not another.
+>
+> **Why the remedy is a parameterized validation step and not a second canonicalizer.** A DNS owner
+> name and an IDNA hostname are genuinely different types — `_dmarc.example.com` is a legal owner name
+> and an illegal U-label — but answering that with two canonicalizers would be the design failure the
+> note below forbids. So the two kinds share one UTS-46 call and differ in **one character class, in
+> one step**. For `Hostname` the result is **behaviour-identical** to the old flag, which is what keeps
+> `authz/psl-exact-root` and `authz/configured-scope` from changing a second time: STD3's permitted set
+> *is* LDH, so step 4's `^[A-Za-z0-9-]+$` rejects precisely what the flag rejected —
+> `disallowed_STD3_valid` characters survive step 1 and fail step 4, and `disallowed_STD3_mapped` ones
+> are mapped to ASCII punctuation by step 1 and fail step 4. Same verdict, one step later, and now
+> written in our own code rather than inferred from a crate flag.
+>
+> **The gap this leaves, named rather than absorbed.** `*` is in neither permitted set, so a wildcard
+> owner name yields `Unknown` and is unsuppressible. That is a real and accepted cost at
+> `match_version = 1`: dnsx reports the concrete names it queried (§8.2.3's wildcard case is a concrete
+> name under a wildcard zone, not a `*` owner), so the class is narrow, and widening a permitted set is
+> the direction that merges keys. Admitting `*` later is a `match_version` bump, and §12 carries the
+> trigger.
 >
 > **This is the shared `vf-core` canonicalizer, so the correction propagates.** §25's
 > `authz/psl-exact-root` and `authz/configured-scope` own this canonicalizer's tests (see the note
@@ -207,6 +270,13 @@ Any error UTS-46 records makes the component `Unknown`.
 > rejected rather than canonicalized. That is a change to what those two identifiers assert, not a new
 > identifier, and it is the one place this record reaches back into theirs — stated here rather than
 > left for whoever writes them to discover.
+>
+> **B8's remedy deliberately does *not* add a second change to those two identifiers.** They use the
+> `Hostname` kind, whose verdict is identical to the pre-B8 rule on every input (argued above), so what
+> they assert is what the NFKC correction already made it. They gain **one** row — `_` rejected under
+> `Hostname` — and that row is an assertion about the kind parameter, not a new behaviour. Two
+> corrections to the same shared canonicalizer in one review round would be worth flagging to whoever
+> writes them; one correction plus a parameter is not.
 
 > **"Reject" means the component is `Unknown`, not that the key is silently short one field.** A
 > value that does not canonicalize to a hostname has not been understood, and §3.4 then makes the
@@ -417,7 +487,7 @@ Check class: `subfinder/subdomain`. One class; subfinder has no notion of a chec
 | Key component | Source field | When absent |
 |---|---|---|
 | `check_id` | Constant `subfinder/subdomain`. (The envelope `category` is the literal `"Subdomain"` for every subfinder finding, including the synthetic apex one — it carries no discriminating information.) | n/a |
-| `canonical_host` | `attributes.hostname` (parser: `item.host`; for the synthetic apex finding, the extracted domain) | Never absent; a subfinder finding with no hostname is malformed and rejected at ingest |
+| `canonical_host` | `attributes.hostname` (parser: `item.host`; for the synthetic apex finding, the extracted domain) — §3.3 kind **`DnsOwnerName`**: a subfinder finding asserts that a *DNS name* exists, and passive sources return underscore service names | Never absent; a subfinder finding with no hostname is malformed and rejected at ingest |
 | `canonical_addr` | — | Always `NotApplicable`; subfinder findings are about names |
 | `port` / `protocol` / `location` | — | Always `NotApplicable` |
 | `discriminator` | — | Always `NotApplicable` |
@@ -438,7 +508,7 @@ SOA, PTR`. One observation per (name, record type) actually returned.
 | Key component | Source field (`DNSData` JSON key) | When absent |
 |---|---|---|
 | `check_id` | Derived from which record array the observation came from — `a`, `aaaa`, `cname`, `mx`, `ns`, `txt`, `srv`, `caa`, `soa`, `ptr` | The record type is what produced the observation; it cannot be absent |
-| `canonical_host` | `host` | Never absent |
+| `canonical_host` | `host` — §3.3 kind **`DnsOwnerName`**, because this is the queried **owner name** and `_dmarc` / `_domainkey` / `_acme-challenge` / `_sip._tcp` are owner names by specification (B8) | Never absent |
 | `canonical_addr` | — | `NotApplicable` unless the queried name *is* an IP literal (PTR lookups), in which case `canonical_host` is `NotApplicable` and this carries the normalized address |
 | `port` | — | `NotApplicable`, except `SRV`, whose port is part of the record value and therefore of the `discriminator`, not of this component |
 | `protocol` | — | Always `NotApplicable`. The DNS transport (UDP/TCP/DoH) is not part of the finding's identity |
@@ -502,7 +572,7 @@ Check class: `httpx/http-service`. One class at `match_version = 1`.
 | Key component | Source field (`runner.Result` JSON key) | When absent |
 |---|---|---|
 | `check_id` | Constant `httpx/http-service` | n/a |
-| `canonical_host` | **`host`** — which at `v1.12.0` is `parsed.Hostname()`. Read §7.3 before touching this field | If `host` is an IP literal, `NotApplicable` and `canonical_addr` carries it |
+| `canonical_host` | **`host`** — which at `v1.12.0` is `parsed.Hostname()`. Read §7.3 before touching this field. §3.3 kind **`Hostname`**: this is an HTTP/TLS host, so `_` is rejected and such an observation is unsuppressible — a stated cost, and unlike §4.3's names an underscore host is not legal to begin with | If `host` is an IP literal, `NotApplicable` and `canonical_addr` carries it |
 | `canonical_addr` | `host` when it is an IP literal. **Never `host_ip`** | See §8.3.2 |
 | `port` | `port`, else defaulted from `scheme` per §3.3 | `Unknown` if neither — §3.4 applies |
 | `protocol` | `scheme`, lowercased | `Unknown` if absent |
@@ -575,7 +645,7 @@ to `finding["template-id"]` verbatim.
 | Key component | Source field | When absent |
 |---|---|---|
 | `check_id` | `nuclei/` + `attributes.template_id` (= envelope `category`) | Never absent; required by the envelope schema |
-| `canonical_host` | `attributes.hostname`, **after the §4.5b shape rules** — the parser's `parseHostname(finding.host)` returns the host verbatim when it carries no `scheme://`, and `null` on falsy or unparseable input, so it is not always a hostname | `NotApplicable` if it is an IP literal, which then goes to `canonical_addr`. `Unknown` when §4.5b says so |
+| `canonical_host` | `attributes.hostname`, **after the §4.5b shape rules** — the parser's `parseHostname(finding.host)` returns the host verbatim when it carries no `scheme://`, and `null` on falsy or unparseable input, so it is not always a hostname. §3.3 kind is **`DnsOwnerName`** when `type: dns` and **`Hostname`** otherwise, so a nuclei DNS template observing `_dmarc.example.com` is suppressible and an HTTP one on an underscore host is not (B8) | `NotApplicable` if it is an IP literal, which then goes to `canonical_addr`. `Unknown` when §4.5b says so |
 | `canonical_addr` | `attributes.hostname` when it is an IP literal. **Never `attributes.ip_addresses`** | See §8.4.4 |
 | `port` | **Only** per the §4.5c port-dimension table — from the `:port` in `attributes.hostname` (§4.5b), else the port in `attributes.matched_at` **when §4.5a admits it**, else the §3.3 scheme default | `NotApplicable` for `type: dns`; `Unknown` where §4.5a/§4.5c say so |
 | `protocol` | `attributes.type` (`http`, `dns`, `ssl`, `tcp`, `javascript`, …), lowercased | `Unknown` if absent. See §8.4.2 |
@@ -1257,7 +1327,7 @@ used for `scb/hook-invocation-contract`:
 
 | Test id | Asserts | Author |
 |---|---|---|
-| `findings/fp-match-key-canonicalization` | §3.3 exactly: UTS-46 Processing applied to the original input with **no NFKC pre-pass** — specifically that a `disallowed` dot-like code point (`U+2024`, `U+2025`, `U+FE52`) yields `Unknown` rather than canonicalizing to a different valid host, while a `mapped` one (`U+FF0E`, `U+3002`, `U+FF61`) becomes a label separator; case folding and trailing-dot; a rejected host yielding `Unknown`, default-port folding **and that no scheme outside `http`/`https` defaults**, fragment stripping, no percent-decoding, **per-element** length-prefixed set digests (the `["ab","c"]` vs `["a","bc"]` case **and** `["a","a"]` vs `["a"]` digesting differently), the §3.3 `discriminator` tag-and-length serialization including all four nuclei sub-value combinations and `0x00 0x00` ≠ `NotApplicable`, and `Unknown` → 422 on create and no match at read | Scribe (unit + proptest) |
+| `findings/fp-match-key-canonicalization` | §3.3 exactly: UTS-46 Processing applied to the original input with **no NFKC pre-pass** — specifically that a `disallowed` dot-like code point (`U+2024`, `U+2025`, `U+FE52`) yields `Unknown` rather than canonicalizing to a different valid host, while a `mapped` one (`U+FF0E`, `U+3002`, `U+FF61`) becomes a label separator, **and that both verdicts are identical under either name kind**, since neither class is reached by step 4; the **name kind** parameter (B8) — `_dmarc.example.com`, `selector._domainkey.example.com`, `_sip._tcp.example.com` and `_acme-challenge.example.com` canonicalize under `DnsOwnerName` and yield `Unknown` under `Hostname`; `*.example.com` yields `Unknown` under **both**; a `disallowed_STD3_valid` character that is not `_` (`example/com`, `exam ple.com`, `a:b.example.com`) yields `Unknown` under both, which is the step-4-equals-the-old-flag claim the authz identifiers rest on; case folding and trailing-dot; a rejected host yielding `Unknown`, default-port folding **and that no scheme outside `http`/`https` defaults**, fragment stripping, no percent-decoding, **per-element** length-prefixed set digests (the `["ab","c"]` vs `["a","bc"]` case **and** `["a","a"]` vs `["a"]` digesting differently), the §3.3 `discriminator` tag-and-length serialization including all four nuclei sub-value combinations and `0x00 0x00` ≠ `NotApplicable`, and `Unknown` → 422 on create and no match at read | Scribe (unit + proptest) |
 | `findings/fp-nuclei-field-shapes` | §4.5a/§4.5b/§4.5c, the rules review added: `matched_at` host ≠ `canonical_host` ⇒ `port`/`location` `Unknown` ⇒ 422 and no match (the §8.4.7 fixture row); **§4.5c is evaluated before §4.5a and `NotApplicable` is never promoted to `Unknown`** — `type: dns` with a divergent `matched_at` stays storable; all six branches of §4.5b's table, each in both outcomes, and specifically that `[2001:db8::1]` and `[2001:db8::1]:8443` key to `canonical_addr` rather than `Unknown`, that bare `2001:db8::1` keys to `canonical_addr` with **no** port rather than to host `2001:db8:` port `1`, that `example.com:8443` splits, that `example.com:99999` and `example.com:0` are `Unknown` in **both** components, and that `null` ⇒ `Unknown`; `type: dns` ⇒ `port` **and** `location` `NotApplicable`; an unspecified `type` ⇒ `Unknown`. The invariant to assert over the whole branch table is the §1 direction: **every rejected input yields `Unknown`, never a parsed key** | Scribe (unit, table-driven over the two upstream fixtures plus constructed IPv6 rows, which no fixture supplies) |
 | `findings/fp-alias-non-transitive` | §3.1.1, §5.2 and §5.7: `check_id` is the only aliasable component — an edge-shaped difference in any of the other eleven matches nothing; one hop only, so `A→B, B→C` does not match `A` against `C`; reverse direction does not match; cycles and duplicate `from_check_id` rejected at registry load; cross-scanner edge rejected; §3.6's precedence rule — exact hit beats alias hit, and lowest `(created_at, id)` among several alias hits | Scribe |
 | `findings/fp-revocation-not-retroactive` | §6: revoked decision matches nothing afterwards; already-applied observations keep `applied_fp_decision_id` and their state history; no reactivation path | Ledger (integration) |
@@ -1358,6 +1428,17 @@ is Phase 2 (§24.2) and is listed in "Does not close".
   > genuinely new identity entering the decision's shadow. Found by the second automated reviewer;
   > the same counting-unit class as the §2.1 contradiction the first pass found, and the third defect
   > in this record traceable to a number stated where a set was meant.
+
+  > **The baseline the growth limb compares against, stated (advisory A14).** "Was not under it in the
+  > scan the decision was created in" needs that scan's key set, and §1's covering index
+  > `(tenant_id, applied_fp_decision_id, fp_match_key)` carries no `scan_id`, so the index §6 defines
+  > does **not** serve this limb. It is nevertheless derivable from columns the record already requires,
+  > which is why this is an advisory and not B4's class: the creating scan is
+  > `false_positive_decisions.source_finding_id → findings.scan_id`, and its key set is
+  > `SELECT DISTINCT fp_match_key FROM findings WHERE tenant_id = $1 AND scan_id = $2 AND applied_fp_decision_id = $3`.
+  > In Phase 1 that set is the decision's own single key, so the limb degenerates to *any second key
+  > under the decision* — which is the useful form anyway. No further migration falls out: this query is
+  > an operator-facing alert, not the §6 interactive path §1's index exists for, so it may scan.
 - **Re-surfacing, made countable.** The original *"sustained complaints about re-surfacing"* had no
   threshold and no measure, which makes it a preference rather than a decision input. The measurable
   form: **the rate of `new` observations whose key differs from a suppressed one in the
@@ -1388,6 +1469,21 @@ is Phase 2 (§24.2) and is listed in "Does not close".
 - **A need for cross-scanner aliases** (§5.5) or for aliases that move a location component (§5.1).
   Both are amendments with evidence, and both are the kind of request that should be refused by
   default.
+- **The Unicode version bundled by whatever crate supplies UTS-46 moving off 15.1.0** (advisory A13).
+  §3.3's verdicts are properties of `IdnaMappingTable.txt` at a specific version — this record reads
+  15.1.0 — and the crate that implements UTS-46 bundles that data. A bundled-version change is
+  therefore a change to what `canonical_host` does, observable in `Cargo.lock` and in nothing else, so
+  it belongs here next to the `findings-schema.json` trigger rather than in a dependency bump's diff.
+  Two things close the gap, both outside this record: the first PR implementing §3.3 pins the UTS-46
+  crate **by ADR-0002 amendment** — ADR-0002 A1 holds `idna`/`url` and a PSL crate deliberately off the
+  approved set *"until the phase that needs them starts"*, and §3.3 is that phase — and that amendment
+  records the Unicode version the pin bundles. Low risk in practice, since the `disallowed`/`mapped`
+  split for the characters §3.3 turns on is stable across recent versions; it is a trigger because the
+  risk is not zero and the signal is invisible without one. Step 4's permitted-character validation is
+  **ours**, which deliberately moves the `_` decision (B8) out of crate-flag territory and into code we
+  version ourselves.
+- **A request to admit `*` as an owner-name label** (§3.3's stated gap). Widening a permitted set
+  merges keys, so it is a `match_version` bump with at least one negative example, not a regex edit.
 
 ---
 
@@ -1443,6 +1539,17 @@ Release tags and dates were resolved from the GitHub releases API on the same da
 cadence quoted in §7.1. These are the refs the field names were read at; they are **not** a
 deployment pin, which §11 of this record leaves to Phase 2 and §21.3.
 
+**The Unicode data is read, not recalled, and it is the one place this record reads a standard rather
+than a scanner.** `IdnaMappingTable.txt` at
+`https://www.unicode.org/Public/idna/15.1.0/IdnaMappingTable.txt` (file dated 2023-08-10, retrieved
+2026-10-02 — note the path is `Public/idna/<version>/`, not `Public/<version>/ucd/idna/`, which 404s).
+Four claims come from scanning that file in full rather than from a spot lookup, because three of them
+are negative and a negative claim about a table cannot be made by example: `005B..0060 ;
+disallowed_STD3_valid` contains U+005F (§3.3, B8); exactly three code points map to U+002E — `3002`,
+`FF0E`, `FF61` — all `mapped` (§3.3); **no** `disallowed_STD3_mapped` entry maps to U+002E, which is
+what withdrew the flag's stated justification; and `2024..2026`, `FE52` and `2488..249B` are
+`disallowed` (§3.3, Bot-3.1). UTS #46 revision 31 §4 Processing supplies the step order.
+
 These are source-level probes of upstream output contracts, not executions, which is the right form of
 evidence for a record that asks *what fields exist and what they mean*. Every claim whose truth
 depends on VulcanFlow's own code running instead carries a test id and an owner in §9.
@@ -1462,15 +1569,23 @@ and the distinction matters because §5.4 and §6 both turn on what "stored" mea
 
 ## 15. Pre-acceptance revisions (lane 6, 2026-10-02)
 
-Six review rounds, all routed to the author: the automated reviewer's first pass on `4ec50a2` (one
+Seven review rounds, all routed to the author: the automated reviewer's first pass on `4ec50a2` (one
 finding); the hand review of `4ec50a2` (twelve blocking, six advisory — **all six advisories taken**);
 the automated reviewer's second pass on `fe570de` (five findings, four of which the R1–R12 work had
 already closed and one new, §4.4a); the hand **re-review** of `41264fd` (six blocking, five advisory —
 all eleven taken); the automated reviewer's **third** pass on `41264fd`, which landed while the
 re-review fixes were being written (three findings — two substantive, one advisory — all taken, and
-neither substantive one a re-raise of the two declined suggestions); and the automated reviewer's
+neither substantive one a re-raise of the two declined suggestions); the automated reviewer's
 **fourth** pass, covering `41264fd…152c3a1`, triaged into reviewer #2's lane 6 verdict at `e9a954b`
-(one finding, blocking, taken — Bot-4.1). No decision in §2 is reversed by any of them. What changed:
+(one finding, blocking, taken — Bot-4.1); and the hand reviewer's **second re-review**, at `cf67906`
+(two blocking, four advisory — all six taken). No decision in §2 is reversed by any of them.
+
+**The two reviewers found the same defect independently in that last round** — Bot-4.1 and B7 are one
+finding, §9.1's control-table heading, reached from a bot diff and from a hand read of the enumeration.
+It is recorded once, as one row, rather than twice to make the ledger look busier. The hand re-review
+also closed B1–B6 and the third automated pass against the source rather than against this ledger, and
+accepted both places where this record read its enumeration differently (§8.4.4 negative, §8.4.5
+positive control). What changed:
 
 | # | Section(s) | Change |
 |---|---|---|
@@ -1497,10 +1612,12 @@ neither substantive one a re-raise of the two declined suggestions); and the aut
 | B4 | §3.1 | R12's second trigger was **not computable** as specified: it measures `new` observations, which are exactly the ones that matched nothing, and nothing said `false_positive_match` is written on those. §3.1 now states the storage rule normatively — written on every storable key regardless of outcome, `applied_fp_decision_id` carrying the outcome — and §12 cites it. Same defect class R12 was filed for, which is the point: a trigger whose input is unrecorded is not a trigger. |
 | B5 | **§4.5b** (rewritten), §4.5a, §9 | R2's `host:port` split rule was **wrong for IPv6**, and in the unsafe direction. `[2001:db8::1]` (what `URL.hostname` actually returns — verified) has no trailing `:<port>` and dies in §3.3 ⇒ no IPv6 nuclei finding could be marked a false positive; bare `2001:db8::1` *matched* the split rule and produced host `2001:db8:` port `1` — a **parsed-but-wrong key**, the only place in the reviewed text where the failure direction was not §1's. Replaced by a six-branch shape table tried in order, IPv6 tested before `host:port` on colon count so the shapes are disjoint, every failure resolving to `Unknown`. |
 | B6 | §8 preamble, §2 row 7, **§9.1** (new), §8.4.7 | The corpus count was wrong for the **third** time ("ten", then "eleven", against twelve-or-thirteen depending on the criterion). The fix is not a fourth count: §9.1 now **enumerates** the corpus by case identifier — 13 negative rows, 4 control rows (**grouped wrongly as four positive controls; split 2 + 2 by Bot-4.1 below**), and 4 §8 items explicitly assigned to `findings/fp-scanner-semantics-stale` or to §7's evidence instead. §8 keeps the property (at least two negatives per scanner), which an edit cannot falsify, and drops the number, which every edit could. |
-| Bot-3.1 | §3.3 `canonical_host` (rewritten), the normalization note, §9 | **The NFKC pre-pass was a key-collapse primitive, and this is the record's own subject matter.** The rule read *"NFKC, then IDNA 2008 ToASCII under UTS-46"*. UTS-46 normalizes to **NFC**, not NFKC (revision 31 §4 Processing: Map → Normalize to NFC → Break at U+002E → Convert/Validate), and its Map step already lowercases and already maps the dot-like characters that should become separators. The pre-pass was not merely redundant: `IdnaMappingTable.txt` at Unicode 15.1.0 has `2024..2026 ; disallowed` and `FE52 ; disallowed`, while `NFKC(U+2024) = "."` and `NFKC(U+2025) = ".."` — so a host written with U+2024 canonicalized to a **different valid host** instead of being rejected, which is two inputs collapsing to one key, chosen by whoever supplies the name. Replaced by UTS-46 Processing on the original input with `UseSTD3ASCIIRules = true`. Propagates to `authz/psl-exact-root` and `authz/configured-scope`, which own this shared canonicalizer's tests. |
+| Bot-3.1 | §3.3 `canonical_host` (rewritten), the normalization note, §9 | **The NFKC pre-pass was a key-collapse primitive, and this is the record's own subject matter.** The rule read *"NFKC, then IDNA 2008 ToASCII under UTS-46"*. UTS-46 normalizes to **NFC**, not NFKC (revision 31 §4 Processing: Map → Normalize to NFC → Break at U+002E → Convert/Validate), and its Map step already lowercases and already maps the dot-like characters that should become separators. The pre-pass was not merely redundant: `IdnaMappingTable.txt` at Unicode 15.1.0 has `2024..2026 ; disallowed` and `FE52 ; disallowed`, while `NFKC(U+2024) = "."` and `NFKC(U+2025) = ".."` — so a host written with U+2024 canonicalized to a **different valid host** instead of being rejected, which is two inputs collapsing to one key, chosen by whoever supplies the name. Replaced by UTS-46 Processing on the original input. **The `UseSTD3ASCIIRules = true` this round added alongside it is superseded by B8**, which established both that the flag contributed nothing to this collapse fix and that it removed every underscore-prefixed DNS name from the feature; the NFKC finding and its remedy are untouched by that. Propagates to `authz/psl-exact-root` and `authz/configured-scope`, which own this shared canonicalizer's tests. |
 | Bot-3.2 | §6, §12, §1, §2 row 8 | **The reach count had the wrong unit, and it made §12's growth limb fire on everything.** `findings` holds one row per observation per scan, so a row count rises on every scan for a decision whose reach never changed: "grows in any scan after the creating scan" would have been true of every decision, always. The unit is now the **distinct match key** — reach is `COUNT(DISTINCT fp_match_key)` — which turns both limbs into statements about reach rather than about scan frequency, and turns B3's index into a covering one. Same counting-unit class as the §2.1 contradiction found in pass 1. |
 | Bot-3.3 | §4.3 `discriminator` row | Advisory, taken: `txt` and `caa` values are "verbatim" in the sense of no case folding and no rewriting, but they are still NFC-normalized by §3.3's set-element rule like every other element. Said explicitly, because "verbatim" next to a normalization rule invites the reading that one bypasses the other. |
-| Bot-4.1 | §9 preamble, **§9.1** (regrouped), §8 preamble, B6's row above | **B6's own fix carried a contradiction into the spec Ledger writes from.** §9.1's control table was headed *"the pair must match"* over four rows, two of which — the §3.3 query-order and duplicate-element rows — assert **two** keys in their own `Asserts` entry. A table author reading the heading generates equality assertions for rows that require inequality, and the contradiction is in the one section whose entire purpose is to be read literally by a test author. The four rows are now two groups: **positive controls** (2, must match — the narrowness defect) and **accepted-noise rows** (2, must not match — a split key §3.3 chooses knowing it costs a duplicate). The governing rule is now stated once: the asserted outcome lives on the row, never on the group heading. Same class as Bot-1's §2.1 defect and Bot-3.2's unit error — a statement about the corpus that a later edit made false without touching it — which is why the remedy is structural (outcome per row) rather than a reworded heading. |
+| B8 | §3.3 `canonical_host` (rewritten as a 5-step pipeline), the STD3 blockquote (**false reason withdrawn**), §4.2, §4.3, §4.4, §4.5 rows, §9.1 adjunct row, §12 (two new triggers) | **`UseSTD3ASCIIRules = true`, which arrived with the Bot-3.1 fix, made every underscore-prefixed DNS name unsuppressible — and the reason this record gave for the flag was false.** `005B..0060 ; disallowed_STD3_valid` contains **U+005F**, so with the flag on `_dmarc`, `<selector>._domainkey`, `_acme-challenge` and `_sip._tcp` all yield `Unknown` ⇒ 422 ⇒ no match: no DMARC, DKIM, ACME-challenge or SRV observation could ever be marked a false positive, for scanners in Phase 1 whose parsers we write. Answering it exposed the second half, which the reviewer did not claim and I found by reading the table: the flag's stated justification — *"several dot-like characters are `disallowed_STD3_mapped`"* — **has no instance**. Exactly three code points in Unicode 15.1.0 map to U+002E (`3002`, `FF0E`, `FF61`), all plain `mapped`; **zero** `disallowed_STD3_mapped` entries produce U+002E; the dot-like characters that motivated Bot-3.1 are `disallowed` (`2024..2026`, `FE52`, `2488..249B`), rejected with the flag either way. So the flag never contributed to the collapse fix it was credited with. Remedy: one canonicalizer, one UTS-46 call with the flag **off**, and one parameterized per-label ASCII validation — `^[A-Za-z0-9-]+$` for `Hostname`, `^[A-Za-z0-9_-]+$` for `DnsOwnerName` — which is provably the same verdict as the old flag for `Hostname` (STD3's permitted set *is* LDH), so the two authz identifiers do not change a second time. Not the reviewer's option 2 (two rules) and not option 3 (partial flag, which UTS-46 does not expose): the difference between a DNS owner name and a hostname is real, so it is a typed parameter on one implementation rather than a second implementation. `*` stays rejected under both kinds, stated as a cost with a §12 trigger rather than absorbed. |
+| A12–A15 | `plans/open-decisions.md` D16, **ADR-0003 A1 §7.2**, §12 (Unicode trigger, growth-limb baseline) | All four taken. **A12** — `main` advanced to `b40201b` after this branch's merge base, adding `plans/open-decisions.md`, whose D16 row and §27 ledger row would have become false on merge, in a different file, with no conflict to warn anyone; both now read *answered by ADR-0006*, and `main` was merged in and verified to touch nothing under `decisions/` (B1's hazard, checked rather than assumed). **A13** — §3.3's verdicts are properties of `IdnaMappingTable.txt` at Unicode 15.1.0 and the UTS-46 crate bundles that data, while ADR-0002 A1 holds `idna`/`url` off the approved set *"until the phase that needs them starts"*; §12 now carries the bundled-version trigger and names the ADR-0002 amendment the first §3.3 PR must file. B8's remedy also moves the `_` decision out of crate-flag territory into our own step 4. **A14** — the growth limb's baseline is stated and shown derivable (`source_finding_id → findings.scan_id`), with the explicit note that §1's covering index does **not** serve it and that no fourth migration follows, because this is an operator alert rather than §6's interactive path. **A15** — ADR-0003 A1 §7.2 still said the severity model *"needs an owner"* while `decisions/README.md` said *"Atlas — decided, record pending"*; §7.2 now carries the board's 2026-10-02 direction, the owner, and the no-CVE fallback requirement. |
+| Bot-4.1 / B7 | §9 preamble, **§9.1** (regrouped), §8 preamble, B6's row above | **B6's own fix carried a contradiction into the spec Ledger writes from.** §9.1's control table was headed *"the pair must match"* over four rows, two of which — the §3.3 query-order and duplicate-element rows — assert **two** keys in their own `Asserts` entry. A table author reading the heading generates equality assertions for rows that require inequality, and the contradiction is in the one section whose entire purpose is to be read literally by a test author. The four rows are now two groups: **positive controls** (2, must match — the narrowness defect) and **accepted-noise rows** (2, must not match — a split key §3.3 chooses knowing it costs a duplicate). The governing rule is now stated once: the asserted outcome lives on the row, never on the group heading. Same class as Bot-1's §2.1 defect and Bot-3.2's unit error — a statement about the corpus that a later edit made false without touching it — which is why the remedy is structural (outcome per row) rather than a reworded heading. |
 | A7–A11 | §4.5a, §10, §12, §3.2, §15 | The five advisories, all taken: §4.5c is evaluated **before** §4.5a and `NotApplicable` is never promoted to `Unknown` (so `type: dns` stays storable under a divergent `matched_at`); §10's rejection reason for the `NotApplicable` alternative was overbroad — `check_id` already separates templates, so the collapse is *within* a check class, and the corrected reason is stated with the conclusion unchanged; §12's trigger names the pure `vf-core` decoder it needs and the `(match_version, field_semantics_version, scanner_id)` scope it is only meaningful in; TDD §3.5 is qualified where it collided with this record's §3.5; and this ledger's own round-2 accounting is corrected below. |
 
 **This ledger's own accounting, corrected (A11).** Round 2's header previously read *"five of the six
@@ -1543,3 +1660,10 @@ two authz identifiers must now assert the corrected UTS-46 behaviour, including 
 `disallowed` dot-like code point rejected rather than canonicalized. They are changed, not unchanged,
 and saying so is the honest version: a record that reuses a component and then corrects it does not
 get to claim it left the component alone.
+
+**B8 does not change them a second time, and that was a design constraint on its remedy rather than a
+happy result.** The `Hostname` kind's verdict is identical to the pre-B8 rule on every input — STD3's
+permitted set is LDH, so step 4 rejects exactly what the flag rejected — so the two authz identifiers
+gain one assertion (`_` rejected under `Hostname`) and lose none. Had the remedy been a second
+canonicalizer or a loosened shared flag, it would have moved what those identifiers assert for the
+second time in one review round, on a component this record only borrows.

@@ -555,7 +555,7 @@ They are listed so the §27 ledger stays complete, and routed.
 | **Needed by** | **Phase 1.** The only row on this register needed that early *unconditionally* (D7 joins it if answered "retain"), and the only reason it is not a blocker is that it is answerable by engineering without a board decision. |
 | **Why it is not a board question** | It asks for *"concrete scanner-specific equivalence fields, alias semantics, and examples proving an old decision cannot suppress unrelated findings."* That is a specification written by reading scanner output formats, which is what ADR-0002 §6 and ADR-0003 §3 already did for the secureCodeBox contract. There is no product or commercial trade-off in it. §26 already narrows the shape: a *"narrow versioned target/check/location matcher with explicit decision revocation."* |
 | **Owner** | **Atlas.** Needs an ADR before Ledger can write `findings/fp-only-persistence`. Flagged to the board only because a Phase 1 test depended on it and nobody had assigned it. |
-| **Status** | **Routed and in progress.** Atlas accepted it; the ADR is tracked on its own issue, with the dependent implementation and test work fanned out to Forge, Anvil, Scribe and Ledger behind it. Off the board's queue. |
+| **Status** | **Answered — ADR-0006 is the record**, [`decisions/ADR-0006-false-positive-equivalence-and-alias-semantics.md`](../decisions/ADR-0006-false-positive-equivalence-and-alias-semantics.md), accepted in the same commit that lands this line. It names the equivalence fields per scanner, the alias semantics, revocation, scanner-version staleness, and a worked negative corpus enumerated in its §9.1; `findings/fp-only-persistence` is specified and unblocked, with the dependent test and implementation work fanned out to Scribe, Ledger, Forge and Anvil. Off the board's queue. Updated in ADR-0006's own PR because this register row would otherwise have gone false on merge, in a different file, with no conflict to warn anyone (advisory A12). |
 
 ### D17 — Team Rust capability and the schedule impact of the language change
 
@@ -632,7 +632,7 @@ acceptance criterion.
 | 3 | D4 (merged with breakdown §7.1) | Open — Phase 4 |
 | 4 | D5 (merged with breakdown §7.2) | Open — **Phase 2** |
 | 5 | **Struck** — ADR-0002 §6 + ADR-0003; cluster residue (R6) → D1 | Struck |
-| 6 | D16 — Atlas, not board | Routed, in progress |
+| 6 | D16 — Atlas, not board | **Answered by ADR-0006** |
 | 7 | D6 (merged with breakdown §7.5) | **Decided** |
 | 8 | D7 | Open — Phase 1 if retained |
 | 9 | D8 (merged with breakdown §7.4, disclaimer half) | **Decided** — internal draft, reviewed before GA |
