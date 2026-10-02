@@ -41,8 +41,10 @@ private is R7.
 `scanners` are private, and the Free plan refuses branch protection on a private repository. The
 board **deferred** the GitHub Team upgrade, on the ground that all eleven are empty and so have
 nothing to protect. The deferral is not left to memory: `ci/repo-protection-audit.sh` on
-`platform` fails if any repository in the organisation holds code without protection, and the
-daily "Org repo protection audit" routine runs it and puts a finding back on the decisions desk.
+`platform` fails if any repository in the organisation holds code without protection, and a daily
+Paperclip routine assigned to CEO runs it and puts a finding back on the decisions desk. §8.5 names
+the routine and records that the audit tests three of §8.2's six settings, which is a defect in the
+script and not a narrowing of §8.2.
 Recorded in ADR-0005 **§8.5**, with a revisit trigger whose identifier is allocated at merge —
 see that amendment's history row for why it is not guessed here. §8.5 also records what the
 deferral does **not** buy, including the two things easiest to misread: the audit bounds how long
