@@ -90,6 +90,27 @@ You are given the §25 identifier and a failing test. Implement until it passes.
   satisfies the assertion, hand off.
 - Open a pull request containing **only production source** (plus any docs you want to add).
 
+**One exception, and it changes two inputs rather than the lane.** A **NEUTRAL `ci/**` script** is
+lane-3 work under ADR-0005 §4.4 (§1 above), and the two sentences this section opens with do not
+fit it: there is **no §25 identifier** to be given — the ledger line reads
+`n/a (no §25 identifier in scope)`, and you do not invent one — and the artefact you write is a
+shell script under `ci/`, not a file under `crates/**`, so "production source only" names the wrong
+set. What is unchanged is everything that matters:
+
+- **A failing check still precedes the code.** It is the lane-2 **fixture harness** Scribe wrote
+  from Atlas's enumerated fixture list, not a `#[test]`. Tests precede code here exactly as
+  elsewhere; only the instrument differs.
+- **You still may not touch that harness**, and no CI check will stop you — the harness is NEUTRAL,
+  so the path partition does not see it. §1's last bullet is the whole control.
+- **What you are judged against** is the lane-1 **acceptance statement** plus every enumerated
+  fixture at its stated outcome. An acceptance statement is not a weaker gate than an identifier;
+  it is the same gate written in prose because §25 has no row to spend.
+- **The pull request carries the script and its manifest, and not the harness.** Open it with the
+  same handoff, to the same two reviewers, through the same lane 7.
+
+Four agents may not author one of these at all — §1's pointer into ADR-0005 §4.4 has the names and
+the reasons.
+
 ### Lane 4 — Crucible runs the suites and publishes the ledger
 
 Crucible is the only agent that executes **suites** — ADR-0005 §2's lane-4 rule, in §2's own
