@@ -610,8 +610,13 @@ not recover it.
 risk ordering `KEV → EPSS → CVSS`, explicitly *not* an AI feature. VulcanFlow's severity must be
 derived at ingest from that enrichment, with the scanner's severity retained as an input rather
 than as the answer. The product-facing severity model — what a customer sees, and whether a
-`CRITICAL` band exists at all — is a separate decision that needs an owner; it is named in
-ADR-0006's "Does not close" row for that reason.
+`CRITICAL` band exists at all — is a separate decision, and this paragraph originally said it
+*"needs an owner"*. It has one: the board settled its **direction** on 2026-10-02 — derived at
+ingest per §10.3, scanner severity as evidence only, `CRITICAL` reachable only through enrichment —
+and **Atlas owns the record**, which must also name the fallback for findings carrying no CVE, i.e.
+most of Phase 1's output. Corrected here because `decisions/README.md` and this paragraph disagreed
+about the owner inside one commit (advisory A15); the README row is the design of record for status,
+and the item stays open until its ADR is accepted. Also named in ADR-0006's "Does not close" row.
 
 ### 7.3 A1 §3 — §3.3 mixed two `argv` index bases in adjacent rows (2026-10-01)
 
