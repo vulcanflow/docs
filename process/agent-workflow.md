@@ -168,8 +168,15 @@ tree you are about to push and driven what it found to zero, you do not open the
 
 ```bash
 export CODERABBIT_BIN=<the path in the vulcanflow-pre-pr-review skill>
-"$CODERABBIT_BIN" review --agent --base main
+"$CODERABBIT_BIN" review --agent --base main                    # base = main
+"$CODERABBIT_BIN" review --agent --base <the branch you stacked on>   # stacked
 ```
+
+**`--base` is the pull request's base, and on a stacked change that is not `main`** (ADR-0005
+§6.6). Against `main`, a pre-flight on a stacked branch reviews every amendment below yours: the
+review is spent, your own diff is buried, and the findings belong to other people's author runs. If
+your base moves under you, run it again against the new base. Put the base you actually used in the
+verdict block's `Command` row, even where that differs from the template's prefilled line.
 
 `--agent` emits NDJSON: a `{"type":"finding",…}` line per finding and a final
 `{"type":"complete","findings":N,…}`. **Parse that line.** Do not scrape the human-readable

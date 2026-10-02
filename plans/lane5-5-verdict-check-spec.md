@@ -71,8 +71,18 @@ on codes and on exit status only, so a reworded message is not a test failure.
 
 ## 4. The finding-code register
 
-The block is located by its heading, exactly `### Pre-PR CodeRabbit CLI review (lane 5.5)`, at
-the start of a line. Everything below is relative to the first such heading.
+The block is located by its heading, exactly `## Pre-PR CodeRabbit CLI review (lane 5.5)`, at the
+start of a line. Everything below is relative to the first such heading.
+
+**Two levels of `#`, not three, and the direction of authority is why this sentence exists.** An
+earlier draft of this spec said `###`, and the template that ships the block — `.github/pull_request_template.md`,
+in review on [docs#39](https://github.com/vulcanflow/docs/pull/39) — writes it at `##`. Had the
+check been built from that draft it would have emitted `L55-MISSING` on **every** pull request that
+used the template correctly, which is the worst failure available to this check: it punishes
+compliance and it reads as the author's fault. **The template is the artifact an author actually
+edits, so the template sets the string and the check follows it** — if the two ever disagree again,
+the check is what gets corrected, and the fixture set (§5 case 1) is built by copying the shipped
+template rather than by retyping its heading.
 
 | Code | Fires when |
 |---|---|
@@ -91,6 +101,19 @@ the start of a line. Everything below is relative to the first such heading.
 **Every code is blocking. There is no advisory code in this register**, which is a deliberate
 difference from the lane-7 detector: that one classifies history it did not gate and needs a
 severity axis, and this one gates a body its author can fix in thirty seconds.
+
+**One code that is deliberately absent: there is no `L55-BASE`.** ADR-0005 §6.6 requires the
+pre-flight's `--base` to name **the pull request's own base**, which on this pipeline's stacked
+records is usually not `main`; the check does not verify it, and that is a choice with two reasons.
+The interface in §2 is `(<body-file>, <head-sha>)` and takes nothing else — adding the base ref makes
+it a three-argument script, moves the arity fixture (case 30) and changes the workflow wiring, which
+is a larger change than the thing it buys. And the thing it buys is smaller than it looks: an author
+who reviewed against the wrong base and then typed the right one into the row passes either way, so
+the code would catch a *typo* and not a *wrong run* — the same attestation gap §1 states for the rest
+of the block, with no compensating narrowing. The rule therefore lives in §6.6 and in
+`process/agent-workflow.md`, enforced by Assay in lane 6, who can see the base in the pull request
+itself. **If the interface ever gains the base ref for another reason, this code is the first thing to
+add**, because at that point it is free.
 
 ## 5. The fixture set — each with the outcome it must produce
 
