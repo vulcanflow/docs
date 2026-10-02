@@ -13,8 +13,11 @@ document follows it. (2) **The verdict-contents lookup keys on `Lane-7-Head`, no
 line's own `covers` sha** — §4's register always said so and §4.3's input list did not, which left
 rows 22, 26 and 37 with two readings and different fixture *contents* under each. The key is stated,
 and **fixture 37 leaves the suppression table**: with `Lane-7-Head` as the key, a malformed `covers`
-does not deprive the lookup of one. **No row's expected set moves, including 37's.** The table is
-**48 rows**.
+does not deprive the lookup of one. **No row's expected set moves, including 37's.** A third finding
+on the re-run closed **§7's trailer rule against its own rationale** — `^[A-Za-z][A-Za-z0-9-]*:[ \t]`
+matches `Lane-7-Gate:`, so the appended contradictory block §7 says it refuses was admitted as a
+trailer; `Lane-7-`-prefixed keys are now excluded and **fixture 49** asserts it. The table is
+**49 rows**.
 
 **Revision 4** — Assay's lane-6 review of revision 2, adjudicated. One blocking finding survives
 revision 3 and is accepted: **`Lane-7-Ledger` had no value check**, so a block typing the one
@@ -23,7 +26,7 @@ word §6.3 condition 2 forbids was published as clean. The repair is a **27th co
 already closed by revision 3 — see §9.3 — so its proposed numbering is superseded and the new row
 is **47, not 45**. Three advisories accepted (**§4.3** rule B's converse, **§8.2** reworded,
 VUL-56's description corrected) and one declined on the record with a revisit trigger
-(**§9.5**). The table is **47 rows** before revision 5, **48** after it.
+(**§9.5**). The table is **47 rows** before revision 5, **49** after it.
 
 **Revision 3** — Forge's two lane-1 items and one phrasing tension, raised on VUL-56 and
 adjudicated here: rule A reaches a verdict line's own fields (**§4.3**, transcription — no
@@ -596,9 +599,20 @@ appear:
 
 1. blank lines;
 2. a line consisting solely of three or more `-` characters (GitHub's squash-UI separator);
-3. **trailer lines** matching `^[A-Za-z][A-Za-z0-9-]*:[ \t]`.
+3. **trailer lines** matching `^[A-Za-z][A-Za-z0-9-]*:[ \t]`, **except any line whose key begins
+   `Lane-7-`**.
 
-Anything else is `L7-NOT-TRAILING`.
+Anything else is `L7-NOT-TRAILING`, and so is a `Lane-7-*` line after the block.
+
+**The exception is revision 5's, and without it rule 3 admitted the hole this section says it
+closes.** `Lane-7-Gate: PASS` satisfies `^[A-Za-z][A-Za-z0-9-]*:[ \t]` exactly — every attestation
+key does — so a well-formed block followed by `---------` and a contradictory `Lane-7-Gate: FAIL`
+passed rule 3 as a *trailer* and the detector read whichever line its parser reached first. That is
+the loose reading verbatim: *"the block stops being the end of the message and a second,
+contradictory block can be appended below it."* The rule was written to refuse it and its own
+character class permitted it. **The namespace is reserved after the block, not merely parsed**: the
+detector does not try to reconcile two values, because an attestation with two answers is a defect
+whichever one is true.
 
 **Why lenient, and why this narrowly.** Forge checked `b40201b`'s real message and it ends
 `---------` then two `Co-authored-by:` lines, because GitHub's squash UI appends trailers *after*
@@ -611,6 +625,12 @@ three-shape allowance is the narrowest rule that admits the real merge shape.
 **A 29th fixture is in scope and is accepted** (Scribe's candidate): a clean block followed by
 `---------` and two `Co-authored-by:` trailers, expecting `OK`. An untested leniency is a hole in
 the detector, not in the harness.
+
+**Fixture 49 asserts the exception**, because the same sentence applies to it: an untested
+*restriction* is just as empty. A clean block, `---------`, then `Lane-7-Gate: FAIL` — expecting
+`L7-NOT-TRAILING` and **exit 1**, and expecting **no** `L7-GATE-VALUE`, since the appended line is
+not part of the block and the block's own `Lane-7-Gate` is `PASS`. 29 and 49 are the same shape with
+one key changed, which is the pairing this document uses everywhere else.
 
 **Consequence for the harness, which Scribe correctly flagged as reaching five rows.** Fixtures
 1, 2, 14, 24, 25 and 26 carry well-formed blocks and must append **no** trailers, so they assert
@@ -690,12 +710,12 @@ GATE row must be amended in the same change. That amendment is not this document
 is entangled with VUL-68. So, plainly: between Forge's PR landing and that decision,
 `attest-self-test` **runs and reports on every pull request but does not block one**. That is
 weaker than `gate-self-test` and it is recorded as weaker. It is still the difference between the
-48 fixtures being asserted twice ever — once by Crucible confirming red, once by Forge reaching
+49 fixtures being asserted twice ever — once by Crucible confirming red, once by Forge reaching
 green — and being asserted on every pull request forever, which was Assay's actual point.
 
 ---
 
-## 9. The fixture table — 48 rows
+## 9. The fixture table — 49 rows
 
 **Rows 1–28 keep the numbers they had in VUL-56 as filed**, so Scribe's
 one-`check`-per-row-in-table-order commitment survives. Rows 29–40 were added by this document's
@@ -706,15 +726,15 @@ third**, and they close the one credential the table did not assert; §9.3 says 
 rows and not one. **Row 47 is added by its fourth** — Assay's blocking finding B1, the
 `Lane-7-Ledger` value check that did not exist (§4.4, §9.4). **Row 48 is added by its fifth** — the
 lane-5.5 finding that class 8's *missing* limb had no inventory to compare against and so no fixture
-(§6.1.1, §9.6).
+(§6.1.1, §9.6), and **row 49** closes §7's `Lane-7-`-prefixed-trailer hole.
 
 **Rows 1–46 are unchanged by revision 4.** No expected set, no code and no exit code moves. The
 only addition is 47; everything else revision 4 does is transcription (§4.3's rule B converse)
 or prose repair (§8.2).
 
-**Rows 1–47 are unchanged by revision 5, in setup as well as in expectation.** The only addition is
-**48**, and §6.1.1's absent-file default is built the way it is specifically so that no earlier row
-acquires a field — see §9.6. Everything else revision 5 does is in §4.3 and §6.1 and moves no row.
+**Rows 1–47 are unchanged by revision 5, in setup as well as in expectation.** The additions are
+**48** and **49**, and §6.1.1's absent-file default is built the way it is specifically so that no
+earlier row acquires a field — see §9.6. Everything else revision 5 does is in §4.3 and §6.1 and moves no row.
 
 ### 9.0 The field-default rule — answers Scribe's item 9 (N1, N2)
 
@@ -810,6 +830,7 @@ of the assertion; where it is silent, that rule supplies it rather than leaving 
 | 46 | **Squash**, `LANE7_GITHUB_TOKEN` **unset**; `pulls/`, `pull-head/` and `check-runs/` all present and complete | **exactly one** `L7-PR-UNCHECKED` and one `L7-GATE-UNCHECKED`, **and no `L7-HEAD-UNRESOLVABLE`, `L7-HEAD` or `L7-NOT-PR`**, exit 1 |
 | 47 | `Lane-7-Ledger: FAIL` | `L7-LEDGER-VALUE`, **exit 1** |
 | 48 | `Lane-7-Gate: PASS`, `tree-has-gate-workflow: yes`, `expected-checks/<head>` lists all four `lane-gate.yml` jobs, `check-runs/<head>` records **three** of them `success` and **omits `gate-self-test`** | `L7-GATE-UNCONFIRMED`, **exit 1** |
+| 49 | Well-formed block, then `---------`, then `Lane-7-Gate: FAIL` | `L7-NOT-TRAILING`, **and no `L7-GATE-VALUE`**, **exit 1** |
 
 ### 9.1 Correction — rows 41–44, and a defect in this document's first revision
 
@@ -986,19 +1007,19 @@ agree.
 **It is 48 and nothing renumbers.** Revisions 2 and 4 both shipped numbering defects in this
 document, so: rows 1–47 keep their numbers and their setups, §6.1.1's default is keyed on
 `tree-has-gate-workflow` precisely so that 44 does not have to gain a field, and a harness written
-against revision 4 appends one `check` call.
+against revision 4 appends two `check` calls.
 
 ---
 
 ## 10. Acceptance
 
-**`ci/lane7-attest-test.sh` asserts one verdict per fixture for all 47 fixtures in §9 — each
+**`ci/lane7-attest-test.sh` asserts one verdict per fixture for all 49 fixtures in §9 — each
 verdict comparing the complete set of `L7-*` lines **and** the exit code, per §9.0 — with the
 finding codes as written, and prints an `N passed, M failed` line in `ci/lane-gate-test.sh`'s
-format.** That is the whole of VUL-56, and the closing line reads `47 passed, 0 failed`.
+format.** That is the whole of VUL-56, and the closing line reads `49 passed, 0 failed`.
 
 **`ci/lane7-attest.sh`, with its manifest at `ci/lane7-attest-floors.txt`, its workflow at
-`.github/workflows/lane7-attest.yml`, and both §6.2 credentials supplied, passes all 47 fixtures
+`.github/workflows/lane7-attest.yml`, and both §6.2 credentials supplied, passes all 49 fixtures
 and reports over the four §6.5 ranges exactly one finding — `L7-MISSING vulcanflow/docs
 b40201b…` — and `OK` or an empty `RANGE` for every other commit in scope.** That is the whole of
 VUL-50.
