@@ -482,7 +482,7 @@ the event that produced the commit. `required_status_checks.contexts` is rejecte
 present-tense and unretained, and this document adds no route to it.
 
 **Under `LANE7_FIXTURE_DIR` the fixture supplies that set directly**, because the fixture repository
-has no workflow files and resolving `on:` filters is not what these 48 rows are testing:
+has no workflow files and resolving `on:` filters is not what these 49 rows are testing:
 
 | State of `expected-checks/<sha>` | Means |
 |---|---|
