@@ -13,11 +13,11 @@ Each record states the question, the options considered, the choice, the reason,
 | [ADR-0003](./ADR-0003-rpc-scb-parser-and-billing-clients.md) | Streaming RPC, secureCodeBox parser/hook language, and billing clients | Accepted — amended **A1** | §27 items 19, 20, 21 |
 | [ADR-0005](./ADR-0005-delivery-pipeline-and-lane-enforcement.md) | The delivery pipeline and how its lanes are enforced | Accepted | No §27 item — supersedes the enforcement claim in the VUL-1 plan §4 |
 | [ADR-0006](./ADR-0006-false-positive-equivalence-and-alias-semantics.md) | False-positive equivalence fields, alias semantics, revocation, and scanner-version invalidation | Accepted | §27 item 6 |
+| [ADR-0007](./ADR-0007-repo-level-agent-process-bootstrap.md) | The agent process bootstrap is checked into `vulcanflow/platform` | Accepted | No §27 item — process. Weighs against ADR-0004's definition of what `platform` holds |
 
-**ADR-0004 and ADR-0006 are not on `main` yet.** ADR-0004 is the Cargo workspace repository
-layout — docs#23 was closed unmerged and it is re-filed as PR docs#27. ADR-0006 is the
-false-positive equivalence fields and alias semantics, PR docs#26. Both numbers are reserved;
-the gaps here are not missing records.
+**ADR-0004 is not on `main` yet.** It is the Cargo workspace repository layout — docs#23 was
+closed unmerged and it is re-filed as PR docs#27. The number is reserved; the gap here is not a
+missing record. ADR-0006 is in the table above because this commit is what puts it on `main`.
 
 ADR-0005's operational companion is [`process/agent-workflow.md`](../process/agent-workflow.md),
 which is what an agent reads mid-task. ADR-0007's is `CLAUDE.md` at the root of
@@ -30,7 +30,7 @@ which is what an agent reads mid-task. ADR-0007's is `CLAUDE.md` at the root of
 | 5 (cluster half) | Engineering | First automatic cascade — Harbor artifacts and node Kubernetes compatibility for the pinned secureCodeBox v5.9.0. Needs a cluster; ADR-0002 §7 risk R6 |
 | 13 | Engineering | DNS risk labels — external-resolution evidence, and the stronger evidence a confirmed dangling-resource finding needs. ADR-0006 §4.3 covers the DNS *record* observation class only; item 13 **blocks** any `dnsx/dangling-*` check class, because ADR-0006 §11 forbids a new check class creating or receiving a suppression until its equivalence row exists |
 | 16a | Engineering leadership | Phase 0 schedule — team Rust capability and schedule impact |
-| — (not §27) | Needs an owner | **The product-facing severity model.** `findings-schema.json` at secureCodeBox v5.9.0 restricts `severity` to `INFORMATIONAL \| LOW \| MEDIUM \| HIGH`, so no conformant parser can emit `CRITICAL`, and the v5.9.0 nuclei parser collapses `CRITICAL → HIGH` before the artifact is written. §10.3's `KEV → EPSS → CVSS` enrichment is the mechanism; what a customer sees is undecided. ADR-0003 A1 §7.2, ADR-0006 §8.4.5 |
+| — (not §27) | Atlas — **decided, record pending** | **The product-facing severity model.** `findings-schema.json` at secureCodeBox v5.9.0 restricts `severity` to `INFORMATIONAL \| LOW \| MEDIUM \| HIGH`, so no conformant parser can emit `CRITICAL`, and the v5.9.0 nuclei parser collapses `CRITICAL → HIGH` before the artifact is written. The board decided 2026-10-02 that customer-visible severity is **derived at ingest** from §10.3's `KEV → EPSS → CVSS`, with the scanner's own `severity` retained as evidence only and `CRITICAL` reachable only through enrichment; the ADR must also name the fallback for findings carrying no CVE, which is most of Phase 1's output. Open until that ADR is accepted — a decision recorded only in a comment thread is not the design of record. ADR-0003 A1 §7.2, ADR-0006 §8.4.5 |
 
 **Closed 2026-10-01 — the GitHub plan decision.** The board took option B of ADR-0005 §8: the
 four active repositories (`docs`, `platform`, `infra`, `vf-api`) are **public**, which unlocks
