@@ -6,7 +6,8 @@
 | **Date** | 2026-10-01 |
 | **Owner** | Atlas (Staff Architect / Tech Lead) |
 | **Closes** | TDD **§27 items 19, 20 and 21** |
-| **Amendments** | **A1** (2026-10-01) — three corrections, none of which reverses a decision: §3.2's custom-parser claim and §3.5's severity remedy (both factual, from re-reading the v5.9.0 scanner tree), and §3.3's mixed `argv` index bases (presentational). See §7. |
+| **Also settles** | §27 item 5's *"exact scan-ID field"* limb — `metadata.uid`, decided in §3.4 and recorded in A1 §7.4. Item 5's other limbs are elsewhere: release/digests/node compatibility and CRD inputs in ADR-0002 §6, the start barrier in §5.7 and ADR-0002 §7 R6 |
+| **Amendments** | **A1** (2026-10-01) — four corrections, none of which reverses a decision: §3.2's custom-parser claim and §3.5's severity remedy (both factual, from re-reading the v5.9.0 scanner tree), §3.3's mixed `argv` index bases (presentational), and §3.4's circular citation for the scan-fingerprint field (citation; the field choice is now stated in this ADR's own voice). See §7. |
 | **Depends on** | [ADR-0002](./ADR-0002-rust-crate-set-and-phase0-pins.md) — the crate set and the secureCodeBox v5.9.0 pin |
 | **Does not close** | §27 items 16a, and the Product halves of items 2, 4 and 11 that bear on paid use |
 | **Design of record** | `VulcanFlow_Technical_Design_Document_v2.2.md` (filename says v2.2; the content is **TDD v2.3**) — §2.5.2, §2.5.3, §9, §17.5, §21.3, §24.2–24.4 |
@@ -266,8 +267,26 @@ arguments and HTTP GETs, and the Go SDK above is the conformance reference.
   (§2.5.2 already forbids `unwrap` on external input paths).
 - **Idempotency is required, not optional.** §8.4 requires ingest retries to be idempotent
   and §25 names `findings/replayed-artifact`. The hook can be invoked more than once for one
-  scan; the scan fingerprint (§21.3, `metadata.uid` of the Scan object per ADR-0002's
-  reading of §21.3) is the deduplication key, not the hook invocation.
+  scan; the **scan fingerprint** is the deduplication key, not the hook invocation.
+  §10.2 is `[CONFIRMED]` that the fingerprint *"is the unique identifier of the secureCodeBox
+  Scan"*, is stored unchanged, is not derived from finding contents and is never reused for
+  another execution; §6.2 separates it from the pipeline-run and finding identities, and
+  §6.3's `scans` table carries `UNIQUE (tenant_id, scan_fingerprint)`.
+  **Which Scan field that is, the TDD does not say, and this ADR decides it:
+  `metadata.uid`.** The API server assigns it, it is unique and never reused, and that is
+  what §10.2's no-reuse requirement needs — where `metadata.name` cannot serve, because the
+  deterministic objects §8.1 adopts on retry are unique only within a namespace and the name
+  is reusable after delete. The §25 identifier that asserts the fingerprint is
+  `execution/scan-identity` (§6.2, §21.3).
+- **What the bullet above does not decide: how `vf-hook-notify` obtains the uid.** The hook's
+  inputs are `SCAN_NAME`, `NAMESPACE` and the argv URLs (§3.3); the uid is not among them,
+  and §8.4 requires the hook's notification to carry the actual scan fingerprint. Either the
+  hook reads the Scan object by name and namespace, or §8.1's outbox worker — which already
+  *"binds actual SCB fingerprints to work units"* — makes the binding and the notification
+  carries `SCAN_NAME` instead. Both are consistent with this ADR; the second keeps the hook
+  free of a Kubernetes client, which is the reason to prefer it, and neither is decided here.
+  This belongs to the `vf-hook-notify` work item's spec and is recorded as **open and named**
+  rather than left for whoever writes the binary to settle by implementing it.
 
 **Executable confirmation.** Test ID `scb/hook-invocation-contract`: invoke the built
 `vf-hook-notify` binary as a subprocess with `SCAN_NAME` and `NAMESPACE` set and a local
@@ -484,7 +503,9 @@ generation (§4.2) becomes the better trade.
   Engineering leadership, and a staffing question rather than a technical one.
 - **§27 item 5's cluster half** — Harbor artifacts and node Kubernetes compatibility for the
   pinned secureCodeBox release. Risk R6 in ADR-0002 §7; it needs a cluster, and that hold is
-  CEO's to lift.
+  CEO's to lift. Item 5's *"exact scan-ID field"* limb **is** touched, in §3.4 — see the
+  header's "Also settles" row and A1 §7.4 — and its start-barrier limb is §5.7 work tracked
+  as R6, not a documentation gap.
 - **The Product halves of items 2, 4 and 11** — package limits, billing-period edges and
   delivery consent. These block paid use alongside §4 above; this ADR decides only the
   client shape, not the commercial policy it will carry.
@@ -515,10 +536,12 @@ owner above.
 
 Amendments are recorded here rather than silently edited in, so a reader who reviewed an earlier
 revision can see what moved. §7.1 and §7.2 are **factual corrections**; §7.3 is a **presentational
-correction** — it changes how §3.3 states a contract, not what the contract is. None of the three
-reverses a decision, and reversing one would need a new ADR that supersedes this record.
+correction** — it changes how §3.3 states a contract, not what the contract is; §7.4 is a
+**citation correction**, which turned out to carry a decision that had never been stated in this
+ADR's own voice. None of the four reverses a decision, and reversing one would need a new ADR
+that supersedes this record.
 
-All three are entries under the single amendment **A1**. There is one amendment history on this
+All four are entries under the single amendment **A1**. There is one amendment history on this
 record, not one per correction.
 
 ### 7.1 A1 §1 — §3.2's custom-parser claim is wrong (2026-10-01)
@@ -622,3 +645,46 @@ exactly what moved.
 binary reads `argv[1]` and `argv[2]`, in the absolute base, and that it tolerates receiving only
 two URLs. The test is unchanged and no test author needs to act on this amendment. It is an
 input to the implementer and to the reviewer of `vf-hook-notify`, not to the test.
+
+### 7.4 A1 §4 — §3.4's scan-fingerprint citation was circular (2026-10-01)
+
+**Raised by CEO** on VUL-41, reviewing the open-decision register (advisory 7).
+
+**What was there.** §3.4's idempotency bullet sourced the deduplication key like this:
+
+> the scan fingerprint (§21.3, `metadata.uid` of the Scan object per ADR-0002's reading of
+> §21.3) is the deduplication key, not the hook invocation.
+
+**ADR-0002 has no such reading.** It contains no `metadata.uid`, no scan-ID field choice, and —
+as it stands on `main` — no mention of a scan fingerprint at all. What it settles about
+secureCodeBox, in §6, is the pinned release, the digests, arm64 and CRD type generation; the
+only place a fingerprint appears in that document is amendment A3's §7.2 note, which is about
+this very mis-attribution and is not yet merged. The citation pointed at a
+document that says nothing on the subject, which left the only substantive claim in the bullet —
+*which field is the fingerprint* — resting on nothing. A reader following the reference finds no
+answer and has to guess, which for a deduplication key is the worst available outcome: guessing
+`metadata.name` yields a key that is reusable after delete, and the duplicate it then suppresses
+is a real second scan whose findings are silently dropped.
+
+**What changed.** The bullet now separates what the TDD confirms from what this ADR decides.
+The TDD confirms the *concept*: §10.2 `[CONFIRMED]` that the fingerprint is the unique
+identifier of the secureCodeBox Scan, stored unchanged, never derived from finding contents and
+never reused for another execution; §6.2 separating it from pipeline-run and finding identity;
+§6.3's `UNIQUE (tenant_id, scan_fingerprint)`. It does not name a field. **This ADR decides the
+field — `metadata.uid` — and now says so in its own voice**, with the reason (API-server
+assigned, cluster-unique, never reused) and the rejected alternative (`metadata.name`, which
+§8.1's deterministic objects make reusable after delete and unique only within a namespace).
+
+**One thing the correction surfaced, recorded rather than resolved.** The hook's inputs are
+`SCAN_NAME`, `NAMESPACE` and the argv URLs, and the uid is not among them — while §8.4 requires
+the hook's notification to carry the actual fingerprint. §3.4 now names that gap and the two
+candidate resolutions, and assigns it to the `vf-hook-notify` work item's spec. **It is not
+decided in this amendment**, because which component reads the uid is a service-boundary
+question and a bullet in a language decision is the wrong place to settle one.
+
+**§25 and test impact: none, and this is the second entry where that is worth saying.**
+`scb/hook-invocation-contract` asserts argv handling, required environment and two-URL
+tolerance. It does not assert deduplication, and ADR-0002 A3 §7.2 was corrected on docs#28 to
+stop claiming it feeds `findings/replayed-artifact` for that reason. The field decision above is
+asserted by `execution/scan-identity`, which is a §25 identifier and already owned by Ledger per
+§3.4. No test moves and no test author acts.
