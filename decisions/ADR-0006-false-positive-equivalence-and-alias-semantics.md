@@ -38,15 +38,18 @@ than reopening them.
   out of it, and they are named rather than left for Phase 1 planning to discover:
   **(1)** `false_positive_events.reason text` for §6's recorded revocation reason, which §6.3 has
   nowhere to put; **(2)** the stored generated column or expression index §3.6 requires, either of
-  which is DDL; **(3)** an index on `findings (tenant_id, applied_fp_decision_id)`, because §6 makes
-  the suppression-reach count **mandatory before a user confirms a decision** and §12 evaluates the
-  same count per scan per decision — and TDD §6.3 declares `applied_fp_decision_id` with no index.
-  By §3.6's own standard ("matching must not be a per-row scan over the tenant's findings") a
-  mandatory interactive count over an unindexed column is the same defect in the other direction, so
-  the index is named here rather than discovered when the first large tenant's confirmation dialog
-  stalls. The original claim — *"requires no schema change"* — was broader than the evidence, was
-  first narrowed to two migrations, and is now at three; the count is enumerated above rather than
-  asserted, which is the lesson of §9.1.
+  which is DDL, on `false_positive_decisions` because that is the table matching probes **into**;
+  **(3)** the same serialization as a generated column on the observation side,
+  `findings.fp_match_key`, plus a covering index `findings (tenant_id, applied_fp_decision_id,
+  fp_match_key)`. (3) exists because §6 makes the suppression-reach count **mandatory before a user
+  confirms a decision** and §12 evaluates it per scan per decision, and because — per §6 — the unit
+  of that count is the **distinct match key**, not the `findings` row. TDD §6.3 declares
+  `applied_fp_decision_id` with no index at all, so without (3) a requirement this record calls
+  mandatory is a sequential scan plus a distinct-sort over the tenant's findings on an interactive
+  path. By §3.6's own standard — matching must not be a per-row scan — that is the same defect in the
+  other direction. The original claim — *"requires no schema change"* — was broader than the
+  evidence, was first narrowed to two migrations, and is now three; and the count of them is
+  enumerated here rather than asserted at a distance, which is the lesson of §9.1.
 
 What was missing is the only part §10.2 deferred: *which fields*, per scanner, for the
 `subfinder → dnsx → httpx → nuclei` pipeline of §24.1. Without it `findings/fp-only-persistence` is
@@ -73,7 +76,7 @@ too narrow produces noise; a matcher that is too wide produces silence. Prefer n
 | 5 | Revocation | Append-only; affects **future** matching only; never rewrites a past applied record or a saved report; never reactivates (§6). |
 | 6 | Scanner version bump | A bump alone invalidates nothing. A **declared field-semantics change** does: per-scanner `field_semantics_version`, bumped in the scanner-pin PR, **stales** every decision stored under the prior value — retained and visible, suppressing nothing (§7). |
 | 7 | Evidence | Worked negative examples in §8 — **at least two per scanner**, each with the loose key that collapses the pair and the consequence of the collapse. The corpus is **enumerated by identifier in §9.1** rather than counted, because three successive drafts stated a count and all three were wrong (§8's preamble). Two cases (§8.4.1, §8.4.7) ship as **upstream fixture files** Ledger can use verbatim. |
-| 8 | Schema | No new table or column for the match key itself; **three** migrations named in §1 — `false_positive_events.reason text` (§6), §3.6's generated column or expression index, and an index on `findings (tenant_id, applied_fp_decision_id)` for §6's mandatory suppression-reach count and §12's per-scan evaluation of it. |
+| 8 | Schema | No new table or column for the match key itself; **three** migrations named in §1 — `false_positive_events.reason text` (§6), §3.6's generated column or expression index on `false_positive_decisions`, and `findings.fp_match_key` with a covering index `findings (tenant_id, applied_fp_decision_id, fp_match_key)` for §6's mandatory suppression-reach count, whose unit is the **distinct match key** and not the observation row. |
 
 ### 2.1 Acceptance statement
 
@@ -165,9 +168,45 @@ incident, not a cache miss. Belt and braces, deliberately, under **blast radius*
 Every rule below is a chance for two distinct things to become one key, so the list is deliberately
 short. Where a rule is omitted, the omission is stated and its consequence is named.
 
-**`canonical_host`.** NFKC, then IDNA 2008 ToASCII under UTS-46 with `transitional_processing =
-false`, then ASCII-lowercase; strip **exactly one** trailing `.`; reject empty labels, a label over
-63 octets, or a name over 253 octets.
+**`canonical_host`.** **UTS-46 Processing applied to the original input**, with
+`UseSTD3ASCIIRules = true`, `Transitional_Processing = false`, `CheckHyphens = true`,
+`CheckBidi = true` and `CheckJoiners = true`, followed by ToASCII (Punycode) on each label; then strip
+**exactly one** trailing `.`; reject empty labels, a label over 63 octets, or a name over 253 octets.
+Any error UTS-46 records makes the component `Unknown`.
+
+> **There is no NFKC pre-pass, and an earlier version of this rule had one — which was a
+> key-collapse primitive, not a harmless redundancy.** The rule read *"NFKC, then IDNA 2008 ToASCII
+> under UTS-46 …, then ASCII-lowercase"*. Three things are wrong with it, and the third is a defect
+> in this record's own subject matter.
+>
+> First, **UTS-46 normalizes to NFC, not NFKC.** Its Processing is Map → *Normalize the domain_name
+> string to Unicode Normalization Form C* → Break (at U+002E **only**) → Convert/Validate
+> (UTS #46 revision 31, §4 Processing, read 2026-10-02). Nothing in the algorithm uses NFKC.
+> Second, UTS-46's own Map step already lowercases and already maps the dot-like characters that
+> *should* become separators, so the two bookend steps were redundant: `IdnaMappingTable.txt` at
+> Unicode 15.1.0 has `3002 ; mapped ; 002E`, `FF0E ; mapped ; 002E` and `FF61 ; mapped ; 002E`.
+>
+> Third, and the reason this is a correction rather than a tidy-up: **NFKC maps characters to `.`
+> that UTS-46 deliberately rejects, so the pre-pass manufactured label separators UTS-46 would never
+> have produced.** The same Unicode 15.1.0 table has `2024..2026 ; disallowed` (ONE DOT LEADER,
+> TWO DOT LEADER, HORIZONTAL ELLIPSIS) and `FE52 ; disallowed` (SMALL FULL STOP) — and
+> `NFKC(U+2024) = "."`, `NFKC(U+2025) = ".."`, `NFKC(U+FE52) = "."` (checked against the Unicode
+> 15.1.0 normalization data, 2026-10-02). So `exam␣ple.com` written with U+2024 canonicalized, under
+> the pre-pass, to **`exam.ple.com`** — a *different, valid* host — instead of being rejected. Two
+> distinct inputs collapsing to one key is the direction §1 forbids, and here the collapsing input is
+> chosen by whoever supplies the name. Without the pre-pass UTS-46 records an error, the component is
+> `Unknown`, and §3.4 makes the key non-storable: noise, not silence.
+>
+> `UseSTD3ASCIIRules = true` is part of the fix and not decoration — several dot-like characters are
+> `disallowed_STD3_mapped`, which means *mapped to `.`* when that flag is false and *rejected* when it
+> is true. Under §1 we take the rejection.
+>
+> **This is the shared `vf-core` canonicalizer, so the correction propagates.** §25's
+> `authz/psl-exact-root` and `authz/configured-scope` own this canonicalizer's tests (see the note
+> below); they must assert the corrected rule, including at least one `disallowed` dot-like code point
+> rejected rather than canonicalized. That is a change to what those two identifiers assert, not a new
+> identifier, and it is the one place this record reaches back into theirs — stated here rather than
+> left for whoever writes them to discover.
 
 > **"Reject" means the component is `Unknown`, not that the key is silently short one field.** A
 > value that does not canonicalize to a hostname has not been understood, and §3.4 then makes the
@@ -175,18 +214,24 @@ false`, then ASCII-lowercase; strip **exactly one** trailing `.`; reject empty l
 > source can carry a `host:port` string (see §4.5's row), and the difference between "rejected" and
 > "`Unknown`" is the difference between an implementer inventing a fallback and one returning 422.
 
-> *Why NFKC here and NFC for set elements below.* Hostnames are **identifiers** and UTS-46 is
-> defined over NFKC, so compatibility folding is what the resolver will do anyway. Set elements are
-> **opaque payloads** — an extracted string, a TXT record — where NFKC would fold distinct bytes
-> together (`ﬁ` → `fi`) and merge two different findings into one key. Different jobs, different
-> forms, on purpose. (Advisory A3.)
+> *Which normalization applies where, and why NFKC appears nowhere.* **Both** paths end at NFC.
+> Hostnames are **identifiers**, so they get the whole of UTS-46 — its mapping step (case folding,
+> the `mapped` dot-like characters, the `disallowed` rejections) and then NFC, which is what a
+> resolver will do. Set elements are **opaque payloads** — an extracted string, a TXT record — so
+> they get NFC and nothing else: no mapping, no case folding. NFKC is used on neither, and the
+> reason is the same in both places. On a payload it folds distinct bytes together (`ﬁ` → `fi`) and
+> merges two findings into one key. On a hostname it manufactures label separators from code points
+> UTS-46 rejects (see above). Compatibility folding is a *merging* operation, and §1 forbids merging
+> in every component. (Advisory A3, as corrected by the second automated reviewer.)
 
 > **This must be the same canonicalizer as §5.3 scope matching, in `vf-core`.** Not a second one.
 > A second host canonicalizer is a design failure: the two would drift, and the drift would be a
 > suppression that applies to a host the scope matcher considers different. §25's
 > `authz/configured-scope` and `authz/psl-exact-root` own that canonicalizer's tests; this record
-> **reuses** it and adds none. (**Crate purity** — `vf-core` is pure, so this is shared library code,
-> not a service call.)
+> **reuses** it and adds no identifier of its own for it. It does, however, **correct its rule** —
+> the NFKC pre-pass above — so those two identifiers must assert the corrected behaviour. Reuse
+> without a second implementation; not reuse without consequence. (**Crate purity** — `vf-core` is
+> pure, so this is shared library code, not a service call.)
 
 **`canonical_addr`.** IPv4 in dotted-quad; IPv6 per RFC 5952 (lowercase hex, maximal `::`
 compression, no leading zeros). Set only when the finding's subject is an IP literal rather than a
@@ -398,7 +443,7 @@ SOA, PTR`. One observation per (name, record type) actually returned.
 | `port` | — | `NotApplicable`, except `SRV`, whose port is part of the record value and therefore of the `discriminator`, not of this component |
 | `protocol` | — | Always `NotApplicable`. The DNS transport (UDP/TCP/DoH) is not part of the finding's identity |
 | `location` | — | Always `NotApplicable` |
-| `discriminator` | **One sub-value** (§3.3): the set digest of the record values for that type, each lowercased for name-valued types (`cname`, `mx`, `ns`, `ptr`, `srv`) and with a single trailing `.` stripped; verbatim for `txt` and `caa`; normalized per `canonical_addr` rules for `a`/`aaaa`; for `soa`, the per-element string defined in §4.3.1 | Never `NotApplicable`. If the values could not be read, `Unknown` — and §3.4 applies |
+| `discriminator` | **One sub-value** (§3.3): the set digest of the record values for that type, each lowercased for name-valued types (`cname`, `mx`, `ns`, `ptr`, `srv`) and with a single trailing `.` stripped; **verbatim for `txt` and `caa`** — meaning no case folding and no content rewriting, but still NFC-normalized by §3.3's set-element rule, which every element goes through and which is the only normalization applied to a payload; normalized per `canonical_addr` rules for `a`/`aaaa`; for `soa`, the per-element string defined in §4.3.1 | Never `NotApplicable`. If the values could not be read, `Unknown` — and §3.4 applies |
 
 ### 4.3.1 `soa` is a struct, not a string — and only three of its eight fields are identity
 
@@ -796,14 +841,21 @@ existing `false_positive_events` row with `action = 'revoked'`.
 - **The blast radius is shown before, not after.** Revocation is the one operation whose effect is
   countable in advance, and so is suppression: the UI states how many currently-suppressed
   observations a decision covers. A user who cannot see what a suppression reaches cannot be said to
-  have reviewed it. **This requirement is load-bearing on an index, and the index is therefore named
-  in §1 rather than left implicit.** The count is
-  `COUNT(*) FROM findings WHERE tenant_id = $1 AND applied_fp_decision_id = $2`, it runs on an
-  interactive path (§10.5) before the user confirms, and §12 runs it again per scan per decision as a
-  revisit-trigger instrument. TDD §6.3 declares `applied_fp_decision_id` with no index, so without
-  migration (3) a requirement this record calls mandatory is a sequential scan of the tenant's
-  findings — the same defect §3.6 forbids for matching, in the other direction. Stating the query
-  here is what makes the index a consequence of the decision rather than a Phase 1 surprise.
+  have reviewed it. **The unit of that count is the distinct match key, not the `findings` row**, and
+  the difference is not a refinement — it is the difference between a number that means something and
+  one that does not. `findings` holds one row per observation per scan (§10.4, and §6.3's
+  `UNIQUE (scan_id, source_finding_id)`), so a row count rises on every scan for a decision whose
+  reach never changed: a decision covering one finding reads "30" after thirty scans. A user shown
+  that number cannot distinguish a suppression that travelled from a scanner that ran often, which is
+  the one judgment the number exists to support. So:
+
+  > **Reach** = `COUNT(DISTINCT fp_match_key) FROM findings WHERE tenant_id = $1 AND
+  > applied_fp_decision_id = $2`, over the generated column of migration (3).
+
+  It runs on an interactive path (§10.5) before the user confirms, and §12 runs it again per scan per
+  decision as a revisit-trigger instrument. Stating both the unit and the query here is what makes
+  the covering index in §1 a consequence of the decision rather than a Phase 1 surprise, and it is
+  why (3) carries `fp_match_key` instead of being an index on `applied_fp_decision_id` alone.
 - **Reason recorded — and this one needs a column.** `false_positive_decisions.reason` exists for the
   decision. The revocation event carries its own actor and timestamp, but TDD §6.3's
   `false_positive_events` is `(id, tenant_id, decision_id, action, actor_id, created_at)`: there is no
@@ -1190,7 +1242,7 @@ used for `scb/hook-invocation-contract`:
 
 | Test id | Asserts | Author |
 |---|---|---|
-| `findings/fp-match-key-canonicalization` | §3.3 exactly: IDNA/case/trailing-dot, a rejected host yielding `Unknown`, default-port folding **and that no scheme outside `http`/`https` defaults**, fragment stripping, no percent-decoding, **per-element** length-prefixed set digests (the `["ab","c"]` vs `["a","bc"]` case **and** `["a","a"]` vs `["a"]` digesting differently), the §3.3 `discriminator` tag-and-length serialization including all four nuclei sub-value combinations and `0x00 0x00` ≠ `NotApplicable`, and `Unknown` → 422 on create and no match at read | Scribe (unit + proptest) |
+| `findings/fp-match-key-canonicalization` | §3.3 exactly: UTS-46 Processing applied to the original input with **no NFKC pre-pass** — specifically that a `disallowed` dot-like code point (`U+2024`, `U+2025`, `U+FE52`) yields `Unknown` rather than canonicalizing to a different valid host, while a `mapped` one (`U+FF0E`, `U+3002`, `U+FF61`) becomes a label separator; case folding and trailing-dot; a rejected host yielding `Unknown`, default-port folding **and that no scheme outside `http`/`https` defaults**, fragment stripping, no percent-decoding, **per-element** length-prefixed set digests (the `["ab","c"]` vs `["a","bc"]` case **and** `["a","a"]` vs `["a"]` digesting differently), the §3.3 `discriminator` tag-and-length serialization including all four nuclei sub-value combinations and `0x00 0x00` ≠ `NotApplicable`, and `Unknown` → 422 on create and no match at read | Scribe (unit + proptest) |
 | `findings/fp-nuclei-field-shapes` | §4.5a/§4.5b/§4.5c, the rules review added: `matched_at` host ≠ `canonical_host` ⇒ `port`/`location` `Unknown` ⇒ 422 and no match (the §8.4.7 fixture row); **§4.5c is evaluated before §4.5a and `NotApplicable` is never promoted to `Unknown`** — `type: dns` with a divergent `matched_at` stays storable; all six branches of §4.5b's table, each in both outcomes, and specifically that `[2001:db8::1]` and `[2001:db8::1]:8443` key to `canonical_addr` rather than `Unknown`, that bare `2001:db8::1` keys to `canonical_addr` with **no** port rather than to host `2001:db8:` port `1`, that `example.com:8443` splits, that `example.com:99999` and `example.com:0` are `Unknown` in **both** components, and that `null` ⇒ `Unknown`; `type: dns` ⇒ `port` **and** `location` `NotApplicable`; an unspecified `type` ⇒ `Unknown`. The invariant to assert over the whole branch table is the §1 direction: **every rejected input yields `Unknown`, never a parsed key** | Scribe (unit, table-driven over the two upstream fixtures plus constructed IPv6 rows, which no fixture supplies) |
 | `findings/fp-alias-non-transitive` | §3.1.1, §5.2 and §5.7: `check_id` is the only aliasable component — an edge-shaped difference in any of the other eleven matches nothing; one hop only, so `A→B, B→C` does not match `A` against `C`; reverse direction does not match; cycles and duplicate `from_check_id` rejected at registry load; cross-scanner edge rejected; §3.6's precedence rule — exact hit beats alias hit, and lowest `(created_at, id)` among several alias hits | Scribe |
 | `findings/fp-revocation-not-retroactive` | §6: revoked decision matches nothing afterwards; already-applied observations keep `applied_fp_decision_id` and their state history; no reactivation path | Ledger (integration) |
@@ -1274,12 +1326,23 @@ is Phase 2 (§24.2) and is listed in "Does not close".
   which is the exact failure §1 says this record exists to prevent and had **no observable signal**:
   it fires only when a customer notices and reports it, which is the discovery path §3.4 rejects in
   terms (*"it would be found by a customer, not by us"*). A revisit trigger we cannot observe is a
-  hope, not a trigger. The instrument already exists — §6 requires the UI to state **how many
-  currently-suppressed observations a decision covers** — so the trigger is that count:
-  **alert when a single decision's applied-observation count exceeds a configured N, or when it grows
-  in any scan after the one in which the decision was created.** A decision whose reach keeps growing
-  is the definition of a suppression that travelled. A confirmed user report remains a P1 that reopens
-  §3–§4 immediately; it is now the backstop rather than the detector.
+  hope, not a trigger. The instrument already exists — §6's **reach**, the number of distinct match
+  keys a decision currently suppresses — so the trigger is that number:
+  **alert when a decision's reach exceeds a configured N, or when a match key appears under that
+  decision that was not under it in the scan the decision was created in.** A decision whose reach
+  keeps growing is the definition of a suppression that travelled. A confirmed user report remains a
+  P1 that reopens §3–§4 immediately; it is now the backstop rather than the detector.
+
+  > **The unit is the distinct key, and this trigger is the reason it has to be.** Stated over
+  > `findings` **rows** — "applied-observation count exceeds N, or grows in any scan after the
+  > creating scan" — the growth limb fires for **every** decision on **every** subsequent scan,
+  > because each scan writes a fresh observation row for the same finding (§10.4). A trigger that
+  > fires on everything identifies nothing, and it would have been worse than the unobservable one it
+  > replaced: that one was silent, this one would have been noise with an alert attached. Over
+  > distinct `fp_match_key` values both limbs mean what they say — N is a reach, and growth is a
+  > genuinely new identity entering the decision's shadow. Found by the second automated reviewer;
+  > the same counting-unit class as the §2.1 contradiction the first pass found, and the third defect
+  > in this record traceable to a number stated where a set was meant.
 - **Re-surfacing, made countable.** The original *"sustained complaints about re-surfacing"* had no
   threshold and no measure, which makes it a preference rather than a decision input. The measurable
   form: **the rate of `new` observations whose key differs from a suppressed one in the
@@ -1329,8 +1392,24 @@ The re-review round added one upstream read and one standards fact, both for §4
 **2026-10-02** — and WHATWG URL defines `hostname` to serialize an IPv6 address **with its brackets**
 (URL Standard, host serializer), which a check against that serializer confirms:
 `new URL("https://[2001:db8::1]:8443/x").hostname === "[2001:db8::1]"`. That is the fact B5 turns on,
-so it is cited rather than asserted. No suite was run for it — the check is of the URL serializer's
-documented behaviour, not of VulcanFlow code; lane 4 is Crucible's (ADR-0005).
+so it is cited rather than asserted.
+
+The third automated pass added three more, all read on **2026-10-02** and all from primary sources
+rather than from recollection of what IDNA does:
+
+- **UTS #46 revision 31, §4 Processing** (`unicode.org/reports/tr46/`) — the step order is Map →
+  *"Normalize the domain_name string to Unicode Normalization Form C"* → Break *"into labels at
+  U+002E ( . ) FULL STOP"* → Convert/Validate. NFC, and no NFKC anywhere in the algorithm.
+- **`IdnaMappingTable.txt` at Unicode 15.1.0** (`unicode.org/Public/idna/15.1.0/`, dated 2023-08-10)
+  — `2024..2026 ; disallowed`, `FE52 ; disallowed`, `3002 ; mapped ; 002E`, `FF0E ; mapped ; 002E`,
+  `FF61 ; mapped ; 002E`. The `disallowed`/`mapped` split is the whole of Bot-3.1's argument.
+- **The Unicode 15.1.0 normalization data** — `NFKC(U+2024) = "."`, `NFKC(U+2025) = ".."`,
+  `NFKC(U+FE52) = "."`, against `NFC` leaving all three unchanged. Checked against the normalization
+  tables at that version.
+
+No suite was run for any of this, and none of it touches VulcanFlow code: these are reads of
+upstream specifications and data files, the same class of probe as §4's field names. Lane 4 is
+Crucible's (ADR-0005).
 
 Nothing in this record is recalled:
 
@@ -1368,11 +1447,14 @@ and the distinction matters because §5.4 and §6 both turn on what "stored" mea
 
 ## 15. Pre-acceptance revisions (lane 6, 2026-10-02)
 
-Four review rounds, all routed to the author: the automated reviewer's first pass on `4ec50a2` (one
+Five review rounds, all routed to the author: the automated reviewer's first pass on `4ec50a2` (one
 finding); the hand review of `4ec50a2` (twelve blocking, six advisory — **all six advisories taken**);
 the automated reviewer's second pass on `fe570de` (five findings, four of which the R1–R12 work had
-already closed and one new, §4.4a); and the hand **re-review** of `41264fd` (six blocking, five
-advisory — all eleven taken). No decision in §2 is reversed by any of them. What changed:
+already closed and one new, §4.4a); the hand **re-review** of `41264fd` (six blocking, five advisory —
+all eleven taken); and the automated reviewer's **third** pass on `41264fd`, which landed while the
+re-review fixes were being written (three findings — two substantive, one advisory — all taken, and
+neither substantive one a re-raise of the two declined suggestions). No decision in §2 is reversed by
+any of them. What changed:
 
 | # | Section(s) | Change |
 |---|---|---|
@@ -1388,7 +1470,7 @@ advisory — all eleven taken). No decision in §2 is reversed by any of them. W
 | R9 | §4.4 | `failed`/`error` are preconditions, not key components — the `matcher_status` rule, for httpx. |
 | R10 | §8.4.4, `README.md` | Two factual fixes: 21 of 22 fixture findings carry `ip`, not all 22; and the severity correction is pointed at ADR-0003 §3.5 and the absence of any TDD rule, not at §10.1/§16.3, which do not make the claim. |
 | R11 | §3.3 | The query-order omission keeps its conclusion and loses its false premise: it is justified by direction, not by scanner determinism, which does not hold for nuclei. |
-| R12 | §12 | The two unobservable revisit triggers are now measurable: a decision's applied-observation count exceeding N or growing after its creating scan, and the rate of `new` observations differing from a suppressed one only in the `extracted_results` sub-value. |
+| R12 | §12 | The two unobservable revisit triggers are now measurable: a decision's applied-observation count exceeding N or growing after its creating scan, and the rate of `new` observations differing from a suppressed one only in the `extracted_results` sub-value. **Both limbs are since corrected** — the unit by Bot-3.2 (distinct keys, not observation rows) and the second limb's uncomputability by B4. The finding stands; its first expression did not. |
 | A1–A4, A6 | §5.8 (new), §3.5, §3.3, §4.5, §7.2 | Aliasing has no Phase 1 use case and says so; `scope_root`'s over-narrowing cost is named; NFKC-vs-NFC is explained; `attributes.path` is excluded explicitly; the current `field_semantics_version` is committed config beside the alias registry. |
 | A5 | **§8.4.1b** (new) | A third template pack is in the same upstream tree (17 matchers), which is why §7.2's gate is about declared semantics and not release numbers. |
 | Bot-2.1 | **§4.4a** (new), §4.4, §12 | New in the second automated pass, and correct: excluding `sni` is only safe while nothing passes `--sni-name`, since a custom SNI selects the TLS virtual host independently of the URL. The httpx `ScanType` is now forbidden from setting it, as a catalog property `supply-chain/check-catalog` asserts; `sni` entering the key later is a `match_version` bump, and §12 gains the trigger. Adding the component now was rejected: under our own configuration it is a constant, and it would hide the fact that the control is the configuration. |
@@ -1399,6 +1481,9 @@ advisory — all eleven taken). No decision in §2 is reversed by any of them. W
 | B4 | §3.1 | R12's second trigger was **not computable** as specified: it measures `new` observations, which are exactly the ones that matched nothing, and nothing said `false_positive_match` is written on those. §3.1 now states the storage rule normatively — written on every storable key regardless of outcome, `applied_fp_decision_id` carrying the outcome — and §12 cites it. Same defect class R12 was filed for, which is the point: a trigger whose input is unrecorded is not a trigger. |
 | B5 | **§4.5b** (rewritten), §4.5a, §9 | R2's `host:port` split rule was **wrong for IPv6**, and in the unsafe direction. `[2001:db8::1]` (what `URL.hostname` actually returns — verified) has no trailing `:<port>` and dies in §3.3 ⇒ no IPv6 nuclei finding could be marked a false positive; bare `2001:db8::1` *matched* the split rule and produced host `2001:db8:` port `1` — a **parsed-but-wrong key**, the only place in the reviewed text where the failure direction was not §1's. Replaced by a six-branch shape table tried in order, IPv6 tested before `host:port` on colon count so the shapes are disjoint, every failure resolving to `Unknown`. |
 | B6 | §8 preamble, §2 row 7, **§9.1** (new), §8.4.7 | The corpus count was wrong for the **third** time ("ten", then "eleven", against twelve-or-thirteen depending on the criterion). The fix is not a fourth count: §9.1 now **enumerates** the corpus by case identifier — 13 negative rows, 4 positive controls, and 4 §8 items explicitly assigned to `findings/fp-scanner-semantics-stale` or to §7's evidence instead. §8 keeps the property (at least two negatives per scanner), which an edit cannot falsify, and drops the number, which every edit could. |
+| Bot-3.1 | §3.3 `canonical_host` (rewritten), the normalization note, §9 | **The NFKC pre-pass was a key-collapse primitive, and this is the record's own subject matter.** The rule read *"NFKC, then IDNA 2008 ToASCII under UTS-46"*. UTS-46 normalizes to **NFC**, not NFKC (revision 31 §4 Processing: Map → Normalize to NFC → Break at U+002E → Convert/Validate), and its Map step already lowercases and already maps the dot-like characters that should become separators. The pre-pass was not merely redundant: `IdnaMappingTable.txt` at Unicode 15.1.0 has `2024..2026 ; disallowed` and `FE52 ; disallowed`, while `NFKC(U+2024) = "."` and `NFKC(U+2025) = ".."` — so a host written with U+2024 canonicalized to a **different valid host** instead of being rejected, which is two inputs collapsing to one key, chosen by whoever supplies the name. Replaced by UTS-46 Processing on the original input with `UseSTD3ASCIIRules = true`. Propagates to `authz/psl-exact-root` and `authz/configured-scope`, which own this shared canonicalizer's tests. |
+| Bot-3.2 | §6, §12, §1, §2 row 8 | **The reach count had the wrong unit, and it made §12's growth limb fire on everything.** `findings` holds one row per observation per scan, so a row count rises on every scan for a decision whose reach never changed: "grows in any scan after the creating scan" would have been true of every decision, always. The unit is now the **distinct match key** — reach is `COUNT(DISTINCT fp_match_key)` — which turns both limbs into statements about reach rather than about scan frequency, and turns B3's index into a covering one. Same counting-unit class as the §2.1 contradiction found in pass 1. |
+| Bot-3.3 | §4.3 `discriminator` row | Advisory, taken: `txt` and `caa` values are "verbatim" in the sense of no case folding and no rewriting, but they are still NFC-normalized by §3.3's set-element rule like every other element. Said explicitly, because "verbatim" next to a normalization rule invites the reading that one bypasses the other. |
 | A7–A11 | §4.5a, §10, §12, §3.2, §15 | The five advisories, all taken: §4.5c is evaluated **before** §4.5a and `NotApplicable` is never promoted to `Unknown` (so `type: dns` stays storable under a divergent `matched_at`); §10's rejection reason for the `NotApplicable` alternative was overbroad — `check_id` already separates templates, so the collapse is *within* a check class, and the corrected reason is stated with the conclusion unchanged; §12's trigger names the pure `vf-core` decoder it needs and the `(match_version, field_semantics_version, scanner_id)` scope it is only meaningful in; TDD §3.5 is qualified where it collided with this record's §3.5; and this ledger's own round-2 accounting is corrected below. |
 
 **This ledger's own accounting, corrected (A11).** Round 2's header previously read *"five of the six
@@ -1419,3 +1504,13 @@ corpus **enumerated in §9.1**; `supply-chain/check-catalog` gains the §4.5a re
 (`findings/fp-nuclei-field-shapes`), colliding with no §25 name. The §25 mapping remains injective in
 both directions. Three migrations now fall out of the record (§1), which is a Phase 1 scope fact for
 Anvil and Forge rather than a change to any §25 identifier.
+
+**One correction to a claim this record made about §25 in earlier rounds.** Up to and including the
+re-review I said `authz/psl-exact-root` and `authz/configured-scope` were *"unchanged on purpose"*,
+because §3.3 reuses the `vf-core` canonicalizer those identifiers own rather than adding a second
+one. The reuse is still the right design and still the reason there is no third identifier — but
+**Bot-3.1 corrects the canonicalizer's own rule**, and §3.3 is where that rule is written down. So the
+two authz identifiers must now assert the corrected UTS-46 behaviour, including at least one
+`disallowed` dot-like code point rejected rather than canonicalized. They are changed, not unchanged,
+and saying so is the honest version: a record that reuses a component and then corrects it does not
+get to claim it left the component alone.
