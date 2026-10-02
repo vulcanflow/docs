@@ -569,8 +569,10 @@ left to be found.
   `db/pgbouncer-transaction-pooling-prepared`, `db/tenanttx-set-local-isolation`,
   `storage/s3-compat-conformance` (this document, §4) and `scb/hook-invocation-contract`,
   `scb/parser-contract-conformance` (ADR-0003 §3.3–3.4). **These are not §25 identifiers**
-  and must never be counted into the 45. They are upstream of §25 identifiers: each one
-  *feeds* a §25 identifier, per §7.2.
+  and must never be counted into the 45. They sit **upstream** of §25: §7.2 names the feed
+  edge for each one, and for two of the eight that edge is **None**. A confirmation can be a
+  required test and still assert something §25 has no row about — which is why §7.2 exists as
+  a table of edges rather than as an assertion that every confirmation has one.
 
 **(b) "Strengthen" is the right verb; "degrade" is not.** With one exception noted in (c),
 every ADR-derived confirmation above runs green, with its full intended assertion, on a
