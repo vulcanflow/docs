@@ -544,12 +544,12 @@ building infrastructure to dodge it. The `infra` repo's `factory/phase0-foundati
 stays unmerged, and lifting that hold is CEO's call (tracked separately), not a consequence
 of this list.
 
-| # | Risk | Why Testcontainers cannot settle it | **§25 identifiers a cluster would strengthen** | **Confirmations a cluster would *not* strengthen** | Owner |
+| # | Risk | Why Testcontainers cannot settle it | **§25 identifiers a cluster would strengthen** | **Confirmations whose *assertion* a cluster would not strengthen** | Owner |
 |---|---|---|---|---|---|
 | R1 | Admission webhook TLS: certificate issuance, rotation, and `caBundle` injection into the webhook configuration | Needs a real API server calling us over TLS with a trust chain it accepted | `authz/start-barrier-all-paths`, `execution/gates-before-start` | `admission/cascade-gate-delete-oldobject`, `admission/workload-gate-dryrun` — **ADR-derived**, settled in full without a cluster (§4.2) | Kiln |
 | R2 | Admission ordering and failure policy under real load — `failurePolicy`, timeout behaviour, reinvocation of mutating webhooks | Emergent property of the API server's admission chain | `authz/start-barrier-all-paths`, `execution/gates-before-start` | `admission/cascade-gate-delete-oldobject`, `admission/workload-gate-dryrun` — **ADR-derived**, settled in full without a cluster (§4.2) | Kiln |
 | R3 | RLS enforcement through PgBouncer at realistic concurrency, including the `SET LOCAL` property of §4.3 under connection churn | Testcontainers proves the mechanism; it does not reproduce production churn | `isolation/all-stores`, `isolation/background-queries` | `db/tenanttx-set-local-isolation`, `db/pgbouncer-transaction-pooling-prepared` — **ADR-derived**, settled in full without a cluster (§4.3). Neither is weakened by R3 | Forge + Ledger |
-| R4 | Ceph RGW conformance against the real Aether RGW deployment — its version, tuning and bucket policy — as distinct from a containerised RGW | A containerised RGW is a different deployment from Aether's | `isolation/all-stores` (object-store half), `deletion/all-stores-restore` (object-store half; Phase 4) | `storage/s3-compat-conformance` — **ADR-derived**, and the one case where the cluster *does* bear on the confirmation: see §7.1(c). The assertion is not weakened; its deployment coverage is | Forge |
+| R4 | Ceph RGW conformance against the real Aether RGW deployment — its version, tuning and bucket policy — as distinct from a containerised RGW | A containerised RGW is a different deployment from Aether's | `isolation/all-stores` (object-store half), `deletion/all-stores-restore` (object-store half; Phase 4) | `storage/s3-compat-conformance` — **ADR-derived**. Its **assertion** is not strengthened by a cluster, which is why it belongs in this column. Its **deployment coverage** is: R4 is the only row in this table where a cluster adds anything at all to an ADR-derived confirmation, and what it adds is a second backend, not a better result. Ledger entry is a PASS whose scope names the backend — see §7.1(c) | Forge |
 | R5 | arm64 build reproducibility end to end on Aether nodes | Needs the real build and runtime platform | `build/rust-supply-chain` (reproducibility half), `perf/service-baseline` | The cargo-deny / `cargo audit` / SBOM / `#![forbid(unsafe_code)]` half of `build/rust-supply-chain` — CI-only, no cluster. No ADR-derived identifier depends on R5 | Crucible |
 | R6 | secureCodeBox v5.9.0 operator behaviour against the cluster's actual Kubernetes minor, with `garage.enabled: false` and an external object store; Harbor mirroring of the pinned digests | Operator / API-server interaction | `execution/scan-identity`, `supply-chain/check-catalog` (Phase 2), and the **pool half** of `authz/start-barrier-all-paths` and `execution/gates-before-start` — §27 item 5 names the pool start barrier explicitly | `scb/hook-invocation-contract` and `scb/parser-contract-conformance` (ADR-0003 §3.4) and the §6.3 CRD-codegen drift gate — all **ADR-derived** and all cluster-free | Kiln |
 
@@ -558,6 +558,13 @@ of this list.
 This section is meant to be sufficient on its own. Someone pricing a cluster reads §7 and
 nothing else, so the edges that §4.2 and §4.3 state in prose are restated here rather than
 left to be found.
+
+**The right-hand column's heading says *assertion* deliberately, and the word is doing work.**
+Five of the six rows would read the same without it. R4 would not: a cluster adds nothing to what
+`storage/s3-compat-conformance` *asserts*, and it does add a second backend to what that assertion
+*covers* (c). Heading the column "confirmations a cluster would not strengthen" would make the R4 cell
+contradict the column it sits in, and the distinction between an unchanged assertion and incomplete
+deployment coverage is the whole content of (c).
 
 **(a) Two kinds of identifier appear above, and they are not interchangeable.**
 
@@ -594,7 +601,7 @@ cannot be turned green in Phase 1. `authz/start-barrier-all-paths` and
 `execution/gates-before-start` are Phase 1 Ledger work and must go green in Phase 1,
 asserted against replayed `AdmissionReview` JSON through the real handler. The middle column
 says what a cluster would *add* to that green, and the right-hand column says where it would
-add nothing.
+add nothing **to the assertion** — which, for R4 alone, is not the same as adding nothing at all (c).
 
 ### 7.2 The feed edges, restated from §4 so §7 stands alone
 
@@ -744,6 +751,17 @@ reasoning under §7.2. The error is worth recording because it is the mirror ima
 A3 was filed to fix — §7 omitted edges that §4 states, and the first attempt to add them
 invented one §4 does not. **A missing edge and an invented edge are the same defect**, and
 only reading the named test's assertions distinguishes them.
+
+**And the R4 judgement above was true in §7.1(c) and contradicted by the column it sits in.** The
+right-hand column was headed *"Confirmations a cluster would not strengthen"*, and the R4 cell says a
+cluster does add Aether's RGW deployment coverage. CodeRabbit's review of docs#28 at `98411fb` caught
+it. The heading now reads *"Confirmations whose **assertion** a cluster would not strengthen"*, which
+is true of all six rows, and §7.1 says why that word is load-bearing: five rows would read the same
+without it and R4 would not. The R4 cell and §7.1(d) are reworded to the same distinction. This is the
+third correction in this amendment that was a **presentation** defect rather than a wrong claim, and
+all three were in §7 — the section whose entire purpose is to be sufficient on its own. A table whose
+heading is false for one of its cells is not sufficient on its own, however correct the prose beneath
+it.
 
 **Revisit trigger for A3 specifically.** Any new executable confirmation added to §4, or any new
 risk added to §7, must land with its §7.2 feed edge in the same change. A confirmation whose
