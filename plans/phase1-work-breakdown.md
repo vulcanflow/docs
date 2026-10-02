@@ -182,6 +182,56 @@ R1, R2 and R6 in ADR-0002 §7, carried as accepted risk, and the identifier is n
 them — §7.1(d) is explicit that the middle column says what a cluster would *add* to a green,
 not that the green is incomplete.
 
+#### 3.2.3 §8.3's cancellation limb has no §25 identifier at all — named here, fixed in the TDD
+
+Raised at review against §3.2.2's revocation row: that row says the §5.7 cancellation limb is
+`vf-operator`'s behaviour and not admission's, and then never says which identifier asserts it. The
+honest answer is **none**, and the gap is wider than the row.
+
+**What the TDD actually says, read at this head.** §25's 45 rows cite **§8.1**
+(`execution/gates-before-start`), **§8.2** (`execution/late-cascade-barrier`) and **§8.4**
+(`findings/replayed-artifact`). **No row cites §8.3 (*Cancellation and suspension*).** Yet §2 of this
+document assigns `vf-operator` (VUL-36, Kiln) §8.1–**8.3**, and §24.2's control-plane row names
+*"basic cancellation"* in Phase 1. So Phase 1 ships a code path for which §3's own rule —
+implementation issues list the identifiers they must turn green — has no identifier to list.
+
+Both §5.7 and §5.8 state the requirement in two limbs: *"New execution after revocation must be
+refused; revocation also triggers cancellation of already-running work"* (§5.7), and *"Explicit
+revocation prevents new execution and cancels existing work"* (§5.8 bullet 7). The **refusal** limb
+is `authz/start-barrier-all-paths`, §3.2.2's revocation row. The **cancellation** limb is mapped by
+nothing.
+
+**`abuse/egress-stop` does not cover it, and claiming it does would be the invented-edge defect.**
+Its §25 requirement is *"Effective tenant and pool kill"* at §20.3–20.5. §20.3's trigger is a
+persisted **tenant suspension** and its assertion is the `[PROPOSED]` under-60-second egress-stop
+measurement; §3.4 defers it to Phase 4. Revocation of one authorization basis is a different trigger
+with a different blast radius — one target's running work, not the tenant's. Reading the edge in
+anyway is exactly the failure ADR-0002 amendment A3 was filed to correct: a missing edge and an
+invented edge are the same defect.
+
+**Why this section does not fix it.** A plan cannot mint a §25 identifier. The 45 is TDD §25's set;
+the program plan's 45-identifier mapping, this document's `27 + 18`, and Crucible's Phase 1 ledger
+count all derive from it. A 46th identifier is a **TDD amendment** — Atlas's and nobody else's — and
+not something to land inside a breakdown PR to clear a review comment. If it is not in the TDD it is
+not a §25 identifier, however good the reason.
+
+**What this document records instead, and the consequence.**
+
+1. The seam is named here, so **VUL-36's scope line cannot be written as though §8.3 had a test
+   author.** Under §3's rule it has none today.
+2. **Phase 1's closing gate must not claim §5.8 bullet 7 discharged.** Its refusal limb is green via
+   `authz/start-barrier-all-paths`; its cancellation limb is untested, and a gate that reads the
+   bullet as satisfied is wrong on the second half.
+3. The §25 question is routed to **[VUL-182](/VUL/issues/VUL-182)**, which states both candidate
+   resolutions — mint a Phase 1 identifier for the §8.3 path, or widen §25's `abuse/egress-stop` row
+   to carry both triggers and re-argue its Phase 4 deferral against §24.1. Until it resolves, the
+   count here stands at `27 + 18 = 45` and **no identifier is invented**.
+
+**Revisit trigger.** When that amendment lands, either a new identifier appears in §3.2 or §3.4 with
+exactly one phase and one author, or `abuse/egress-stop`'s Phase 4 deferral in §3.4 is reopened.
+Nothing in §3.2.1 or §3.2.2 changes either way — this is a gap beside that identifier, not a defect
+in it.
+
 ### 3.3 The eight ADR-derived identifiers (VUL-23, Ledger)
 
 ADR-0002 and ADR-0003 approved the crate set *conditionally*, on executable confirmations
@@ -256,6 +306,15 @@ controlled pool dispatching, and dropping the
 `PASS (scope: … no live pool)` recorded in Phase 1. See §3.2.1. Phase 2 cannot close with that
 qualifier still attached. The identifier count is unaffected — 27 + 18 = 45 either way, because
 nothing moved phase.
+
+**One deferral that may not survive, flagged where a reader will look for it.**
+`abuse/egress-stop`'s Phase 4 row above is deferred on its own §20.3–20.5 terms, and that reasoning
+stands. What is open is whether §25 should also make it carry the **revocation**-triggered
+cancellation of running work, which §24.1 requires to exist with the first execution path and which
+§25 currently maps to no identifier at all — see §3.2.3 and
+**[VUL-182](/VUL/issues/VUL-182)**. If that amendment widens this row rather than adding a new
+identifier, this deferral is reopened and the Phase 4 entry splits. Recorded as an open edge on the
+table, not as a silent assumption that Phase 4 is safe.
 
 27 in scope + 18 deferred = 45. The `[PROPOSED — owner review]` AAAA cases in §5.9 are not a
 named identifier; the behaviour they describe is covered by `execution/ipv4-only`, and §24.4's
