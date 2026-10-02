@@ -345,12 +345,157 @@ On `platform` only, additionally:
 required check that no workflow produces blocks every merge forever; the checks are wired per
 repository as each gains CI, which is the same rule as §7 item 5.
 
+**The two tables above are a record of what is applied, and §8.2.1 is the standard they are
+held to.** They are not the same statement and must not be read as one: a snapshot dated
+2026-10-01 cannot be the thing a later audit cross-references, because a snapshot has no
+opinion about a repository that did not exist when it was taken.
+
 **Why zero required approvals.** GitHub refuses a pull request author's own approval, and §3.1
 established that there is exactly one identity. A requirement of one approval would therefore
 be unsatisfiable — nothing could ever merge. Zero keeps the part that is satisfiable: no direct
 push to `main`, every change arrives as a pull request, and the required checks run on it.
 Review authority is not abandoned; it lives in Paperclip (§6), and R1 in §10 is what moves it
 back into GitHub if per-agent identities ever appear.
+
+### 8.2.1 Which contexts a protected repository must require
+
+§8.2 said *how many* required checks `platform` has and said nothing about *which*. That gap is
+not cosmetic. `ci/repo-protection-audit.sh` enforces R2 by asserting
+`required_status_checks.contexts | length > 0`, so a repository requiring four checks named
+anything at all — four checks that block nothing this organisation cares about — reads as
+`ok, 4 required check(s), admins included` and exits 0. `platform` is that line today and is
+correct only by coincidence. The audit cannot be sharpened first: a script cannot check a
+required set that no record states, and a list invented inside `ci/` would put the policy in the
+enforcement and leave the standard equal to whatever the script's author last typed. So the set
+is named here, and the audit cross-references it afterwards.
+
+**The names.** `NAMED_FLOOR` is these four:
+
+| Context | Produced by |
+|---|---|
+| `lane-partition` | `.github/workflows/lane-gate.yml`, job `lane-partition` |
+| `test-erosion` | same workflow, job `test-erosion` |
+| `inline-test-modules` | same workflow, job `inline-test-modules` |
+| `gate-self-test` | same workflow, job `gate-self-test` |
+
+Read from `.github/workflows/lane-gate.yml` at `vulcanflow/platform@origin/main` on 2026-10-02,
+and matching §4's table. Four names, not five: `audit-self-test` is defined on platform#8 and
+reaches `main` only when that merges — see the derivation below, which is what admits it, and
+§8.5's proposal 1, which is what wires it.
+
+**The standard.** Three clauses, each decidable from the repository's default branch and its
+protection object, and nothing else:
+
+| | Condition | Requirement |
+|---|---|---|
+| **(a)** | the repository defines any job in `.github/workflows/lane-gate.yml` on its default branch | `required_status_checks.contexts` ⊇ `NAMED_FLOOR` ∪ *(every job name that file defines)* |
+| **(b)** | the repository's default branch contains any path in §4.2's **PROD** class | it must define `.github/workflows/lane-gate.yml` — a repository holding production source with no lane gate is a gap whatever its required-check count |
+| **(c)** | neither (a) nor (b) | the required floor is **empty**; `contexts: null` is conformant |
+
+Clause (c) is a decision and not an omission. `docs`, `infra` and `vf-api` are in it today —
+`contexts: null` on all three, read back 2026-10-02 — and they are conformant, because a
+required context no workflow produces blocks every merge forever (§8.2) and a Markdown-only
+repository has no lane to cross (§4.2 **NEUTRAL**, §7 item 5). This is per repository and not
+per repository *class*: a class is a label somebody chooses, and the audit would then be
+checking the label. The three clauses read the repository.
+
+**Evaluated against the organisation as it stands, this standard produces no gap** — which is
+stated because a standard that indicts something on the day it is written is usually describing
+the wrong thing. `platform` is in clause (a): `lane-gate.yml` on `main` defines exactly the four
+jobs above and protection requires exactly those four contexts, so the floor is complete and
+there is no surplus. `docs`, `infra` and `vf-api` are in clause (c) on both limbs — no
+`lane-gate.yml` and no `PROD` path on any of their default branches — so `contexts: null` is
+conformant rather than tolerated. The eleven private repositories have no default branch at all
+and stay `watch` under §8.5. All of it read back on 2026-10-02. The first gap this standard will
+raise is `platform`'s own, on the day platform#8 merges and before CEO's `PUT` lands, and that is
+the point of it.
+
+**Minimum, not exact.** Clause (a) is `⊇`, deliberately, and the choice is material because it
+is the whole difference in what a script refuses:
+
+- **A missing floor member is a gap, unconditionally.** This is the case the count test cannot
+  see, in either of its two shapes: *wrong names, right count*, and *right names, one missing*.
+- **A context above the floor is conformant.** ADR-0002 already names CI gates that do not exist
+  yet and will land on this branch as required checks: the single-crypto-provider confirmation
+  (§3.6 — `cargo tree -i ring` empty and `cargo tree -d` showing no duplicated `rustls`, `hmac`,
+  `sha2` or `digest`, to be wired into the workspace CI gate as part of
+  `build/rust-supply-chain`) and the CRD drift gate (§6.3 — a job that regenerates the kopium
+  types and fails on a difference). An exact-set rule makes each of those an amendment to this
+  record before it can be wired, and a standard that makes routine work need an amendment is a
+  standard that gets routed around.
+- **A context above the floor is nevertheless *reported*.** `ok, 5 required (floor complete), 1
+  above floor: cargo-deny` is a legitimate line; silence is not. An unrecognised required
+  context is either a gate nobody wrote down or a decoy, and printing it is the only cheap
+  defence against the second.
+
+**Why `NAMED_FLOOR` is a lower bound on the derivation and not replaced by it.** The derived
+half — every job the repository's own `lane-gate.yml` defines — is what makes the standard
+survive growth: `audit-self-test` enters `platform`'s floor the moment platform#8 merges, with
+no edit to this record. On its own it would also make the standard shrink on command, because
+*deleting* a job from `lane-gate.yml` would legitimately remove its context from the floor. That
+is the gate-self-weakening move in one commit to one GATE-class file, and `gate-self-test` does
+not catch it: that harness asserts `ci/lane-gate.sh`'s verdicts, not the workflow's job list.
+Under the union, deleting one of the four does not shrink the floor — the context stays required,
+nothing reports it, and the repository jams shut. **Jamming `main` shut is the correct response
+to deleting a lane gate.**
+
+**What a rename actually costs, and the one move that is refused.** A renamed job is often
+described as silently emptying the required set. It does not, and the correction matters because
+the real hazard is one step further on. Rename the `test-erosion` job without the matching `PUT`
+and the old context stays required and never reports: every pull request blocks forever, which
+is loud, and which §8.2 already names. The danger is the fix. The shortest way to unjam a jammed
+repository is to *delete* the required context — and that does silently empty the set, by a hand
+that believes it is doing housekeeping. So:
+
+1. **Renaming a job in `lane-gate.yml` is unfinished until §4's table, `NAMED_FLOOR` above, and
+   `required_status_checks.contexts` all carry the new name.** One owner, one sitting — the same
+   shape as §8.5's `PUT` obligation, and for the same reason: a change that is correct only after
+   its second half lands is a change with a wrong state in the middle.
+2. **A jammed repository is never unjammed by removing a required context.** It is unjammed by
+   restoring the job name. This is written as a refusal rather than left to judgement precisely
+   because it is the plausible-looking move under time pressure.
+3. **The duplication between §4's table and `NAMED_FLOOR` is real and is not pretended away.**
+   §8.2.1 is the source. The follow-up audit change mirrors these four names into exactly one
+   GATE-class artifact on `platform`, one context per line, because a script cannot read this
+   table — and a mirror that drifts from this record is caught by review against a published
+   standard rather than by a script. That is weaker than mechanical, and it is still strictly
+   better than today, where there is no published standard to review a drift against.
+
+**What this does not close.** Two residual holes, named rather than left to be discovered:
+
+- **The floor is a set of names, and a name does not identify a producer.** The legacy
+  `contexts` array carries names only; the newer `checks` form carries an `app_id` alongside each
+  — `15368`, GitHub Actions, on all four of `platform`'s contexts, read back 2026-10-02. An audit
+  matching names alone therefore accepts a check of the right name from the wrong app. Pinning
+  the producer is available and is **not** required here, because it needs a decision about which
+  app ids are acceptable in a repository that may later legitimately use a second app, and no
+  case is driving that decision yet.
+- **Rulesets stay out of scope, unchanged.** §8.5 records that the audit deliberately does not
+  evaluate a ruleset-governed branch against §8.2 and says *check by hand* instead. Nothing above
+  restates this standard in ruleset terms; doing so would be a further amendment, not a line in a
+  script.
+
+**Relation to §8.5's proposal 1.** Clause (a) admits `audit-self-test` to `platform`'s floor
+automatically on platform#8's merge, so from that moment `platform` requiring four contexts is a
+gap the daily audit raises within a day. The obligation in §8.5 stands unchanged — §4's table
+still has to list five checks and widen its lead sentence, since the fifth check lives in
+`ci/repo-protection-audit-test.sh` and not in `ci/lane-gate.sh`, and §8.2's wiring table still
+has to show five contexts — because those sections describe the checks and record what is
+applied, which is not what §8.2.1 does. What changes is only that forgetting the `PUT` is now
+detected rather than hoped against.
+
+**The follow-up this record authorises, and its boundary.** `ci/repo-protection-audit.sh`
+replaces its count test with a cross-reference against the three clauses above, on its own
+pull request, as a GATE-class diff with its own lane 5.5 run. Acceptance, in one sentence: *the
+audit reports a gap for a repository whose required contexts omit any member of the floor,
+including the case where the count is right and every name is wrong, and reports a surplus
+context without failing on it.* It earns a fixture before it earns a line of fix, per R-next —
+at minimum *wrong names, right count*, *right names, one missing*, *floor complete plus a
+surplus context* → `ok` with the surplus printed, and *a floor member required that no job
+defines* → gap. **No §25 identifier attaches to any of this.** §25 is the product's traceability
+matrix; a `ci/**` harness assertion is not in the 45 and inventing one for it would corrupt the
+mapping's injectivity. The fixture names in `ci/repo-protection-audit-test.sh` are the acceptance
+evidence instead.
 
 ### 8.3 What the decision cost, stated plainly
 
@@ -555,6 +700,13 @@ Named, so this record is revisited on evidence rather than on mood.
   have its checks wired as required at the same time.** `docs`, `infra` and `vf-api` currently
   have none, so they are protected but have nothing required. Whoever adds the first workflow to
   one of them owns the `PUT .../branches/main/protection` that makes it required.
+  **Which checks is no longer that person's judgement.** §8.2.1 names the set, so the `PUT` is a
+  derivation from this record rather than a choice at the keyboard, and the trigger now has a
+  second limb that fires without any workflow being added at all: a repository whose default
+  branch gains a §4.2 **PROD** path must gain the lane gate too (clause (b)), and a code
+  repository with no `lane-gate.yml` is a gap however many checks it requires. No new `R` number
+  is minted for this — it is a sharpening of what R2 already owns, and §10's identifier space has
+  four unmerged allocations in it (see the amendment-history row).
 - **R3 — a crate needs to unit-test a private item.** Bring the case to Atlas. The resolution
   is either a narrowed public surface, a `pub(crate)` seam exposed deliberately, or an
   amendment to §5 — never a local `#[cfg(test)]` module.
@@ -617,3 +769,4 @@ Named, so this record is revisited on evidence rather than on mood.
 | — | 2026-10-01 | Accepted as recorded. |
 | 1 | 2026-10-01 | **The §8 plan question is decided: the board chose option B.** The four active repositories are public, branch protection is applied to all four with `enforce_admins: true`, and `platform`'s four lane-gate checks are required. §3.2 rewritten as a resolved constraint; §7 items 8–9 replaced; §8 rewritten as a decision with the pre-publication secret scan (§8.1), the applied settings and why zero required approvals (§8.2), the disclosure cost (§8.3) and two observed refusals (§8.4); R2 closed and narrowed to wiring checks per repository; R7 added as the route back to private. §7 item 4 corrected: 21 fixture verdicts, not 17. Recorded by CEO under VUL-2. |
 | **(number unallocated)** | 2026-10-02 | **The eleven private repositories are decided: the board deferred, and the deferral has a control.** New **§8.5** — the decision; why deferring is defensible while all eleven answer `409 Git Repository is empty`; exactly when that expires; `ci/repo-protection-audit.sh` and the daily "Org repo protection audit" routine as the thing that notices, demonstrated against nineteen asserted verdicts over fixture organisations because it cannot be demonstrated live without creating the gap it looks for, six of them added from the lane-6 review and four of those six cases where the first draft returned a clean verdict having examined nothing; and what the decision does **not** buy — the audit notices, it does not protect, and the window between a push and an answer is up to a day wide. New **§7 item 10**. One new revisit trigger, **identifier unallocated**. `decisions/README.md` gains the closed-decision paragraph. **Scope held deliberately narrow.** §4, §4.2 and §7 item 4 are **not touched**, although the work behind this amendment bears on all three: `audit-self-test` is a reporting check until CEO wires it after platform#8 merges, the GATE classification of the audit pair is the question §4.4 (docs#33) and §4.5 (docs#36) are deciding and §8.5 records it as a proposal rather than as a decision, and the lane-gate harness's assertion count moves with platform#8 but reconciling §4's and §7's numbers belongs to amendment 5, which is rewriting both. **The amendment number and the trigger identifier are left unallocated on purpose.** Amendments 2 through 6 are allocated on four unmerged pull requests (docs#32, #33, #36, #37) and a seventh is drafting on VUL-105; amendment 6's own row records what happened the last time two branches each guessed an `R` number. Whoever merges this allocates both and updates the references. Drafted by CEO under VUL-2, in a scratch clone rather than the managed `docs` workspace, by a run holding the `platform` workspace — which is outside the §2.3.2 control and is disclosed here rather than left to be found. The §9 bootstrap exception does **not** cover it: all nine hires are approved, so it goes through lane 6 and lane 7 like any other change, and Atlas owns the framing. **Rewritten by Atlas on the same pull request after the lane-6 review, rather than merged and amended, because the findings were against the framing and that is Atlas's to fix.** Four changes, all inside §8.5 and R-next, none of them to the decision: (a) §8.5's `audit-self-test` item no longer dates itself to a moment in the merge/`PUT` sequence — it states the obligation instead, that the `PUT` is unfinished until §4 lists five checks and §8.2's `platform` row lists five contexts, and it names the §4 lead sentence as needing widening and not just a row, since the fifth check does not live in `ci/lane-gate.sh`; (b) "what this decision does not buy" now separates the two windows, because the daily routine bounds *detection* at about a day and bounds the *answer* at nothing; (c) the same paragraph records that the eleven private repositories have no secret scanning and no push protection either, which §8.1 enabled only on the four public ones, and states plainly that this is the larger exposure and that the audit cannot see it; (d) the same paragraph records that the audit evaluates three of §8.2's six settings and neither `platform` row — it does not read `required_pull_request_reviews`, `dismiss_stale_reviews` or `required_status_checks.strict` — recorded as a defect in the script and explicitly **not** as a narrowing of §8.2, with the fixture-before-fix rule attached; and (e) R-next no longer says to stand the routine down when the gap closes, which would have retired R2's mechanical half with it — the cadence drops to weekly instead, and only R1 or R7 retire the routine. Counts in this row and in §8.5 were read from platform#8 at head `777cb91`, not from the head the review ran against. |
+| **(number unallocated)** | 2026-10-02 | **§8.2 names *which* contexts a protected repository must require, not just how many.** New **§8.2.1**: `NAMED_FLOOR` — `lane-partition`, `test-erosion`, `inline-test-modules`, `gate-self-test`, read from `.github/workflows/lane-gate.yml` at `vulcanflow/platform@origin/main` on 2026-10-02 — and a three-clause standard decidable from a repository's default branch and its protection object alone: (a) a repository defining any `lane-gate.yml` job must require `NAMED_FLOOR` ∪ every job that file defines, (b) a repository whose default branch holds a §4.2 **PROD** path must define `lane-gate.yml` at all, (c) anything else has an empty floor and `contexts: null` is conformant. **Per repository, not per repository class**, because a class is a label somebody chooses and the audit would then be checking the label. **A minimum and not an exact set**, because ADR-0002 already names CI gates that do not exist yet and will land as required checks on this branch (§3.6's single-crypto-provider confirmation wired into `build/rust-supply-chain`, §6.3's CRD drift gate), and an exact-set rule makes each one an amendment before it can be wired — but a surplus context is *reported*, since an unrecorded required check is either a gate nobody wrote down or a decoy. `NAMED_FLOOR` is a lower bound on the derivation rather than replaced by it: the derived half admits `audit-self-test` automatically when platform#8 merges, while the named half means deleting a job from `lane-gate.yml` jams `main` shut instead of shrinking the floor — which `gate-self-test` cannot catch, because it asserts `ci/lane-gate.sh`'s verdicts and not the workflow's job list. **The rename premise is corrected rather than adopted**: a rename without the `PUT` does not silently empty the required set, it jams every pull request forever; the silent emptying is the *fix* — deleting the required context to clear the jam — and that move is refused here by name. Two residual holes named and not closed: the floor matches context *names* and the legacy `contexts` array does not identify a producer (the `checks` form carries `app_id` `15368`, GitHub Actions, on all four of `platform`'s contexts, read back 2026-10-02), and rulesets stay out of scope per §8.5. **R2's live remainder is sharpened in place and no new `R` number is minted** — which checks to wire is now a derivation from §8.2.1 rather than a judgement at the keyboard, and clause (b) gives R2 a limb that fires on a first `PROD` path rather than on a first workflow. §8.2's two tables are labelled as a record of what is applied, explicitly not as the standard. **Scope held deliberately narrow.** §4 is **not** touched: §8.5's proposal 1 obligation stands unchanged — §4's table still has to list five checks and widen its lead sentence, since the fifth lives in `ci/repo-protection-audit-test.sh` — and §4 is the section amendment 5 (docs#36) is rewriting. `ci/repo-protection-audit.sh` is **not** touched: the cross-reference that replaces its count test is a GATE-class diff on its own pull request with its own lane 5.5 run, authorised and bounded at the end of §8.2.1 with its acceptance sentence and its four minimum fixtures, and filed when this lands rather than now (§4.2 is why the two do not travel together). **No §25 identifier attaches**: §25 is the product traceability matrix and a `ci/**` harness assertion is not among the 45, so the fixture names are the acceptance evidence. **The amendment number is left unallocated on purpose**, on the same basis as the row above: amendments 2 through 6 are allocated on four unmerged pull requests (docs#32, #33, #36, #37) and a seventh is drafting. Whoever merges this allocates it and updates `decisions/README.md`. Raised by the CodeRabbit CLI in round 2 of the lane 5.5 gate on platform#8 and deferred there as lane 1; recorded by Atlas under VUL-164. |
