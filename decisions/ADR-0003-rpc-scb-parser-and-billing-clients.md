@@ -279,14 +279,28 @@ arguments and HTTP GETs, and the Go SDK above is the conformance reference.
   is reusable after delete. The §25 identifier that asserts the fingerprint is
   `execution/scan-identity` (§6.2, §21.3).
 - **What the bullet above does not decide: how `vf-hook-notify` obtains the uid.** The hook's
-  inputs are `SCAN_NAME`, `NAMESPACE` and the argv URLs (§3.3); the uid is not among them,
-  and §8.4 requires the hook's notification to carry the actual scan fingerprint. Either the
-  hook reads the Scan object by name and namespace, or §8.1's outbox worker — which already
-  *"binds actual SCB fingerprints to work units"* — makes the binding and the notification
-  carries `SCAN_NAME` instead. Both are consistent with this ADR; the second keeps the hook
-  free of a Kubernetes client, which is the reason to prefer it, and neither is decided here.
-  This belongs to the `vf-hook-notify` work item's spec and is recorded as **open and named**
-  rather than left for whoever writes the binary to settle by implementing it.
+  inputs are `SCAN_NAME`, `NAMESPACE` and the argv URLs (§3.3) — **the uid is not among
+  them** — while §8.4 requires the notification the hook sends to contain *"tenant/work
+  identity, actual scan fingerprint, node identity, artifact reference, and checksum"*. As
+  §8.4 is written, the fingerprint is in the hook's own payload, so the hook has to get it
+  from somewhere. Two routes exist and this amendment decides neither:
+  **(i)** the hook reads the `Scan` object by name and namespace and takes `metadata.uid`
+  from it — which puts a Kubernetes client inside a binary whose minimal surface is the §3.4
+  argument for writing it in Rust at all; or
+  **(ii)** §8.1's outbox worker, which already *"binds actual SCB fingerprints to work
+  units"*, is the only component that handles the uid, the hook's payload carries
+  `SCAN_NAME`/`NAMESPACE` as the correlation key, and `vf-ingest` resolves the fingerprint
+  from its own work records. Route (ii) keeps the hook free of a Kubernetes client, and it is
+  **not** free: it needs §8.4's payload sentence amended, because a notification that carries
+  a correlation key rather than the fingerprint is not what §8.4 says. That is a TDD
+  amendment and therefore mine, not an implementation choice.
+  Route (ii) must not be built on the assumption that `SCAN_NAME` identifies the attempt:
+  §8.1 adopts deterministic objects on retry, so a name can span more than one `metadata.uid`
+  over time, and correlating on it without the namespace and the work unit is how two
+  attempts collapse into one record. Whichever route is taken, `execution/scan-identity`
+  asserts the result, and the choice belongs in the `vf-hook-notify` work item's spec —
+  recorded here as **open and named** rather than left for whoever writes the binary to settle
+  by implementing it.
 
 **Executable confirmation.** Test ID `scb/hook-invocation-contract`: invoke the built
 `vf-hook-notify` binary as a subprocess with `SCAN_NAME` and `NAMESPACE` set and a local
