@@ -4,7 +4,7 @@
 |---|---|
 | **Status** | **9 of 15 board rows decided 2026-10-01** — see §0.1. Six remain open: **D7** is forced inside Phase 1 *if* it is answered "retain"; the other five are not forced before the Phase 2 gate, where **D5** and **D15** are the earliest. |
 | **Date** | Built 2026-10-01. Board answers recorded 2026-10-01. |
-| **Owner** | CEO. Reviewed by Atlas (F1–F3, P1–P6 applied) and through ADR-0005 lane 6. **Revision 5** closes the six blocking findings of reviewer #1's `docs#24` verdict — the merge that put revision 4 on `main` is recorded as a lane-7 gate defect in ADR-0005 §6.4. See the revision history. |
+| **Owner** | CEO. Reviewed by Atlas (F1–F3, P1–P6 applied) and through ADR-0005 lane 6. **Revisions 5 and 6** close the six blocking findings of reviewer #1's `docs#24` verdict — the merge that put revision 4 on `main` is recorded as a lane-7 gate defect in ADR-0005 §6.4 — plus the two advisories revision 5 declined, now adjudicated by Atlas, and three CodeRabbit App findings. The two revisions land in one change; see the revision history. |
 | **Sources** | TDD §27 (all 22 rows), `plans/phase1-work-breakdown.md` §7 (all 7 rows), ADR-0001 through ADR-0005 |
 | **Design of record** | `VulcanFlow_Technical_Design_Document_v2.2.md` — filename says v2.2, content is **TDD v2.3** |
 | **Issue** | VUL-8 |
@@ -46,7 +46,11 @@ distinction matters and the first revision of this line blurred it. The VUL-8 in
 D10, D11, D13, D14) and `legal` (D8). **All three were answered on 2026-10-01**, which is how nine
 rows became decided in one exchange. The other six — D3, D4, D5, D7, D12, D15 — were **never
 asked**: this register deliberately offered no default on them (§2.1), so they are unasked rather
-than unanswered. The earliest forcing point among them is the **Phase 2 gate** (D5 and D15). They
+than unanswered. The earliest **unconditional** forcing point among them is the **Phase 2 gate**
+(D5 and D15). **D7 is the exception and it is earlier:** it forces a **Phase 1** decision if
+standalone IP/CIDR registration is retained, because retaining it changes what
+`authz/configured-scope` must enforce while Scribe is writing that test — §2.1 and D7's own row
+both say so, and a line here that put all six at the Phase 2 gate would contradict them. They
 are listed with their forcing points in §2.1.
 
 Breakdown §7 contributed exactly one new decision. That is worth stating plainly: the seven
@@ -111,6 +115,17 @@ The content is recoverable — GitHub retains the commit objects at each PR's he
 until those PRs are restored, every `§7.x` and `ADR-0004` citation below points at something a
 reader cannot open, and **T1 cannot do what it was asked to do**: three of its four landable
 PRs no longer have branches. Restoring them belongs to T1, not here; flagged there too.
+
+**The first row is being closed as this revision is written, and the status column above is
+deliberately not pre-dated.** [`docs#40`](https://github.com/vulcanflow/docs/pull/40) re-files
+`plans/phase1-work-breakdown.md` onto `main` — `93c79f8` plus §3.2.1, §3.3.1 (the eighth
+ADR-derived identifier; §1.3 carries the adjudication), §5.1 and the §6 annotation. Atlas filed it
+directly because VUL-5's scope included landing `docs#22`, VUL-5 closed **done** without landing
+it, and three amendments to that file had nowhere to go — the blocker had no owner left to wait
+for. It is **open**, so the row above is unchanged and still accurate today; when it merges, that
+row and §9's provenance line for `93c79f8` both re-point at the file on `main`. They are not
+re-pointed in advance on purpose: two documents describing one file's status is the same defect
+class as two mappings of one table.
 
 `ADR-0002` on `main` is the **pre-A2** text. Its §7 risk table R1–R6 is identical in both
 versions, so D1 below is unaffected — verified twice, independently, by extracting §7 from both
@@ -187,9 +202,33 @@ the dash answers the charge:
 > filed separately; §24.2 puts the operator after the services and nothing in Phase 1 reconciles a
 > CRD.**)"*
 
-So the pin is **not** a live defect, and this register does not claim it is: the floor is a
-reasoned choice, a wrong floor surfaces as a compile error rather than a silent misbehaviour, and
-nothing in Phase 1 exercises it. What D1's answer changes is narrower and still real: the sentence
+So the pin is **not** a live defect, and this register does not claim it is. But the reason has to
+be given in two halves rather than one, because the comment's "compile error" clause answers only
+the first of them:
+
+- **The bindings govern what our code can name.** Compiling against the `v1_32` floor means
+  `vf-operator`/`vf-admission` cannot name a field absent from the 1.32 generated types: that is a
+  **compile** error, caught before anything ships, and it is what the comment's *"a field the real
+  cluster lacks is a compile error rather than a reconcile that silently stops short"* is about.
+  On that half the comment holds.
+- **The bindings do not check the target API server.** `k8s-openapi` is generated types, not a
+  runtime capability probe. A build against the 1.32 floor compiles cleanly and *runs* against a
+  newer server — the forward guarantee the floor is chosen for — and it also compiles cleanly
+  against a control plane **older** than 1.32, where the failure arrives at runtime as a rejected
+  request or an absent resource, not at compile time. The comment's own parenthetical concedes
+  exactly that case (*"if Aether's control plane is older than 1.32, this pair is wrong
+  outright"*), which is a **compatibility** question no compile can answer.
+- **Neither half is exercised in Phase 1** — §24.2 puts the operator after the services and
+  nothing in Phase 1 reconciles a CRD. That is why the pin is not a live defect.
+
+An earlier revision of this paragraph collapsed the two into *"a wrong floor surfaces as a compile
+error rather than a silent misbehaviour"*, which offered a check as covering something it does not
+assert. That is the same error class as the feed-edge error §1.3 exists to prevent, and it is
+recorded here rather than quietly rewritten. The manifest comment makes the same move, and the
+correction belongs with the comment: §1.6 routes the `platform` root `Cargo.toml` edit to Forge and
+now names this clause as part of it.
+
+What D1's answer changes is narrower and still real: the sentence
 *"that is CEO's to confirm"* describes a question awaiting an answer, and with no control plane in
 existence there is nothing to confirm against — so it is an **assumption with no owner who can
 discharge it** until the Phase 2 gate. §1.6 routes it as exactly that, and no further.
@@ -262,6 +301,19 @@ ADR-0002 §7's six risks, mapped to what each one actually leaves weak.
 > to the merged text rather than defended. It is written this way deliberately: an earlier revision
 > of this table published a *rival* mapping of the same six risks, and two mappings of one table on
 > one `main` is the defect, not the disagreement.
+>
+> **Read at `98411fb`, `docs#28`'s head on 2026-10-02, and the re-point has already been tested
+> once.** A3's §7 *did* change after this section was written: §7.2's feed table withdrew
+> `scb/hook-invocation-contract`'s edge to `findings/replayed-artifact` to **None** — its
+> assertions are argv positions, required environment and ReadOnly two-URL tolerance, all of which
+> pass against a `vf-ingest` that persists a replayed artifact twice — and §7.1(a) was corrected
+> with it, having said every confirmation feeds a §25 identifier. **The R1–R6 table this section
+> derives from is unchanged** at that head: owners, risks, both cluster columns, §7.1(b)'s verb and
+> §7.1(c)'s `storage/s3-compat-conformance` reading all stand. So the derivation still holds and
+> nothing below is re-pointed. Checked against the withdrawn edge specifically: **this register
+> asserts no feed edge from `scb/hook-invocation-contract` anywhere** and makes no claim that it
+> bears on replay idempotency — `findings/replayed-artifact` is asserted by that §25 identifier on
+> its own, and claiming otherwise would be B1's error in a second place.
 
 **This table was wrong in the first revision of this register and has been rebuilt twice** — once
 from Atlas's review (F1–F3), and again here against A3 §7 after lane-6 review found it still
@@ -271,21 +323,47 @@ cannot be cited from a cached read.
 Three distinctions this table keeps:
 
 1. **§25 identifiers and ADR-derived confirmations are disjoint sets.** Breakdown §3 splits §25
-   into 27 in-scope + 18 deferred = 45; §3.3 then adds **seven ADR-derived identifiers** as a
-   separate family, which is why Crucible's ledger is 34 and not 27, and why module doc comments
-   read `//! §25: <id>` *or* `//! ADR: <id>`. They are not interchangeable when pricing a cluster:
-   the ADR-derived set is the conditional half of the crate approval, the §25 set is product
-   evidence. **A3 §7.1(a) counts eight in that family, not seven** — it adds
-   `scb/parser-contract-conformance` (ADR-0003 §3.4), which would make Crucible's ledger 35. The
-   figures above are breakdown §3.3's, cited faithfully. **Two design-of-record sources disagree
-   and a plan does not get to pick between them**: routed to Atlas on
-   [VUL-15](/VUL/issues/VUL-15). Nothing in D1 turns on it — the discrepancy is in the ADR-derived
-   family, and D1 is priced on the §25 column.
+   into 27 in-scope + 18 deferred = 45; a separate family of **ADR-derived identifiers** sits
+   alongside it, which is why Crucible's Phase 1 ledger is larger than 27, and why module doc
+   comments read `//! §25: <id>` *or* `//! ADR: <id>`. They are not interchangeable when pricing a
+   cluster: the ADR-derived set is the conditional half of the crate approval, the §25 set is
+   product evidence.
+
+   **That family has eight members, and the count is now adjudicated rather than disputed.** An
+   earlier revision of this register carried breakdown §3.3's **seven** and A3 §7.1(a)'s **eight**
+   side by side and declined to choose between them, on the ground that a plan does not adjudicate
+   between two design-of-record sources. Atlas adjudicated it on
+   [VUL-15](/VUL/issues/VUL-15) on 2026-10-02: **the ADR was right and the breakdown was wrong.**
+   The eighth is `scb/parser-contract-conformance` — a named test ID in ADR-0003 §3.4 with an
+   author (**Ledger**), a stated assertion and a §25 target, `execution/scan-identity`, which
+   breakdown §3.2 puts in **Phase 1**; it needs a committed stock-parser artifact, not a cluster
+   and not a scanner run. Breakdown §3.3 had enumerated the family by *production-source issue*,
+   and this confirmation has no crate-approval issue of its own because the code it exercises is
+   upstream and the types it lands in belong to `vf-ingest` — so an enumeration keyed on
+   implementation issues loses exactly that class structurally, which is the part worth
+   remembering. The adjudication and the reason for the omission are recorded in the breakdown
+   itself as **§3.3.1** on [`docs#40`](https://github.com/vulcanflow/docs/pull/40), not only in a
+   review comment.
+
+   **The arithmetic, corrected.** Crucible's Phase 1 ledger is **35 rows — 27 §25 + 8
+   ADR-derived**; this register previously said 34. **The 45 is untouched**: ADR-derived
+   confirmations are never counted into it, and ADR-0002 §6.3's CRD-codegen drift gate is a CI job
+   with no test identifier and is **not** a ninth row. Nothing in D1 moves — the correction is
+   entirely inside the ADR-derived family and D1 is priced on the §25 column — and nothing in the
+   table below moves either, because `scb/parser-contract-conformance` was already carried in R6's
+   cluster-free column.
+
+   **The eighth has a feed edge, and a feed edge is still not coverage.** A3 §7.2 gives it one: it
+   feeds `execution/scan-identity`. That §25 identifier is in the left-hand column below, is Phase
+   1, and stays there. The confirmation going green removes one way for it to fail; it does not
+   cover it.
+
 2. **"Strengthen" is the verb, not "degrade"** — A3 §7.1(b): *"'Strengthen' is the right verb;
    'degrade' is not."* Every ADR-derived confirmation here runs green with its full intended
    assertion on a laptop, with the single exception in A3 §7.1(c). What a cluster closes is the gap
    between a correct handler and the real platform handing it real input under load, and that gap
    is a property of the **§25** rows.
+
 3. **"The test is weak" and "there is no test at all" are different costs.** The second is worse,
    and R1 is the case of it.
 
@@ -473,7 +551,7 @@ discovered later one at a time.
 | **`infra#1` stays unmerged** and is now held by a recorded decision rather than an open question. Its `UNCONFIRMED` pins and withheld ApplicationSet are correct as they stand — there are no destinations to confirm. | CEO / T3 |
 | **R1–R6 are carried as accepted named risk**, not as pending work, with the owners in §1.3. The Phase 2 gate inherits them. | Atlas, in ADR-0002 §7 |
 | **Two TDD statements are now known to be false.** §24.2's *"Existing approved Aether stack"* and Appendix C's *"Approved self-operated Kubernetes platform"* assert an installation that does not exist. The design of record should say what is true: Aether is the approved *target* platform, not a running one. | Atlas — TDD correction |
-| **`platform#1` pins `k8s-openapi "=0.28.0"` / `v1_32` against a control plane that does not exist.** The manifest comment makes it CEO's to confirm; with no cluster there is nothing to confirm against. It is not wrong today — nothing runs against an API server, nothing in Phase 1 reconciles a CRD, and a wrong floor is a compile error (§1.1 quotes the comment in full) — but it is an undischargeable assumption sitting in a dependency pin, and the first cluster we ever stand up is where it bites. The comment should say "assumption, held to the Phase 2 gate" rather than "CEO's to confirm". | **Two owners, two deliverables.** The design-of-record half — ADR-0002 §3.7.4's reading, if it needs one — is **Atlas**. The edit to `platform`'s root `Cargo.toml` is **production source** and goes to **Forge** (lane 3). **Not Crucible:** ADR-0005 §2.1 — *"Crucible executes suites and merges. It writes neither production code nor tests"* — and §2's rule that *"no agent holds two adjacent lanes on the same change"* makes lane 3 unavailable to the agent holding lane 4. Crucible runs and merges it, as always. An earlier revision of this row routed the manifest edit to Crucible; the identical error in [VUL-30](/VUL/issues/VUL-30) scope item 3 (*"coordinate with Crucible on the manifest edit"*) is **Atlas's to correct there**, and this register inherited it from that issue rather than the reverse. |
+| **`platform#1` pins `k8s-openapi "=0.28.0"` / `v1_32` against a control plane that does not exist.** The manifest comment makes it CEO's to confirm; with no cluster there is nothing to confirm against. It is not wrong today — nothing runs against an API server and nothing in Phase 1 reconciles a CRD — but it is an undischargeable assumption sitting in a dependency pin, and the first cluster we ever stand up is where it bites. **Two edits to that comment, not one.** It should say "assumption, held to the Phase 2 gate" rather than "CEO's to confirm"; and its "compile error" clause should be scoped to what the bindings actually check. Generated types make *unnameable surface* a compile error; they do not check the target API server's version, so a control plane older than 1.32 compiles cleanly and fails at runtime — the case the comment's own parenthetical concedes. §1.1 quotes the comment in full and separates the two halves. | **Two owners, two deliverables.** The design-of-record half — ADR-0002 §3.7.4's reading, if it needs one — is **Atlas**. The edit to `platform`'s root `Cargo.toml` is **production source** and goes to **Forge** (lane 3). **Not Crucible:** ADR-0005 §2.1 — *"Crucible executes suites and merges. It writes neither production code nor tests"* — and §2's rule, quoted at `docs#32`'s head `4c80fe1` where a lane-6 correction has since tightened its scope: *"No agent holds two adjacent **numbered** lanes of the table below on the same change."* Lanes 3 and 4 are adjacent numbered rows, so lane 3 is unavailable to the agent holding lane 4. Crucible runs and merges it, as always. An earlier revision of this row routed the manifest edit to Crucible; the identical error in [VUL-30](/VUL/issues/VUL-30) scope item 3 (*"coordinate with Crucible on the manifest edit"*) is **Atlas's to correct there**, and this register inherited it from that issue rather than the reverse. |
 | **Phase 0's "existing approved Aether stack" deliverable cannot be delivered as written.** T3's Phase 0 scope needs its Aether line restated as "deferred to the Phase 2 gate", or Phase 0 cannot close. | CEO / T3 |
 | **The Phase 2 gate acquires a mandatory agenda item**: put Option C's price and §1.3's corrected list in front of the board, including whether a non-Aether cluster is acceptable given that it cannot answer R4 or R5. **This is a first pricing, not a revisit** — the 2026-10-01 answer selected no option (§1.5), so no priced option has ever been declined, and the gate must not be run as though one had. | CEO, at the Phase 2 gate |
 
@@ -586,7 +664,7 @@ have been a guess dressed up as advice.
 | **Recommendation** | **(a) — and this is the item to start today even though it is needed last.** It is the only decision on the register with a dependency outside the company and therefore the only one with a lead time we do not control. Everything else here is a judgement the board can make in an afternoon. A security scanner's permission-attestation wording is also the document that decides whether an unauthorised scan is our liability or the customer's, which is not a thing to draft internally and hope. §16.7 already puts the disclaimer under a version, so counsel's text drops into a slot that exists. |
 | **Owner** | Board + outside counsel |
 | **DECIDED 2026-10-01** | **(b) selected** (`optionIds: ["placeholder"]`), **against the recommendation: ship a conservative internally-drafted text and have it reviewed before GA.** Outside counsel is not commissioned now. Recorded as a deliberate choice, not an oversight — the recommendation for (a) was argued and declined. |
-| **What the decision changes** | **Three things.** **(1) The pre-GA review becomes a release gate, not a courtesy.** Under (a) the liability position was counsel's work product; under (b) it is an internal draft plus one review, so that review is the only control standing between us and the posture, and it must be *named, scheduled and blocking* rather than assumed. **(2) The lead time we did not control is gone** — the real gain, and the reason this is a reasonable call: D8 leaves the critical path entirely and nothing on the register now depends on an external party. **(3) The risk disclosed with option (b), carried here rather than left in the interaction text.** The option the board accepted was offered with this attached, verbatim: *"The risk is that counsel's review lands late and changes the attestation flow, not just the wording — which touches `authz/approval-tracks`."* That is the one residue an earlier revision of this row dropped while claiming to state the whole of it. |
+| **What the decision changes** | **Three things.** **(1) The pre-GA review becomes a release gate, not a courtesy.** Under (a) the liability position was counsel's work product; under (b) it is an internal draft plus one review, so that review is the only control standing between us and the posture, and it must be *named, scheduled and blocking* rather than assumed. **(2) The *commissioning* lead time comes off the front of the critical path — the external dependency itself does not go away.** This is the real gain and the reason the call is reasonable: under (a), counsel's drafting sat in front of `report/disclaimer-framing` and Track B with a lead time we did not control, and under (b) the drafting is ours and can start today. What stays outside the company is the review in (1) — it is counsel's, it is required before GA, and **its timing is not ours to set**, so it remains a release dependency whose slippage can move GA. D8 therefore moves from a blocking lead time at the start to a blocking gate at the end; it does not leave the release path. An earlier revision of this cell said *"nothing on the register now depends on an external party"*, which contradicted (1) and (3) of its own row. **(3) The risk disclosed with option (b), carried here rather than left in the interaction text.** The option the board accepted was offered with this attached, verbatim: *"The risk is that counsel's review lands late and changes the attestation flow, not just the wording — which touches `authz/approval-tracks`."* That is the one residue an earlier revision of this row dropped while claiming to state the whole of it. |
 | **The reversibility claim, bounded** | §16.7's versioned disclaimer slot means a later counsel review replaces **the text** without a schema change, so (b) is reversible into (a) at any point before GA **at no engineering cost for a wording change**. It is **not** free for a flow change. §16.7 versions the disclaimer; it does not version the attestation flow. If counsel's review changes *when* or *how* a customer attests permission — rather than what the attestation says — that lands on `authz/approval-tracks` and its Track B half, which D8's own **Blocks** line already names, and it is engineering work. The cost of that branch is unpriced here because its probability is counsel's to collapse, not ours; the gate in (1) is the point at which it becomes knowable, which is a further reason that review is scheduled and blocking rather than assumed. |
 | **Scope of the draft** | Four artefacts, all conservative: the report disclaimer (§16.7, versioned); ToS; the permission-attestation wording customers accept before a scan; and attestation expiry. Manual-review service level for Track B stays with §24.3's fast-follow list. The drafting standard is **"assume it will be read adversarially after an unauthorised scan"** — that is the scenario the wording exists for. |
 
@@ -742,16 +820,31 @@ lists them as open — can see why.
 | **19** | ~~Is a typed streaming RPC channel needed beyond REST + SSE?~~ | **ADR-0003** §2 | **No channel adopted.** REST + SSE is the complete GA surface. Post-GA choice pre-decided by §2.4's criteria if demand appears; revisit trigger recorded. |
 | **20** | ~~SCB parser and hook language; the hook invocation contract~~ | **ADR-0003** §3 | Parsers stay on the upstream JavaScript parser SDK, including custom ones. **Hooks are Rust**; the contract `vf-hook-notify` must satisfy is recorded verbatim in §3.3 from secureCodeBox `v5.9.0`. |
 | **21** | ~~Lago and Stripe client approach in Rust~~ | **ADR-0003** §4 | **Thin hand-written typed clients** scoped to §17.5's endpoints, provider OpenAPI specs pinned as source of truth with a drift test. Webhook signature verification in-house with RustCrypto, to the schemes in §4.4. |
-| **5** | ~~First automatic cascade: SCB release/digests, node compatibility, scan-ID field, hook/CRD inputs, candidate reservation and start barrier~~ | **ADR-0002** §6 (release, digests, arm64, CRD type generation — `Also settles` the engineering half) + **ADR-0003** (hook contract in §3.3, **and the exact scan-ID field: the scan fingerprint is `metadata.uid` of the `Scan` object**) | Struck **except its cluster half** — node Kubernetes-minor compatibility and Harbor digest mirroring, which is risk **R6** and folded into **D1**. ADR-0003 §5 says so explicitly: *"it needs a cluster, and that hold is CEO's to lift."* Candidate reservation and the start barrier are Phase 1 tests (`authz/start-barrier-all-paths`, `execution/late-cascade-barrier`), not open decisions. Limb by limb: release/digests ✅, scan-ID field ✅, hook/CRD inputs ✅, node K8s-minor **open → R6**, Harbor mirroring **open → R6**, reservation/start barrier ✅ discharged by a named test. |
+| **5** | ~~First automatic cascade: SCB release/digests, node compatibility, scan-ID field, hook/CRD inputs, candidate reservation and start barrier~~ | **ADR-0002** §6 (release, digests, arm64, CRD type generation — `Also settles` the engineering half) + **ADR-0003** (hook contract in §3.3; **the exact scan-ID field decided in ADR-0003's own voice at §3.4 — the scan fingerprint is `metadata.uid` of the `Scan` object, `metadata.name` rejected — re-sourced there by amendment A1 §7.4 on [`docs#29`](https://github.com/vulcanflow/docs/pull/29), not by ADR-0002**) | Struck **except its cluster half** — node Kubernetes-minor compatibility and Harbor digest mirroring, which is risk **R6** and folded into **D1**. ADR-0003 §5 says so explicitly: *"it needs a cluster, and that hold is CEO's to lift."* Candidate reservation and the start barrier are Phase 1 tests (`authz/start-barrier-all-paths`, `execution/late-cascade-barrier`), not open decisions. Limb by limb: release/digests ✅, scan-ID field ✅ (ADR-0003 §3.4, re-sourced — see below), hook/CRD inputs ✅, node K8s-minor **open → R6**, Harbor mirroring **open → R6**, reservation/start barrier ✅ discharged by a named test. |
 
-**One citation under item 5's scan-ID limb is circular, and this register declines to resolve it.**
-ADR-0003 §3.3 sources the scan-ID field to *"ADR-0002's reading of §21.3"*, but ADR-0002 contains
-no mention of `metadata.uid`, a scan ID or a fingerprint. The attribution to **ADR-0003** above is
-correct and the limb is almost certainly right on the merits — `metadata.uid` of the `Scan` object
-is a sound fingerprint and `execution/scan-identity` is the test that asserts it. What is wrong is
-the chain underneath it. That is **ADR text, not plan text**, so correcting it is Atlas's on
-[VUL-15](/VUL/issues/VUL-15); recorded here so the strike above is not read as resting on a
-citation that does not exist.
+**Item 5's scan-ID limb now rests on ADR-0003's own voice, and the circular citation under it has
+been repaired.** An earlier revision of this register recorded the defect and declined to fix it:
+ADR-0003 §3.3 sourced the scan-ID field to *"ADR-0002's reading of §21.3"*, and ADR-0002 contains
+no `metadata.uid`, no scan-ID field choice and — as it stands on `main` — no mention of a scan
+fingerprint at all, so *which field the fingerprint is*, the only substantive claim in that bullet,
+rested on nothing. Being ADR text rather than plan text, correcting it was Atlas's.
+
+**Atlas confirmed it and fixed it on [`docs#29`](https://github.com/vulcanflow/docs/pull/29) as
+ADR-0003 amendment A1 §7.4** (2026-10-02). ADR-0003 §3.4 now separates what the TDD confirms
+(§10.2 `[CONFIRMED]`, §6.2, §6.3's `UNIQUE (tenant_id, scan_fingerprint)`) from what ADR-0003
+decides in its own voice: the fingerprint is **`metadata.uid`** of the `Scan` object, with the
+reason stated and `metadata.name` recorded as the rejected alternative. **That closes §27 item 5's
+"exact scan-ID field" limb on ADR-0003's authority**, which is a change of record and not a
+tidy-up: this register had tracked item 5's engineering half as settled by **ADR-0002**, and this
+limb was never in ADR-0002's list. The `Settled by` cell above is corrected to say so.
+
+**One gap the correction surfaced is deliberately left open, and this register does not report it
+as closed.** The hook's inputs are `SCAN_NAME`, `NAMESPACE` and the argv URLs; the uid is not among
+them, while §8.4 requires the hook's notification to carry the fingerprint. Either the hook reads
+the `Scan` object or §8.1's outbox worker binds it. ADR-0003 §3.4 names the gap and routes it to
+the `vf-hook-notify` work item's spec rather than settling it in an amendment. It is engineering
+scope, not a board decision, so it adds no register row — but it is the reason the strike above is
+limb-by-limb rather than wholesale.
 
 **ADR-0004** closed no §27 item — it is a repository-topology decision and says so in its own
 header. It is cited here only because it is one of the four documents currently off `main` (§0).
@@ -839,6 +932,19 @@ Written 2026-10-01 from the following exact sources, all read rather than recall
   itself** (`ask_user_questions`, resolved 2026-10-01) — its three questions, their option lists
   and option descriptions, and the recorded `answers` array. §0.1, §1.2, §1.5 and D8 quote the
   interaction directly rather than any summary of it.
+- **Re-read at revision 6, with the head each was read at**, because three of them moved between
+  revisions 5 and 6 and one moved in a way that changed a quotation: `ADR-0002` **amendment A3**
+  §7, §7.1, §7.2 at [`docs#28`](https://github.com/vulcanflow/docs/pull/28) @ **`98411fb`** —
+  §7.2's `scb/hook-invocation-contract` edge withdrawn to **None** and §7.1(a) corrected with it,
+  the R1–R6 table unchanged (§1.3's source note states the check); `ADR-0005` §2, §2.1, §6.1, §6.2,
+  §6.3 and §6.4 at [`docs#32`](https://github.com/vulcanflow/docs/pull/32) @ **`4c80fe1`** — §2's
+  adjacency sentence is **quoted in §1.6 at that head's wording**, a lane-6 correction having
+  scoped it to the seven *numbered* lanes after revision 5 quoted the looser form; `ADR-0003`
+  **amendment A1** §7.4 and §3.4 at
+  [`docs#29`](https://github.com/vulcanflow/docs/pull/29) — the re-sourced scan-ID field (§5); and
+  [`docs#40`](https://github.com/vulcanflow/docs/pull/40) — the re-filed breakdown with §3.3.1's
+  eighth ADR-derived identifier (§0.2, §1.3). **All four are open pull requests, not `main`**, and
+  every statement this register derives from them says so at the point of use.
 
 The off-`main` documents in §0 are reachable without the deleted branches:
 `git fetch origin 'refs/pull/*/head:refs/remotes/pr/*'` restores `93c79f8` (#22), `cee1edc` (#23)
@@ -853,6 +959,7 @@ and `5b3405c` (#20).
 | 3 | **Atlas's review applied** — F1–F3 (§1.3 rebuilt: §25 vs ADR-derived sets separated, R1/R2's `admission/*` entries removed and R1 restated as "no test at all", R3's leak corrected to deterministic, `execution/gates-before-start` and `isolation/all-stores` added, `execution/scan-identity` surfaced as the only Phase 1 degradation) and P1–P6 (stale `VUL-*` ids dropped, 15/2 split, D7 named as the second Phase 1 exception, `infra#1` README quoted correctly, §4 scoped to §1.3, §27 item 5's scan-ID limb added). §1.1 narrowed to the two documents that actually assert Aether's existence, with §0.0's own verification caveat quoted against them. D15 narrowed to a ratification. D17 recited to ADR-0005 §6, with `unsafe` ownership described as relocated rather than removed. **Board answers of 2026-10-01 recorded** — §0.1, §1.5, §1.6, §2.1 and the per-row `DECIDED` entries. |
 | 4 | **Two self-contradictions closed (CodeRabbit on `5168c5c`, lane 6).** The status row said "none before the Phase 2 gate," which the paragraph eight lines below it already contradicted on D7 — corrected to name D7's Phase-1-if-retained forcing point and D5/D15 as the earliest of the rest. And §1.3/§1.5 claimed "cross-tenant RLS isolation … at full strength on Testcontainers," which over-read §1.3's own R3 row: full strength belongs to the `SET LOCAL` leak tests and the admission-gate decision tests, while `isolation/background-queries` and `isolation/all-stores` stay weak at realistic PgBouncer concurrency. Counts and the set of open rows unchanged. |
 | 5 | **The six blocking findings of reviewer #1's `docs#24` verdict, closed on `main` ([VUL-41](/VUL/issues/VUL-41)).** `docs#24` merged 2026-10-01T20:59:26Z over an unresolved **REQUEST CHANGES** and with no reviewer #2 verdict; ADR-0005 **§6.4** records that merge as a lane-7 gate defect under revisit trigger **R5b** and does not sanction it retrospectively. **This revision is the route §6.4 promises** — the findings go back through lane 6 like any other change. **B1**: §1.3's conclusion and §1.5 now name the four green tests as *ADR-derived confirmations*, quote A3 §7.2's feed-edge rule, and name the four Phase 1 §25 identifiers they feed as still in the strengthen column. **B2**: seven of nine are Phase 1, every risk bears on at least one, the verb is *strengthen* (A3 §7.1(b)) and §7.1(d)'s "must go green in Phase 1" is quoted so the column does not read as a blocker; R6 keeps its salience as the nearest **forcing point**, not as a uniqueness claim. **B3**: §1.3's table is now A3 §7's mapping, with R1 and R6 corrected, the two divergences named, and a source line making the table derivative of A3 rather than a rival to it. **B4**: §0.1, §1.2, §1.5, D1's `DECIDED` row and §1.6's Phase 2 item now record that the board answered the `cluster` question in free text with `optionIds: []` and that **Option D is this register's reading**, argued rather than asserted. **B5**: D8's residue is three things, with the risk disclosed alongside option (b) quoted verbatim and "no engineering cost" bounded to a wording change. **B6**: §1.6 routes the manifest edit to **Forge**, quoting ADR-0005 §2.1 and the adjacent-lane rule. **B7 was not re-fixed here** — D17's Rider was withdrawn by `c7bb4af` on `docs#32`, which this branch is stacked on. Advisories 1–5 and 7's ordering half applied; advisory 6 (seven-vs-eight ADR-derived identifiers) and 7's circular-citation half are **declined and routed to Atlas on [VUL-15](/VUL/issues/VUL-15)**, with reasons, both being ADR text a plan may not adjudicate. **Counts, the set of open rows and every board answer are unchanged**; nothing in this revision alters a decision. |
+| 6 | **Both declines of revision 5 adjudicated by Atlas and applied here, and the three lane-6 App findings on the same pull request closed** — still [VUL-41](/VUL/issues/VUL-41), still before this change reaches `main`, so revisions 5 and 6 land together. **Advisory 6 is decided against this register:** the ADR-derived family has **eight** members, not seven — breakdown §3.3 enumerated by production-source issue and structurally lost `scb/parser-contract-conformance`, which has no crate-approval issue of its own because its code is upstream and its types belong to `vf-ingest`. §1.3 now states the adjudication, and Crucible's Phase 1 ledger reads **35 = 27 §25 + 8 ADR-derived** where it said 34; **the 45 is untouched** and ADR-0002 §6.3's CRD-codegen drift gate is not a ninth row. **Advisory 7's circular citation is repaired at the ADR**, so §5 stops declining it and records the new state: ADR-0003 §3.4 decides the fingerprint is `metadata.uid` in its **own** voice (A1 §7.4, `docs#29`), which closes §27 item 5's scan-ID limb on ADR-0003's authority rather than ADR-0002's — a change of record, since item 5's engineering half was tracked here as ADR-0002's — and the gap ADR-0003 §3.4 leaves open (the uid is not among the hook's inputs while §8.4 wants the fingerprint in its notification) is carried as open and routed, not as closed. **A3 §7 moved and the derivation was re-checked rather than assumed:** §7.2 withdrew `scb/hook-invocation-contract`'s feed edge to **None**, the R1–R6 table is unchanged at `98411fb`, and this register asserts no edge from that confirmation anywhere — B1's error does not recur in a second place. **Three CodeRabbit App findings closed** (lane 6 input, not a verdict — ADR-0005 §6.2): §0's forcing-point line put all six unasked rows at the Phase 2 gate and erased **D7's** earlier Phase-1-if-retained exception, which §2.1 states eight lines away; §1.1 and §1.6 claimed a wrong `k8s-openapi` floor *"is a compile error"*, conflating what the generated bindings check (surface our code can name) with what they do not (the target API server's version), so an older-than-1.32 control plane compiles cleanly and fails at runtime — **the same class of over-claim as B1**, and the manifest comment makes it too, which is now part of what §1.6 routes to Forge; and D8's cell said *"nothing on the register now depends on an external party"* while (1) and (3) of its own row described counsel's pre-GA review as a blocking release gate — corrected to say the **commissioning** lead time leaves the critical path and the external review does not. **Branched on `docs#32` @ `4c80fe1`, not `ded8d11`** — the base moved, so §1.6's quotation of ADR-0005 §2 is re-taken at that head, where a lane-6 correction has scoped the adjacency rule to the seven *numbered* lanes. §0.2 and §9 record `docs#40` as the open re-filing of the breakdown and **do not** re-point at `main` in advance. **Counts other than the ADR-derived family, the set of open rows and every board answer are unchanged.** |
 
 Cost figures in §1.2 are derived from the footprint the design requires and are
 order-of-magnitude only. **They are not quotes and no commitment should be made on them.** They are
