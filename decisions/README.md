@@ -49,6 +49,16 @@ deferral does **not** buy, including the two things easiest to misread: the audi
 a gap goes *unnoticed*, not how long it goes *unfixed*, and the eleven private repositories have
 no secret scanning or push protection either, which no part of this decision addresses.
 
+**Closed 2026-10-02 — *which* status checks a protected repository must require.** §8.2 recorded
+how many checks `platform` has and not which, so the audit enforcing ADR-0005 **R2** could only
+count them, and four required checks named anything at all read as conformant. ADR-0005 **§8.2.1**
+names the set — `lane-partition`, `test-erosion`, `inline-test-modules`, `gate-self-test`, plus
+every further job the repository's own `lane-gate.yml` defines — as a **minimum** per repository,
+decided from the repository's default branch rather than from a class label, with a surplus
+context reported rather than refused. R2's live remainder is sharpened in place rather than given
+a new identifier. The audit change that cross-references the set is a separate GATE-class pull
+request, bounded and given its acceptance sentence at the end of §8.2.1.
+
 The §2.5.2 crate table is superseded by ADR-0002 §3 and is no longer `[PROPOSED]`. §24.4's
 gate on "approval of the Rust crate set used on the execution path" is cleared.
 
