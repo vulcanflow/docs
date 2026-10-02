@@ -949,8 +949,9 @@ for `findings/fp-only-persistence`, and **the corpus is the enumeration in §9.1
 here.** Three successive revisions of this record stated a count — "ten", then "eleven" — and all
 three were wrong against this section's own contents, each time because a case was added or
 reclassified without the number being recomputed. A count is a claim that has to be re-derived on
-every edit; a list is a claim that edits itself. §9.1 lists the cases by identifier, says which are
-negative and which are positive controls, and is the only place Ledger should read the corpus from.
+every edit; a list is a claim that edits itself. §9.1 lists the cases by identifier in three groups —
+negative, positive control, and accepted noise — states the asserted outcome on **each row** rather
+than on the group, and is the only place Ledger should read the corpus from.
 What this section guarantees is the property, which does not change when a case is added: **at least
 two negative cases per scanner, each with its loose key and the consequence of the collapse.**
 
@@ -1190,8 +1191,13 @@ login endpoint.
 
 **§25 identifier.** `findings/fp-only-persistence` (§10.2) is the one §25 identifier this record
 unblocks. It stays **one test function**, table-driven over the corpus enumerated in §9.1 — the §25
-mapping is injective in both directions and this record does not change that. The table asserts both
-directions: the negative rows must **not** match, and the positive-control rows **must**.
+mapping is injective in both directions and this record does not change that. The table asserts in
+both directions, and **the asserted outcome is a property of each row, read from that row's own entry
+and never inherited from the group heading.** §9.1 has three groups: the **negative** rows (must
+**not** match — a collapse this record rules out), the **positive-control** rows (must **match** — a
+narrowness defect this record rules out), and the **accepted-noise** rows (must **not** match, where
+the non-match is a cost §3.3 accepts deliberately rather than a defect). Two of the three groups
+therefore assert non-match, for different reasons, which is why the outcome is stated per row.
 
 ### 9.1 The corpus, enumerated
 
@@ -1219,15 +1225,24 @@ the same edit; that is the obligation the enumeration carries instead of a numbe
 
 That satisfies §8's stated property at two subfinder, three dnsx, three httpx and five nuclei cases.
 
-**Positive-control rows — the pair must match** (4). A matcher that is too narrow re-surfaces every
+**Positive-control rows — the pair must match** (2). A matcher that is too narrow re-surfaces every
 suppressed finding on every scan, and a corpus of only negative rows cannot catch it:
 
 | Case | Asserts |
 |---|---|
 | 8.1.3 | subfinder `source` and address fields are excluded, so one subdomain across two scans is one key |
 | 8.4.5 | envelope `severity` is excluded, so two observations differing only in severity are one key — the field is lossy, scanner-mapped and version-dependent, which is why it cannot be identity |
-| §3.3 accepted noise | `?a=1&b=2` vs `?b=2&a=1` are **two** keys (accepted noise, asserted as such, not as a match) |
-| §3.3 duplicates | `["a","a"]` and `["a"]` digest differently (likewise asserted as two keys) |
+
+**Accepted-noise rows — the pair must not match, and the non-match is the accepted cost** (2). These
+are **not** positive controls, and grouping them under a "must match" heading was a defect found in
+review: each is a place where §3.3 chose a split key knowing it costs a duplicate, under §1's
+direction — a split key is noise, a merged key is silence. A test that asserted a match here would
+assert the opposite of the decision:
+
+| Case | Asserts |
+|---|---|
+| §3.3 accepted noise | `?a=1&b=2` vs `?b=2&a=1` are **two** keys — query order is not canonicalized (§3.3, justified by direction per R11, not by scanner determinism) |
+| §3.3 duplicates | `["a","a"]` and `["a"]` digest differently — the set digest is length-prefixed **per element** and keeps duplicates (§3.3, R4) |
 
 **Not rows of this identifier**, and named so nobody adds them to the wrong table:
 
@@ -1447,14 +1462,15 @@ and the distinction matters because §5.4 and §6 both turn on what "stored" mea
 
 ## 15. Pre-acceptance revisions (lane 6, 2026-10-02)
 
-Five review rounds, all routed to the author: the automated reviewer's first pass on `4ec50a2` (one
+Six review rounds, all routed to the author: the automated reviewer's first pass on `4ec50a2` (one
 finding); the hand review of `4ec50a2` (twelve blocking, six advisory — **all six advisories taken**);
 the automated reviewer's second pass on `fe570de` (five findings, four of which the R1–R12 work had
 already closed and one new, §4.4a); the hand **re-review** of `41264fd` (six blocking, five advisory —
-all eleven taken); and the automated reviewer's **third** pass on `41264fd`, which landed while the
+all eleven taken); the automated reviewer's **third** pass on `41264fd`, which landed while the
 re-review fixes were being written (three findings — two substantive, one advisory — all taken, and
-neither substantive one a re-raise of the two declined suggestions). No decision in §2 is reversed by
-any of them. What changed:
+neither substantive one a re-raise of the two declined suggestions); and the automated reviewer's
+**fourth** pass, covering `41264fd…152c3a1`, triaged into reviewer #2's lane 6 verdict at `e9a954b`
+(one finding, blocking, taken — Bot-4.1). No decision in §2 is reversed by any of them. What changed:
 
 | # | Section(s) | Change |
 |---|---|---|
@@ -1480,10 +1496,11 @@ any of them. What changed:
 | B3 | §1, §2 row 8, §3.6, §6 | A **third** migration was hiding behind R7's narrowing. §6 makes the suppression-reach count mandatory **before** a user confirms and §12 re-evaluates it per scan, both over `findings.applied_fp_decision_id`, which TDD §6.3 declares with no index — a mandatory interactive sequential scan, which is §3.6's own prohibition in the other direction. The index is now named, and §6 states the query so the DDL reads as a consequence of the decision rather than as Phase 1 trivia. |
 | B4 | §3.1 | R12's second trigger was **not computable** as specified: it measures `new` observations, which are exactly the ones that matched nothing, and nothing said `false_positive_match` is written on those. §3.1 now states the storage rule normatively — written on every storable key regardless of outcome, `applied_fp_decision_id` carrying the outcome — and §12 cites it. Same defect class R12 was filed for, which is the point: a trigger whose input is unrecorded is not a trigger. |
 | B5 | **§4.5b** (rewritten), §4.5a, §9 | R2's `host:port` split rule was **wrong for IPv6**, and in the unsafe direction. `[2001:db8::1]` (what `URL.hostname` actually returns — verified) has no trailing `:<port>` and dies in §3.3 ⇒ no IPv6 nuclei finding could be marked a false positive; bare `2001:db8::1` *matched* the split rule and produced host `2001:db8:` port `1` — a **parsed-but-wrong key**, the only place in the reviewed text where the failure direction was not §1's. Replaced by a six-branch shape table tried in order, IPv6 tested before `host:port` on colon count so the shapes are disjoint, every failure resolving to `Unknown`. |
-| B6 | §8 preamble, §2 row 7, **§9.1** (new), §8.4.7 | The corpus count was wrong for the **third** time ("ten", then "eleven", against twelve-or-thirteen depending on the criterion). The fix is not a fourth count: §9.1 now **enumerates** the corpus by case identifier — 13 negative rows, 4 positive controls, and 4 §8 items explicitly assigned to `findings/fp-scanner-semantics-stale` or to §7's evidence instead. §8 keeps the property (at least two negatives per scanner), which an edit cannot falsify, and drops the number, which every edit could. |
+| B6 | §8 preamble, §2 row 7, **§9.1** (new), §8.4.7 | The corpus count was wrong for the **third** time ("ten", then "eleven", against twelve-or-thirteen depending on the criterion). The fix is not a fourth count: §9.1 now **enumerates** the corpus by case identifier — 13 negative rows, 4 control rows (**grouped wrongly as four positive controls; split 2 + 2 by Bot-4.1 below**), and 4 §8 items explicitly assigned to `findings/fp-scanner-semantics-stale` or to §7's evidence instead. §8 keeps the property (at least two negatives per scanner), which an edit cannot falsify, and drops the number, which every edit could. |
 | Bot-3.1 | §3.3 `canonical_host` (rewritten), the normalization note, §9 | **The NFKC pre-pass was a key-collapse primitive, and this is the record's own subject matter.** The rule read *"NFKC, then IDNA 2008 ToASCII under UTS-46"*. UTS-46 normalizes to **NFC**, not NFKC (revision 31 §4 Processing: Map → Normalize to NFC → Break at U+002E → Convert/Validate), and its Map step already lowercases and already maps the dot-like characters that should become separators. The pre-pass was not merely redundant: `IdnaMappingTable.txt` at Unicode 15.1.0 has `2024..2026 ; disallowed` and `FE52 ; disallowed`, while `NFKC(U+2024) = "."` and `NFKC(U+2025) = ".."` — so a host written with U+2024 canonicalized to a **different valid host** instead of being rejected, which is two inputs collapsing to one key, chosen by whoever supplies the name. Replaced by UTS-46 Processing on the original input with `UseSTD3ASCIIRules = true`. Propagates to `authz/psl-exact-root` and `authz/configured-scope`, which own this shared canonicalizer's tests. |
 | Bot-3.2 | §6, §12, §1, §2 row 8 | **The reach count had the wrong unit, and it made §12's growth limb fire on everything.** `findings` holds one row per observation per scan, so a row count rises on every scan for a decision whose reach never changed: "grows in any scan after the creating scan" would have been true of every decision, always. The unit is now the **distinct match key** — reach is `COUNT(DISTINCT fp_match_key)` — which turns both limbs into statements about reach rather than about scan frequency, and turns B3's index into a covering one. Same counting-unit class as the §2.1 contradiction found in pass 1. |
 | Bot-3.3 | §4.3 `discriminator` row | Advisory, taken: `txt` and `caa` values are "verbatim" in the sense of no case folding and no rewriting, but they are still NFC-normalized by §3.3's set-element rule like every other element. Said explicitly, because "verbatim" next to a normalization rule invites the reading that one bypasses the other. |
+| Bot-4.1 | §9 preamble, **§9.1** (regrouped), §8 preamble, B6's row above | **B6's own fix carried a contradiction into the spec Ledger writes from.** §9.1's control table was headed *"the pair must match"* over four rows, two of which — the §3.3 query-order and duplicate-element rows — assert **two** keys in their own `Asserts` entry. A table author reading the heading generates equality assertions for rows that require inequality, and the contradiction is in the one section whose entire purpose is to be read literally by a test author. The four rows are now two groups: **positive controls** (2, must match — the narrowness defect) and **accepted-noise rows** (2, must not match — a split key §3.3 chooses knowing it costs a duplicate). The governing rule is now stated once: the asserted outcome lives on the row, never on the group heading. Same class as Bot-1's §2.1 defect and Bot-3.2's unit error — a statement about the corpus that a later edit made false without touching it — which is why the remedy is structural (outcome per row) rather than a reworded heading. |
 | A7–A11 | §4.5a, §10, §12, §3.2, §15 | The five advisories, all taken: §4.5c is evaluated **before** §4.5a and `NotApplicable` is never promoted to `Unknown` (so `type: dns` stays storable under a divergent `matched_at`); §10's rejection reason for the `NotApplicable` alternative was overbroad — `check_id` already separates templates, so the collapse is *within* a check class, and the corrected reason is stated with the conclusion unchanged; §12's trigger names the pure `vf-core` decoder it needs and the `(match_version, field_semantics_version, scanner_id)` scope it is only meaningful in; TDD §3.5 is qualified where it collided with this record's §3.5; and this ledger's own round-2 accounting is corrected below. |
 
 **This ledger's own accounting, corrected (A11).** Round 2's header previously read *"five of the six
