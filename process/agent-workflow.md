@@ -309,14 +309,25 @@ and cannot merge at all (ADR-0005 **R10**). **In general that is two pull reques
 the change to `ci/lane-gate.sh`, then Scribe lands the fixtures for it. **§4.5's own sequence has
 three**, because `setup()` cannot yet construct the cases that needed covering first — a
 capability gap, not a general rule. So, for that change: **(1)** Scribe lands fixtures for the
-behaviour the gate *already* has, green; **(2)** Forge lands the change to `ci/lane-gate.sh`,
-green because it is additive; **(3)** Scribe lands fixtures for the new behaviour, green because
+behaviour the gate *already* has, green; **(2)** Forge lands the change to `ci/lane-gate.sh`
+**together with the two things the new sub-checks cannot run without** — `fetch-depth: 0` and a
+fetch-base step on the `gate-self-test` job, which carries a bare `actions/checkout@v4` at
+`platform@41506ad` — additive, and green only with them; **(3)** Scribe lands fixtures for the new
+behaviour, green because
 it now exists. Nobody
 crosses a lane and nothing is ever red. Only step 3 is inverted, it applies to GATE paths and
 nothing else, and §4.5's monotonicity sub-check is why the inversion is not a weakening: what your
 pull request must survive is the fixture set already on `main`. Step 3's fixtures are enumerated
 **with their outcomes** in the lane-1 spec before step 2 is written — that enumeration and §4.6
 item 4 are the whole control, because there is no mechanism for it.
+
+**Step 2's two preconditions are not housekeeping, and "green because it is additive" without them
+is false.** Monotonicity runs the **base** harness, so it has to be able to resolve the base ref;
+with a shallow single-ref checkout it cannot, and §4.5 requires a monotonicity step that cannot
+resolve the base to **fail closed, not skip** — a silent skip would reproduce limb 3 inside the
+sub-check built to close limb 2. So step 2 is green with the checkout change and red without it;
+shipping the classifier change alone does not merge. ADR-0005 §4.5's pull-request-2 row is the
+statement.
 
 ---
 
