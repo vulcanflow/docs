@@ -396,6 +396,16 @@ identity-bearing: a zone's responsible mailbox changing is a change in who owns 
 exactly the kind of thing a suppression should not outlive. `0x1F` (unit separator) cannot occur in a
 DNS name, so no escaping rule is needed.
 
+**This is the one widening in §4 that is argued for rather than avoided, so it is argued.** Two
+`soa` observations differing *only* in `serial` or in a timer share a key, so a decision made before
+a zone edit still applies after it. The second automated reviewer flagged exactly this and proposed
+serializing all eight fields; it is rejected on the ground §4.3 already uses for `ttl` — a counter is
+**not identity**. A zone whose serial incremented is the same zone, with the same nameserver and the
+same responsible mailbox, observed again; nothing the user reviewed has changed. Including `serial`
+would re-surface every SOA finding on every zone edit, which is churn rather than caution, and §7.1
+records what churn at that cadence does to a user's willingness to mark anything at all. The three
+fields kept are the three that move when **who controls the zone** moves.
+
 **Deliberately excluded.** `ttl`, `timestamp`, `query-time` — time, not identity. `resolver` — which
 resolver answered is evidence about the measurement, not about the record. `cdn`, `cdn-name`,
 `cdn-type`, `asn.*` — enrichment derived from the record value, so including them would double-count
@@ -450,7 +460,8 @@ component called `location` and is the more direct form of the same defect: `Res
 it is *derived from* that header; the header's own field is §8.3.1 with the indirection removed, and
 an implementer reading the `location` row of the table above and reaching for `Result.location` would
 put an attacker-set value straight into the key. **`sni`** — a plausible and wrong `canonical_host`
-source: it is the name we sent, not the name the finding is about, and it is empty on plain HTTP.
+source: it is the name we sent, not the name the finding is about. **Excluding it is only safe
+because of §4.4a, which is therefore mandatory rather than a note.**
 `host_ip`, `a`, `aaaa`, `cname`, `asn.*`, `cdn*` — address-level, and §6.2 is explicit that
 *"IP/port alone is not a universal asset identity"* (§8.3.2). `status_code`, `title`, `webserver`,
 `tech`, `cpe`, `content_length`, `words`, `lines`, `favicon*`, `hash`, `jarm_hash`, `body_preview`,
@@ -468,6 +479,27 @@ of them part of *which service at which location* this observation is about.
 > table above is excluded from the key by construction.* We write this parser (§4.1), so §4.4 is the
 > only specification its author has, and an allowlist that fails closed is the only safe shape for
 > it.
+
+### 4.4a The httpx `ScanType` must not set a custom TLS SNI
+
+The second automated reviewer raised this and it is right: at `v1.12.0` httpx takes
+`--sni-name` / `-sni` (`runner/options.go:535`), and `runner/runner.go:1118–1119` sets
+`resp.SNI = r.options.SniName` **only when that flag is non-empty**. A custom SNI is chosen
+independently of the request URL and selects which TLS virtual host answers. So two probes of the
+same `url` with different SNI values can reach **different services** and — with `sni` excluded from
+the key — produce the **same** key. A decision about one virtual host would then suppress a finding
+about another: the §8.3.2 collapse, one layer down.
+
+**Therefore: the VulcanFlow httpx `ScanType` does not pass `--sni-name`.** This is a property of the
+approved catalog (§21.3), the same shape of control as §4.5a's redirect rule, and
+`supply-chain/check-catalog` asserts it. With the flag unset, `sni` is always empty, so adding it to
+the key would contribute a constant and the exclusion is exact rather than merely convenient.
+
+**If that ever changes, `sni` becomes a key component and the change is a `match_version` bump** —
+not an edit to §4.4's table, because keys stored without it cannot be compared with keys stored with
+it. A revisit trigger for it is in §12. Adding the component *now*, as the reviewer suggested, was
+rejected for the same reason §4.4 excludes `vhost`: a component that is a constant under our own
+configuration buys nothing and hides the fact that the real control is the configuration.
 
 ### 4.5 `nuclei` — template findings
 
@@ -1127,6 +1159,12 @@ is Phase 2 (§24.2) and is listed in "Does not close".
 - **Upstream secureCodeBox adding `dnsx` or `httpx` scanners.** That would replace our parsers and
   their field mapping, and §4.3/§4.4 would be rewritten against upstream's `attributes` shape instead
   of ours.
+- **Any scanner invocation acquiring a TLS-SNI or redirect-following setting that §4.4a and §4.5a
+  forbid.** Both exclusions are exact only while the catalog holds those settings off, so a change to
+  either is a `match_version` bump and an amendment here, not a catalog edit — `sni` would become a
+  key component and nuclei's `matched_at` would stop being host-stable. This trigger is observable in
+  the one place that matters: the diff of the catalog file, which `supply-chain/check-catalog`
+  already asserts against.
 - **A need for cross-scanner aliases** (§5.5) or for aliases that move a location component (§5.1).
   Both are amendments with evidence, and both are the kind of request that should be refused by
   default.
@@ -1146,7 +1184,7 @@ struct's eight fields and `DNSData.AllRecords` (§4.3.1, §4.3), httpx's `Locati
 | Ref | Files read |
 |---|---|
 | `secureCodeBox/secureCodeBox` @ **`v5.9.0`** | `parser-sdk/nodejs/findings-schema.json`; `scanners/` directory listing (which is how §4.1's missing-scanner fact was established); `scanners/subfinder/parser/parser.js`; `scanners/nuclei/parser/parser.js` (including `parseHostname`, lines 96–118, for §4.5b); `scanners/nuclei/parser/__testFiles__/` listing; `scanners/nuclei/parser/__testFiles__/secureCodeBox-test.jsonl`; `scanners/nuclei/parser/__testFiles__/example-com-test.jsonl` (§4.5a, §8.4.7); `scanners/nuclei/parser/__testFiles__/hostname-without-port.jsonl` (§4.5b); `scanners/subfinder/values.yaml` |
-| `projectdiscovery/httpx` @ **`v1.12.0`** | `runner/types.go` (the `Result` struct and its JSON tags); `runner/runner.go` (`Host: parsed.Hostname()`, `HostIP: ip`) |
+| `projectdiscovery/httpx` @ **`v1.12.0`** | `runner/types.go` (the `Result` struct and its JSON tags, including `Location`, `SNI`, `Failed`, `Error`); `runner/runner.go` (`Host: parsed.Hostname()`, `HostIP: ip`; `Location: resp.GetHeaderPart("Location", ";")` at `:2685`; `resp.SNI = r.options.SniName` at `:1118–1119`); `runner/options.go` (`--sni-name` / `-sni` at `:535`) |
 | `projectdiscovery/httpx` @ **`v1.3.5`**, **`v1.6.0`** | `runner/runner.go` (`Host: ip`) — the §7.3 meaning change |
 | `projectdiscovery/dnsx` @ **`v1.3.1`** | `libs/dnsx/dnsx.go` (`ResponseData`, `AsnResponse`); `go.mod` (`retryabledns v1.0.116`) |
 | `projectdiscovery/retryabledns` @ **`v1.0.116`** | `client.go` (the `DNSData` and `SOA` structs and their JSON tags) |
@@ -1177,9 +1215,10 @@ and the distinction matters because §5.4 and §6 both turn on what "stored" mea
 
 ## 15. Pre-acceptance revisions (lane 6, 2026-10-02)
 
-Fourteen findings against the `4ec50a2` draft, all routed to the author: one from the automated
-reviewer and thirteen (twelve blocking, six advisory, of which five are taken) from the hand review.
-No decision in §2 is reversed by any of them. What changed:
+Three review rounds, all routed to the author: the automated reviewer's first pass on `4ec50a2`
+(one finding), the hand review of `4ec50a2` (twelve blocking, six advisory — five of the six taken),
+and the automated reviewer's second pass on `fe570de` (five findings, four of which the R1–R12 work
+had already closed and one new, §4.4a). No decision in §2 is reversed by any of them. What changed:
 
 | # | Section(s) | Change |
 |---|---|---|
@@ -1198,6 +1237,8 @@ No decision in §2 is reversed by any of them. What changed:
 | R12 | §12 | The two unobservable revisit triggers are now measurable: a decision's applied-observation count exceeding N or growing after its creating scan, and the rate of `new` observations differing from a suppressed one only in the `extracted_results` sub-value. |
 | A1–A4, A6 | §5.8 (new), §3.5, §3.3, §4.5, §7.2 | Aliasing has no Phase 1 use case and says so; `scope_root`'s over-narrowing cost is named; NFKC-vs-NFC is explained; `attributes.path` is excluded explicitly; the current `field_semantics_version` is committed config beside the alias registry. |
 | A5 | **§8.4.1b** (new) | A third template pack is in the same upstream tree (17 matchers), which is why §7.2's gate is about declared semantics and not release numbers. |
+| Bot-2.1 | **§4.4a** (new), §4.4, §12 | New in the second automated pass, and correct: excluding `sni` is only safe while nothing passes `--sni-name`, since a custom SNI selects the TLS virtual host independently of the URL. The httpx `ScanType` is now forbidden from setting it, as a catalog property `supply-chain/check-catalog` asserts; `sni` entering the key later is a `match_version` bump, and §12 gains the trigger. Adding the component now was rejected: under our own configuration it is a constant, and it would hide the fact that the control is the configuration. |
+| Bot-2.2–2.5 | — | Already closed by the R1–R12 work before the pass ran: the schema claim (R7), fail-closed handling of divergent nuclei URLs (R1/§4.5a), the `soa` serialization (R6/§4.3.1 — with the eight-field variant rejected in §4.3.1, argued rather than assumed), and the README severity attribution (R10). |
 
 One advisory is **not** taken and is recorded as such: the reviewer's R5 remedy of splitting
 `discriminator` into two §3.1 components — see §10 for the reasoning. The reviewer's reading of
