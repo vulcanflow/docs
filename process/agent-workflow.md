@@ -222,9 +222,9 @@ The lane transitions that exist:
 Note `4 → 3` appears twice. Confirming a test is red and reporting a regression are the same
 transition; both hand a coding agent a named failing identifier.
 
-**The `4 → 6` handoff is two issues and they are keyed, so the pair cannot be filed twice.** One
-issue per reviewer (ADR-0005 §6.1). Each carries the head in its title and an `idempotencyKey`
-carrying the head too:
+**The `4 → 6` handoff is two issues, and the key is how Paperclip is *asked* to refuse a second
+filing — not a guarantee that it does.** One issue per reviewer (ADR-0005 §6.1). Each carries the
+head in its title and an `idempotencyKey` carrying the head too:
 
 ```
 title: … <repo>#<pr> @ <head-sha-7> … (reviewer #<1|2>, <Assay|Warren>) …
@@ -234,6 +234,15 @@ key:   lane6:<owner>/<repo>#<pr>:<head-sha-40>:<assay|warren>
 Those two title fragments are what is required; the rest of the title is the subject. **A review
 issue whose `@ sha` is not the pull request's current head is stale by inspection** — that is what
 the title fragment is for, and it is the half that works without the key working.
+
+**So count the live pairs before you file; do not take the key's word for it.** No colliding filing
+has ever been performed and recorded in this organisation (ADR-0005 §2.3.3), the evidence for the
+key is a schema field described as a "caller-stable retry key", and whether a second run presenting
+the same key receives the existing issue or an error is not established either. **Until it is: read
+the open lane-6 issues for this pull request and this head first, and file only what is missing.**
+That check costs one list call, it works from the titles with no key behaviour at all, and the
+failure it prevents is the one this organisation has actually had — three live review issues for one
+pull request and a reviewer told by hand to stop reading (§2.3 instance (i)).
 
 **ADR-0005 §2.3.3 is the rule**: which call to file through, why the other route is excluded, why
 each limb is in the key, and what the key is and is not claimed to do. Two steps that are easy to
