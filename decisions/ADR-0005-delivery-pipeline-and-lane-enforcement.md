@@ -604,13 +604,14 @@ before it is written. `classify_path()` at `platform@41506ad` enumerates the fir
 and nothing else, so **until step B of the sequence in §4.5's closing subsection lands, the three
 daggered paths are NEUTRAL in fact**: a diff holding `ci/pre-pr-review-verdict.sh` together with
 production source is specified here as a refusal and is **passed** by the gate that exists. That
-discrepancy is why the merge of the `pre-pr-review-verdict` implementation is blocked on step B,
-and why it is stated here rather than left for a reader to discover from a green check.
+discrepancy is why the merge of the `pre-pr-review-verdict` implementation is blocked on steps
+A–C of that sequence — **B** is the step that makes this row true — and why it is stated here
+rather than left for a reader to discover from a green check.
 
 **That rule partitions *between* classes and says nothing about what travels *within* one, which
-is where it bit.** All six GATE paths in one diff satisfies it — both classifiers, both of the
-only assertions that those classifiers are correct, and both files naming the required checks, in
-a single pull request `lane-partition` passes. **§4.5** is the statement of what that permits and
+is where it bit.** All six GATE paths in one diff satisfies it — both detectors, both of the
+harnesses that are the only assertion each detector is correct, and both workflow files naming
+the required checks, in a single pull request `lane-partition` passes. **§4.5** is the statement of what that permits and
 what now refuses it, and its closing subsection re-derives every one of those arguments over six
 paths rather than three. The row above is amended **only** to add members, because the defect is
 not that two files share a class and no class split repairs it (§4.5, "What was not adopted");
