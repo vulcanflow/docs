@@ -112,8 +112,10 @@ put two test functions behind one §25 row, which is the property the whole mapp
 replayed `AdmissionReview` carrying a pool-dispatched `Scan` — pool namespace, pool service
 account, no tenant approval and no allowance reservation — must be **denied** by `vf-admission`,
 through the same §5.7 gate and with the same denial reason as the tenant path. That is the whole of
-the barrier as a property of our handler, and it is fully assertable with the recorded-JSON
-mechanism ADR-0002 §4.2 established. No cluster, no pool, no Phase 2 dependency.
+the **pool limb** as a property of our handler, and it is fully assertable with the recorded-JSON
+mechanism ADR-0002 §4.2 established. No cluster, no pool, no Phase 2 dependency. The identifier's
+other limbs — Scan UPDATE, Job and Pod admission, revocation, dry-run — are §3.2.2, and none of
+them carries a scope limit.
 
 **What it does not assert, and who carries the residue.** That the real pool dispatcher actually
 goes through admission — that no path exists by which a pool-originated `Scan` reaches the API
@@ -144,6 +146,41 @@ coverage. Its Phase 1 green is complete against what §25 asks of it, and the po
 as R6 rather than as a ledger scope limit. A scope qualifier is owed where a §25 row's own words
 reach past what Phase 1 can assert; inventing one where they do not would make the ledger noisier
 without making it more honest.
+
+#### 3.2.2 The pool path is one limb of this identifier, not the whole of it
+
+§3.2.1 says what the *pool* limb asserts, because the pool limb is the one with a scope limit.
+It is not the identifier's spec. §25's row points at **§5.7**, which names more start checks
+than a pool-dispatched `Scan`, and every one of them is handler-testable from recorded
+`AdmissionReview` JSON with no cluster — the same mechanism, so there is no scope limit on any
+of them and none of them inherits §3.2.1's qualifier.
+
+The Phase 1 test must cover, at minimum, each of these §5.7 paths:
+
+| §5.7 requirement | The admission case to replay |
+|---|---|
+| *"Every root or child Scan must refer to a live authorization basis, a permitted pipeline/node, and a reserved work unit"* | `Scan` CREATE with a missing, expired or revoked basis; with an unreserved work unit; with a pipeline/node the basis does not permit |
+| *"checks Scan CREATE and security-relevant UPDATE operations"* | `Scan` UPDATE mutating scan type, template, command or environment override, init container, volume or service account — each individually, and each **denied** |
+| *"validates target annotations against generated parameters and immutable target lists"* | `Scan` CREATE whose target annotation disagrees with the generated parameters, and one that reaches a destination outside the immutable list |
+| *"Apply the same authorization/reservation check to scanner Job admission, including pool Jobs"* | `Job` CREATE in a tenant namespace and in the pool namespace, with and without a reserved work unit |
+| *"protect descendant Pod creation and retries"* | descendant `Pod` CREATE under an admitted `Job`; a retry `Job`/`Pod` after the original attempt |
+| *"Permit only operator-managed workload creation through RBAC and admission"* | a direct workload `CREATE` by a non-operator service account — **denied** |
+| *"New execution after revocation must be refused"* | `Scan` and `Job` CREATE after the basis is revoked — **denied**, and the §5.7 cancellation limb is `vf-operator`'s behaviour, not admission's |
+| *"Admission success must not consume a unit or cause external side effects during dry-run"* | `dryRun` admission, asserting no reservation and no side effect — this is ADR-0002 §4.2's `admission/workload-gate-dryrun` feeding in |
+| The pool limb | §3.2.1 |
+
+**This is still one test function.** The §25 mapping is injective and stays so: these are cases
+in one table-driven function, not nine functions. A reviewer counting functions per identifier
+should count one.
+
+**What Phase 2 adds is still only §3.2.1's residue** — that the live pool dispatcher reaches the
+API server through the webhook. Phase 2 does not owe a second round of the rows above, because
+a cluster adds nothing to a decision the handler makes from the request it is handed
+(ADR-0002 §7.1(d)). Delayed starts, infrastructure retries and revocation are all in the table
+above and are all discharged in Phase 1, as admission decisions. Their *deployment* residue is
+R1, R2 and R6 in ADR-0002 §7, carried as accepted risk, and the identifier is not held open for
+them — §7.1(d) is explicit that the middle column says what a cluster would *add* to a green,
+not that the green is incomplete.
 
 ### 3.3 The eight ADR-derived identifiers (VUL-23, Ledger)
 
@@ -292,27 +329,44 @@ VUL-6  workspace + pins + CI gates (Forge)
  │
  ├─ VUL-24 vf-core ────┐
  ├─ VUL-25 vf-authz ───┼──← VUL-7
- ├─ VUL-26 vf-graph ───┤
  ├─ VUL-28 vf-meter pure ┘
+ ├─ VUL-26 vf-graph ──← VUL-7, VUL-22
  ├─ VUL-27 vf-db schema ──← VUL-22
  ├─ VUL-15 SCB CRD types
- │    ├─ VUL-29 vf-translator
- │    └─ VUL-36 vf-operator
+ │    ├─ VUL-29 vf-translator ──← VUL-22
+ │    └─ VUL-36 vf-operator ──← VUL-22
  ├─ VUL-13 TenantTx ──← VUL-22, VUL-23, VUL-27
- ├─ VUL-14 S3 constructor ──← VUL-23
+ ├─ VUL-14 S3 constructor ──← VUL-22, VUL-23
  ├─ VUL-12 vf-admission ──← VUL-22, VUL-23
  ├─ VUL-11 OpenAPI emission ──← VUL-23
  ├─ VUL-16 vf-hook-notify ──← VUL-23
- ├─ VUL-30 vf-api auth ──← VUL-25
- ├─ VUL-31/32 vf-api targets, dispatcher ──← VUL-27
- ├─ VUL-33 vf-api SSE
- ├─ VUL-34 vf-meter service ──← VUL-27, VUL-28
- ├─ VUL-35 vf-ingest ──← VUL-27
+ ├─ VUL-30 vf-api auth ──← VUL-22, VUL-25
+ ├─ VUL-31/32 vf-api targets, dispatcher ──← VUL-22, VUL-27
+ ├─ VUL-33 vf-api SSE ──← VUL-22
+ ├─ VUL-34 vf-meter service ──← VUL-22, VUL-27, VUL-28
+ ├─ VUL-35 vf-ingest ──← VUL-22, VUL-23, VUL-27
  └─ VUL-37 Crucible: the 35-identifier ledger ──← VUL-7, VUL-22, VUL-23
 
 VUL-8  walking skeleton epic ──← all 23 of the above
 VUL-9  infra go/no-go (CEO) ──← VUL-8
 ```
+
+**Rule 2 is applied to every node, not to some of them.** An implementation node carries an
+edge to **VUL-7** if any identifier it must turn green is Scribe's (§3.1), to **VUL-22** if any
+is Ledger's (§3.2), and to **VUL-23** if any is an ADR-derived confirmation (§3.3). An earlier
+revision of this graph applied that unevenly — `vf-api` SSE had no test edge at all, and
+`vf-ingest`, `vf-api` auth, the dispatcher, `vf-meter`'s service, `vf-graph`, `vf-translator`
+and `vf-operator` were each missing the Ledger edge for identifiers §3.2 assigns to them.
+A missing edge here is not a presentational defect: rule 2 is the mechanism that keeps tests
+ahead of code, so an implementation node with no test edge is a node whose code may land first.
+
+**Two deliberate exceptions, both on VUL-6.** `build/rust-supply-chain` and
+`perf/service-baseline` are Ledger identifiers (§3.2) about the workspace VUL-6 builds, so an
+edge would make VUL-6 depend on a node that depends on VUL-6. Rule 1 resolves it: VUL-6 lands
+first with the gates themselves — `cargo-deny`, `cargo audit`, the SBOM, `#![forbid(unsafe_code)]`
+— and the two identifiers are authored against them afterwards, under VUL-22. **VUL-6 is the
+one place in this plan where code precedes its test**, and it is recorded here rather than left
+to look like an oversight.
 
 VUL-37 is deliberately **not** blocked on the implementation issues. Its job is to publish the
 ledger, and a ledger that reads all-red the first time it runs is doing exactly what it is
