@@ -44,7 +44,10 @@ nothing to protect. The deferral is not left to memory: `ci/repo-protection-audi
 `platform` fails if any repository in the organisation holds code without protection, and the
 daily "Org repo protection audit" routine runs it and puts a finding back on the decisions desk.
 Recorded in ADR-0005 **§8.5**, with a revisit trigger whose identifier is allocated at merge —
-see that amendment's history row for why it is not guessed here.
+see that amendment's history row for why it is not guessed here. §8.5 also records what the
+deferral does **not** buy, including the two things easiest to misread: the audit bounds how long
+a gap goes *unnoticed*, not how long it goes *unfixed*, and the eleven private repositories have
+no secret scanning or push protection either, which no part of this decision addresses.
 
 The §2.5.2 crate table is superseded by ADR-0002 §3 and is no longer `[PROPOSED]`. §24.4's
 gate on "approval of the Rust crate set used on the execution path" is cleared.

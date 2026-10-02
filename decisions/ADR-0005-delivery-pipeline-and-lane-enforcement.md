@@ -277,10 +277,12 @@ proceeding on one verdict relabelled as two.
 10. **The eleven private repositories are unprotected, and stay that way until something is
     pushed into one.** The board deferred the fix on 2026-10-02 (§8.5). The first push into a
     `vf-*` or `scanners` repository creates a repository holding code whose `main` is directly
-    writable, force-pushable and admin-bypassable, with no required checks. It converts the
-    deferral into an open decision; the daily audit is what raises it, within a day, whether or
-    not the agent that pushed noticed. Nobody may treat that state as acceptable because it was
-    deferred — deferral was granted for *empty* repositories.
+    writable, force-pushable and admin-bypassable, with no required checks — and, because §8.1's
+    secret scanning and push protection are available only on a public repository, with no
+    credential guard on the push either. It converts the deferral into an open decision; the daily
+    audit is what raises it, within a day, whether or not the agent that pushed noticed. Nobody may
+    treat that state as acceptable because it was deferred — deferral was granted for *empty*
+    repositories.
 
 ---
 
@@ -448,10 +450,21 @@ one:
 sections other open amendments are rewriting.** They are named here so they are reviewed rather
 than absorbed:
 
-1. `audit-self-test` is **not yet a required check** on `platform`. Making a check required
-   before its job exists on `main` blocks every open pull request whose branch predates it, on a
-   check that can never report. The `PUT` is CEO's and comes after platform#8 merges. Until then
-   §4's table is correct as it stands and this check is reporting only.
+1. **`audit-self-test` is a reporting check until someone makes it required, and §4's table is
+   the only thing that says which it is.** Making a check required before its job exists on
+   `main` blocks every open pull request whose branch predates it, on a check that can never
+   report — so the `PUT` is CEO's and it comes after platform#8 merges. That is a sequence, and a
+   record that dates itself to one point in a sequence is wrong at every other point: a sentence
+   saying "five required checks" is false before the `PUT`, and a sentence saying "four" is false
+   after it. Neither is written here. The obligation is written instead, and it is one sentence:
+   **the `PUT` that adds `audit-self-test` to `required_status_checks.contexts` is not finished
+   until §4's table lists five checks and §8.2's `platform` row lists five contexts.** Whoever
+   executes it owns both edits in the same sitting. Two things to get right when the row goes in:
+   §4's lead sentence says every check lives in `ci/lane-gate.sh` and the fifth does not — it is
+   `ci/repo-protection-audit-test.sh`, so the sentence needs widening and not just a row — and §4
+   is the section amendment 5 (docs#36) is already rewriting, so whichever of the two lands second
+   carries the reconciliation. Until §4 says five, it is describing four required checks
+   correctly, and `audit-self-test` reports without blocking.
 2. Classifying `ci/repo-protection-audit.sh` and its harness as **GATE** is proposed in
    platform#8 and is **not** recorded in §4.2 here. It is the same question §4.4 (docs#33) and
    §4.5 (docs#36) are deciding for detector/harness pairs under `ci/**`, and §4.5's position is
@@ -463,11 +476,45 @@ than absorbed:
    §4 and §7 item 4 belongs to amendment 5, which is rewriting both.
 
 **What this decision does not buy.** The eleven repositories are not protected, and the audit does
-not protect them — it notices. Between a push landing and the answer to the card it raises, `main`
-in that repository is directly writable, force-pushable and admin-bypassable, and the lanes there
-are advisory. The audit shortens that window to at most a day; it does not close it. Closing it
-costs either roughly $4 a month (option A) or that repository's privacy (option B), and the board
-has decided to pay neither until there is something to protect.
+not protect them — it notices. Three things follow from that, and each of them is a limit on the
+control rather than on the decision.
+
+*It bounds detection. It does not bound the answer.* The routine runs daily at 07:00 UTC, so a push
+becomes a card on the decisions desk within about twenty-four hours of landing. What happens after
+that has no bound on it at all: it is the same A/B/C choice, which has been open since 2026-10-01
+and has already been deferred once — by this amendment. So there are two windows and only the first
+one is closed. Push → card is at most a day. Card → answer is open-ended, and for the whole of it
+`main` in that repository is directly writable, force-pushable and admin-bypassable, and the lanes
+there are advisory. Reading "we will see it within a day" as "it is closed within a day" is the
+specific error this paragraph exists to prevent, and the shortest correction to it is that the audit
+guarantees nobody can say they did not know.
+
+*The eleven have no credential guard either, and that is the larger exposure.* §8.1 records that
+secret scanning and push protection were enabled on the four public repositories — which the Free
+plan allows only once a repository is public — and calls push protection "the part that matters
+going forward". The eleven private ones therefore have neither. So the first push into one of them
+does not merely land on an unprotected `main`: it lands with nothing inspecting it for a credential,
+into a repository whose history then cannot be rewritten clean by anyone who respects §8.2's
+`allow_force_pushes: false`. For a pre-GA security product that is a worse outcome than the
+branch-protection gap, and it is the one the audit cannot see at all — the audit reads protection
+settings, not blobs. Nothing in this decision addresses it. Both routes out of it are the same two
+that close the protection gap, because both of them turn on the plan or on the visibility.
+
+*The audit tests less of §8.2 than its own failure text claims.* It evaluates `enforce_admins`,
+`allow_force_pushes`, `allow_deletions`, and whether a repository that has workflows has zero
+required checks. It does **not** read `required_pull_request_reviews` — so a repository whose
+protection object exists but requires no pull request at all reads `ok` — nor
+`dismiss_stale_reviews`, nor `required_status_checks.strict`. That is three of §8.2's six settings
+and neither of the two `platform`-only rows. This is recorded as a **defect in
+`ci/repo-protection-audit.sh`, not a narrowing of §8.2**: §8.2 is unchanged and remains the
+standard the organisation is held to. Closing it is CEO's, under R2's surviving mechanical half,
+and each missing setting earns a fixture in `ci/repo-protection-audit-test.sh` before it earns a
+line of fix — the same rule R-next states for any other audit defect. Until it is closed,
+`0 gap(s)` means *no repository failed the four things this audit tests*. It does not mean *the
+organisation conforms to §8.2*, and the two sentences must not be used interchangeably.
+
+Closing the protection gap itself costs either roughly $4 a month (option A) or that repository's
+privacy (option B), and the board has decided to pay neither until there is something to protect.
 
 ---
 
@@ -531,8 +578,14 @@ Named, so this record is revisited on evidence rather than on mood.
   risk. Two responses are **not** acceptable — publishing the repository without the §8.1
   pre-publication check, and widening the audit's tolerance until it reads green. If the audit is
   wrong, that is a defect in `ci/repo-protection-audit.sh` and it earns a fixture in
-  `ci/repo-protection-audit-test.sh` before it earns a fix. Stand the routine down when every
-  repository holding code is protected; the audit itself stays, as R2's mechanical half.
+  `ci/repo-protection-audit-test.sh` before it earns a fix. **The routine does not stand down
+  when the gap closes.** It is the only thing that runs the audit — §8.5 records why the audit
+  cannot be a pull-request check — so standing it down retires R2's mechanical half with it, which
+  is the half R2 was just upgraded to from "whoever adds the first workflow remembers". When every
+  repository holding code is protected, drop the *cadence* to weekly and record the drop here; the
+  routine itself is retired only by R1 or R7, which change who administers protection and
+  therefore what is worth asking. Equally, a `GAP` that has been answered is closed by changing
+  the repository, never by standing the routine down to stop it being asked.
   *(Identifier deliberately unallocated — see the amendment-history row. Four amendments with
   unmerged `R`-number allocations are open; amendment 6's own row records what collided last time
   this was guessed. Whoever merges this assigns the next free number and updates the three
@@ -563,4 +616,4 @@ Named, so this record is revisited on evidence rather than on mood.
 |---|---|---|
 | — | 2026-10-01 | Accepted as recorded. |
 | 1 | 2026-10-01 | **The §8 plan question is decided: the board chose option B.** The four active repositories are public, branch protection is applied to all four with `enforce_admins: true`, and `platform`'s four lane-gate checks are required. §3.2 rewritten as a resolved constraint; §7 items 8–9 replaced; §8 rewritten as a decision with the pre-publication secret scan (§8.1), the applied settings and why zero required approvals (§8.2), the disclosure cost (§8.3) and two observed refusals (§8.4); R2 closed and narrowed to wiring checks per repository; R7 added as the route back to private. §7 item 4 corrected: 21 fixture verdicts, not 17. Recorded by CEO under VUL-2. |
-| **(number unallocated)** | 2026-10-02 | **The eleven private repositories are decided: the board deferred, and the deferral has a control.** New **§8.5** — the decision; why deferring is defensible while all eleven answer `409 Git Repository is empty`; exactly when that expires; `ci/repo-protection-audit.sh` and the daily "Org repo protection audit" routine as the thing that notices, demonstrated against nineteen asserted verdicts over fixture organisations because it cannot be demonstrated live without creating the gap it looks for, six of them added from the lane-6 review and four of those six cases where the first draft returned a clean verdict having examined nothing; and what the decision does **not** buy — the audit notices, it does not protect, and the window between a push and an answer is up to a day wide. New **§7 item 10**. One new revisit trigger, **identifier unallocated**. `decisions/README.md` gains the closed-decision paragraph. **Scope held deliberately narrow.** §4, §4.2 and §7 item 4 are **not touched**, although the work behind this amendment bears on all three: `audit-self-test` is a reporting check until CEO wires it after platform#8 merges, the GATE classification of the audit pair is the question §4.4 (docs#33) and §4.5 (docs#36) are deciding and §8.5 records it as a proposal rather than as a decision, and the lane-gate harness's assertion count moves with platform#8 but reconciling §4's and §7's numbers belongs to amendment 5, which is rewriting both. **The amendment number and the trigger identifier are left unallocated on purpose.** Amendments 2 through 6 are allocated on four unmerged pull requests (docs#32, #33, #36, #37) and a seventh is drafting on VUL-105; amendment 6's own row records what happened the last time two branches each guessed an `R` number. Whoever merges this allocates both and updates the references. Drafted by CEO under VUL-2, in a scratch clone rather than the managed `docs` workspace, by a run holding the `platform` workspace — which is outside the §2.3.2 control and is disclosed here rather than left to be found. The §9 bootstrap exception does **not** cover it: all nine hires are approved, so it goes through lane 6 and lane 7 like any other change, and Atlas owns the framing. |
+| **(number unallocated)** | 2026-10-02 | **The eleven private repositories are decided: the board deferred, and the deferral has a control.** New **§8.5** — the decision; why deferring is defensible while all eleven answer `409 Git Repository is empty`; exactly when that expires; `ci/repo-protection-audit.sh` and the daily "Org repo protection audit" routine as the thing that notices, demonstrated against nineteen asserted verdicts over fixture organisations because it cannot be demonstrated live without creating the gap it looks for, six of them added from the lane-6 review and four of those six cases where the first draft returned a clean verdict having examined nothing; and what the decision does **not** buy — the audit notices, it does not protect, and the window between a push and an answer is up to a day wide. New **§7 item 10**. One new revisit trigger, **identifier unallocated**. `decisions/README.md` gains the closed-decision paragraph. **Scope held deliberately narrow.** §4, §4.2 and §7 item 4 are **not touched**, although the work behind this amendment bears on all three: `audit-self-test` is a reporting check until CEO wires it after platform#8 merges, the GATE classification of the audit pair is the question §4.4 (docs#33) and §4.5 (docs#36) are deciding and §8.5 records it as a proposal rather than as a decision, and the lane-gate harness's assertion count moves with platform#8 but reconciling §4's and §7's numbers belongs to amendment 5, which is rewriting both. **The amendment number and the trigger identifier are left unallocated on purpose.** Amendments 2 through 6 are allocated on four unmerged pull requests (docs#32, #33, #36, #37) and a seventh is drafting on VUL-105; amendment 6's own row records what happened the last time two branches each guessed an `R` number. Whoever merges this allocates both and updates the references. Drafted by CEO under VUL-2, in a scratch clone rather than the managed `docs` workspace, by a run holding the `platform` workspace — which is outside the §2.3.2 control and is disclosed here rather than left to be found. The §9 bootstrap exception does **not** cover it: all nine hires are approved, so it goes through lane 6 and lane 7 like any other change, and Atlas owns the framing. **Rewritten by Atlas on the same pull request after the lane-6 review, rather than merged and amended, because the findings were against the framing and that is Atlas's to fix.** Four changes, all inside §8.5 and R-next, none of them to the decision: (a) §8.5's `audit-self-test` item no longer dates itself to a moment in the merge/`PUT` sequence — it states the obligation instead, that the `PUT` is unfinished until §4 lists five checks and §8.2's `platform` row lists five contexts, and it names the §4 lead sentence as needing widening and not just a row, since the fifth check does not live in `ci/lane-gate.sh`; (b) "what this decision does not buy" now separates the two windows, because the daily routine bounds *detection* at about a day and bounds the *answer* at nothing; (c) the same paragraph records that the eleven private repositories have no secret scanning and no push protection either, which §8.1 enabled only on the four public ones, and states plainly that this is the larger exposure and that the audit cannot see it; (d) the same paragraph records that the audit evaluates three of §8.2's six settings and neither `platform` row — it does not read `required_pull_request_reviews`, `dismiss_stale_reviews` or `required_status_checks.strict` — recorded as a defect in the script and explicitly **not** as a narrowing of §8.2, with the fixture-before-fix rule attached; and (e) R-next no longer says to stand the routine down when the gap closes, which would have retired R2's mechanical half with it — the cadence drops to weekly instead, and only R1 or R7 retire the routine. Counts in this row and in §8.5 were read from platform#8 at head `777cb91`, not from the head the review ran against. |

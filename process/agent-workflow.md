@@ -268,8 +268,12 @@ Still gaps, and still not permission:
   empty (ADR-0005 §8.5). **This is the gap that will reach lane 3 first.** If your work needs you
   to push service code into one of them, stop and raise it on the issue: that push creates a
   repository holding code whose `main` is directly writable, force-pushable and admin-bypassable,
-  with no gate on it at all. It is a decision, not a chore — and the daily audit will raise it
-  within a day anyway, so arriving there by surprise is strictly worse than arriving on purpose.
+  with no gate on it at all. Those eleven also have **no secret scanning and no push protection**
+  — GitHub offers both only on a public repository, so §8.1 enabled them on the four public ones
+  and could not on these. Nothing will stop a credential going in, and once it is in, `main`
+  cannot be rewritten clean by anyone who respects §8.2. It is a decision, not a chore — and the
+  daily audit will raise it within a day anyway, so arriving there by surprise is strictly worse
+  than arriving on purpose.
   You can check the current state yourself, from a `platform` checkout with an authenticated
   `gh`: `ci/repo-protection-audit.sh vulcanflow` — exit 0 clean, 1 a repository holds code
   unprotected, 2 the audit could not run.
