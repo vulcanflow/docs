@@ -182,7 +182,7 @@ R1, R2 and R6 in ADR-0002 §7, carried as accepted risk, and the identifier is n
 them — §7.1(d) is explicit that the middle column says what a cluster would *add* to a green,
 not that the green is incomplete.
 
-#### 3.2.3 §8.3's cancellation limb has no §25 identifier at all — named here, fixed in the TDD
+#### 3.2.3 §8.3's cancellation limb has no §25 identifier at all — named here, still open in the TDD
 
 Raised at review against §3.2.2's revocation row: that row says the §5.7 cancellation limb is
 `vf-operator`'s behaviour and not admission's, and then never says which identifier asserts it. The
