@@ -5,6 +5,9 @@ Authoritative project documentation for VulcanFlow — a multi-tenant SaaS secur
 ## Source of truth
 
 - [Technical Design Document v2.2](./VulcanFlow_Technical_Design_Document_v2.2.md) — architecture, components, phasing, open items
+- [Development Plan](./VulcanFlow_Development_Plan.md) — accepted development plan (Paperclip VFL-1, revision 2)
+- [Architecture](./VulcanFlow_Architecture.md) — Option B `platform` workspace: component inventory, crate ownership, interface contracts, data model, local-first test strategy, pinned toolchain proposal, security invariants, open owner decisions (Paperclip VFL-8)
+- [Task Matrix](./VulcanFlow_Task_Matrix.md) — projects and first coding tasks derived from the architecture, with cross-project dependencies (Paperclip VFL-8)
 
 ## Repository architecture (polyrepo)
 
