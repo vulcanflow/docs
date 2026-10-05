@@ -1,5 +1,5 @@
 {
-  "lastRunAt": "2026-10-05T21:35:39Z",
+  "lastRunAt": "2026-10-05T22:03:48Z",
   "phases": {
     "p1_foundation": {
       "label": "1 Foundation",
@@ -129,8 +129,7 @@
       "tasks": [
         "VFL-50",
         "VFL-51",
-        "VFL-52",
-        "VFL-53"
+        "VFL-52"
       ]
     }
   },
@@ -479,25 +478,18 @@
       "project": "web"
     },
     "VFL-51": {
-      "status": "backlog",
+      "status": "cancelled",
       "completedAt": null,
       "title": "PROBE",
       "assignee": null,
       "project": null
     },
     "VFL-52": {
-      "status": "in_progress",
-      "completedAt": null,
+      "status": "done",
+      "completedAt": "2026-10-05T21:35:57.245Z",
       "title": "F1 scaffold complete at d61b43f \u2014 carries the VFL-9 report (my run cannot write to VFL-9), two decisions for Cortana",
       "assignee": "Cortana",
       "project": "platform-foundation"
-    },
-    "VFL-53": {
-      "status": "in_progress",
-      "completedAt": null,
-      "title": "Progress tracker update",
-      "assignee": "Guilty Spark",
-      "project": "progress-and-docs"
     }
   }
 }
