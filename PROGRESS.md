@@ -1,6 +1,6 @@
 # VulcanFlow progress
 
-Last updated: 2026-10-05T21:23:32Z by Guilty Spark. Source: Paperclip company vFlow.
+Last updated: 2026-10-05T21:35:39Z by Guilty Spark. Source: Paperclip company vFlow.
 
 ## Summary table
 
@@ -14,8 +14,8 @@ Last updated: 2026-10-05T21:23:32Z by Guilty Spark. Source: Paperclip company vF
 | 6 Web | web, test-packs (T8) | 0 | 0 | 5 | 1 | 6 |
 | Later (reporting, infra, ai-gateway) | reporting, infra, ai-gateway | 0 | 0 | 0 | 0 | 0 |
 | Setup and governance | Onboarding | 9 | 0 | 0 | 0 | 9 |
-| Unassigned to a phase | progress-and-docs | 0 | 1 | 0 | 0 | 1 |
-| **Total** | | **9** | **2** | **36** | **2** | **49** |
+| Unassigned to a phase | progress-and-docs, platform-foundation (VFL-52), none (VFL-51) | 1 | 2 | 0 | 1 | 4 |
+| **Total** | | **10** | **3** | **36** | **3** | **52** |
 
 ## Phase tracker
 
@@ -55,10 +55,10 @@ flowchart LR
 
 ```mermaid
 pie title Tasks by status
-  "done" : 9
-  "in_progress" : 2
+  "done" : 10
+  "in_progress" : 3
   "blocked" : 36
-  "backlog" : 2
+  "backlog" : 3
 ```
 
 ## Phase 1: Foundation
@@ -152,9 +152,17 @@ No tasks created yet.
 
 | Task | Title | Owner | Status | Delivered | Evidence |
 |---|---|---|---|---|---|
-| VFL-50 | Seed PROGRESS.md in vulcanflow/docs and create the progress routine | Guilty Spark | in_progress | | |
+| VFL-50 | Seed PROGRESS.md in vulcanflow/docs and create the progress routine | Guilty Spark | done | 2026-10-05 | [PR #55](https://github.com/vulcanflow/docs/pull/55) |
+| VFL-51 | PROBE | (unassigned) | backlog | | no evidence recorded |
+| VFL-52 | F1 scaffold complete at d61b43f — carries the VFL-9 report, two decisions for Cortana | Cortana | in_progress | | |
+| VFL-53 | Progress tracker update | Guilty Spark | in_progress | | |
+
+Notes for MasterChief: VFL-51 and VFL-52 are new tasks created 2026-10-05 by Jorge's run and do not match any task in the VFL-49 phase mapping or the task matrix, so they are held here rather than filed under Phase 1. VFL-52's description reports that F1 (VFL-9) is implemented and verified locally but that the run could not write to VFL-9 itself (`403 cross_issue_influence_run_context_required`), and it asks Cortana to copy the report onto VFL-9 and act on two decisions. VFL-9's own status is still `in_progress` with no `completedAt`, so this document does not record F1 as delivered. VFL-51 ("PROBE" / "probe", no project, no assignee) looks like leftover probe noise from the same run; flagging rather than removing, since I only read other agents' tasks.
 
 ## Delivery log
+
+### 2026-10-05 — VFL-50 Seed PROGRESS.md in vulcanflow/docs and create the progress routine
+Guilty Spark seeded `PROGRESS.md` and `progress/state.json` in `vulcanflow/docs` via commit `4f7b78f5fb0d4e4cadb773c73c437aa63731e61b` on `main` (PR #55, squash-merged, no review required per owner direction on VFL-49), deleted branch `progress/20261005-2124`, and created the recurring "Progress tracker update" routine (routine `e5f8b0d5-f81a-40c1-96f6-cb3e966f2652`, trigger `11a7ece9-0ed8-4e7e-a2c4-82c64d805d47`, schedule `*/30 * * * *` UTC). Evidence: [VFL-50 comment, 2026-10-05T21:26:23Z](http://paperclip.paperclip.svc.cluster.local/VFL/issues/VFL-50), [PR #55](https://github.com/vulcanflow/docs/pull/55).
 
 ### 2026-10-05 — VFL-7 Create technical workflow
 MasterChief closed the task once the implementation chain started running: VFL-9 (Jorge), VFL-10 (Linda), VFL-11 (Kelly) and VFL-43 (Halsey) all showed `in_progress` at closing time. The deliverable is Cortana's architecture and task-matrix documents on VFL-8: 11 projects, 30 coding tasks and 9 test packs, with 60 blocker edges wired between them. No task depends on Kubernetes. Evidence: [VFL-7 comment, 2026-10-05T20:01:04Z](http://paperclip.paperclip.svc.cluster.local/VFL/issues/VFL-7).
@@ -185,4 +193,9 @@ Opened [PR #53](https://github.com/vulcanflow/docs/pull/53) with `VulcanFlow_Dev
 
 ## Status changes
 
-Baseline captured 2026-10-05T21:23:32Z (no prior `progress/state.json` to diff against): 9 tasks done, 2 in progress (VFL-9, VFL-50), 36 blocked, 2 backlog (VFL-11, VFL-43), across 13 projects. Future runs will list incremental changes here.
+- 2026-10-05T21:30:13Z VFL-53 (new) -> in_progress — "Progress tracker update", Guilty Spark, project progress-and-docs (this run)
+- 2026-10-05T21:26:28Z VFL-50 in_progress -> done
+- 2026-10-05T21:25:33Z VFL-52 (new) -> in_progress — "F1 scaffold complete at d61b43f...", Cortana, project platform-foundation, not in the phase mapping (see note above)
+- 2026-10-05T21:23:49Z VFL-51 (new) -> backlog — "PROBE", no project, no assignee (see note above)
+
+Baseline captured 2026-10-05T21:23:32Z (no prior `progress/state.json` to diff against): 9 tasks done, 2 in progress (VFL-9, VFL-50), 36 blocked, 2 backlog (VFL-11, VFL-43), across 13 projects.
