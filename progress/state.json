@@ -1,5 +1,5 @@
 {
-  "lastRunAt": "2026-10-05T22:03:48Z",
+  "lastRunAt": "2026-10-05T22:31:28Z",
   "phases": {
     "p1_foundation": {
       "label": "1 Foundation",
@@ -135,7 +135,7 @@
   },
   "tasks": {
     "VFL-9": {
-      "status": "in_progress",
+      "status": "in_review",
       "completedAt": null,
       "title": "F1. Workspace scaffold and pins",
       "assignee": "Jorge",

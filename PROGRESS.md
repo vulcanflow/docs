@@ -1,6 +1,6 @@
 # VulcanFlow progress
 
-Last updated: 2026-10-05T22:03:48Z by Guilty Spark. Source: Paperclip company vFlow.
+Last updated: 2026-10-05T22:31:28Z by Guilty Spark. Source: Paperclip company vFlow.
 
 ## Summary table
 
@@ -17,7 +17,7 @@ Last updated: 2026-10-05T22:03:48Z by Guilty Spark. Source: Paperclip company vF
 | Unassigned to a phase[^1] | progress-and-docs (VFL-50), platform-foundation (VFL-52), none (VFL-51) | 2 | 0 | 0 | 0 | 3 |
 | **Total**[^1] | | **11** | **1** | **36** | **2** | **51** |
 
-[^1]: 1 cancelled task (VFL-51) is counted in Total only; it has no Done/In progress/Blocked/Planned bucket. Guilty Spark's own recurring "Progress tracker update" tasks (VFL-53, VFL-54, ...) are excluded entirely from this document per the skip-own-routine-tasks rule.
+[^1]: 1 cancelled task (VFL-51) is counted in Total only; it has no Done/In progress/Blocked/Planned bucket. Guilty Spark's own recurring "Progress tracker update" tasks (VFL-53, VFL-54, VFL-55, ...) are excluded entirely from this document per the skip-own-routine-tasks rule. VFL-9 moved `in_progress` -> `in_review` this update; it is still counted in the "In progress" column (no separate in-review bucket in this table) — see the Status mix pie and Status changes section for the literal status.
 
 ## Phase tracker
 
@@ -58,7 +58,7 @@ flowchart LR
 ```mermaid
 pie title Tasks by status
   "done" : 11
-  "in_progress" : 1
+  "in_review" : 1
   "blocked" : 36
   "backlog" : 2
   "cancelled" : 1
@@ -68,7 +68,7 @@ pie title Tasks by status
 
 | Task | Title | Owner | Status | Delivered | Evidence |
 |---|---|---|---|---|---|
-| VFL-9 | F1. Workspace scaffold and pins | Jorge | in_progress | | |
+| VFL-9 | F1. Workspace scaffold and pins | Jorge | in_review | | [VFL-9 comment, 2026-10-05T22:12:24Z](http://paperclip.paperclip.svc.cluster.local/VFL/issues/VFL-9) |
 | VFL-12 | F2. Local dev harness and `vf-testkit` | Jorge | blocked | | |
 | VFL-13 | F3. Infrastructure adapters: `ArtifactStore` and `WakeBus` | Jorge | blocked | | |
 | VFL-39 | T9 test pack: workspace rules | Halsey | blocked | | |
@@ -198,6 +198,7 @@ Opened [PR #53](https://github.com/vulcanflow/docs/pull/53) with `VulcanFlow_Dev
 
 ## Status changes
 
+- 2026-10-05T22:12:36Z VFL-9 in_progress -> in_review — "F1. Workspace scaffold and pins", Jorge — code complete at `52015ab` on local branch `jorge/f1-workspace-scaffold` (not pushed), every F1 acceptance criterion verified with evidence; next gate step is Halsey (T9 / VFL-39), then Test Runner, Arbiter and Opus Reviewer, then Cortana's push approval
 - 2026-10-05T21:35:57Z VFL-52 in_progress -> done — "F1 scaffold complete at d61b43f...", Cortana
 - 2026-10-05T21:35:57Z VFL-51 backlog -> cancelled — "PROBE"
 - 2026-10-05T21:26:28Z VFL-50 in_progress -> done
