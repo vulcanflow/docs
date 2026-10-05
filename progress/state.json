@@ -1,0 +1,479 @@
+{
+  "lastRunAt": "2026-10-05T21:23:32Z",
+  "phases": {
+    "p1_foundation": {
+      "label": "1 Foundation",
+      "projects": [
+        "platform-foundation",
+        "test-packs"
+      ],
+      "tasks": [
+        "VFL-9",
+        "VFL-12",
+        "VFL-13",
+        "VFL-39"
+      ]
+    },
+    "p2_libraries": {
+      "label": "2 Libraries",
+      "projects": [
+        "core-libraries",
+        "graph-and-execution-contracts",
+        "test-packs"
+      ],
+      "tasks": [
+        "VFL-14",
+        "VFL-15",
+        "VFL-17",
+        "VFL-20",
+        "VFL-21",
+        "VFL-16",
+        "VFL-19",
+        "VFL-18",
+        "VFL-22",
+        "VFL-23",
+        "VFL-40",
+        "VFL-41",
+        "VFL-42",
+        "VFL-44",
+        "VFL-45"
+      ]
+    },
+    "p3_api": {
+      "label": "3 API",
+      "projects": [
+        "api",
+        "test-packs"
+      ],
+      "tasks": [
+        "VFL-24",
+        "VFL-28",
+        "VFL-31",
+        "VFL-29",
+        "VFL-46"
+      ]
+    },
+    "p4_execution": {
+      "label": "4 Execution",
+      "projects": [
+        "scanners",
+        "operator-and-ingest",
+        "test-packs"
+      ],
+      "tasks": [
+        "VFL-11",
+        "VFL-38",
+        "VFL-25",
+        "VFL-26",
+        "VFL-30",
+        "VFL-27",
+        "VFL-32",
+        "VFL-47"
+      ]
+    },
+    "p5_findings_api": {
+      "label": "5 Findings API",
+      "projects": [
+        "api"
+      ],
+      "tasks": [
+        "VFL-33"
+      ]
+    },
+    "p6_web": {
+      "label": "6 Web",
+      "projects": [
+        "web",
+        "test-packs"
+      ],
+      "tasks": [
+        "VFL-10",
+        "VFL-34",
+        "VFL-35",
+        "VFL-36",
+        "VFL-37",
+        "VFL-43"
+      ]
+    },
+    "later": {
+      "label": "Later (reporting, infra, ai-gateway)",
+      "projects": [
+        "reporting",
+        "infra",
+        "ai-gateway"
+      ],
+      "tasks": []
+    },
+    "setup_and_governance": {
+      "label": "Setup and governance",
+      "projects": [
+        "onboarding"
+      ],
+      "tasks": [
+        "VFL-1",
+        "VFL-2",
+        "VFL-3",
+        "VFL-4",
+        "VFL-5",
+        "VFL-6",
+        "VFL-7",
+        "VFL-8",
+        "VFL-48"
+      ]
+    },
+    "unassigned": {
+      "label": "Unassigned to a phase",
+      "projects": [
+        "progress-and-docs"
+      ],
+      "tasks": [
+        "VFL-50"
+      ]
+    }
+  },
+  "tasks": {
+    "VFL-9": {
+      "status": "in_progress",
+      "completedAt": null,
+      "title": "F1. Workspace scaffold and pins",
+      "assignee": "Jorge",
+      "project": "platform-foundation"
+    },
+    "VFL-10": {
+      "status": "blocked",
+      "completedAt": null,
+      "title": "W1. SPA scaffold, auth, generated client, mock server",
+      "assignee": "Linda",
+      "project": "web"
+    },
+    "VFL-11": {
+      "status": "backlog",
+      "completedAt": null,
+      "title": "S1. Scanner output and SCB parser fixture corpus",
+      "assignee": "Kelly",
+      "project": "scanners"
+    },
+    "VFL-42": {
+      "status": "blocked",
+      "completedAt": null,
+      "title": "T3 test pack: graph, parity, translator",
+      "assignee": "Halsey",
+      "project": "test-packs"
+    },
+    "VFL-41": {
+      "status": "blocked",
+      "completedAt": null,
+      "title": "T2 test pack: scope and canonicalization",
+      "assignee": "Halsey",
+      "project": "test-packs"
+    },
+    "VFL-40": {
+      "status": "blocked",
+      "completedAt": null,
+      "title": "T1 test pack: core state and accounting",
+      "assignee": "Halsey",
+      "project": "test-packs"
+    },
+    "VFL-39": {
+      "status": "blocked",
+      "completedAt": null,
+      "title": "T9 test pack: workspace rules",
+      "assignee": "Halsey",
+      "project": "test-packs"
+    },
+    "VFL-31": {
+      "status": "blocked",
+      "completedAt": null,
+      "title": "A3. Dispatcher module, outbox worker, run and usage endpoints",
+      "assignee": "Fred",
+      "project": "api"
+    },
+    "VFL-30": {
+      "status": "blocked",
+      "completedAt": null,
+      "title": "O3. `ScanFlow` reconcile loop",
+      "assignee": "Jorge",
+      "project": "operator-and-ingest"
+    },
+    "VFL-25": {
+      "status": "blocked",
+      "completedAt": null,
+      "title": "O1. `ScanRuntime` implementations and the local `ExecutionBackend`",
+      "assignee": "Jorge",
+      "project": "operator-and-ingest"
+    },
+    "VFL-24": {
+      "status": "blocked",
+      "completedAt": null,
+      "title": "A1. API skeleton: app, OpenAPI, auth, roles, tenant context, errors",
+      "assignee": "Fred",
+      "project": "api"
+    },
+    "VFL-20": {
+      "status": "blocked",
+      "completedAt": null,
+      "title": "C4. `vf-meter` accounting library",
+      "assignee": "Fred",
+      "project": "core-libraries"
+    },
+    "VFL-18": {
+      "status": "blocked",
+      "completedAt": null,
+      "title": "G3. `vf-authz`: Track A challenges, basis lifecycle, start-barrier decision",
+      "assignee": "Kelly",
+      "project": "graph-and-execution-contracts"
+    },
+    "VFL-17": {
+      "status": "blocked",
+      "completedAt": null,
+      "title": "C3. `vf-db` schemas, migrations, `TenantTx`, repositories, outbox",
+      "assignee": "Fred",
+      "project": "core-libraries"
+    },
+    "VFL-16": {
+      "status": "blocked",
+      "completedAt": null,
+      "title": "G1. `vf-graph` validator, schema and WASM export",
+      "assignee": "Kelly",
+      "project": "graph-and-execution-contracts"
+    },
+    "VFL-15": {
+      "status": "blocked",
+      "completedAt": null,
+      "title": "C2. `vf-core::scope`: canonical hosts, scope matching, IPv4 destinations",
+      "assignee": "Kelly",
+      "project": "core-libraries"
+    },
+    "VFL-14": {
+      "status": "blocked",
+      "completedAt": null,
+      "title": "C1. `vf-core` identities, state machines, policy and Problem catalogue",
+      "assignee": "Fred",
+      "project": "core-libraries"
+    },
+    "VFL-13": {
+      "status": "blocked",
+      "completedAt": null,
+      "title": "F3. Infrastructure adapters: `ArtifactStore` and `WakeBus`",
+      "assignee": "Jorge",
+      "project": "platform-foundation"
+    },
+    "VFL-12": {
+      "status": "blocked",
+      "completedAt": null,
+      "title": "F2. Local dev harness and `vf-testkit`",
+      "assignee": "Jorge",
+      "project": "platform-foundation"
+    },
+    "VFL-8": {
+      "status": "done",
+      "completedAt": "2026-10-05T19:49:29.166Z",
+      "title": "Architecture documentation and first coding task list (from approved plan)",
+      "assignee": "Cortana",
+      "project": null
+    },
+    "VFL-50": {
+      "status": "in_progress",
+      "completedAt": null,
+      "title": "Seed PROGRESS.md in vulcanflow/docs and create the progress routine",
+      "assignee": "Guilty Spark",
+      "project": "progress-and-docs"
+    },
+    "VFL-43": {
+      "status": "backlog",
+      "completedAt": null,
+      "title": "T8 test pack: web",
+      "assignee": "Halsey",
+      "project": "test-packs"
+    },
+    "VFL-7": {
+      "status": "done",
+      "completedAt": "2026-10-05T20:01:04.840Z",
+      "title": "create technical workflow",
+      "assignee": "MasterChief",
+      "project": null
+    },
+    "VFL-47": {
+      "status": "blocked",
+      "completedAt": null,
+      "title": "T6 test pack: execution loop and ingest",
+      "assignee": "Halsey",
+      "project": "test-packs"
+    },
+    "VFL-46": {
+      "status": "blocked",
+      "completedAt": null,
+      "title": "T7 test pack: API contract",
+      "assignee": "Halsey",
+      "project": "test-packs"
+    },
+    "VFL-45": {
+      "status": "blocked",
+      "completedAt": null,
+      "title": "T5 test pack: authorization, barrier, admission",
+      "assignee": "Halsey",
+      "project": "test-packs"
+    },
+    "VFL-44": {
+      "status": "blocked",
+      "completedAt": null,
+      "title": "T4 test pack: data isolation and adapters",
+      "assignee": "Halsey",
+      "project": "test-packs"
+    },
+    "VFL-36": {
+      "status": "blocked",
+      "completedAt": null,
+      "title": "W4. Findings table, remediation panel, triage, verification action",
+      "assignee": "Linda",
+      "project": "web"
+    },
+    "VFL-35": {
+      "status": "blocked",
+      "completedAt": null,
+      "title": "W3. Run submission, live progress and usage",
+      "assignee": "Linda",
+      "project": "web"
+    },
+    "VFL-34": {
+      "status": "blocked",
+      "completedAt": null,
+      "title": "W2. Targets and authorization UI",
+      "assignee": "Linda",
+      "project": "web"
+    },
+    "VFL-33": {
+      "status": "blocked",
+      "completedAt": null,
+      "title": "A5. Findings, triage, false-positive decisions, verification submission",
+      "assignee": "Fred",
+      "project": "api"
+    },
+    "VFL-32": {
+      "status": "blocked",
+      "completedAt": null,
+      "title": "I2. Artifact parse, fresh observations, false-positive matching, settlement",
+      "assignee": "Jorge",
+      "project": "operator-and-ingest"
+    },
+    "VFL-29": {
+      "status": "blocked",
+      "completedAt": null,
+      "title": "A4. SSE streams and durable pipeline events",
+      "assignee": "Fred",
+      "project": "api"
+    },
+    "VFL-28": {
+      "status": "blocked",
+      "completedAt": null,
+      "title": "A2. Targets, projects and authorization endpoints",
+      "assignee": "Fred",
+      "project": "api"
+    },
+    "VFL-27": {
+      "status": "blocked",
+      "completedAt": null,
+      "title": "I1. Notification verification and the ingest service shell",
+      "assignee": "Jorge",
+      "project": "operator-and-ingest"
+    },
+    "VFL-26": {
+      "status": "blocked",
+      "completedAt": null,
+      "title": "O2. Tenant provisioning (local provisioner and CLI)",
+      "assignee": "Jorge",
+      "project": "operator-and-ingest"
+    },
+    "VFL-23": {
+      "status": "blocked",
+      "completedAt": null,
+      "title": "G5. `vf-scanner-adapter` and `vf-hook-notify`",
+      "assignee": "Kelly",
+      "project": "graph-and-execution-contracts"
+    },
+    "VFL-22": {
+      "status": "blocked",
+      "completedAt": null,
+      "title": "G4. `vf-admission` validating handler",
+      "assignee": "Kelly",
+      "project": "graph-and-execution-contracts"
+    },
+    "VFL-21": {
+      "status": "blocked",
+      "completedAt": null,
+      "title": "C5. `vf-remediation` library: guidance resolution, verification plan and outcome",
+      "assignee": "Fred",
+      "project": "core-libraries"
+    },
+    "VFL-19": {
+      "status": "blocked",
+      "completedAt": null,
+      "title": "G2. `vf-translator`: candidates, typed SCB objects, argv builders",
+      "assignee": "Kelly",
+      "project": "graph-and-execution-contracts"
+    },
+    "VFL-5": {
+      "status": "done",
+      "completedAt": "2026-10-05T18:36:41.929Z",
+      "title": "check GitHub org repositories",
+      "assignee": "MasterChief",
+      "project": null
+    },
+    "VFL-6": {
+      "status": "done",
+      "completedAt": "2026-10-05T18:31:15.362Z",
+      "title": "Architect audit: vulcanflow GitHub repositories (keep / create / remove)",
+      "assignee": "Cortana",
+      "project": null
+    },
+    "VFL-3": {
+      "status": "done",
+      "completedAt": "2026-10-05T18:03:17.375Z",
+      "title": "Hire the agents to work on this project.",
+      "assignee": "MasterChief",
+      "project": null
+    },
+    "VFL-4": {
+      "status": "done",
+      "completedAt": "2026-10-05T16:31:18.914Z",
+      "title": "Install coderabbit skill",
+      "assignee": "MasterChief",
+      "project": null
+    },
+    "VFL-1": {
+      "status": "done",
+      "completedAt": "2026-10-05T15:39:11.139Z",
+      "title": "Paperclip onboarding",
+      "assignee": "MasterChief",
+      "project": "onboarding"
+    },
+    "VFL-2": {
+      "status": "done",
+      "completedAt": "2026-10-05T14:04:56.921Z",
+      "title": "push the plan to GitHub using the existing connection",
+      "assignee": "MasterChief",
+      "project": null
+    },
+    "VFL-48": {
+      "status": "done",
+      "completedAt": "2026-10-05T19:55:39.476Z",
+      "title": "Append related-task links to the remaining 19 VulcanFlow tasks",
+      "assignee": "MasterChief",
+      "project": null
+    },
+    "VFL-38": {
+      "status": "blocked",
+      "completedAt": null,
+      "title": "S2. Local scanner image definitions for the skeleton pipeline",
+      "assignee": "Kelly",
+      "project": "scanners"
+    },
+    "VFL-37": {
+      "status": "blocked",
+      "completedAt": null,
+      "title": "W5. `vf-graph` WASM packaging and browser parity harness",
+      "assignee": "Linda",
+      "project": "web"
+    }
+  }
+}
