@@ -1,5 +1,5 @@
 {
-  "lastRunAt": "2026-10-06T21:35:20Z",
+  "lastRunAt": "2026-10-06T22:10:00Z",
   "phases": {
     "p1_foundation": {
       "label": "1 Foundation",
@@ -23,7 +23,16 @@
         "VFL-168",
         "VFL-169",
         "VFL-170",
-        "VFL-171"
+        "VFL-171",
+        "VFL-178",
+        "VFL-179",
+        "VFL-180",
+        "VFL-181",
+        "VFL-182",
+        "VFL-183",
+        "VFL-184",
+        "VFL-188",
+        "VFL-189"
       ]
     },
     "p2_libraries": {
@@ -223,14 +232,21 @@
         "VFL-160",
         "VFL-165",
         "VFL-173",
-        "VFL-175"
+        "VFL-175",
+        "VFL-176",
+        "VFL-177",
+        "VFL-185",
+        "VFL-186",
+        "VFL-187",
+        "VFL-190",
+        "VFL-191"
       ]
     }
   },
   "tasks": {
     "VFL-159": {
-      "status": "in_progress",
-      "completedAt": null,
+      "status": "done",
+      "completedAt": "2026-10-06T21:42:53.429Z",
       "title": "Test Runner: required suites on VFL-142 toolchain bootstrap (aa3fa71)",
       "assignee": "Test Runner",
       "project": "core-libraries"
@@ -329,7 +345,7 @@
     "VFL-52": {
       "status": "done",
       "completedAt": "2026-10-05T21:35:57.245Z",
-      "title": "F1 scaffold complete at d61b43f — carries the VFL-9 report (my run cannot write to VFL-9), two decisions for Cortana",
+      "title": "F1 scaffold complete at d61b43f \u2014 carries the VFL-9 report (my run cannot write to VFL-9), two decisions for Cortana",
       "assignee": "Cortana",
       "project": "platform-foundation"
     },
@@ -343,7 +359,7 @@
     "VFL-12": {
       "status": "blocked",
       "completedAt": null,
-      "title": "F2. Local dev harness and vf-testkit",
+      "title": "F2. Local dev harness and `vf-testkit`",
       "assignee": "Jorge",
       "project": "platform-foundation"
     },
@@ -434,7 +450,7 @@
     "VFL-113": {
       "status": "blocked",
       "completedAt": null,
-      "title": "T1b test pack: vf-meter accounting — reserve/settle/release, admission, ledger (covers C4)",
+      "title": "T1b test pack: vf-meter accounting \u2014 reserve/settle/release, admission, ledger (covers C4)",
       "assignee": "Halsey",
       "project": "test-packs"
     },
@@ -742,7 +758,7 @@
     "VFL-78": {
       "status": "done",
       "completedAt": "2026-10-06T10:33:26.997Z",
-      "title": "Architect ruling: §A5 revision 4 TLS sentence vs the reqwest rustls-no-provider row",
+      "title": "Architect ruling: \u00a7A5 revision 4 TLS sentence vs the reqwest rustls-no-provider row",
       "assignee": "Cortana",
       "project": "platform-foundation"
     },
@@ -926,7 +942,7 @@
       "completedAt": "2026-10-05T15:39:11.139Z",
       "title": "Paperclip onboarding",
       "assignee": "MasterChief",
-      "project": "Onboarding"
+      "project": "onboarding"
     },
     "VFL-2": {
       "status": "done",
@@ -973,7 +989,7 @@
     "VFL-98": {
       "status": "done",
       "completedAt": "2026-10-06T11:40:01.593Z",
-      "title": "§A5 ruling: keep both cargo-deny advisories and cargo-audit in `just check`, or collapse to one",
+      "title": "\u00a7A5 ruling: keep both cargo-deny advisories and cargo-audit in `just check`, or collapse to one",
       "assignee": "Cortana",
       "project": "platform-foundation"
     },
@@ -1050,7 +1066,7 @@
     "VFL-115": {
       "status": "done",
       "completedAt": "2026-10-06T14:01:07.885Z",
-      "title": "Opus Reviewer review: VFL-82 README §A5 revision citation (470c2a0)",
+      "title": "Opus Reviewer review: VFL-82 README \u00a7A5 revision citation (470c2a0)",
       "assignee": "Opus Reviewer",
       "project": "platform-foundation"
     },
@@ -1113,14 +1129,14 @@
     "VFL-114": {
       "status": "done",
       "completedAt": "2026-10-06T12:54:02.077Z",
-      "title": "Arbiter review: VFL-82 README §A5 revision citation (470c2a0)",
+      "title": "Arbiter review: VFL-82 README \u00a7A5 revision citation (470c2a0)",
       "assignee": "Arbiter",
       "project": "platform-foundation"
     },
     "VFL-82": {
       "status": "blocked",
       "completedAt": null,
-      "title": "README: cite §A5 revision 5, not revision 4",
+      "title": "README: cite \u00a7A5 revision 5, not revision 4",
       "assignee": "Jorge",
       "project": "platform-foundation"
     },
@@ -1141,14 +1157,14 @@
     "VFL-81": {
       "status": "backlog",
       "completedAt": null,
-      "title": "T9 assertion: per-binary rustls `ring` provider (§A5 rev 5)",
+      "title": "T9 assertion: per-binary rustls `ring` provider (\u00a7A5 rev 5)",
       "assignee": "Halsey",
       "project": "platform-foundation"
     },
     "VFL-80": {
       "status": "backlog",
       "completedAt": null,
-      "title": "graph-rules rule 3: every TLS-initiating binary resolves rustls `ring` on its own (§A5 rev 5)",
+      "title": "graph-rules rule 3: every TLS-initiating binary resolves rustls `ring` on its own (\u00a7A5 rev 5)",
       "assignee": "Jorge",
       "project": "platform-foundation"
     },
@@ -1174,16 +1190,16 @@
       "project": "web"
     },
     "VFL-162": {
-      "status": "blocked",
+      "status": "in_progress",
       "completedAt": null,
-      "title": "F2a. Dev harness: compose stand-ins, .env.example, just recipes",
+      "title": "F2a. Dev harness: compose stand-ins, `.env.example`, `just` recipes",
       "assignee": "Jorge",
       "project": "platform-foundation"
     },
     "VFL-163": {
-      "status": "in_progress",
+      "status": "blocked",
       "completedAt": null,
-      "title": "F2b. vf-testkit: TestDb, fixtures, clock, ids, token, entitlements",
+      "title": "F2b. `vf-testkit`: TestDb, fixtures, clock, ids, token, entitlements",
       "assignee": "Jorge",
       "project": "platform-foundation"
     },
@@ -1230,17 +1246,129 @@
       "project": "platform-foundation"
     },
     "VFL-173": {
-      "status": "in_progress",
-      "completedAt": null,
-      "title": "§A5 ruling: RUSTSEC-2023-0071 (`rsa` via jsonwebtoken `rust_crypto`): exception or alternative",
+      "status": "done",
+      "completedAt": "2026-10-06T21:33:38.233Z",
+      "title": "\u00a7A5 ruling: RUSTSEC-2023-0071 (`rsa` via jsonwebtoken `rust_crypto`): exception or alternative",
       "assignee": "Cortana",
       "project": "platform-foundation"
     },
     "VFL-175": {
-      "status": "in_progress",
-      "completedAt": null,
+      "status": "done",
+      "completedAt": "2026-10-06T21:35:14.460Z",
       "title": "Decide: MinIO pin remediation for F2a review MEDIUM-2 (VFL-162)",
       "assignee": "Cortana",
+      "project": "platform-foundation"
+    },
+    "VFL-191": {
+      "status": "in_progress",
+      "completedAt": null,
+      "title": "VFL-142 delivery: merge the PR for aa3fa71",
+      "assignee": "Cortana",
+      "project": "core-libraries"
+    },
+    "VFL-190": {
+      "status": "done",
+      "completedAt": "2026-10-06T22:03:05.741Z",
+      "title": "VFL-142 delivery: push aa3fa71 and open the PR to main",
+      "assignee": "Jorge",
+      "project": "core-libraries"
+    },
+    "VFL-187": {
+      "status": "done",
+      "completedAt": "2026-10-06T21:55:55.695Z",
+      "title": "Push approval: VFL-142 toolchain bootstrap at aa3fa71",
+      "assignee": "Cortana",
+      "project": "core-libraries"
+    },
+    "VFL-189": {
+      "status": "blocked",
+      "completedAt": null,
+      "title": "F2b acceptance: `TestDb` integration run (T4a) on a container runtime (VFL-163)",
+      "assignee": "Test Runner",
+      "project": "platform-foundation"
+    },
+    "VFL-188": {
+      "status": "blocked",
+      "completedAt": null,
+      "title": "T4a: `vf-testkit` bootstrap test, `TestDb` smoke on the `integration` feature (F2b, VFL-163)",
+      "assignee": "Halsey",
+      "project": "test-packs"
+    },
+    "VFL-180": {
+      "status": "done",
+      "completedAt": "2026-10-06T22:04:39.832Z",
+      "title": "Test Runner: required runs on F2a dev harness final candidate 47990fb (VFL-162)",
+      "assignee": "Test Runner",
+      "project": "platform-foundation"
+    },
+    "VFL-179": {
+      "status": "done",
+      "completedAt": "2026-10-06T22:02:12.881Z",
+      "title": "Opus Reviewer: review F2a dev harness final candidate 47990fb (VFL-162)",
+      "assignee": "Opus Reviewer",
+      "project": "platform-foundation"
+    },
+    "VFL-183": {
+      "status": "in_progress",
+      "completedAt": null,
+      "title": "Test Runner: required runs on F2b vf-testkit candidate 2a2d1a7 (VFL-163)",
+      "assignee": "Test Runner",
+      "project": "platform-foundation"
+    },
+    "VFL-181": {
+      "status": "done",
+      "completedAt": "2026-10-06T21:57:44.550Z",
+      "title": "CodeRabbit review: F2b vf-testkit candidate 2a2d1a7 (VFL-163)",
+      "assignee": "Arbiter",
+      "project": "platform-foundation"
+    },
+    "VFL-184": {
+      "status": "done",
+      "completedAt": "2026-10-06T21:53:13.947Z",
+      "title": "Decide: F2b push gate while T4 is blocked on C1/C2 and no runner has a container runtime (VFL-163)",
+      "assignee": "Cortana",
+      "project": "platform-foundation"
+    },
+    "VFL-178": {
+      "status": "done",
+      "completedAt": "2026-10-06T21:52:40.905Z",
+      "title": "CodeRabbit review: F2a dev harness final candidate 47990fb (VFL-162)",
+      "assignee": "Arbiter",
+      "project": "platform-foundation"
+    },
+    "VFL-182": {
+      "status": "in_progress",
+      "completedAt": null,
+      "title": "Opus Reviewer: review F2b vf-testkit candidate 2a2d1a7 (VFL-163)",
+      "assignee": "Opus Reviewer",
+      "project": "platform-foundation"
+    },
+    "VFL-186": {
+      "status": "blocked",
+      "completedAt": null,
+      "title": "resolve-debs.py: count resolved virtual providers, verify InRelease digests, retry fetches",
+      "assignee": "Jorge",
+      "project": "core-libraries"
+    },
+    "VFL-185": {
+      "status": "blocked",
+      "completedAt": null,
+      "title": "Bootstrap: verify cc before publishing a toolchain tree, gate --env-only on cargo, bound the lock wait",
+      "assignee": "Jorge",
+      "project": "core-libraries"
+    },
+    "VFL-177": {
+      "status": "backlog",
+      "completedAt": null,
+      "title": "Decide: project-controlled image mirror for the \u00a7A5 compose pin set (MinIO digest first)",
+      "assignee": "MasterChief",
+      "project": "platform-foundation"
+    },
+    "VFL-176": {
+      "status": "backlog",
+      "completedAt": null,
+      "title": "\u00a7A5 follow-up: retire the RUSTSEC-2023-0071 (`rsa` Marvin) exception when a patched `rsa` ships",
+      "assignee": "Jorge",
       "project": "platform-foundation"
     }
   }
