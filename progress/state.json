@@ -1,5 +1,5 @@
 {
-  "lastRunAt": "2026-10-06T11:01:30Z",
+  "lastRunAt": "2026-10-06T11:47:57Z",
   "phases": {
     "p1_foundation": {
       "label": "1 Foundation",
@@ -151,7 +151,21 @@
         "VFL-83",
         "VFL-84",
         "VFL-85",
-        "VFL-87"
+        "VFL-87",
+        "VFL-88",
+        "VFL-89",
+        "VFL-90",
+        "VFL-91",
+        "VFL-92",
+        "VFL-93",
+        "VFL-94",
+        "VFL-95",
+        "VFL-96",
+        "VFL-97",
+        "VFL-98",
+        "VFL-99",
+        "VFL-101",
+        "VFL-102"
       ]
     }
   },
@@ -161,133 +175,133 @@
       "completedAt": null,
       "title": "F1. Workspace scaffold and pins",
       "assignee": "Jorge",
-      "project": "platform-foundation"
+      "project": "91740a68-0dd1-47b4-935f-9ab08f4c5669"
     },
     "VFL-10": {
       "status": "blocked",
       "completedAt": null,
       "title": "W1. SPA scaffold, auth, generated client, mock server",
       "assignee": "Linda",
-      "project": "web"
+      "project": "4a2e2884-3cd3-4140-a2d3-16b38914c683"
     },
     "VFL-11": {
       "status": "backlog",
       "completedAt": null,
       "title": "S1. Scanner output and SCB parser fixture corpus",
       "assignee": "Kelly",
-      "project": "scanners"
+      "project": "83ace746-4cf9-4b48-8d6e-f9230280e328"
     },
     "VFL-42": {
       "status": "blocked",
       "completedAt": null,
       "title": "T3 test pack: graph, parity, translator",
       "assignee": "Halsey",
-      "project": "test-packs"
+      "project": "bec0abaa-6ade-4267-826e-05903dab3dff"
     },
     "VFL-41": {
       "status": "blocked",
       "completedAt": null,
       "title": "T2 test pack: scope and canonicalization",
       "assignee": "Halsey",
-      "project": "test-packs"
+      "project": "bec0abaa-6ade-4267-826e-05903dab3dff"
     },
     "VFL-40": {
       "status": "blocked",
       "completedAt": null,
       "title": "T1 test pack: core state and accounting",
       "assignee": "Halsey",
-      "project": "test-packs"
+      "project": "bec0abaa-6ade-4267-826e-05903dab3dff"
     },
     "VFL-39": {
       "status": "done",
       "completedAt": "2026-10-06T08:44:12.906Z",
       "title": "T9 test pack: workspace rules",
       "assignee": "Halsey",
-      "project": "test-packs"
+      "project": "bec0abaa-6ade-4267-826e-05903dab3dff"
     },
     "VFL-31": {
       "status": "blocked",
       "completedAt": null,
       "title": "A3. Dispatcher module, outbox worker, run and usage endpoints",
       "assignee": "Fred",
-      "project": "api"
+      "project": "e8db2522-34f2-4a5e-b764-4f6e20a95471"
     },
     "VFL-30": {
       "status": "blocked",
       "completedAt": null,
       "title": "O3. `ScanFlow` reconcile loop",
       "assignee": "Jorge",
-      "project": "operator-and-ingest"
+      "project": "6b33380d-e29e-43b9-abde-0a191afb3920"
     },
     "VFL-25": {
       "status": "blocked",
       "completedAt": null,
       "title": "O1. `ScanRuntime` implementations and the local `ExecutionBackend`",
       "assignee": "Jorge",
-      "project": "operator-and-ingest"
+      "project": "6b33380d-e29e-43b9-abde-0a191afb3920"
     },
     "VFL-24": {
       "status": "blocked",
       "completedAt": null,
       "title": "A1. API skeleton: app, OpenAPI, auth, roles, tenant context, errors",
       "assignee": "Fred",
-      "project": "api"
+      "project": "e8db2522-34f2-4a5e-b764-4f6e20a95471"
     },
     "VFL-20": {
       "status": "blocked",
       "completedAt": null,
       "title": "C4. `vf-meter` accounting library",
       "assignee": "Fred",
-      "project": "core-libraries"
+      "project": "1e4d751c-3ada-47c7-aabe-e8cb40bc897e"
     },
     "VFL-18": {
       "status": "blocked",
       "completedAt": null,
       "title": "G3. `vf-authz`: Track A challenges, basis lifecycle, start-barrier decision",
       "assignee": "Kelly",
-      "project": "graph-and-execution-contracts"
+      "project": "44554fc9-52e4-4b16-814c-16d5d5e51c57"
     },
     "VFL-17": {
       "status": "blocked",
       "completedAt": null,
       "title": "C3. `vf-db` schemas, migrations, `TenantTx`, repositories, outbox",
       "assignee": "Fred",
-      "project": "core-libraries"
+      "project": "1e4d751c-3ada-47c7-aabe-e8cb40bc897e"
     },
     "VFL-16": {
       "status": "blocked",
       "completedAt": null,
       "title": "G1. `vf-graph` validator, schema and WASM export",
       "assignee": "Kelly",
-      "project": "graph-and-execution-contracts"
+      "project": "44554fc9-52e4-4b16-814c-16d5d5e51c57"
     },
     "VFL-15": {
       "status": "blocked",
       "completedAt": null,
       "title": "C2. `vf-core::scope`: canonical hosts, scope matching, IPv4 destinations",
       "assignee": "Kelly",
-      "project": "core-libraries"
+      "project": "1e4d751c-3ada-47c7-aabe-e8cb40bc897e"
     },
     "VFL-14": {
       "status": "blocked",
       "completedAt": null,
       "title": "C1. `vf-core` identities, state machines, policy and Problem catalogue",
       "assignee": "Fred",
-      "project": "core-libraries"
+      "project": "1e4d751c-3ada-47c7-aabe-e8cb40bc897e"
     },
     "VFL-13": {
       "status": "blocked",
       "completedAt": null,
       "title": "F3. Infrastructure adapters: `ArtifactStore` and `WakeBus`",
       "assignee": "Jorge",
-      "project": "platform-foundation"
+      "project": "91740a68-0dd1-47b4-935f-9ab08f4c5669"
     },
     "VFL-12": {
       "status": "blocked",
       "completedAt": null,
       "title": "F2. Local dev harness and `vf-testkit`",
       "assignee": "Jorge",
-      "project": "platform-foundation"
+      "project": "91740a68-0dd1-47b4-935f-9ab08f4c5669"
     },
     "VFL-8": {
       "status": "done",
@@ -301,14 +315,14 @@
       "completedAt": "2026-10-05T21:26:28.848Z",
       "title": "Seed PROGRESS.md in vulcanflow/docs and create the progress routine",
       "assignee": "Guilty Spark",
-      "project": "progress-and-docs"
+      "project": "c38f8495-f564-4816-b305-9518483d7162"
     },
     "VFL-43": {
       "status": "backlog",
       "completedAt": null,
       "title": "T8 test pack: web",
       "assignee": "Halsey",
-      "project": "test-packs"
+      "project": "bec0abaa-6ade-4267-826e-05903dab3dff"
     },
     "VFL-7": {
       "status": "done",
@@ -322,119 +336,119 @@
       "completedAt": null,
       "title": "T6 test pack: execution loop and ingest",
       "assignee": "Halsey",
-      "project": "test-packs"
+      "project": "bec0abaa-6ade-4267-826e-05903dab3dff"
     },
     "VFL-46": {
       "status": "blocked",
       "completedAt": null,
       "title": "T7 test pack: API contract",
       "assignee": "Halsey",
-      "project": "test-packs"
+      "project": "bec0abaa-6ade-4267-826e-05903dab3dff"
     },
     "VFL-45": {
       "status": "blocked",
       "completedAt": null,
       "title": "T5 test pack: authorization, barrier, admission",
       "assignee": "Halsey",
-      "project": "test-packs"
+      "project": "bec0abaa-6ade-4267-826e-05903dab3dff"
     },
     "VFL-44": {
       "status": "blocked",
       "completedAt": null,
       "title": "T4 test pack: data isolation and adapters",
       "assignee": "Halsey",
-      "project": "test-packs"
+      "project": "bec0abaa-6ade-4267-826e-05903dab3dff"
     },
     "VFL-36": {
       "status": "blocked",
       "completedAt": null,
       "title": "W4. Findings table, remediation panel, triage, verification action",
       "assignee": "Linda",
-      "project": "web"
+      "project": "4a2e2884-3cd3-4140-a2d3-16b38914c683"
     },
     "VFL-35": {
       "status": "blocked",
       "completedAt": null,
       "title": "W3. Run submission, live progress and usage",
       "assignee": "Linda",
-      "project": "web"
+      "project": "4a2e2884-3cd3-4140-a2d3-16b38914c683"
     },
     "VFL-34": {
       "status": "blocked",
       "completedAt": null,
       "title": "W2. Targets and authorization UI",
       "assignee": "Linda",
-      "project": "web"
+      "project": "4a2e2884-3cd3-4140-a2d3-16b38914c683"
     },
     "VFL-33": {
       "status": "blocked",
       "completedAt": null,
       "title": "A5. Findings, triage, false-positive decisions, verification submission",
       "assignee": "Fred",
-      "project": "api"
+      "project": "e8db2522-34f2-4a5e-b764-4f6e20a95471"
     },
     "VFL-32": {
       "status": "blocked",
       "completedAt": null,
       "title": "I2. Artifact parse, fresh observations, false-positive matching, settlement",
       "assignee": "Jorge",
-      "project": "operator-and-ingest"
+      "project": "6b33380d-e29e-43b9-abde-0a191afb3920"
     },
     "VFL-29": {
       "status": "blocked",
       "completedAt": null,
       "title": "A4. SSE streams and durable pipeline events",
       "assignee": "Fred",
-      "project": "api"
+      "project": "e8db2522-34f2-4a5e-b764-4f6e20a95471"
     },
     "VFL-28": {
       "status": "blocked",
       "completedAt": null,
       "title": "A2. Targets, projects and authorization endpoints",
       "assignee": "Fred",
-      "project": "api"
+      "project": "e8db2522-34f2-4a5e-b764-4f6e20a95471"
     },
     "VFL-27": {
       "status": "blocked",
       "completedAt": null,
       "title": "I1. Notification verification and the ingest service shell",
       "assignee": "Jorge",
-      "project": "operator-and-ingest"
+      "project": "6b33380d-e29e-43b9-abde-0a191afb3920"
     },
     "VFL-26": {
       "status": "blocked",
       "completedAt": null,
       "title": "O2. Tenant provisioning (local provisioner and CLI)",
       "assignee": "Jorge",
-      "project": "operator-and-ingest"
+      "project": "6b33380d-e29e-43b9-abde-0a191afb3920"
     },
     "VFL-23": {
       "status": "blocked",
       "completedAt": null,
       "title": "G5. `vf-scanner-adapter` and `vf-hook-notify`",
       "assignee": "Kelly",
-      "project": "graph-and-execution-contracts"
+      "project": "44554fc9-52e4-4b16-814c-16d5d5e51c57"
     },
     "VFL-22": {
       "status": "blocked",
       "completedAt": null,
       "title": "G4. `vf-admission` validating handler",
       "assignee": "Kelly",
-      "project": "graph-and-execution-contracts"
+      "project": "44554fc9-52e4-4b16-814c-16d5d5e51c57"
     },
     "VFL-21": {
       "status": "blocked",
       "completedAt": null,
       "title": "C5. `vf-remediation` library: guidance resolution, verification plan and outcome",
       "assignee": "Fred",
-      "project": "core-libraries"
+      "project": "1e4d751c-3ada-47c7-aabe-e8cb40bc897e"
     },
     "VFL-19": {
       "status": "blocked",
       "completedAt": null,
       "title": "G2. `vf-translator`: candidates, typed SCB objects, argv builders",
       "assignee": "Kelly",
-      "project": "graph-and-execution-contracts"
+      "project": "44554fc9-52e4-4b16-814c-16d5d5e51c57"
     },
     "VFL-5": {
       "status": "done",
@@ -469,7 +483,7 @@
       "completedAt": "2026-10-05T15:39:11.139Z",
       "title": "Paperclip onboarding",
       "assignee": "MasterChief",
-      "project": "onboarding"
+      "project": "1570400b-1648-4af5-87d9-8e1dfd03350c"
     },
     "VFL-2": {
       "status": "done",
@@ -490,14 +504,14 @@
       "completedAt": null,
       "title": "S2. Local scanner image definitions for the skeleton pipeline",
       "assignee": "Kelly",
-      "project": "scanners"
+      "project": "83ace746-4cf9-4b48-8d6e-f9230280e328"
     },
     "VFL-37": {
       "status": "blocked",
       "completedAt": null,
       "title": "W5. `vf-graph` WASM packaging and browser parity harness",
       "assignee": "Linda",
-      "project": "web"
+      "project": "4a2e2884-3cd3-4140-a2d3-16b38914c683"
     },
     "VFL-51": {
       "status": "cancelled",
@@ -511,161 +525,259 @@
       "completedAt": "2026-10-05T21:35:57.245Z",
       "title": "F1 scaffold complete at d61b43f \u2014 carries the VFL-9 report (my run cannot write to VFL-9), two decisions for Cortana",
       "assignee": "Cortana",
-      "project": "platform-foundation"
+      "project": "91740a68-0dd1-47b4-935f-9ab08f4c5669"
     },
     "VFL-58": {
       "status": "done",
       "completedAt": "2026-10-06T07:21:17.275Z",
       "title": "Take over pull request merges: confirm GitHub access, Tekton checks, update gate docs",
       "assignee": "Cortana",
-      "project": "platform-foundation"
+      "project": "91740a68-0dd1-47b4-935f-9ab08f4c5669"
     },
     "VFL-60": {
       "status": "done",
       "completedAt": "2026-10-06T10:59:55.885Z",
       "title": "Board watch: find stuck tasks and nudge owners",
-      "assignee": "MasterChief",
-      "project": "progress-and-docs"
+      "assignee": null,
+      "project": "c38f8495-f564-4816-b305-9518483d7162"
     },
     "VFL-61": {
       "status": "done",
       "completedAt": "2026-10-06T07:52:54.251Z",
       "title": "F1 rulings: reqwest feature, testcontainers, object_store, chromiumoxide on 20736f3",
       "assignee": "Cortana",
-      "project": "platform-foundation"
+      "project": "91740a68-0dd1-47b4-935f-9ab08f4c5669"
     },
     "VFL-63": {
       "status": "done",
       "completedAt": "2026-10-06T08:40:35.212Z",
       "title": "Run T9 pair 892fdf8 (test) / 20736f3 (code) with the shared toolchain",
       "assignee": "Test Runner",
-      "project": "test-packs"
+      "project": "bec0abaa-6ade-4267-826e-05903dab3dff"
     },
     "VFL-65": {
       "status": "done",
       "completedAt": "2026-10-06T09:01:07.111Z",
       "title": "T9 replay onto F1 candidate 88a2ef4",
       "assignee": "Halsey",
-      "project": "test-packs"
+      "project": "bec0abaa-6ade-4267-826e-05903dab3dff"
     },
     "VFL-66": {
       "status": "done",
       "completedAt": "2026-10-06T09:03:51.017Z",
       "title": "Run T9 against F1 pair 88a2ef4 + replayed T9",
       "assignee": "Test Runner",
-      "project": "test-packs"
+      "project": "bec0abaa-6ade-4267-826e-05903dab3dff"
     },
     "VFL-67": {
       "status": "done",
       "completedAt": "2026-10-06T09:42:35.622Z",
       "title": "Arbiter review: F1 workspace scaffold, pair 88a2ef4 + replayed T9",
       "assignee": "Arbiter",
-      "project": "platform-foundation"
+      "project": "91740a68-0dd1-47b4-935f-9ab08f4c5669"
     },
     "VFL-68": {
       "status": "done",
       "completedAt": "2026-10-06T09:44:15.880Z",
       "title": "Opus Reviewer: F1 workspace scaffold, pair 88a2ef4 + replayed T9",
       "assignee": "Opus Reviewer",
-      "project": "platform-foundation"
+      "project": "91740a68-0dd1-47b4-935f-9ab08f4c5669"
     },
     "VFL-70": {
       "status": "blocked",
       "completedAt": null,
       "title": "F1 continuation: act on Gate 4 verdicts (VFL-67, VFL-68)",
       "assignee": "Jorge",
-      "project": "platform-foundation"
+      "project": "91740a68-0dd1-47b4-935f-9ab08f4c5669"
     },
     "VFL-73": {
       "status": "done",
       "completedAt": "2026-10-06T10:38:40.279Z",
       "title": "F1 fix pass: the four MEDIUM findings from VFL-68, on jorge/f1-workspace-scaffold",
       "assignee": "Jorge",
-      "project": "platform-foundation"
+      "project": "91740a68-0dd1-47b4-935f-9ab08f4c5669"
     },
     "VFL-74": {
       "status": "done",
       "completedAt": "2026-10-06T10:32:56.627Z",
       "title": "T9 replay onto F1 candidate eab1bc5, plus the five VFL-68 coverage notes",
       "assignee": "Halsey",
-      "project": "platform-foundation"
+      "project": "91740a68-0dd1-47b4-935f-9ab08f4c5669"
     },
     "VFL-75": {
       "status": "done",
       "completedAt": "2026-10-06T10:58:57.114Z",
       "title": "Arbiter re-review: F1 pair eab1bc5 + the VFL-74 T9 replay",
       "assignee": "Arbiter",
-      "project": "platform-foundation"
+      "project": "91740a68-0dd1-47b4-935f-9ab08f4c5669"
     },
     "VFL-76": {
       "status": "done",
       "completedAt": "2026-10-06T10:41:58.003Z",
       "title": "Run T9 against F1 pair eab1bc5 + the VFL-74 replay",
       "assignee": "Test Runner",
-      "project": "platform-foundation"
+      "project": "91740a68-0dd1-47b4-935f-9ab08f4c5669"
     },
     "VFL-77": {
       "status": "done",
       "completedAt": "2026-10-06T10:45:17.704Z",
       "title": "Opus Reviewer re-review: F1 pair eab1bc5 + the VFL-74 T9 replay",
       "assignee": "Opus Reviewer",
-      "project": "platform-foundation"
+      "project": "91740a68-0dd1-47b4-935f-9ab08f4c5669"
     },
     "VFL-78": {
       "status": "done",
       "completedAt": "2026-10-06T10:33:26.997Z",
       "title": "Architect ruling: \u00a7A5 revision 4 TLS sentence vs the reqwest rustls-no-provider row",
       "assignee": "Cortana",
-      "project": "platform-foundation"
+      "project": "91740a68-0dd1-47b4-935f-9ab08f4c5669"
     },
     "VFL-80": {
       "status": "backlog",
       "completedAt": null,
       "title": "graph-rules rule 3: every TLS-initiating binary resolves rustls `ring` on its own (\u00a7A5 rev 5)",
       "assignee": "Jorge",
-      "project": "platform-foundation"
+      "project": "91740a68-0dd1-47b4-935f-9ab08f4c5669"
     },
     "VFL-81": {
       "status": "backlog",
       "completedAt": null,
       "title": "T9 assertion: per-binary rustls `ring` provider (\u00a7A5 rev 5)",
       "assignee": "Halsey",
-      "project": "platform-foundation"
+      "project": "91740a68-0dd1-47b4-935f-9ab08f4c5669"
     },
     "VFL-82": {
       "status": "backlog",
       "completedAt": null,
       "title": "README: cite \u00a7A5 revision 5, not revision 4",
       "assignee": "Jorge",
-      "project": "platform-foundation"
+      "project": "91740a68-0dd1-47b4-935f-9ab08f4c5669"
     },
     "VFL-83": {
       "status": "done",
       "completedAt": "2026-10-06T10:43:04.369Z",
       "title": "F1 push path: the code candidate and the T9 replay share one branch, so the lane gate fails",
       "assignee": "Halsey",
-      "project": "platform-foundation"
+      "project": "91740a68-0dd1-47b4-935f-9ab08f4c5669"
     },
     "VFL-84": {
       "status": "in_progress",
       "completedAt": null,
       "title": "Board watch (continuation 1): find stuck tasks and nudge owners",
       "assignee": "MasterChief",
-      "project": "progress-and-docs"
+      "project": "c38f8495-f564-4816-b305-9518483d7162"
     },
     "VFL-85": {
       "status": "blocked",
       "completedAt": null,
       "title": "CI hardening: SHA-pin the GitHub Actions in rust-check.yml and lane-gate.yml",
       "assignee": "Jorge",
-      "project": "platform-foundation"
+      "project": "91740a68-0dd1-47b4-935f-9ab08f4c5669"
     },
     "VFL-87": {
-      "status": "in_progress",
+      "status": "backlog",
       "completedAt": null,
       "title": "T9: NO_IO_CRATES covers 4 of the 7 crates graph-rules.sh checks, and does not split by target",
       "assignee": "Halsey",
-      "project": "platform-foundation"
+      "project": "91740a68-0dd1-47b4-935f-9ab08f4c5669"
+    },
+    "VFL-97": {
+      "status": "in_progress",
+      "completedAt": null,
+      "title": "F1 CI fix: just check audit step fails on fresh runners (PR #11 rust-check red)",
+      "assignee": "Jorge",
+      "project": "91740a68-0dd1-47b4-935f-9ab08f4c5669"
+    },
+    "VFL-88": {
+      "status": "blocked",
+      "completedAt": null,
+      "title": "F1 delivery: merge the production PR for eab1bc5",
+      "assignee": "Cortana",
+      "project": "91740a68-0dd1-47b4-935f-9ab08f4c5669"
+    },
+    "VFL-94": {
+      "status": "done",
+      "completedAt": "2026-10-06T11:38:45.472Z",
+      "title": "Run T9 against F1 pair c7e8776 + the re-parented test commit",
+      "assignee": "Test Runner",
+      "project": "91740a68-0dd1-47b4-935f-9ab08f4c5669"
+    },
+    "VFL-96": {
+      "status": "done",
+      "completedAt": "2026-10-06T11:22:04.219Z",
+      "title": "Opus Reviewer re-review: F1 pair c7e8776 + the re-parented T9 commit",
+      "assignee": "Opus Reviewer",
+      "project": "91740a68-0dd1-47b4-935f-9ab08f4c5669"
+    },
+    "VFL-95": {
+      "status": "done",
+      "completedAt": "2026-10-06T11:21:05.442Z",
+      "title": "Arbiter re-review: F1 pair c7e8776 + the re-parented T9 commit",
+      "assignee": "Arbiter",
+      "project": "91740a68-0dd1-47b4-935f-9ab08f4c5669"
+    },
+    "VFL-91": {
+      "status": "blocked",
+      "completedAt": null,
+      "title": "F1 delivery: merge the test-only PR and close VFL-9",
+      "assignee": "Cortana",
+      "project": "91740a68-0dd1-47b4-935f-9ab08f4c5669"
+    },
+    "VFL-90": {
+      "status": "blocked",
+      "completedAt": null,
+      "title": "F1 tests push: cherry-pick c46c777 onto new main and open the test-only PR",
+      "assignee": "Halsey",
+      "project": "91740a68-0dd1-47b4-935f-9ab08f4c5669"
+    },
+    "VFL-89": {
+      "status": "done",
+      "completedAt": "2026-10-06T11:15:37.578Z",
+      "title": "F1 push: publish jorge/f1-workspace-scaffold at eab1bc5 and open the production PR",
+      "assignee": "Jorge",
+      "project": "91740a68-0dd1-47b4-935f-9ab08f4c5669"
+    },
+    "VFL-93": {
+      "status": "done",
+      "completedAt": "2026-10-06T11:15:16.520Z",
+      "title": "T9 re-parent onto F1 candidate c7e8776 (deny.toml advisory-db root fix)",
+      "assignee": "Halsey",
+      "project": "91740a68-0dd1-47b4-935f-9ab08f4c5669"
+    },
+    "VFL-99": {
+      "status": "in_review",
+      "completedAt": null,
+      "title": "CI executor: reconcile the architecture text (Tekton) with the real gate executor (GitHub Actions)",
+      "assignee": "Cortana",
+      "project": "91740a68-0dd1-47b4-935f-9ab08f4c5669"
+    },
+    "VFL-98": {
+      "status": "done",
+      "completedAt": "2026-10-06T11:40:01.593Z",
+      "title": "\u00a7A5 ruling: keep both cargo-deny advisories and cargo-audit in `just check`, or collapse to one",
+      "assignee": "Cortana",
+      "project": "91740a68-0dd1-47b4-935f-9ab08f4c5669"
+    },
+    "VFL-102": {
+      "status": "blocked",
+      "completedAt": null,
+      "title": "Advisory passes: record the VFL-98 ruling in justfile/deny.toml, `$CARGO_HOME` root, `unsound = \"all\"`",
+      "assignee": "Jorge",
+      "project": "91740a68-0dd1-47b4-935f-9ab08f4c5669"
+    },
+    "VFL-101": {
+      "status": "blocked",
+      "completedAt": null,
+      "title": "F1 follow-up: rust-check.yml header wording and advisory-db caching (VFL-96 LOW-9, LOW-10)",
+      "assignee": "Jorge",
+      "project": "91740a68-0dd1-47b4-935f-9ab08f4c5669"
+    },
+    "VFL-92": {
+      "status": "blocked",
+      "completedAt": null,
+      "title": "T9 follow-up: fix LOW-T1 and LOW-T2 from the VFL-77 re-review",
+      "assignee": "Halsey",
+      "project": "91740a68-0dd1-47b4-935f-9ab08f4c5669"
     }
   }
 }
