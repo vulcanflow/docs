@@ -1,5 +1,5 @@
 {
-  "lastRunAt": "2026-10-06T22:10:00Z",
+  "lastRunAt": "2026-10-06T22:35:00Z",
   "phases": {
     "p1_foundation": {
       "label": "1 Foundation",
@@ -32,7 +32,12 @@
         "VFL-183",
         "VFL-184",
         "VFL-188",
-        "VFL-189"
+        "VFL-189",
+        "VFL-193",
+        "VFL-194",
+        "VFL-195",
+        "VFL-196",
+        "VFL-197"
       ]
     },
     "p2_libraries": {
@@ -239,11 +244,50 @@
         "VFL-186",
         "VFL-187",
         "VFL-190",
-        "VFL-191"
+        "VFL-191",
+        "VFL-198",
+        "VFL-199",
+        "VFL-200",
+        "VFL-201"
       ]
     }
   },
   "tasks": {
+    "VFL-143": {
+      "status": "done",
+      "completedAt": "2026-10-06T22:09:42.341Z",
+      "title": "Test Runner: run T2 revision 4d0a451 against C2 candidate fbf6342 (VFL-141 correction)",
+      "assignee": "Test Runner",
+      "project": "test-packs"
+    },
+    "VFL-142": {
+      "status": "done",
+      "completedAt": "2026-10-06T22:07:41.413Z",
+      "title": "Agent runners have no C toolchain, so no Rust crate can compile or be tested",
+      "assignee": "Jorge",
+      "project": "core-libraries"
+    },
+    "VFL-191": {
+      "status": "done",
+      "completedAt": "2026-10-06T22:06:41.191Z",
+      "title": "VFL-142 delivery: merge the PR for aa3fa71",
+      "assignee": "Cortana",
+      "project": "core-libraries"
+    },
+    "VFL-190": {
+      "status": "done",
+      "completedAt": "2026-10-06T22:03:05.741Z",
+      "title": "VFL-142 delivery: push aa3fa71 and open the PR to main",
+      "assignee": "Jorge",
+      "project": "core-libraries"
+    },
+    "VFL-187": {
+      "status": "done",
+      "completedAt": "2026-10-06T21:55:55.695Z",
+      "title": "Push approval: VFL-142 toolchain bootstrap at aa3fa71",
+      "assignee": "Cortana",
+      "project": "core-libraries"
+    },
     "VFL-159": {
       "status": "done",
       "completedAt": "2026-10-06T21:42:53.429Z",
@@ -264,20 +308,6 @@
       "title": "CodeRabbit review: VFL-142 toolchain bootstrap candidate aa3fa71",
       "assignee": "Arbiter",
       "project": "core-libraries"
-    },
-    "VFL-142": {
-      "status": "blocked",
-      "completedAt": null,
-      "title": "Agent runners have no C toolchain, so no Rust crate can compile or be tested",
-      "assignee": "Jorge",
-      "project": "core-libraries"
-    },
-    "VFL-143": {
-      "status": "blocked",
-      "completedAt": null,
-      "title": "Test Runner: run T2 revision 4d0a451 against C2 candidate fbf6342 (VFL-141 correction)",
-      "assignee": "Test Runner",
-      "project": "test-packs"
     },
     "VFL-147": {
       "status": "done",
@@ -345,7 +375,7 @@
     "VFL-52": {
       "status": "done",
       "completedAt": "2026-10-05T21:35:57.245Z",
-      "title": "F1 scaffold complete at d61b43f \u2014 carries the VFL-9 report (my run cannot write to VFL-9), two decisions for Cortana",
+      "title": "F1 scaffold complete at d61b43f — carries the VFL-9 report (my run cannot write to VFL-9), two decisions for Cortana",
       "assignee": "Cortana",
       "project": "platform-foundation"
     },
@@ -356,6 +386,118 @@
       "assignee": "Jorge",
       "project": "core-libraries"
     },
+    "VFL-183": {
+      "status": "in_progress",
+      "completedAt": null,
+      "title": "Test Runner: required runs on F2b vf-testkit candidate 2a2d1a7 (VFL-163)",
+      "assignee": "Test Runner",
+      "project": "platform-foundation"
+    },
+    "VFL-14": {
+      "status": "in_progress",
+      "completedAt": null,
+      "title": "C1. `vf-core` identities, state machines, policy and Problem catalogue",
+      "assignee": "Fred",
+      "project": "core-libraries"
+    },
+    "VFL-196": {
+      "status": "in_progress",
+      "completedAt": null,
+      "title": "Opus Reviewer: review F2a dev harness candidate c61af84 (VFL-162)",
+      "assignee": "Opus Reviewer",
+      "project": "platform-foundation"
+    },
+    "VFL-201": {
+      "status": "in_progress",
+      "completedAt": null,
+      "title": "Provision cargo-fuzz + nightly-2026-09-01 on shared toolchain (blocks VFL-200/VFL-145 fuzz acceptance)",
+      "assignee": "Jorge",
+      "project": "core-libraries"
+    },
+    "VFL-197": {
+      "status": "in_progress",
+      "completedAt": null,
+      "title": "Test Runner: required runs on F2a dev harness candidate c61af84 (VFL-162)",
+      "assignee": "Test Runner",
+      "project": "platform-foundation"
+    },
+    "VFL-195": {
+      "status": "done",
+      "completedAt": "2026-10-06T22:23:17.536Z",
+      "title": "CodeRabbit review: F2a dev harness candidate c61af84 (VFL-162)",
+      "assignee": "Arbiter",
+      "project": "platform-foundation"
+    },
+    "VFL-162": {
+      "status": "blocked",
+      "completedAt": null,
+      "title": "F2a. Dev harness: compose stand-ins, `.env.example`, `just` recipes",
+      "assignee": "Jorge",
+      "project": "platform-foundation"
+    },
+    "VFL-163": {
+      "status": "blocked",
+      "completedAt": null,
+      "title": "F2b. `vf-testkit`: TestDb, fixtures, clock, ids, token, entitlements",
+      "assignee": "Jorge",
+      "project": "platform-foundation"
+    },
+    "VFL-41": {
+      "status": "done",
+      "completedAt": "2026-10-06T22:12:38.339Z",
+      "title": "T2 test pack: scope and canonicalization",
+      "assignee": "Halsey",
+      "project": "test-packs"
+    },
+    "VFL-182": {
+      "status": "done",
+      "completedAt": "2026-10-06T22:07:33.161Z",
+      "title": "Opus Reviewer: review F2b vf-testkit candidate 2a2d1a7 (VFL-163)",
+      "assignee": "Opus Reviewer",
+      "project": "platform-foundation"
+    },
+    "VFL-189": {
+      "status": "blocked",
+      "completedAt": null,
+      "title": "F2b acceptance: `TestDb` integration run (T4a) on a container runtime (VFL-163)",
+      "assignee": "Test Runner",
+      "project": "platform-foundation"
+    },
+    "VFL-188": {
+      "status": "blocked",
+      "completedAt": null,
+      "title": "T4a: `vf-testkit` bootstrap test, `TestDb` smoke on the `integration` feature (F2b, VFL-163)",
+      "assignee": "Halsey",
+      "project": "test-packs"
+    },
+    "VFL-180": {
+      "status": "done",
+      "completedAt": "2026-10-06T22:04:39.832Z",
+      "title": "Test Runner: required runs on F2a dev harness final candidate 47990fb (VFL-162)",
+      "assignee": "Test Runner",
+      "project": "platform-foundation"
+    },
+    "VFL-179": {
+      "status": "done",
+      "completedAt": "2026-10-06T22:02:12.881Z",
+      "title": "Opus Reviewer: review F2a dev harness final candidate 47990fb (VFL-162)",
+      "assignee": "Opus Reviewer",
+      "project": "platform-foundation"
+    },
+    "VFL-181": {
+      "status": "done",
+      "completedAt": "2026-10-06T21:57:44.550Z",
+      "title": "CodeRabbit review: F2b vf-testkit candidate 2a2d1a7 (VFL-163)",
+      "assignee": "Arbiter",
+      "project": "platform-foundation"
+    },
+    "VFL-184": {
+      "status": "done",
+      "completedAt": "2026-10-06T21:53:13.947Z",
+      "title": "Decide: F2b push gate while T4 is blocked on C1/C2 and no runner has a container runtime (VFL-163)",
+      "assignee": "Cortana",
+      "project": "platform-foundation"
+    },
     "VFL-12": {
       "status": "blocked",
       "completedAt": null,
@@ -363,12 +505,82 @@
       "assignee": "Jorge",
       "project": "platform-foundation"
     },
-    "VFL-41": {
+    "VFL-178": {
+      "status": "done",
+      "completedAt": "2026-10-06T21:52:40.905Z",
+      "title": "CodeRabbit review: F2a dev harness final candidate 47990fb (VFL-162)",
+      "assignee": "Arbiter",
+      "project": "platform-foundation"
+    },
+    "VFL-171": {
       "status": "blocked",
       "completedAt": null,
-      "title": "T2 test pack: scope and canonicalization",
-      "assignee": "Halsey",
-      "project": "test-packs"
+      "title": "F2a acceptance: run `dev-up` (120 s, clean machine) and `db-template` determinism on a container runtime (VFL-162)",
+      "assignee": "Test Runner",
+      "project": "platform-foundation"
+    },
+    "VFL-175": {
+      "status": "done",
+      "completedAt": "2026-10-06T21:35:14.460Z",
+      "title": "Decide: MinIO pin remediation for F2a review MEDIUM-2 (VFL-162)",
+      "assignee": "Cortana",
+      "project": "platform-foundation"
+    },
+    "VFL-173": {
+      "status": "done",
+      "completedAt": "2026-10-06T21:33:38.233Z",
+      "title": "§A5 ruling: RUSTSEC-2023-0071 (`rsa` via jsonwebtoken `rust_crypto`): exception or alternative",
+      "assignee": "Cortana",
+      "project": "platform-foundation"
+    },
+    "VFL-8": {
+      "status": "done",
+      "completedAt": "2026-10-05T19:49:29.166Z",
+      "title": "Architecture documentation and first coding task list (from approved plan)",
+      "assignee": "Cortana",
+      "project": "unknown"
+    },
+    "VFL-169": {
+      "status": "done",
+      "completedAt": "2026-10-06T21:22:12.732Z",
+      "title": "Test Runner: required runs on F2a dev harness candidate 2eccd75 (VFL-162)",
+      "assignee": "Test Runner",
+      "project": "platform-foundation"
+    },
+    "VFL-168": {
+      "status": "done",
+      "completedAt": "2026-10-06T21:13:38.728Z",
+      "title": "Opus Reviewer: review F2a dev harness candidate 2eccd75 (VFL-162)",
+      "assignee": "Opus Reviewer",
+      "project": "platform-foundation"
+    },
+    "VFL-167": {
+      "status": "done",
+      "completedAt": "2026-10-06T21:05:43.084Z",
+      "title": "CodeRabbit review: F2a dev harness candidate 2eccd75 (VFL-162)",
+      "assignee": "Arbiter",
+      "project": "platform-foundation"
+    },
+    "VFL-170": {
+      "status": "done",
+      "completedAt": "2026-10-06T21:00:53.812Z",
+      "title": "Decide: F2a S3-conformance criterion and where container-dependent checks run (VFL-162)",
+      "assignee": "Cortana",
+      "project": "platform-foundation"
+    },
+    "VFL-13": {
+      "status": "blocked",
+      "completedAt": null,
+      "title": "F3. Infrastructure adapters: `ArtifactStore` and `WakeBus`",
+      "assignee": "Jorge",
+      "project": "platform-foundation"
+    },
+    "VFL-165": {
+      "status": "done",
+      "completedAt": "2026-10-06T20:35:12.940Z",
+      "title": "Re-map API tasks and shared crates for a separate API repo (owner reversed Option B for the API)",
+      "assignee": "Cortana",
+      "project": "api"
     },
     "VFL-15": {
       "status": "blocked",
@@ -390,27 +602,6 @@
       "title": "G1. `vf-graph` validator, schema and WASM export",
       "assignee": "Kelly",
       "project": "graph-and-execution-contracts"
-    },
-    "VFL-13": {
-      "status": "blocked",
-      "completedAt": null,
-      "title": "F3. Infrastructure adapters: `ArtifactStore` and `WakeBus`",
-      "assignee": "Jorge",
-      "project": "platform-foundation"
-    },
-    "VFL-14": {
-      "status": "blocked",
-      "completedAt": null,
-      "title": "C1. `vf-core` identities, state machines, policy and Problem catalogue",
-      "assignee": "Fred",
-      "project": "core-libraries"
-    },
-    "VFL-8": {
-      "status": "done",
-      "completedAt": "2026-10-05T19:49:29.166Z",
-      "title": "Architecture documentation and first coding task list (from approved plan)",
-      "assignee": "Cortana",
-      "project": "unknown"
     },
     "VFL-42": {
       "status": "blocked",
@@ -450,7 +641,7 @@
     "VFL-113": {
       "status": "blocked",
       "completedAt": null,
-      "title": "T1b test pack: vf-meter accounting \u2014 reserve/settle/release, admission, ledger (covers C4)",
+      "title": "T1b test pack: vf-meter accounting — reserve/settle/release, admission, ledger (covers C4)",
       "assignee": "Halsey",
       "project": "test-packs"
     },
@@ -678,24 +869,24 @@
       "assignee": "Test Runner",
       "project": "core-libraries"
     },
-    "VFL-153": {
-      "status": "blocked",
+    "VFL-199": {
+      "status": "in_progress",
       "completedAt": null,
-      "title": "Independent review of 8ec435d: cross compiler in the bootstrapped toolchain (VFL-151)",
+      "title": "Opus Reviewer: review vf-core::scope fuzz harness candidate c39241c (VFL-145)",
       "assignee": "Opus Reviewer",
       "project": "core-libraries"
     },
-    "VFL-151": {
-      "status": "blocked",
+    "VFL-200": {
+      "status": "in_progress",
       "completedAt": null,
-      "title": "just check-cross cannot run on the agent runners: the bootstrapped toolchain is host-only",
-      "assignee": "Jorge",
+      "title": "Test Runner: fuzz targets canonical_host/scope_match, candidate c39241c (VFL-145)",
+      "assignee": "Test Runner",
       "project": "core-libraries"
     },
-    "VFL-152": {
-      "status": "done",
-      "completedAt": "2026-10-06T18:35:24.912Z",
-      "title": "Review 8ec435d: cross compiler in the bootstrapped toolchain (VFL-151)",
+    "VFL-198": {
+      "status": "in_progress",
+      "completedAt": null,
+      "title": "CodeRabbit review: vf-core::scope fuzz harness candidate c39241c (VFL-145)",
       "assignee": "Arbiter",
       "project": "core-libraries"
     },
@@ -704,6 +895,34 @@
       "completedAt": null,
       "title": "T2 addendum: fuzz targets canonical_host and scope_match for vf-core::scope",
       "assignee": "Halsey",
+      "project": "core-libraries"
+    },
+    "VFL-193": {
+      "status": "backlog",
+      "completedAt": null,
+      "title": "F2c. Bound `TestDb`'s Postgres connections: PgBouncer idle timeout and per-process handle cap",
+      "assignee": "Jorge",
+      "project": "platform-foundation"
+    },
+    "VFL-151": {
+      "status": "blocked",
+      "completedAt": null,
+      "title": "just check-cross cannot run on the agent runners: the bootstrapped toolchain is host-only",
+      "assignee": "Jorge",
+      "project": "core-libraries"
+    },
+    "VFL-153": {
+      "status": "blocked",
+      "completedAt": null,
+      "title": "Independent review of 8ec435d: cross compiler in the bootstrapped toolchain (VFL-151)",
+      "assignee": "Opus Reviewer",
+      "project": "core-libraries"
+    },
+    "VFL-152": {
+      "status": "done",
+      "completedAt": "2026-10-06T18:35:24.912Z",
+      "title": "Review 8ec435d: cross compiler in the bootstrapped toolchain (VFL-151)",
+      "assignee": "Arbiter",
       "project": "core-libraries"
     },
     "VFL-125": {
@@ -758,7 +977,7 @@
     "VFL-78": {
       "status": "done",
       "completedAt": "2026-10-06T10:33:26.997Z",
-      "title": "Architect ruling: \u00a7A5 revision 4 TLS sentence vs the reqwest rustls-no-provider row",
+      "title": "Architect ruling: §A5 revision 4 TLS sentence vs the reqwest rustls-no-provider row",
       "assignee": "Cortana",
       "project": "platform-foundation"
     },
@@ -951,12 +1170,12 @@
       "assignee": "MasterChief",
       "project": "unknown"
     },
-    "VFL-106": {
+    "VFL-186": {
       "status": "in_progress",
       "completedAt": null,
-      "title": "CodeRabbit review: SHA-pin the GitHub Actions + rust-check header (e5eaac0)",
-      "assignee": "Arbiter",
-      "project": "platform-foundation"
+      "title": "resolve-debs.py: count resolved virtual providers, verify InRelease digests, retry fetches",
+      "assignee": "Jorge",
+      "project": "core-libraries"
     },
     "VFL-116": {
       "status": "in_progress",
@@ -970,6 +1189,41 @@
       "completedAt": null,
       "title": "Test Runner: record required test runs for the SHA-pin candidate (e5eaac0)",
       "assignee": "Test Runner",
+      "project": "platform-foundation"
+    },
+    "VFL-106": {
+      "status": "in_progress",
+      "completedAt": null,
+      "title": "CodeRabbit review: SHA-pin the GitHub Actions + rust-check header (e5eaac0)",
+      "assignee": "Arbiter",
+      "project": "platform-foundation"
+    },
+    "VFL-185": {
+      "status": "in_progress",
+      "completedAt": null,
+      "title": "Bootstrap: verify cc before publishing a toolchain tree, gate --env-only on cargo, bound the lock wait",
+      "assignee": "Jorge",
+      "project": "core-libraries"
+    },
+    "VFL-194": {
+      "status": "backlog",
+      "completedAt": null,
+      "title": "F2d. `vf-testkit` residual LOWs from F2b review: control-migration `search_path`, fixture-name check, unused `vf-db` edge",
+      "assignee": "Jorge",
+      "project": "platform-foundation"
+    },
+    "VFL-177": {
+      "status": "backlog",
+      "completedAt": null,
+      "title": "Decide: project-controlled image mirror for the §A5 compose pin set (MinIO digest first)",
+      "assignee": "MasterChief",
+      "project": "platform-foundation"
+    },
+    "VFL-176": {
+      "status": "backlog",
+      "completedAt": null,
+      "title": "§A5 follow-up: retire the RUSTSEC-2023-0071 (`rsa` Marvin) exception when a patched `rsa` ships",
+      "assignee": "Jorge",
       "project": "platform-foundation"
     },
     "VFL-102": {
@@ -989,7 +1243,7 @@
     "VFL-98": {
       "status": "done",
       "completedAt": "2026-10-06T11:40:01.593Z",
-      "title": "\u00a7A5 ruling: keep both cargo-deny advisories and cargo-audit in `just check`, or collapse to one",
+      "title": "§A5 ruling: keep both cargo-deny advisories and cargo-audit in `just check`, or collapse to one",
       "assignee": "Cortana",
       "project": "platform-foundation"
     },
@@ -1066,7 +1320,7 @@
     "VFL-115": {
       "status": "done",
       "completedAt": "2026-10-06T14:01:07.885Z",
-      "title": "Opus Reviewer review: VFL-82 README \u00a7A5 revision citation (470c2a0)",
+      "title": "Opus Reviewer review: VFL-82 README §A5 revision citation (470c2a0)",
       "assignee": "Opus Reviewer",
       "project": "platform-foundation"
     },
@@ -1129,14 +1383,14 @@
     "VFL-114": {
       "status": "done",
       "completedAt": "2026-10-06T12:54:02.077Z",
-      "title": "Arbiter review: VFL-82 README \u00a7A5 revision citation (470c2a0)",
+      "title": "Arbiter review: VFL-82 README §A5 revision citation (470c2a0)",
       "assignee": "Arbiter",
       "project": "platform-foundation"
     },
     "VFL-82": {
       "status": "blocked",
       "completedAt": null,
-      "title": "README: cite \u00a7A5 revision 5, not revision 4",
+      "title": "README: cite §A5 revision 5, not revision 4",
       "assignee": "Jorge",
       "project": "platform-foundation"
     },
@@ -1157,14 +1411,14 @@
     "VFL-81": {
       "status": "backlog",
       "completedAt": null,
-      "title": "T9 assertion: per-binary rustls `ring` provider (\u00a7A5 rev 5)",
+      "title": "T9 assertion: per-binary rustls `ring` provider (§A5 rev 5)",
       "assignee": "Halsey",
       "project": "platform-foundation"
     },
     "VFL-80": {
       "status": "backlog",
       "completedAt": null,
-      "title": "graph-rules rule 3: every TLS-initiating binary resolves rustls `ring` on its own (\u00a7A5 rev 5)",
+      "title": "graph-rules rule 3: every TLS-initiating binary resolves rustls `ring` on its own (§A5 rev 5)",
       "assignee": "Jorge",
       "project": "platform-foundation"
     },
@@ -1188,188 +1442,6 @@
       "title": "W5. `vf-graph` WASM packaging and browser parity harness",
       "assignee": "Linda",
       "project": "web"
-    },
-    "VFL-162": {
-      "status": "in_progress",
-      "completedAt": null,
-      "title": "F2a. Dev harness: compose stand-ins, `.env.example`, `just` recipes",
-      "assignee": "Jorge",
-      "project": "platform-foundation"
-    },
-    "VFL-163": {
-      "status": "blocked",
-      "completedAt": null,
-      "title": "F2b. `vf-testkit`: TestDb, fixtures, clock, ids, token, entitlements",
-      "assignee": "Jorge",
-      "project": "platform-foundation"
-    },
-    "VFL-165": {
-      "status": "done",
-      "completedAt": "2026-10-06T20:35:12.940Z",
-      "title": "Re-map API tasks and shared crates for a separate API repo (owner reversed Option B for the API)",
-      "assignee": "Cortana",
-      "project": "api"
-    },
-    "VFL-167": {
-      "status": "done",
-      "completedAt": "2026-10-06T21:05:43.084Z",
-      "title": "CodeRabbit review: F2a dev harness candidate 2eccd75 (VFL-162)",
-      "assignee": "Arbiter",
-      "project": "platform-foundation"
-    },
-    "VFL-168": {
-      "status": "done",
-      "completedAt": "2026-10-06T21:13:38.728Z",
-      "title": "Opus Reviewer: review F2a dev harness candidate 2eccd75 (VFL-162)",
-      "assignee": "Opus Reviewer",
-      "project": "platform-foundation"
-    },
-    "VFL-169": {
-      "status": "done",
-      "completedAt": "2026-10-06T21:22:12.732Z",
-      "title": "Test Runner: required runs on F2a dev harness candidate 2eccd75 (VFL-162)",
-      "assignee": "Test Runner",
-      "project": "platform-foundation"
-    },
-    "VFL-170": {
-      "status": "done",
-      "completedAt": "2026-10-06T21:00:53.812Z",
-      "title": "Decide: F2a S3-conformance criterion and where container-dependent checks run (VFL-162)",
-      "assignee": "Cortana",
-      "project": "platform-foundation"
-    },
-    "VFL-171": {
-      "status": "blocked",
-      "completedAt": null,
-      "title": "F2a acceptance: run `dev-up` (120 s, clean machine) and `db-template` determinism on a container runtime (VFL-162)",
-      "assignee": "Test Runner",
-      "project": "platform-foundation"
-    },
-    "VFL-173": {
-      "status": "done",
-      "completedAt": "2026-10-06T21:33:38.233Z",
-      "title": "\u00a7A5 ruling: RUSTSEC-2023-0071 (`rsa` via jsonwebtoken `rust_crypto`): exception or alternative",
-      "assignee": "Cortana",
-      "project": "platform-foundation"
-    },
-    "VFL-175": {
-      "status": "done",
-      "completedAt": "2026-10-06T21:35:14.460Z",
-      "title": "Decide: MinIO pin remediation for F2a review MEDIUM-2 (VFL-162)",
-      "assignee": "Cortana",
-      "project": "platform-foundation"
-    },
-    "VFL-191": {
-      "status": "in_progress",
-      "completedAt": null,
-      "title": "VFL-142 delivery: merge the PR for aa3fa71",
-      "assignee": "Cortana",
-      "project": "core-libraries"
-    },
-    "VFL-190": {
-      "status": "done",
-      "completedAt": "2026-10-06T22:03:05.741Z",
-      "title": "VFL-142 delivery: push aa3fa71 and open the PR to main",
-      "assignee": "Jorge",
-      "project": "core-libraries"
-    },
-    "VFL-187": {
-      "status": "done",
-      "completedAt": "2026-10-06T21:55:55.695Z",
-      "title": "Push approval: VFL-142 toolchain bootstrap at aa3fa71",
-      "assignee": "Cortana",
-      "project": "core-libraries"
-    },
-    "VFL-189": {
-      "status": "blocked",
-      "completedAt": null,
-      "title": "F2b acceptance: `TestDb` integration run (T4a) on a container runtime (VFL-163)",
-      "assignee": "Test Runner",
-      "project": "platform-foundation"
-    },
-    "VFL-188": {
-      "status": "blocked",
-      "completedAt": null,
-      "title": "T4a: `vf-testkit` bootstrap test, `TestDb` smoke on the `integration` feature (F2b, VFL-163)",
-      "assignee": "Halsey",
-      "project": "test-packs"
-    },
-    "VFL-180": {
-      "status": "done",
-      "completedAt": "2026-10-06T22:04:39.832Z",
-      "title": "Test Runner: required runs on F2a dev harness final candidate 47990fb (VFL-162)",
-      "assignee": "Test Runner",
-      "project": "platform-foundation"
-    },
-    "VFL-179": {
-      "status": "done",
-      "completedAt": "2026-10-06T22:02:12.881Z",
-      "title": "Opus Reviewer: review F2a dev harness final candidate 47990fb (VFL-162)",
-      "assignee": "Opus Reviewer",
-      "project": "platform-foundation"
-    },
-    "VFL-183": {
-      "status": "in_progress",
-      "completedAt": null,
-      "title": "Test Runner: required runs on F2b vf-testkit candidate 2a2d1a7 (VFL-163)",
-      "assignee": "Test Runner",
-      "project": "platform-foundation"
-    },
-    "VFL-181": {
-      "status": "done",
-      "completedAt": "2026-10-06T21:57:44.550Z",
-      "title": "CodeRabbit review: F2b vf-testkit candidate 2a2d1a7 (VFL-163)",
-      "assignee": "Arbiter",
-      "project": "platform-foundation"
-    },
-    "VFL-184": {
-      "status": "done",
-      "completedAt": "2026-10-06T21:53:13.947Z",
-      "title": "Decide: F2b push gate while T4 is blocked on C1/C2 and no runner has a container runtime (VFL-163)",
-      "assignee": "Cortana",
-      "project": "platform-foundation"
-    },
-    "VFL-178": {
-      "status": "done",
-      "completedAt": "2026-10-06T21:52:40.905Z",
-      "title": "CodeRabbit review: F2a dev harness final candidate 47990fb (VFL-162)",
-      "assignee": "Arbiter",
-      "project": "platform-foundation"
-    },
-    "VFL-182": {
-      "status": "in_progress",
-      "completedAt": null,
-      "title": "Opus Reviewer: review F2b vf-testkit candidate 2a2d1a7 (VFL-163)",
-      "assignee": "Opus Reviewer",
-      "project": "platform-foundation"
-    },
-    "VFL-186": {
-      "status": "blocked",
-      "completedAt": null,
-      "title": "resolve-debs.py: count resolved virtual providers, verify InRelease digests, retry fetches",
-      "assignee": "Jorge",
-      "project": "core-libraries"
-    },
-    "VFL-185": {
-      "status": "blocked",
-      "completedAt": null,
-      "title": "Bootstrap: verify cc before publishing a toolchain tree, gate --env-only on cargo, bound the lock wait",
-      "assignee": "Jorge",
-      "project": "core-libraries"
-    },
-    "VFL-177": {
-      "status": "backlog",
-      "completedAt": null,
-      "title": "Decide: project-controlled image mirror for the \u00a7A5 compose pin set (MinIO digest first)",
-      "assignee": "MasterChief",
-      "project": "platform-foundation"
-    },
-    "VFL-176": {
-      "status": "backlog",
-      "completedAt": null,
-      "title": "\u00a7A5 follow-up: retire the RUSTSEC-2023-0071 (`rsa` Marvin) exception when a patched `rsa` ships",
-      "assignee": "Jorge",
-      "project": "platform-foundation"
     }
   }
 }
