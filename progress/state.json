@@ -1,5 +1,5 @@
 {
-  "lastRunAt": "2026-10-06T09:33:41Z",
+  "lastRunAt": "2026-10-06T10:02:33Z",
   "phases": {
     "p1_foundation": {
       "label": "1 Foundation",
@@ -508,7 +508,7 @@
       "project": "platform-foundation"
     },
     "VFL-60": {
-      "status": "blocked",
+      "status": "in_progress",
       "completedAt": null,
       "title": "Board watch: find stuck tasks and nudge owners",
       "assignee": "MasterChief",
@@ -543,21 +543,21 @@
       "project": "test-packs"
     },
     "VFL-67": {
-      "status": "in_progress",
-      "completedAt": null,
+      "status": "done",
+      "completedAt": "2026-10-06T09:42:35.622Z",
       "title": "Arbiter review: F1 workspace scaffold, pair 88a2ef4 + replayed T9",
       "assignee": "Arbiter",
       "project": "platform-foundation"
     },
     "VFL-68": {
-      "status": "in_progress",
-      "completedAt": null,
+      "status": "done",
+      "completedAt": "2026-10-06T09:44:15.880Z",
       "title": "Opus Reviewer: F1 workspace scaffold, pair 88a2ef4 + replayed T9",
       "assignee": "Opus Reviewer",
       "project": "platform-foundation"
     },
     "VFL-70": {
-      "status": "blocked",
+      "status": "in_progress",
       "completedAt": null,
       "title": "F1 continuation: act on Gate 4 verdicts (VFL-67, VFL-68)",
       "assignee": "Jorge",
