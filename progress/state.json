@@ -1,5 +1,5 @@
 {
-  "lastRunAt": "2026-10-06T14:21:14Z",
+  "lastRunAt": "2026-10-06T17:17:14Z",
   "phases": {
     "p1_foundation": {
       "label": "1 Foundation",
@@ -192,7 +192,15 @@
         "VFL-129",
         "VFL-130",
         "VFL-131",
-        "VFL-132"
+        "VFL-132",
+        "VFL-134",
+        "VFL-135",
+        "VFL-136",
+        "VFL-137",
+        "VFL-140",
+        "VFL-141",
+        "VFL-142",
+        "VFL-143"
       ]
     }
   },
@@ -282,18 +290,18 @@
       "project": "91740a68-0dd1-47b4-935f-9ab08f4c5669"
     },
     "VFL-13": {
-      "status": "in_progress",
+      "status": "blocked",
       "completedAt": null,
       "title": "F3. Infrastructure adapters: `ArtifactStore` and `WakeBus`",
       "assignee": "Jorge",
-      "project": "91740a68-0dd1-47b4-935f-9ab08f4c5669"
+      "project": "platform-foundation"
     },
     "VFL-14": {
-      "status": "in_progress",
+      "status": "blocked",
       "completedAt": null,
       "title": "C1. `vf-core` identities, state machines, policy and Problem catalogue",
       "assignee": "Fred",
-      "project": "1e4d751c-3ada-47c7-aabe-e8cb40bc897e"
+      "project": "core-libraries"
     },
     "VFL-15": {
       "status": "in_progress",
@@ -303,11 +311,11 @@
       "project": "1e4d751c-3ada-47c7-aabe-e8cb40bc897e"
     },
     "VFL-16": {
-      "status": "in_progress",
+      "status": "blocked",
       "completedAt": null,
       "title": "G1. `vf-graph` validator, schema and WASM export",
       "assignee": "Kelly",
-      "project": "44554fc9-52e4-4b16-814c-16d5d5e51c57"
+      "project": "graph-and-execution-contracts"
     },
     "VFL-17": {
       "status": "blocked",
@@ -478,18 +486,18 @@
       "project": "bec0abaa-6ade-4267-826e-05903dab3dff"
     },
     "VFL-41": {
-      "status": "in_progress",
+      "status": "blocked",
       "completedAt": null,
       "title": "T2 test pack: scope and canonicalization",
       "assignee": "Halsey",
-      "project": "bec0abaa-6ade-4267-826e-05903dab3dff"
+      "project": "test-packs"
     },
     "VFL-42": {
-      "status": "in_progress",
+      "status": "blocked",
       "completedAt": null,
       "title": "T3 test pack: graph, parity, translator",
       "assignee": "Halsey",
-      "project": "bec0abaa-6ade-4267-826e-05903dab3dff"
+      "project": "test-packs"
     },
     "VFL-43": {
       "status": "backlog",
@@ -688,11 +696,11 @@
       "project": "91740a68-0dd1-47b4-935f-9ab08f4c5669"
     },
     "VFL-84": {
-      "status": "in_progress",
+      "status": "todo",
       "completedAt": null,
       "title": "Board watch (continuation 1): find stuck tasks and nudge owners",
-      "assignee": "MasterChief",
-      "project": "c38f8495-f564-4816-b305-9518483d7162"
+      "assignee": null,
+      "project": "progress-and-docs"
     },
     "VFL-85": {
       "status": "blocked",
@@ -856,11 +864,11 @@
       "project": "91740a68-0dd1-47b4-935f-9ab08f4c5669"
     },
     "VFL-111": {
-      "status": "in_progress",
-      "completedAt": null,
+      "status": "done",
+      "completedAt": "2026-10-06T14:19:09.688Z",
       "title": "Opus Reviewer: review VFL-102 candidate 9b14116 (deny.toml advisories, justfile rationale)",
       "assignee": "Opus Reviewer",
-      "project": "91740a68-0dd1-47b4-935f-9ab08f4c5669"
+      "project": "platform-foundation"
     },
     "VFL-112": {
       "status": "blocked",
@@ -898,11 +906,11 @@
       "project": "91740a68-0dd1-47b4-935f-9ab08f4c5669"
     },
     "VFL-117": {
-      "status": "in_progress",
+      "status": "blocked",
       "completedAt": null,
       "title": "T3a. vf-graph conformance corpus & native/WASM parity (G1)",
       "assignee": "Halsey",
-      "project": "bec0abaa-6ade-4267-826e-05903dab3dff"
+      "project": "test-packs"
     },
     "VFL-118": {
       "status": "blocked",
@@ -933,18 +941,18 @@
       "project": "91740a68-0dd1-47b4-935f-9ab08f4c5669"
     },
     "VFL-124": {
-      "status": "in_progress",
+      "status": "blocked",
       "completedAt": null,
       "title": "CI on Tekton (1/4): GitHub webhook to a Tekton EventListener at zozotk.go.ro",
       "assignee": "Jorge",
-      "project": "91740a68-0dd1-47b4-935f-9ab08f4c5669"
+      "project": "platform-foundation"
     },
     "VFL-125": {
-      "status": "in_progress",
+      "status": "blocked",
       "completedAt": null,
       "title": "CI on Tekton (2/4): pipeline definitions equivalent to lane-gate and rust-check",
       "assignee": "Jorge",
-      "project": "91740a68-0dd1-47b4-935f-9ab08f4c5669"
+      "project": "platform-foundation"
     },
     "VFL-126": {
       "status": "blocked",
@@ -994,6 +1002,62 @@
       "title": "Test Runner: run T9 workspace_graph tests for VFL-105 (branch halsey/vfl-105-t9-low-hardening, 6d296fb)",
       "assignee": "Test Runner",
       "project": "91740a68-0dd1-47b4-935f-9ab08f4c5669"
+    },
+    "VFL-134": {
+      "status": "in_progress",
+      "completedAt": null,
+      "title": "Test Runner: re-run `just check` on VFL-102 candidate 9b14116 with GIT_CONFIG_COUNT unset",
+      "assignee": "Test Runner",
+      "project": "platform-foundation"
+    },
+    "VFL-135": {
+      "status": "backlog",
+      "completedAt": null,
+      "title": "Backlog: document the sandbox `GIT_CONFIG_COUNT=` prerequisite for `just check`",
+      "assignee": "Jorge",
+      "project": "platform-foundation"
+    },
+    "VFL-136": {
+      "status": "blocked",
+      "completedAt": null,
+      "title": "T3a. vf-graph test pack: conformance corpus, native/wasm parity, schema drift",
+      "assignee": "Halsey",
+      "project": "test-packs"
+    },
+    "VFL-137": {
+      "status": "blocked",
+      "completedAt": null,
+      "title": "T3b. vf-translator test pack: argv goldens, candidates, cascade, SCB snapshots",
+      "assignee": "Halsey",
+      "project": "test-packs"
+    },
+    "VFL-140": {
+      "status": "done",
+      "completedAt": "2026-10-06T16:55:31.505Z",
+      "title": "Architect decision: does `include_subdomains` gate the cascade or the run target? (blocks C2/VFL-15)",
+      "assignee": "Cortana",
+      "project": "core-libraries"
+    },
+    "VFL-141": {
+      "status": "done",
+      "completedAt": "2026-10-06T16:59:48.643Z",
+      "title": "T2 correction: scope_match.rs:125 expectation per architect decision VFL-140 (DomainTree descendant run target is InScope)",
+      "assignee": "Halsey",
+      "project": "test-packs"
+    },
+    "VFL-142": {
+      "status": "in_progress",
+      "completedAt": null,
+      "title": "Agent runners have no C toolchain, so no Rust crate can compile or be tested",
+      "assignee": "Jorge",
+      "project": "core-libraries"
+    },
+    "VFL-143": {
+      "status": "blocked",
+      "completedAt": null,
+      "title": "Test Runner: run T2 revision 4d0a451 against C2 candidate 4540052 (VFL-141 correction)",
+      "assignee": "Test Runner",
+      "project": "test-packs"
     }
   }
 }
