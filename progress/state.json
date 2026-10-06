@@ -1,5 +1,5 @@
 {
-  "lastRunAt": "2026-10-06T17:17:14Z",
+  "lastRunAt": "2026-10-06T18:13:50Z",
   "phases": {
     "p1_foundation": {
       "label": "1 Foundation",
@@ -200,7 +200,13 @@
         "VFL-140",
         "VFL-141",
         "VFL-142",
-        "VFL-143"
+        "VFL-143",
+        "VFL-145",
+        "VFL-146",
+        "VFL-147",
+        "VFL-148",
+        "VFL-149",
+        "VFL-151"
       ]
     }
   },
@@ -304,7 +310,7 @@
       "project": "core-libraries"
     },
     "VFL-15": {
-      "status": "in_progress",
+      "status": "blocked",
       "completedAt": null,
       "title": "C2. `vf-core::scope`: canonical hosts, scope matching, IPv4 destinations",
       "assignee": "Kelly",
@@ -1004,7 +1010,7 @@
       "project": "91740a68-0dd1-47b4-935f-9ab08f4c5669"
     },
     "VFL-134": {
-      "status": "in_progress",
+      "status": "blocked",
       "completedAt": null,
       "title": "Test Runner: re-run `just check` on VFL-102 candidate 9b14116 with GIT_CONFIG_COUNT unset",
       "assignee": "Test Runner",
@@ -1046,7 +1052,7 @@
       "project": "test-packs"
     },
     "VFL-142": {
-      "status": "in_progress",
+      "status": "blocked",
       "completedAt": null,
       "title": "Agent runners have no C toolchain, so no Rust crate can compile or be tested",
       "assignee": "Jorge",
@@ -1058,6 +1064,48 @@
       "title": "Test Runner: run T2 revision 4d0a451 against C2 candidate 4540052 (VFL-141 correction)",
       "assignee": "Test Runner",
       "project": "test-packs"
+    },
+    "VFL-145": {
+      "status": "blocked",
+      "completedAt": null,
+      "title": "T2 addendum: fuzz targets canonical_host and scope_match for vf-core::scope",
+      "assignee": "Halsey",
+      "project": "core-libraries"
+    },
+    "VFL-146": {
+      "status": "done",
+      "completedAt": "2026-10-06T18:07:17Z",
+      "title": "CodeRabbit review: VFL-142 non-root C toolchain bootstrap (0220f1a, re-pointed to 1ef1f09)",
+      "assignee": "Arbiter",
+      "project": "core-libraries"
+    },
+    "VFL-147": {
+      "status": "in_progress",
+      "completedAt": null,
+      "title": "Opus Reviewer: review VFL-142 non-root C toolchain bootstrap (0220f1a)",
+      "assignee": "Opus Reviewer",
+      "project": "core-libraries"
+    },
+    "VFL-148": {
+      "status": "in_progress",
+      "completedAt": null,
+      "title": "Test Runner: required suites on VFL-142 toolchain bootstrap (0220f1a)",
+      "assignee": "Test Runner",
+      "project": "core-libraries"
+    },
+    "VFL-149": {
+      "status": "in_progress",
+      "completedAt": null,
+      "title": "Bootstrap just, cargo-deny and cargo-audit so just check runs on the runners",
+      "assignee": "Jorge",
+      "project": "core-libraries"
+    },
+    "VFL-151": {
+      "status": "in_progress",
+      "completedAt": null,
+      "title": "just check-cross cannot run on the agent runners: the bootstrapped toolchain is host-only",
+      "assignee": "Jorge",
+      "project": "core-libraries"
     }
   }
 }
