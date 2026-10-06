@@ -1,5 +1,5 @@
 {
-  "lastRunAt": "2026-10-06T07:31:48Z",
+  "lastRunAt": "2026-10-06T08:02:53Z",
   "phases": {
     "p1_foundation": {
       "label": "1 Foundation",
@@ -130,7 +130,9 @@
         "VFL-50",
         "VFL-51",
         "VFL-52",
-        "VFL-58"
+        "VFL-58",
+        "VFL-60",
+        "VFL-61"
       ]
     }
   },
@@ -496,6 +498,20 @@
       "status": "done",
       "completedAt": "2026-10-06T07:21:17.275Z",
       "title": "Take over pull request merges: confirm GitHub access, Tekton checks, update gate docs",
+      "assignee": "Cortana",
+      "project": "platform-foundation"
+    },
+    "VFL-60": {
+      "status": "in_progress",
+      "completedAt": null,
+      "title": "Board watch: find stuck tasks and nudge owners",
+      "assignee": "MasterChief",
+      "project": "progress-and-docs"
+    },
+    "VFL-61": {
+      "status": "done",
+      "completedAt": "2026-10-06T07:52:54.251Z",
+      "title": "F1 rulings: reqwest feature, testcontainers, object_store, chromiumoxide on 20736f3",
       "assignee": "Cortana",
       "project": "platform-foundation"
     }

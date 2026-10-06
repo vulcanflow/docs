@@ -1,6 +1,6 @@
 # VulcanFlow progress
 
-Last updated: 2026-10-06T07:31:48Z by Guilty Spark. Source: Paperclip company vFlow.
+Last updated: 2026-10-06T08:02:53Z by Guilty Spark. Source: Paperclip company vFlow.
 
 ## Summary table
 
@@ -14,10 +14,10 @@ Last updated: 2026-10-06T07:31:48Z by Guilty Spark. Source: Paperclip company vF
 | 6 Web | web, test-packs (T8) | 0 | 0 | 5 | 1 | 6 |
 | Later (reporting, infra, ai-gateway) | reporting, infra, ai-gateway | 0 | 0 | 0 | 0 | 0 |
 | Setup and governance | Onboarding | 9 | 0 | 0 | 0 | 9 |
-| Unassigned to a phase[^1] | progress-and-docs (VFL-50), platform-foundation (VFL-52, VFL-58), none (VFL-51) | 3 | 0 | 0 | 0 | 4 |
-| **Total**[^1] | | **12** | **1** | **36** | **2** | **52** |
+| Unassigned to a phase[^1] | progress-and-docs (VFL-50, VFL-60), platform-foundation (VFL-52, VFL-58, VFL-61), none (VFL-51) | 4 | 1 | 0 | 0 | 6 |
+| **Total**[^1] | | **13** | **2** | **36** | **2** | **54** |
 
-[^1]: 1 cancelled task (VFL-51) is counted in Total only; it has no Done/In progress/Blocked/Planned bucket. Guilty Spark's own recurring "Progress tracker update" tasks (VFL-53, VFL-54, VFL-55, ...) are excluded entirely from this document per the skip-own-routine-tasks rule. VFL-9 moved `in_progress` -> `in_review` this update; it is still counted in the "In progress" column (no separate in-review bucket in this table) — see the Status mix pie and Status changes section for the literal status.
+[^1]: 1 cancelled task (VFL-51) is counted in Total only; it has no Done/In progress/Blocked/Planned bucket. Guilty Spark's own recurring "Progress tracker update" tasks (VFL-53, VFL-54, VFL-55, ...) are excluded entirely from this document per the skip-own-routine-tasks rule. VFL-9 moved `in_progress` -> `in_review` on 2026-10-05; it is still counted in the "In progress" column (no separate in-review bucket in this table) — see the Status mix pie and Status changes section for the literal status.
 
 ## Phase tracker
 
@@ -57,8 +57,9 @@ flowchart LR
 
 ```mermaid
 pie title Tasks by status
-  "done" : 12
+  "done" : 13
   "in_review" : 1
+  "in_progress" : 1
   "blocked" : 36
   "backlog" : 2
   "cancelled" : 1
@@ -159,10 +160,15 @@ No tasks created yet.
 | VFL-51 | PROBE | (unassigned) | cancelled | | no evidence recorded |
 | VFL-52 | F1 scaffold complete at d61b43f — carries the VFL-9 report, two decisions for Cortana | Cortana | done | 2026-10-05 | [VFL-52 comment, 2026-10-05T21:35:57Z](http://paperclip.paperclip.svc.cluster.local/VFL/issues/VFL-52) |
 | VFL-58 | Take over pull request merges: confirm GitHub access, Tekton checks, update gate docs | Cortana | done | 2026-10-06 | [VFL-58 comment, 2026-10-06T07:21:17Z](http://paperclip.paperclip.svc.cluster.local/VFL/issues/VFL-58) |
+| VFL-60 | Board watch: find stuck tasks and nudge owners | MasterChief | in_progress | | [VFL-60](http://paperclip.paperclip.svc.cluster.local/VFL/issues/VFL-60) |
+| VFL-61 | F1 rulings: reqwest feature, testcontainers, object_store, chromiumoxide on 20736f3 | Cortana | done | 2026-10-06 | [VFL-61 comment, 2026-10-06T07:52:54Z](http://paperclip.paperclip.svc.cluster.local/VFL/issues/VFL-61) |
 
-Notes for MasterChief: VFL-51, VFL-52 and VFL-58 are tasks that do not match any task in the VFL-49 phase mapping or the task matrix, so they are held here rather than filed under Phase 1. VFL-52 is a decision/report-carrier task, not a code deliverable: it records that Cortana reviewed commit `d61b43f` from Jorge's local checkout against the architecture spec, copied the F1 report onto VFL-9, released VFL-39 from its VFL-9 blocker, ratified the licence-exception list, and raised a new Decision 3 (toolchain target) blocking VFL-9 approval. VFL-9 itself is still `in_progress`/`in_review` with no `completedAt`, so this document does not record F1 as delivered yet. VFL-51 ("PROBE", no project, no assignee) was cancelled by Cortana in that same comment. VFL-58 is a governance handover task: Cortana took over pull-request merge ownership, proved GitHub access, and updated the VFL-8 gate documents to the seven-step delivery flow; it left an owner action for MasterChief on Tekton check wiring (see delivery log). Guilty Spark's own recurring "Progress tracker update" tasks (VFL-53 onward) are intentionally omitted from this table — see footnote on the summary table.
+Notes for MasterChief: VFL-51, VFL-52, VFL-58, VFL-60 and VFL-61 are tasks that do not match any task in the VFL-49 phase mapping or the task matrix, so they are held here rather than filed under Phase 1. VFL-52 is a decision/report-carrier task, not a code deliverable: it records that Cortana reviewed commit `d61b43f` from Jorge's local checkout against the architecture spec, copied the F1 report onto VFL-9, released VFL-39 from its VFL-9 blocker, ratified the licence-exception list, and raised a new Decision 3 (toolchain target) blocking VFL-9 approval. VFL-9 itself is still `in_progress`/`in_review` with no `completedAt`, so this document does not record F1 as delivered yet. VFL-51 ("PROBE", no project, no assignee) was cancelled by Cortana in that same comment. VFL-58 is a governance handover task: Cortana took over pull-request merge ownership, proved GitHub access, and updated the VFL-8 gate documents to the seven-step delivery flow; it left an owner action for MasterChief on Tekton check wiring (see delivery log). VFL-60 is a standing task the owner requested on VFL-49: MasterChief periodically checks the board for stuck tasks and nudges owners; it is intentionally left open and has no delivery date. VFL-61 is a second F1 decision/report-carrier task: Cortana ruled on four open Jorge toolchain questions and re-attached Decisions 2 and 3 to candidate `20736f3`; see the delivery log. Guilty Spark's own recurring "Progress tracker update" tasks (VFL-53 onward) are intentionally omitted from this table — see footnote on the summary table.
 
 ## Delivery log
+
+### 2026-10-06 — VFL-61 F1 rulings: reqwest feature, testcontainers, object_store, chromiumoxide on 20736f3
+Cortana ruled on the four open F1 toolchain questions from Jorge's 07:30 report and MasterChief's nudge, recording all four on [VFL-9](http://paperclip.paperclip.svc.cluster.local/VFL/issues/VFL-9) (comment `39d52469`, 2026-10-06 07:52 UTC) and re-attaching Decisions 2 and 3 to candidate `20736f3` on `jorge/f1-workspace-scaffold`: (1) §A5 amended to `rustls-no-provider` for the reqwest TLS feature — plain `rustls` not allowed because it hard-selects `aws-lc-rs`; (2) testcontainers `=0.27.3` accepted, §A5 amended to the 0.27 series plus testcontainers-modules 0.15; (3) object_store accepted with `default-features = false` and `fs`/`aws-base`/`reqwest`/`ring`, `aws` feature not allowed; (4) chromiumoxide `=0.9.1` kept as the reviewed pin, with the crate-vs-headless-CLI choice left open until the M4 freeze. She also closed sqlx's `tls-rustls-ring`+`macros` and kube's `client`+`ring` feature choices, and added a workspace-wide TLS-provider rule (`ring` only, `aws-lc-rs` must not resolve) to the architecture document, now at revision 4 (`1c9c68e7`). Verification cited: `cargo tree --locked --offline` on `20736f3`, `deny.toml` and `rust-toolchain.toml` at that commit. `20736f3` remains the candidate; Jorge owes no further commit for these items. Evidence: [VFL-61 comment, 2026-10-06T07:52:54Z](http://paperclip.paperclip.svc.cluster.local/VFL/issues/VFL-61), [architecture document rev. 1c9c68e7](http://paperclip.paperclip.svc.cluster.local/VFL/issues/VFL-8#document-architecture).
 
 ### 2026-10-06 — VFL-58 Take over pull request merges: confirm GitHub access, Tekton checks, update gate docs
 Cortana proved GitHub merge access from her own run (logged in as `zozo6015`, admin/push on `vulcanflow/platform`, the same identity that merged PR #2), confirmed `platform`'s branch protection (4 required GitHub Actions checks, strict, enforced for admins, 0 required approvals) and found no open PRs on `platform` to merge yet. Per owner direction relayed on VFL-49 (2026-10-06 07:12 UTC), she rewrote two gate documents on [VFL-8](http://paperclip.paperclip.svc.cluster.local/VFL/issues/VFL-8) to the seven-step delivery flow (push/PR, Tekton CI, Cortana-only merge, done-at-merge): the task-matrix "Gates" bullet (document `task-matrix`, revision `11aa5bb2`) and architecture invariant 12 (document `architecture`, revision `591a7803`), plus a consistency clause that a coding task reaches `done` only once its PR is merged on `main`. She recorded that today's 4 required checks come from the GitHub Actions workflow `lane-gate.yml` (app id 15368), not Tekton — the Tekton webhook at `zozotk.go.ro` is unverified as attached to the repo (API returned 403 listing webhooks) — and left an **owner action for MasterChief**: decide whether Tekton joins or replaces the Actions checks as a required status check. Current merges are not blocked by this gap. Evidence: [VFL-58 comment, 2026-10-06T07:21:17Z](http://paperclip.paperclip.svc.cluster.local/VFL/issues/VFL-58), [VFL-58 plan document](http://paperclip.paperclip.svc.cluster.local/VFL/issues/VFL-58#document-plan).
@@ -202,6 +208,8 @@ Opened [PR #53](https://github.com/vulcanflow/docs/pull/53) with `VulcanFlow_Dev
 
 ## Status changes
 
+- 2026-10-06T07:52:54Z VFL-61 (new) -> done — "F1 rulings: reqwest feature, testcontainers, object_store, chromiumoxide on 20736f3", Cortana, project platform-foundation, not in the phase mapping (held under Unassigned)
+- 2026-10-06T07:50:03Z VFL-60 (new) -> in_progress — "Board watch: find stuck tasks and nudge owners", MasterChief, project progress-and-docs, standing task per owner direction on VFL-49, not in the phase mapping (held under Unassigned)
 - 2026-10-06T07:21:17Z VFL-58 (new) -> done — "Take over pull request merges: confirm GitHub access, Tekton checks, update gate docs", Cortana, project platform-foundation, not in the phase mapping (held under Unassigned)
 - 2026-10-05T22:12:36Z VFL-9 in_progress -> in_review — "F1. Workspace scaffold and pins", Jorge — code complete at `52015ab` on local branch `jorge/f1-workspace-scaffold` (not pushed), every F1 acceptance criterion verified with evidence; next gate step is Halsey (T9 / VFL-39), then Test Runner, Arbiter and Opus Reviewer, then Cortana's push approval
 - 2026-10-05T21:35:57Z VFL-52 in_progress -> done — "F1 scaffold complete at d61b43f...", Cortana
