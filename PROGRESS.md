@@ -1,12 +1,12 @@
 # VulcanFlow progress
 
-Last updated: 2026-10-06T08:02:53Z by Guilty Spark. Source: Paperclip company vFlow.
+Last updated: 2026-10-06T08:32:15Z by Guilty Spark. Source: Paperclip company vFlow.
 
 ## Summary table
 
 | Phase | Project(s) | Done | In progress | Blocked | Planned | Total |
 |---|---|---|---|---|---|---|
-| 1 Foundation | platform-foundation, test-packs (T9) | 0 | 1 | 3 | 0 | 4 |
+| 1 Foundation | platform-foundation, test-packs (T9) | 0 | 2 | 3 | 0 | 5 |
 | 2 Libraries | core-libraries, graph-and-execution-contracts, test-packs (T1-T5) | 0 | 0 | 15 | 0 | 15 |
 | 3 API | api, test-packs (T7) | 0 | 0 | 5 | 0 | 5 |
 | 4 Execution | scanners, operator-and-ingest, test-packs (T6) | 0 | 0 | 7 | 1 | 8 |
@@ -15,7 +15,7 @@ Last updated: 2026-10-06T08:02:53Z by Guilty Spark. Source: Paperclip company vF
 | Later (reporting, infra, ai-gateway) | reporting, infra, ai-gateway | 0 | 0 | 0 | 0 | 0 |
 | Setup and governance | Onboarding | 9 | 0 | 0 | 0 | 9 |
 | Unassigned to a phase[^1] | progress-and-docs (VFL-50, VFL-60), platform-foundation (VFL-52, VFL-58, VFL-61), none (VFL-51) | 4 | 1 | 0 | 0 | 6 |
-| **Total**[^1] | | **13** | **2** | **36** | **2** | **54** |
+| **Total**[^1] | | **13** | **3** | **36** | **2** | **55** |
 
 [^1]: 1 cancelled task (VFL-51) is counted in Total only; it has no Done/In progress/Blocked/Planned bucket. Guilty Spark's own recurring "Progress tracker update" tasks (VFL-53, VFL-54, VFL-55, ...) are excluded entirely from this document per the skip-own-routine-tasks rule. VFL-9 moved `in_progress` -> `in_review` on 2026-10-05; it is still counted in the "In progress" column (no separate in-review bucket in this table) — see the Status mix pie and Status changes section for the literal status.
 
@@ -23,7 +23,7 @@ Last updated: 2026-10-06T08:02:53Z by Guilty Spark. Source: Paperclip company vF
 
 ```mermaid
 flowchart LR
-  P1["1 Foundation<br/>0/4 done"]
+  P1["1 Foundation<br/>0/5 done"]
   P2["2 Libraries<br/>0/15 done"]
   P3["3 API<br/>0/5 done"]
   P4["4 Execution<br/>0/8 done"]
@@ -59,7 +59,7 @@ flowchart LR
 pie title Tasks by status
   "done" : 13
   "in_review" : 1
-  "in_progress" : 1
+  "in_progress" : 2
   "blocked" : 36
   "backlog" : 2
   "cancelled" : 1
@@ -73,6 +73,7 @@ pie title Tasks by status
 | VFL-12 | F2. Local dev harness and `vf-testkit` | Jorge | blocked | | |
 | VFL-13 | F3. Infrastructure adapters: `ArtifactStore` and `WakeBus` | Jorge | blocked | | |
 | VFL-39 | T9 test pack: workspace rules | Halsey | blocked | | |
+| VFL-63 | Run T9 pair 892fdf8 (test) / 20736f3 (code) with the shared toolchain | Test Runner | in_progress | | [VFL-63](http://paperclip.paperclip.svc.cluster.local/VFL/issues/VFL-63) |
 
 ## Phase 2: Libraries
 
@@ -208,6 +209,7 @@ Opened [PR #53](https://github.com/vulcanflow/docs/pull/53) with `VulcanFlow_Dev
 
 ## Status changes
 
+- 2026-10-06T08:13:10Z VFL-63 (new) -> in_progress — "Run T9 pair 892fdf8 (test) / 20736f3 (code) with the shared toolchain", Test Runner, project test-packs, child of VFL-39, Phase 1 Foundation — the environment blocker on VFL-39 (no system C compiler, no root) is resolved via Jorge's shared toolchain; Test Runner is running the T9 test/code pair
 - 2026-10-06T07:52:54Z VFL-61 (new) -> done — "F1 rulings: reqwest feature, testcontainers, object_store, chromiumoxide on 20736f3", Cortana, project platform-foundation, not in the phase mapping (held under Unassigned)
 - 2026-10-06T07:50:03Z VFL-60 (new) -> in_progress — "Board watch: find stuck tasks and nudge owners", MasterChief, project progress-and-docs, standing task per owner direction on VFL-49, not in the phase mapping (held under Unassigned)
 - 2026-10-06T07:21:17Z VFL-58 (new) -> done — "Take over pull request merges: confirm GitHub access, Tekton checks, update gate docs", Cortana, project platform-foundation, not in the phase mapping (held under Unassigned)

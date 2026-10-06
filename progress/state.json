@@ -1,5 +1,5 @@
 {
-  "lastRunAt": "2026-10-06T08:02:53Z",
+  "lastRunAt": "2026-10-06T08:32:15Z",
   "phases": {
     "p1_foundation": {
       "label": "1 Foundation",
@@ -11,7 +11,8 @@
         "VFL-9",
         "VFL-12",
         "VFL-13",
-        "VFL-39"
+        "VFL-39",
+        "VFL-63"
       ]
     },
     "p2_libraries": {
@@ -514,6 +515,13 @@
       "title": "F1 rulings: reqwest feature, testcontainers, object_store, chromiumoxide on 20736f3",
       "assignee": "Cortana",
       "project": "platform-foundation"
+    },
+    "VFL-63": {
+      "status": "in_progress",
+      "completedAt": null,
+      "title": "Run T9 pair 892fdf8 (test) / 20736f3 (code) with the shared toolchain",
+      "assignee": "Test Runner",
+      "project": "test-packs"
     }
   }
 }
