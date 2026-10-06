@@ -1,5 +1,5 @@
 {
-  "lastRunAt": "2026-10-06T10:33:51Z",
+  "lastRunAt": "2026-10-06T11:01:30Z",
   "phases": {
     "p1_foundation": {
       "label": "1 Foundation",
@@ -144,7 +144,14 @@
         "VFL-75",
         "VFL-76",
         "VFL-77",
-        "VFL-78"
+        "VFL-78",
+        "VFL-80",
+        "VFL-81",
+        "VFL-82",
+        "VFL-83",
+        "VFL-84",
+        "VFL-85",
+        "VFL-87"
       ]
     }
   },
@@ -514,8 +521,8 @@
       "project": "platform-foundation"
     },
     "VFL-60": {
-      "status": "in_progress",
-      "completedAt": null,
+      "status": "done",
+      "completedAt": "2026-10-06T10:59:55.885Z",
       "title": "Board watch: find stuck tasks and nudge owners",
       "assignee": "MasterChief",
       "project": "progress-and-docs"
@@ -570,45 +577,94 @@
       "project": "platform-foundation"
     },
     "VFL-73": {
-      "status": "in_progress",
-      "completedAt": null,
+      "status": "done",
+      "completedAt": "2026-10-06T10:38:40.279Z",
       "title": "F1 fix pass: the four MEDIUM findings from VFL-68, on jorge/f1-workspace-scaffold",
       "assignee": "Jorge",
       "project": "platform-foundation"
     },
     "VFL-74": {
-      "status": "in_progress",
-      "completedAt": null,
+      "status": "done",
+      "completedAt": "2026-10-06T10:32:56.627Z",
       "title": "T9 replay onto F1 candidate eab1bc5, plus the five VFL-68 coverage notes",
       "assignee": "Halsey",
       "project": "platform-foundation"
     },
     "VFL-75": {
-      "status": "blocked",
-      "completedAt": null,
+      "status": "done",
+      "completedAt": "2026-10-06T10:58:57.114Z",
       "title": "Arbiter re-review: F1 pair eab1bc5 + the VFL-74 T9 replay",
       "assignee": "Arbiter",
       "project": "platform-foundation"
     },
     "VFL-76": {
-      "status": "blocked",
-      "completedAt": null,
+      "status": "done",
+      "completedAt": "2026-10-06T10:41:58.003Z",
       "title": "Run T9 against F1 pair eab1bc5 + the VFL-74 replay",
       "assignee": "Test Runner",
       "project": "platform-foundation"
     },
     "VFL-77": {
-      "status": "blocked",
-      "completedAt": null,
+      "status": "done",
+      "completedAt": "2026-10-06T10:45:17.704Z",
       "title": "Opus Reviewer re-review: F1 pair eab1bc5 + the VFL-74 T9 replay",
       "assignee": "Opus Reviewer",
       "project": "platform-foundation"
     },
     "VFL-78": {
-      "status": "in_progress",
-      "completedAt": null,
+      "status": "done",
+      "completedAt": "2026-10-06T10:33:26.997Z",
       "title": "Architect ruling: \u00a7A5 revision 4 TLS sentence vs the reqwest rustls-no-provider row",
       "assignee": "Cortana",
+      "project": "platform-foundation"
+    },
+    "VFL-80": {
+      "status": "backlog",
+      "completedAt": null,
+      "title": "graph-rules rule 3: every TLS-initiating binary resolves rustls `ring` on its own (\u00a7A5 rev 5)",
+      "assignee": "Jorge",
+      "project": "platform-foundation"
+    },
+    "VFL-81": {
+      "status": "backlog",
+      "completedAt": null,
+      "title": "T9 assertion: per-binary rustls `ring` provider (\u00a7A5 rev 5)",
+      "assignee": "Halsey",
+      "project": "platform-foundation"
+    },
+    "VFL-82": {
+      "status": "backlog",
+      "completedAt": null,
+      "title": "README: cite \u00a7A5 revision 5, not revision 4",
+      "assignee": "Jorge",
+      "project": "platform-foundation"
+    },
+    "VFL-83": {
+      "status": "done",
+      "completedAt": "2026-10-06T10:43:04.369Z",
+      "title": "F1 push path: the code candidate and the T9 replay share one branch, so the lane gate fails",
+      "assignee": "Halsey",
+      "project": "platform-foundation"
+    },
+    "VFL-84": {
+      "status": "in_progress",
+      "completedAt": null,
+      "title": "Board watch (continuation 1): find stuck tasks and nudge owners",
+      "assignee": "MasterChief",
+      "project": "progress-and-docs"
+    },
+    "VFL-85": {
+      "status": "blocked",
+      "completedAt": null,
+      "title": "CI hardening: SHA-pin the GitHub Actions in rust-check.yml and lane-gate.yml",
+      "assignee": "Jorge",
+      "project": "platform-foundation"
+    },
+    "VFL-87": {
+      "status": "in_progress",
+      "completedAt": null,
+      "title": "T9: NO_IO_CRATES covers 4 of the 7 crates graph-rules.sh checks, and does not split by target",
+      "assignee": "Halsey",
       "project": "platform-foundation"
     }
   }
