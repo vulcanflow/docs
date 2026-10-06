@@ -1,5 +1,5 @@
 {
-  "lastRunAt": "2026-10-06T13:33:31Z",
+  "lastRunAt": "2026-10-06T14:08:39Z",
   "phases": {
     "p1_foundation": {
       "label": "1 Foundation",
@@ -183,7 +183,16 @@
         "VFL-116",
         "VFL-119",
         "VFL-120",
-        "VFL-122"
+        "VFL-122",
+        "VFL-124",
+        "VFL-125",
+        "VFL-126",
+        "VFL-127",
+        "VFL-128",
+        "VFL-129",
+        "VFL-130",
+        "VFL-131",
+        "VFL-132"
       ]
     }
   },
@@ -280,7 +289,7 @@
       "project": "91740a68-0dd1-47b4-935f-9ab08f4c5669"
     },
     "VFL-14": {
-      "status": "blocked",
+      "status": "in_progress",
       "completedAt": null,
       "title": "C1. `vf-core` identities, state machines, policy and Problem catalogue",
       "assignee": "Fred",
@@ -728,7 +737,7 @@
       "project": "91740a68-0dd1-47b4-935f-9ab08f4c5669"
     },
     "VFL-92": {
-      "status": "in_progress",
+      "status": "blocked",
       "completedAt": null,
       "title": "T9 follow-up: fix LOW-T1 and LOW-T2 from the VFL-77 re-review",
       "assignee": "Halsey",
@@ -777,8 +786,8 @@
       "project": "91740a68-0dd1-47b4-935f-9ab08f4c5669"
     },
     "VFL-99": {
-      "status": "in_review",
-      "completedAt": null,
+      "status": "done",
+      "completedAt": "2026-10-06T13:56:49.764Z",
       "title": "CI executor: reconcile the architecture text (Tekton) with the real gate executor (GitHub Actions)",
       "assignee": "Cortana",
       "project": "91740a68-0dd1-47b4-935f-9ab08f4c5669"
@@ -805,7 +814,7 @@
       "project": "91740a68-0dd1-47b4-935f-9ab08f4c5669"
     },
     "VFL-105": {
-      "status": "in_progress",
+      "status": "blocked",
       "completedAt": null,
       "title": "T9 tests: residual LOW hardening from CodeRabbit PR #12 review",
       "assignee": "Halsey",
@@ -875,8 +884,8 @@
       "project": "91740a68-0dd1-47b4-935f-9ab08f4c5669"
     },
     "VFL-115": {
-      "status": "in_progress",
-      "completedAt": null,
+      "status": "done",
+      "completedAt": "2026-10-06T14:01:07.885Z",
       "title": "Opus Reviewer review: VFL-82 README \u00a7A5 revision citation (470c2a0)",
       "assignee": "Opus Reviewer",
       "project": "91740a68-0dd1-47b4-935f-9ab08f4c5669"
@@ -921,6 +930,69 @@
       "completedAt": null,
       "title": "CI: enforce the 40-hex `uses:` pin rule in lane-gate and document the pin update path (VFL-103 residual LOW 1+2)",
       "assignee": "Jorge",
+      "project": "91740a68-0dd1-47b4-935f-9ab08f4c5669"
+    },
+    "VFL-124": {
+      "status": "in_progress",
+      "completedAt": null,
+      "title": "CI on Tekton (1/4): GitHub webhook to a Tekton EventListener at zozotk.go.ro",
+      "assignee": "Jorge",
+      "project": "91740a68-0dd1-47b4-935f-9ab08f4c5669"
+    },
+    "VFL-125": {
+      "status": "in_progress",
+      "completedAt": null,
+      "title": "CI on Tekton (2/4): pipeline definitions equivalent to lane-gate and rust-check",
+      "assignee": "Jorge",
+      "project": "91740a68-0dd1-47b4-935f-9ab08f4c5669"
+    },
+    "VFL-126": {
+      "status": "blocked",
+      "completedAt": null,
+      "title": "CI on Tekton (3/4): status reporting to the PR commit and required contexts on main",
+      "assignee": "Jorge",
+      "project": "91740a68-0dd1-47b4-935f-9ab08f4c5669"
+    },
+    "VFL-127": {
+      "status": "blocked",
+      "completedAt": null,
+      "title": "CI on Tekton (4/4): retire the GitHub Actions workflows; keep Dependabot only",
+      "assignee": "Jorge",
+      "project": "91740a68-0dd1-47b4-935f-9ab08f4c5669"
+    },
+    "VFL-128": {
+      "status": "in_progress",
+      "completedAt": null,
+      "title": "Opus Reviewer: review VFL-92 LOW-T1/LOW-T2 fix (branch halsey/vfl-92-low-t1-t2, b785dd0)",
+      "assignee": "Opus Reviewer",
+      "project": "91740a68-0dd1-47b4-935f-9ab08f4c5669"
+    },
+    "VFL-129": {
+      "status": "in_progress",
+      "completedAt": null,
+      "title": "Test Runner: run T9 workspace_graph tests for VFL-92 (branch halsey/vfl-92-low-t1-t2, b785dd0)",
+      "assignee": "Test Runner",
+      "project": "91740a68-0dd1-47b4-935f-9ab08f4c5669"
+    },
+    "VFL-130": {
+      "status": "in_progress",
+      "completedAt": null,
+      "title": "CodeRabbit review: VFL-105 T9 LOW hardening (deny.toml allow-list scope + declared crate kind) (6d296fb)",
+      "assignee": "Arbiter",
+      "project": "91740a68-0dd1-47b4-935f-9ab08f4c5669"
+    },
+    "VFL-131": {
+      "status": "in_progress",
+      "completedAt": null,
+      "title": "Opus Reviewer: review VFL-105 T9 LOW hardening (deny.toml allow-list scope + declared crate kind) (6d296fb)",
+      "assignee": "Opus Reviewer",
+      "project": "91740a68-0dd1-47b4-935f-9ab08f4c5669"
+    },
+    "VFL-132": {
+      "status": "in_progress",
+      "completedAt": null,
+      "title": "Test Runner: run T9 workspace_graph tests for VFL-105 (branch halsey/vfl-105-t9-low-hardening, 6d296fb)",
+      "assignee": "Test Runner",
       "project": "91740a68-0dd1-47b4-935f-9ab08f4c5669"
     }
   }
