@@ -1,5 +1,5 @@
 {
-  "lastRunAt": "2026-10-06T19:37:00Z",
+  "lastRunAt": "2026-10-06T20:08:19Z",
   "phases": {
     "p1_foundation": {
       "label": "1 Foundation",
@@ -16,7 +16,9 @@
         "VFL-65",
         "VFL-66",
         "VFL-67",
-        "VFL-68"
+        "VFL-68",
+        "VFL-162",
+        "VFL-163"
       ]
     },
     "p2_libraries": {
@@ -331,9 +333,9 @@
       "project": "core-libraries"
     },
     "VFL-12": {
-      "status": "in_progress",
+      "status": "in_review",
       "completedAt": null,
-      "title": "F2. Local dev harness and `vf-testkit`",
+      "title": "F2. Local dev harness and vf-testkit",
       "assignee": "Jorge",
       "project": "platform-foundation"
     },
@@ -653,14 +655,14 @@
       "project": "core-libraries"
     },
     "VFL-153": {
-      "status": "in_progress",
+      "status": "blocked",
       "completedAt": null,
       "title": "Independent review of 8ec435d: cross compiler in the bootstrapped toolchain (VFL-151)",
       "assignee": "Opus Reviewer",
       "project": "core-libraries"
     },
     "VFL-151": {
-      "status": "in_progress",
+      "status": "blocked",
       "completedAt": null,
       "title": "just check-cross cannot run on the agent runners: the bootstrapped toolchain is host-only",
       "assignee": "Jorge",
@@ -1162,6 +1164,20 @@
       "title": "W5. `vf-graph` WASM packaging and browser parity harness",
       "assignee": "Linda",
       "project": "web"
+    },
+    "VFL-162": {
+      "status": "in_progress",
+      "completedAt": null,
+      "title": "F2a. Dev harness: compose stand-ins, .env.example, just recipes",
+      "assignee": "Jorge",
+      "project": "platform-foundation"
+    },
+    "VFL-163": {
+      "status": "in_progress",
+      "completedAt": null,
+      "title": "F2b. vf-testkit: TestDb, fixtures, clock, ids, token, entitlements",
+      "assignee": "Jorge",
+      "project": "platform-foundation"
     }
   }
 }

@@ -1,12 +1,12 @@
 # VulcanFlow progress
 
-Last updated: 2026-10-06T19:37:00Z by Guilty Spark. Source: Paperclip company vFlow.
+Last updated: 2026-10-06T20:08:19Z by Guilty Spark. Source: Paperclip company vFlow.
 
 ## Summary table
 
 | Phase | Project(s) | Done | In progress | Blocked | Planned | Total |
 |---|---|---|---|---|---|---|
-| 1 Foundation | platform-foundation, test-packs (T9) | 7 | 1 | 1 | 0 | 9 |
+| 1 Foundation | platform-foundation, test-packs (T9) | 7 | 3 | 1 | 0 | 11 |
 | 2 Libraries | core-libraries, graph-and-execution-contracts, test-packs (T1-T5) | 0 | 0 | 19 | 0 | 19 |
 | 3 API | api, test-packs (T7) | 0 | 0 | 5 | 0 | 5 |
 | 4 Execution | scanners, operator-and-ingest, test-packs (T6) | 0 | 0 | 7 | 1 | 8 |
@@ -14,8 +14,8 @@ Last updated: 2026-10-06T19:37:00Z by Guilty Spark. Source: Paperclip company vF
 | 6 Web | web, test-packs (T8) | 0 | 0 | 5 | 1 | 6 |
 | Later (reporting, infra, ai-gateway) | reporting, infra, ai-gateway | 0 | 0 | 0 | 0 | 0 |
 | Setup and governance | Onboarding | 9 | 0 | 0 | 0 | 9 |
-| Unassigned to a phase[^1] | progress-and-docs (VFL-50, VFL-60, VFL-84), platform-foundation (VFL-52, VFL-58, VFL-61, VFL-70, VFL-73–103, VFL-105–111, VFL-114–116, VFL-119–143, VFL-160, except VFL-112–113/117–118 which moved into Phase 2, VFL-122, VFL-124–137), core-libraries (VFL-140, VFL-142, VFL-145–149, VFL-151–159), none (VFL-51) | 46 | 9 | 16 | 5 | 78 |
-| **Total**[^1] | | **62** | **10** | **54** | **7** | **135** |
+| Unassigned to a phase[^1] | progress-and-docs (VFL-50, VFL-60, VFL-84), platform-foundation (VFL-52, VFL-58, VFL-61, VFL-70, VFL-73–103, VFL-105–111, VFL-114–116, VFL-119–143, VFL-160, except VFL-112–113/117–118 which moved into Phase 2, VFL-122, VFL-124–137), core-libraries (VFL-140, VFL-142, VFL-145–149, VFL-151–159), none (VFL-51) | 46 | 7 | 18 | 5 | 78 |
+| **Total**[^1] | | **62** | **10** | **56** | **7** | **137** |
 
 [^1]: 2 cancelled tasks (VFL-51, VFL-134) are counted in Total only; they have no Done/In progress/Blocked/Planned bucket. Guilty Spark's own recurring "Progress tracker update" tasks (VFL-53, VFL-54, VFL-55, ...) are excluded entirely from this document per the skip-own-routine-tasks rule. The "In progress" column folds `in_progress` and `in_review` together (no separate in-review bucket in this table); the "Planned" column folds `todo` and `backlog` tasks together — both are queued/not-yet-started, just at different readiness states; see the Status mix pie for the literal per-status counts.
 
@@ -23,7 +23,7 @@ Last updated: 2026-10-06T19:37:00Z by Guilty Spark. Source: Paperclip company vF
 
 ```mermaid
 flowchart LR
-  P1["1 Foundation<br/>7/9 done"]
+  P1["1 Foundation<br/>7/11 done"]
   P2["2 Libraries<br/>0/19 done"]
   P3["3 API<br/>0/5 done"]
   P4["4 Execution<br/>0/8 done"]
@@ -58,11 +58,11 @@ flowchart LR
 ```mermaid
 pie title Tasks by status
   "done" : 62
-  "blocked" : 54
-  "in_progress" : 9
+  "blocked" : 56
+  "in_progress" : 8
   "backlog" : 6
   "todo" : 1
-  "in_review" : 1
+  "in_review" : 2
   "cancelled" : 2
 ```
 
@@ -71,7 +71,9 @@ pie title Tasks by status
 | Task | Title | Owner | Status | Delivered | Evidence |
 |---|---|---|---|---|---|
 | VFL-9 | F1. Workspace scaffold and pins | Jorge | done | 2026-10-06 | [VFL-9 comment, 2026-10-06T12:33:34Z](http://paperclip.paperclip.svc.cluster.local/VFL/issues/VFL-9), [PR #11](https://github.com/vulcanflow/platform/pull/11), [PR #12](https://github.com/vulcanflow/platform/pull/12) |
-| VFL-12 | F2. Local dev harness and `vf-testkit` | Jorge | in_progress | | [VFL-12](http://paperclip.paperclip.svc.cluster.local/VFL/issues/VFL-12) |
+| VFL-12 | F2. Local dev harness and `vf-testkit` (record/index — split into VFL-162/VFL-163) | Jorge | in_review | | [VFL-12](http://paperclip.paperclip.svc.cluster.local/VFL/issues/VFL-12) |
+| VFL-162 | F2a. Dev harness: compose stand-ins, `.env.example`, `just` recipes (child of VFL-12) | Jorge | in_progress | | [VFL-162](http://paperclip.paperclip.svc.cluster.local/VFL/issues/VFL-162) |
+| VFL-163 | F2b. `vf-testkit`: TestDb, fixtures, clock, ids, token, entitlements (child of VFL-12) | Jorge | in_progress | | [VFL-163](http://paperclip.paperclip.svc.cluster.local/VFL/issues/VFL-163) |
 | VFL-13 | F3. Infrastructure adapters: `ArtifactStore` and `WakeBus` | Jorge | blocked | | [VFL-13](http://paperclip.paperclip.svc.cluster.local/VFL/issues/VFL-13) |
 | VFL-39 | T9 test pack: workspace rules | Halsey | done | 2026-10-06 | [VFL-39 comment, 2026-10-06T08:41:59Z](http://paperclip.paperclip.svc.cluster.local/VFL/issues/VFL-39) |
 | VFL-63 | Run T9 pair 892fdf8 (test) / 20736f3 (code) with the shared toolchain | Test Runner | done | 2026-10-06 | [VFL-63 comment, 2026-10-06T08:40:33Z](http://paperclip.paperclip.svc.cluster.local/VFL/issues/VFL-63) |
@@ -236,9 +238,9 @@ No tasks created yet.
 | VFL-147 | Opus Reviewer: review VFL-142 non-root C toolchain bootstrap (re-pointed to 1ef1f09) | Opus Reviewer | done | 2026-10-06 | [VFL-147 comment, 2026-10-06T18:20:54Z](http://paperclip.paperclip.svc.cluster.local/VFL/issues/VFL-147), [review document](http://paperclip.paperclip.svc.cluster.local/VFL/issues/VFL-147#document-review) |
 | VFL-148 | Test Runner: required suites on VFL-142 toolchain bootstrap (re-pointed to 1ef1f09) | Test Runner | done | 2026-10-06 | [VFL-148 comment, 2026-10-06T18:20:47Z](http://paperclip.paperclip.svc.cluster.local/VFL/issues/VFL-148) |
 | VFL-149 | Bootstrap just, cargo-deny and cargo-audit so `just check` runs on the runners | Jorge | in_progress | | [VFL-149](http://paperclip.paperclip.svc.cluster.local/VFL/issues/VFL-149) |
-| VFL-151 | `just check-cross` cannot run on the agent runners: the bootstrapped toolchain is host-only | Jorge | in_progress | | [VFL-151 comment, 2026-10-06T18:27:10Z](http://paperclip.paperclip.svc.cluster.local/VFL/issues/VFL-151) |
-| VFL-152 | Review 8ec435d: cross compiler in the bootstrapped toolchain (VFL-151) | Arbiter | in_progress | | [VFL-152](http://paperclip.paperclip.svc.cluster.local/VFL/issues/VFL-152) |
-| VFL-153 | Independent review of 8ec435d: cross compiler in the bootstrapped toolchain (VFL-151) | Opus Reviewer | in_progress | | [VFL-153](http://paperclip.paperclip.svc.cluster.local/VFL/issues/VFL-153) |
+| VFL-151 | `just check-cross` cannot run on the agent runners: the bootstrapped toolchain is host-only | Jorge | blocked | | [VFL-151 comment, 2026-10-06T18:27:10Z](http://paperclip.paperclip.svc.cluster.local/VFL/issues/VFL-151) |
+| VFL-152 | Review 8ec435d: cross compiler in the bootstrapped toolchain (VFL-151) | Arbiter | done | 2026-10-06 | [VFL-152](http://paperclip.paperclip.svc.cluster.local/VFL/issues/VFL-152) |
+| VFL-153 | Independent review of 8ec435d: cross compiler in the bootstrapped toolchain (VFL-151) | Opus Reviewer | blocked | | [VFL-153 comment, 2026-10-06T19:45:40Z](http://paperclip.paperclip.svc.cluster.local/VFL/issues/VFL-153) |
 | VFL-154 | Run the required tests on 8ec435d: cross toolchain bootstrap (VFL-151) | Test Runner | in_progress | | [VFL-154 comment, 2026-10-06T18:31:05Z](http://paperclip.paperclip.svc.cluster.local/VFL/issues/VFL-154) |
 | VFL-157 | CodeRabbit review: VFL-142 toolchain bootstrap candidate aa3fa71 | Arbiter | done | 2026-10-06 | [VFL-157 comment, 2026-10-06T19:07:18Z](http://paperclip.paperclip.svc.cluster.local/VFL/issues/VFL-157) |
 | VFL-158 | Opus Reviewer: review VFL-142 toolchain bootstrap candidate aa3fa71 | Opus Reviewer | done | 2026-10-06 | [VFL-158 comment, 2026-10-06T19:27:26Z](http://paperclip.paperclip.svc.cluster.local/VFL/issues/VFL-158), [review-aa3fa71 document](http://paperclip.paperclip.svc.cluster.local/VFL/issues/VFL-158#document-review-aa3fa71) |
@@ -270,6 +272,8 @@ Update 2026-10-06 18:34 UTC: two deliveries. VFL-147 (Opus Reviewer, review of J
 Update 2026-10-06 19:05 UTC: two deliveries. VFL-152 (Arbiter/CodeRabbit review of Jorge's cross-compiler candidate `8ec435d`, VFL-151) moved `in_progress` → `done`: 0 findings across the 4 changed files; report document saved and cross-linked on VFL-151. VFL-132 (Test Runner, the outstanding VFL-105 gate) moved `blocked` → `done` on a re-run MasterChief requested once the toolchain was confirmed working again: `cargo test --manifest-path tests/Cargo.toml` against `6d296fb` passed 17/17, including both widened checks named in the issue; VFL-105 (Halsey) itself moved `blocked` → `in_progress` now that its last gate is green, the remaining step being Cortana's push approval. Separately: VFL-142 (Jorge's C-toolchain bootstrap) self-blocked again, `in_progress` → `blocked`, on a third candidate `aa3fa71` (keeps one C toolchain per lock under `c-toolchain/<lock sha256>/` without ever deleting one, plus a `linux-libc-dev` pin bump) — three new review-chain tasks opened and held here alongside their VFL-142 siblings: VFL-157 (Arbiter/CodeRabbit), VFL-158 (Opus Reviewer) and VFL-159 (Test Runner), all `in_progress`. On the VFL-102 decision thread, the owner answered "use C" (approve the push now, skip the pre-push `just check` re-run, let `audit` come from `rust-check` CI): Jorge put a push-approval card on VFL-102 addressed to Cortana (recorded in the [decision brief](http://paperclip.paperclip.svc.cluster.local/VFL/issues/VFL-102#document-decision-brief), revision 3) and moved it `blocked` → `in_review` to wait for her answer. VFL-134 (Test Runner's now-superseded VFL-102 re-run) was removed as VFL-102's blocker and cancelled rather than resumed.
 
 Update 2026-10-06 19:37 UTC: three deliveries. VFL-157 (Arbiter/CodeRabbit) and VFL-158 (Opus Reviewer) both moved `in_progress` → `done` on Jorge's third toolchain-bootstrap candidate `aa3fa71`: CodeRabbit returned one non-blocking LOW (`resolve-debs.py:246-252`, a virtual-package resolution fallthrough that could misfire on a future amd64/cross regeneration but is dormant on today's arm64 lock); Opus Reviewer returned a clean PASS, independently re-verifying both previously-flagged MEDIUM fixes (the sysroot publish race and the missing `lib64` symlink entry) plus the lock/version-compare evidence. VFL-159 (Test Runner) is now `aa3fa71`'s only open gate. Separately, Cortana approved and squash-merged [PR #13](https://github.com/vulcanflow/platform/pull/13) for VFL-102 (Jorge's advisory-passes candidate `9b14116`) onto `main` at `143235c`, closing VFL-102 `done` — gated on the VFL-110/VFL-111 reviews, VFL-109's test evidence, and the owner's option-C ruling on the sandbox-only `cargo audit` failure. One new backlog follow-up came out of that merge: VFL-160 (MasterChief to authorize), tracking the sandbox's empty `GIT_CONFIG_COUNT` breaking gitoxide-based `cargo audit` clones and the Test Runner sandbox losing its toolchain between heartbeats; held here rather than under a phase, same as its siblings. VFL-105 (Halsey's T9 LOW hardening, `6d296fb`) is also now recorded `in_progress` → `in_review`: with all three of its gates (VFL-130/131/132) green, Halsey opened a push-approval request-confirmation addressed to Cortana. Paperclip's own timestamp for that transition (19:03 UTC) predates this document's previous 19:05 UTC update, which still showed VFL-105 as `in_progress` — the prior run's snapshot missed it; no content beyond the status is affected.
+
+Update 2026-10-06 20:08 UTC: no delivery this run — status changes and new tasks only. This run also fixed a document-fidelity gap carried from the 19:37 UTC update: VFL-152 (Arbiter/CodeRabbit review of Jorge's cross-compiler candidate `8ec435d`) had already moved `in_progress` → `done` at 18:35 UTC (0 findings, report linked from VFL-151) but the previous snapshot still showed it `in_progress`; it is now corrected here. Separately, both of VFL-152's sibling gates on the same candidate went `blocked`: VFL-153 (Opus Reviewer, independent review) at 19:45:40 UTC on an explicit system comment — Paperclip's bounded retry budget for its run was spent with no live execution path — and VFL-151 itself (Jorge, the cross-compiler-gap task) at 19:46:24 UTC with no comment of its own, matching the same retry-exhaustion pattern one minute apart; VFL-154 (Test Runner, the third gate) is still `in_progress`, unaffected so far. Unblock owner MasterChief for both: restart/retry the stranded runs for Opus Reviewer and Jorge against `8ec435d`. On a separate thread, Jorge (platform-foundation) moved VFL-12 (F2, local dev harness and `vf-testkit`) `in_progress` → `in_review`: with no `vulcanflow/api` repo on GitHub (contradicting the approved Option B decision on [VFL-5](http://paperclip.paperclip.svc.cluster.local/VFL/issues/VFL-5)), Jorge paused F2 code work and is waiting on the board to confirm the target repo for the API work before continuing. Before pausing, Jorge split VFL-12 into two child tasks per the owner's task-size rule — VFL-162 (F2a, dev harness: compose stand-ins, `.env.example`, `just` recipes) and VFL-163 (F2b, `vf-testkit`: TestDb, fixtures, clock, ids, token, entitlements) — both `in_progress` and newly added to the Phase 1 table under their VFL-12 parent; VFL-12 itself stays as the record/index task.
 
 ## Delivery log
 
