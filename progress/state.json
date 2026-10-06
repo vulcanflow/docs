@@ -1,5 +1,5 @@
 {
-  "lastRunAt": "2026-10-06T20:33:47Z",
+  "lastRunAt": "2026-10-06T21:10:00Z",
   "phases": {
     "p1_foundation": {
       "label": "1 Foundation",
@@ -18,7 +18,12 @@
         "VFL-67",
         "VFL-68",
         "VFL-162",
-        "VFL-163"
+        "VFL-163",
+        "VFL-167",
+        "VFL-168",
+        "VFL-169",
+        "VFL-170",
+        "VFL-171"
       ]
     },
     "p2_libraries": {
@@ -222,7 +227,7 @@
   },
   "tasks": {
     "VFL-159": {
-      "status": "blocked",
+      "status": "in_progress",
       "completedAt": null,
       "title": "Test Runner: required suites on VFL-142 toolchain bootstrap (aa3fa71)",
       "assignee": "Test Runner",
@@ -334,7 +339,7 @@
       "project": "core-libraries"
     },
     "VFL-12": {
-      "status": "in_review",
+      "status": "blocked",
       "completedAt": null,
       "title": "F2. Local dev harness and vf-testkit",
       "assignee": "Jorge",
@@ -1174,18 +1179,53 @@
       "project": "platform-foundation"
     },
     "VFL-163": {
-      "status": "blocked",
+      "status": "in_progress",
       "completedAt": null,
       "title": "F2b. vf-testkit: TestDb, fixtures, clock, ids, token, entitlements",
       "assignee": "Jorge",
       "project": "platform-foundation"
     },
     "VFL-165": {
-      "status": "in_progress",
-      "completedAt": null,
+      "status": "done",
+      "completedAt": "2026-10-06T20:35:12.940Z",
       "title": "Re-map API tasks and shared crates for a separate API repo (owner reversed Option B for the API)",
       "assignee": "Cortana",
       "project": "api"
+    },
+    "VFL-167": {
+      "status": "in_progress",
+      "completedAt": null,
+      "title": "CodeRabbit review: F2a dev harness candidate 2eccd75 (child of VFL-162)",
+      "assignee": "Arbiter",
+      "project": "platform-foundation"
+    },
+    "VFL-168": {
+      "status": "in_progress",
+      "completedAt": null,
+      "title": "Opus Reviewer: review F2a dev harness candidate 2eccd75 (child of VFL-162)",
+      "assignee": "Opus Reviewer",
+      "project": "platform-foundation"
+    },
+    "VFL-169": {
+      "status": "in_progress",
+      "completedAt": null,
+      "title": "Test Runner: required runs on F2a dev harness candidate 2eccd75 (child of VFL-162)",
+      "assignee": "Test Runner",
+      "project": "platform-foundation"
+    },
+    "VFL-170": {
+      "status": "done",
+      "completedAt": "2026-10-06T21:00:50.374Z",
+      "title": "Decide: F2a S3-conformance criterion and where container-dependent checks run (child of VFL-162)",
+      "assignee": "Cortana",
+      "project": "platform-foundation"
+    },
+    "VFL-171": {
+      "status": "in_progress",
+      "completedAt": null,
+      "title": "F2a acceptance: run dev-up (120 s, clean machine) and db-template determinism on a container runtime (child of VFL-162)",
+      "assignee": "Test Runner",
+      "project": "platform-foundation"
     }
   }
 }
