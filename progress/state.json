@@ -1,5 +1,5 @@
 {
-  "lastRunAt": "2026-10-06T08:32:15Z",
+  "lastRunAt": "2026-10-06T09:04:30Z",
   "phases": {
     "p1_foundation": {
       "label": "1 Foundation",
@@ -12,7 +12,11 @@
         "VFL-12",
         "VFL-13",
         "VFL-39",
-        "VFL-63"
+        "VFL-63",
+        "VFL-65",
+        "VFL-66",
+        "VFL-67",
+        "VFL-68"
       ]
     },
     "p2_libraries": {
@@ -181,8 +185,8 @@
       "project": "test-packs"
     },
     "VFL-39": {
-      "status": "blocked",
-      "completedAt": null,
+      "status": "done",
+      "completedAt": "2026-10-06T08:44:12.906Z",
       "title": "T9 test pack: workspace rules",
       "assignee": "Halsey",
       "project": "test-packs"
@@ -517,11 +521,39 @@
       "project": "platform-foundation"
     },
     "VFL-63": {
-      "status": "in_progress",
-      "completedAt": null,
+      "status": "done",
+      "completedAt": "2026-10-06T08:40:35.212Z",
       "title": "Run T9 pair 892fdf8 (test) / 20736f3 (code) with the shared toolchain",
       "assignee": "Test Runner",
       "project": "test-packs"
+    },
+    "VFL-65": {
+      "status": "in_progress",
+      "completedAt": null,
+      "title": "T9 replay onto F1 candidate 88a2ef4",
+      "assignee": "Halsey",
+      "project": "test-packs"
+    },
+    "VFL-66": {
+      "status": "blocked",
+      "completedAt": null,
+      "title": "Run T9 against F1 pair 88a2ef4 + replayed T9",
+      "assignee": "Test Runner",
+      "project": "test-packs"
+    },
+    "VFL-67": {
+      "status": "blocked",
+      "completedAt": null,
+      "title": "Arbiter review: F1 workspace scaffold, pair 88a2ef4 + replayed T9",
+      "assignee": "Arbiter",
+      "project": "platform-foundation"
+    },
+    "VFL-68": {
+      "status": "blocked",
+      "completedAt": null,
+      "title": "Opus Reviewer: F1 workspace scaffold, pair 88a2ef4 + replayed T9",
+      "assignee": "Opus Reviewer",
+      "project": "platform-foundation"
     }
   }
 }
