@@ -1,5 +1,5 @@
 {
-  "lastRunAt": "2026-10-06T20:08:19Z",
+  "lastRunAt": "2026-10-06T20:33:47Z",
   "phases": {
     "p1_foundation": {
       "label": "1 Foundation",
@@ -215,13 +215,14 @@
         "VFL-157",
         "VFL-158",
         "VFL-159",
-        "VFL-160"
+        "VFL-160",
+        "VFL-165"
       ]
     }
   },
   "tasks": {
     "VFL-159": {
-      "status": "in_progress",
+      "status": "blocked",
       "completedAt": null,
       "title": "Test Runner: required suites on VFL-142 toolchain bootstrap (aa3fa71)",
       "assignee": "Test Runner",
@@ -1166,18 +1167,25 @@
       "project": "web"
     },
     "VFL-162": {
-      "status": "in_progress",
+      "status": "blocked",
       "completedAt": null,
       "title": "F2a. Dev harness: compose stand-ins, .env.example, just recipes",
       "assignee": "Jorge",
       "project": "platform-foundation"
     },
     "VFL-163": {
-      "status": "in_progress",
+      "status": "blocked",
       "completedAt": null,
       "title": "F2b. vf-testkit: TestDb, fixtures, clock, ids, token, entitlements",
       "assignee": "Jorge",
       "project": "platform-foundation"
+    },
+    "VFL-165": {
+      "status": "in_progress",
+      "completedAt": null,
+      "title": "Re-map API tasks and shared crates for a separate API repo (owner reversed Option B for the API)",
+      "assignee": "Cortana",
+      "project": "api"
     }
   }
 }
