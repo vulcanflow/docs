@@ -1,5 +1,5 @@
 {
-  "lastRunAt": "2026-10-05T22:31:28Z",
+  "lastRunAt": "2026-10-06T07:31:48Z",
   "phases": {
     "p1_foundation": {
       "label": "1 Foundation",
@@ -129,7 +129,8 @@
       "tasks": [
         "VFL-50",
         "VFL-51",
-        "VFL-52"
+        "VFL-52",
+        "VFL-58"
       ]
     }
   },
@@ -488,6 +489,13 @@
       "status": "done",
       "completedAt": "2026-10-05T21:35:57.245Z",
       "title": "F1 scaffold complete at d61b43f \u2014 carries the VFL-9 report (my run cannot write to VFL-9), two decisions for Cortana",
+      "assignee": "Cortana",
+      "project": "platform-foundation"
+    },
+    "VFL-58": {
+      "status": "done",
+      "completedAt": "2026-10-06T07:21:17.275Z",
+      "title": "Take over pull request merges: confirm GitHub access, Tekton checks, update gate docs",
       "assignee": "Cortana",
       "project": "platform-foundation"
     }
