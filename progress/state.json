@@ -1,5 +1,5 @@
 {
-  "lastRunAt": "2026-10-06T10:02:33Z",
+  "lastRunAt": "2026-10-06T10:33:51Z",
   "phases": {
     "p1_foundation": {
       "label": "1 Foundation",
@@ -138,7 +138,13 @@
         "VFL-58",
         "VFL-60",
         "VFL-61",
-        "VFL-70"
+        "VFL-70",
+        "VFL-73",
+        "VFL-74",
+        "VFL-75",
+        "VFL-76",
+        "VFL-77",
+        "VFL-78"
       ]
     }
   },
@@ -557,10 +563,52 @@
       "project": "platform-foundation"
     },
     "VFL-70": {
-      "status": "in_progress",
+      "status": "blocked",
       "completedAt": null,
       "title": "F1 continuation: act on Gate 4 verdicts (VFL-67, VFL-68)",
       "assignee": "Jorge",
+      "project": "platform-foundation"
+    },
+    "VFL-73": {
+      "status": "in_progress",
+      "completedAt": null,
+      "title": "F1 fix pass: the four MEDIUM findings from VFL-68, on jorge/f1-workspace-scaffold",
+      "assignee": "Jorge",
+      "project": "platform-foundation"
+    },
+    "VFL-74": {
+      "status": "in_progress",
+      "completedAt": null,
+      "title": "T9 replay onto F1 candidate eab1bc5, plus the five VFL-68 coverage notes",
+      "assignee": "Halsey",
+      "project": "platform-foundation"
+    },
+    "VFL-75": {
+      "status": "blocked",
+      "completedAt": null,
+      "title": "Arbiter re-review: F1 pair eab1bc5 + the VFL-74 T9 replay",
+      "assignee": "Arbiter",
+      "project": "platform-foundation"
+    },
+    "VFL-76": {
+      "status": "blocked",
+      "completedAt": null,
+      "title": "Run T9 against F1 pair eab1bc5 + the VFL-74 replay",
+      "assignee": "Test Runner",
+      "project": "platform-foundation"
+    },
+    "VFL-77": {
+      "status": "blocked",
+      "completedAt": null,
+      "title": "Opus Reviewer re-review: F1 pair eab1bc5 + the VFL-74 T9 replay",
+      "assignee": "Opus Reviewer",
+      "project": "platform-foundation"
+    },
+    "VFL-78": {
+      "status": "in_progress",
+      "completedAt": null,
+      "title": "Architect ruling: \u00a7A5 revision 4 TLS sentence vs the reqwest rustls-no-provider row",
+      "assignee": "Cortana",
       "project": "platform-foundation"
     }
   }

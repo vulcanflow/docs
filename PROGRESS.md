@@ -1,6 +1,6 @@
 # VulcanFlow progress
 
-Last updated: 2026-10-06T10:02:33Z by Guilty Spark. Source: Paperclip company vFlow.
+Last updated: 2026-10-06T10:33:51Z by Guilty Spark. Source: Paperclip company vFlow.
 
 ## Summary table
 
@@ -14,8 +14,8 @@ Last updated: 2026-10-06T10:02:33Z by Guilty Spark. Source: Paperclip company vF
 | 6 Web | web, test-packs (T8) | 0 | 0 | 5 | 1 | 6 |
 | Later (reporting, infra, ai-gateway) | reporting, infra, ai-gateway | 0 | 0 | 0 | 0 | 0 |
 | Setup and governance | Onboarding | 9 | 0 | 0 | 0 | 9 |
-| Unassigned to a phase[^1] | progress-and-docs (VFL-50, VFL-60), platform-foundation (VFL-52, VFL-58, VFL-61, VFL-70), none (VFL-51) | 4 | 2 | 0 | 0 | 7 |
-| **Total**[^1] | | **19** | **3** | **35** | **2** | **60** |
+| Unassigned to a phase[^1] | progress-and-docs (VFL-50, VFL-60), platform-foundation (VFL-52, VFL-58, VFL-61, VFL-70, VFL-73, VFL-74, VFL-75, VFL-76, VFL-77, VFL-78), none (VFL-51) | 4 | 4 | 4 | 0 | 13 |
+| **Total**[^1] | | **19** | **5** | **39** | **2** | **66** |
 
 [^1]: 1 cancelled task (VFL-51) is counted in Total only; it has no Done/In progress/Blocked/Planned bucket. Guilty Spark's own recurring "Progress tracker update" tasks (VFL-53, VFL-54, VFL-55, ...) are excluded entirely from this document per the skip-own-routine-tasks rule. VFL-9 moved `in_progress` -> `in_review` on 2026-10-05; it is still counted in the "In progress" column (no separate in-review bucket in this table) — see the Status mix pie and Status changes section for the literal status.
 
@@ -59,8 +59,8 @@ flowchart LR
 pie title Tasks by status
   "done" : 19
   "in_review" : 1
-  "in_progress" : 2
-  "blocked" : 35
+  "in_progress" : 4
+  "blocked" : 39
   "backlog" : 2
   "cancelled" : 1
 ```
@@ -167,9 +167,15 @@ No tasks created yet.
 | VFL-58 | Take over pull request merges: confirm GitHub access, Tekton checks, update gate docs | Cortana | done | 2026-10-06 | [VFL-58 comment, 2026-10-06T07:21:17Z](http://paperclip.paperclip.svc.cluster.local/VFL/issues/VFL-58) |
 | VFL-60 | Board watch: find stuck tasks and nudge owners | MasterChief | in_progress | | [VFL-60 comment, 2026-10-06T09:49:44Z](http://paperclip.paperclip.svc.cluster.local/VFL/issues/VFL-60) |
 | VFL-61 | F1 rulings: reqwest feature, testcontainers, object_store, chromiumoxide on 20736f3 | Cortana | done | 2026-10-06 | [VFL-61 comment, 2026-10-06T07:52:54Z](http://paperclip.paperclip.svc.cluster.local/VFL/issues/VFL-61) |
-| VFL-70 | F1 continuation: act on Gate 4 verdicts (VFL-67, VFL-68) | Jorge | in_progress | | [VFL-70](http://paperclip.paperclip.svc.cluster.local/VFL/issues/VFL-70) |
+| VFL-70 | F1 continuation: act on Gate 4 verdicts (VFL-67, VFL-68) | Jorge | blocked | | [VFL-70 comment, 2026-10-06T10:26:56Z](http://paperclip.paperclip.svc.cluster.local/VFL/issues/VFL-70) |
+| VFL-73 | F1 fix pass: the four MEDIUM findings from VFL-68, on jorge/f1-workspace-scaffold | Jorge | in_progress | | [VFL-73](http://paperclip.paperclip.svc.cluster.local/VFL/issues/VFL-73) |
+| VFL-74 | T9 replay onto F1 candidate eab1bc5, plus the five VFL-68 coverage notes | Halsey | in_progress | | [VFL-74](http://paperclip.paperclip.svc.cluster.local/VFL/issues/VFL-74) |
+| VFL-75 | Arbiter re-review: F1 pair eab1bc5 + the VFL-74 T9 replay | Arbiter | blocked | | [VFL-75](http://paperclip.paperclip.svc.cluster.local/VFL/issues/VFL-75) |
+| VFL-76 | Run T9 against F1 pair eab1bc5 + the VFL-74 replay | Test Runner | blocked | | [VFL-76](http://paperclip.paperclip.svc.cluster.local/VFL/issues/VFL-76) |
+| VFL-77 | Opus Reviewer re-review: F1 pair eab1bc5 + the VFL-74 T9 replay | Opus Reviewer | blocked | | [VFL-77](http://paperclip.paperclip.svc.cluster.local/VFL/issues/VFL-77) |
+| VFL-78 | Architect ruling: §A5 revision 4 TLS sentence vs the reqwest rustls-no-provider row | Cortana | in_progress | | [VFL-78](http://paperclip.paperclip.svc.cluster.local/VFL/issues/VFL-78) |
 
-Notes for MasterChief: VFL-51, VFL-52, VFL-58, VFL-60, VFL-61 and VFL-70 are tasks that do not match any task in the VFL-49 phase mapping or the task matrix, so they are held here rather than filed under Phase 1. VFL-52 is a decision/report-carrier task, not a code deliverable: it records that Cortana reviewed commit `d61b43f` from Jorge's local checkout against the architecture spec, copied the F1 report onto VFL-9, released VFL-39 from its VFL-9 blocker, ratified the licence-exception list, and raised a new Decision 3 (toolchain target) blocking VFL-9 approval. VFL-9 itself is still `in_progress`/`in_review` with no `completedAt`, so this document does not record F1 as delivered yet. VFL-51 ("PROBE", no project, no assignee) was cancelled by Cortana in that same comment. VFL-58 is a governance handover task: Cortana took over pull-request merge ownership, proved GitHub access, and updated the VFL-8 gate documents to the seven-step delivery flow; it left an owner action for MasterChief on Tekton check wiring (see delivery log). VFL-60 is a standing task the owner requested on VFL-49: MasterChief periodically checks the board for stuck tasks and nudges owners; it went quiet at 09:31 UTC and resumed at 09:49 UTC at a 15-minute cadence on owner request, with the stuck threshold and no-repeat-nudge rule unchanged. VFL-61 is a second F1 decision/report-carrier task: Cortana ruled on four open Jorge toolchain questions and re-attached Decisions 2 and 3 to candidate `20736f3`; see the delivery log. VFL-70 is a workaround task MasterChief opened for Jorge after five consecutive wake failures (`spawn E2BIG`, VFL-9's thread grew too large for the process launcher) left Jorge's agent in an error state; Jorge picked it up at 09:44 UTC to act on the Gate 4 verdicts now that Arbiter (VFL-67) and Opus Reviewer (VFL-68) have both posted. Guilty Spark's own recurring "Progress tracker update" tasks (VFL-53 onward) are intentionally omitted from this table — see footnote on the summary table.
+Notes for MasterChief: VFL-51, VFL-52, VFL-58, VFL-60, VFL-61, VFL-70, VFL-73, VFL-74, VFL-75, VFL-76, VFL-77 and VFL-78 are tasks that do not match any task in the VFL-49 phase mapping or the task matrix, so they are held here rather than filed under Phase 1. VFL-52 is a decision/report-carrier task, not a code deliverable: it records that Cortana reviewed commit `d61b43f` from Jorge's local checkout against the architecture spec, copied the F1 report onto VFL-9, released VFL-39 from its VFL-9 blocker, ratified the licence-exception list, and raised a new Decision 3 (toolchain target) blocking VFL-9 approval. VFL-9 itself is still `in_progress`/`in_review` with no `completedAt`, so this document does not record F1 as delivered yet. VFL-51 ("PROBE", no project, no assignee) was cancelled by Cortana in that same comment. VFL-58 is a governance handover task: Cortana took over pull-request merge ownership, proved GitHub access, and updated the VFL-8 gate documents to the seven-step delivery flow; it left an owner action for MasterChief on Tekton check wiring (see delivery log). VFL-60 is a standing task the owner requested on VFL-49: MasterChief periodically checks the board for stuck tasks and nudges owners; it went quiet at 09:31 UTC and resumed at 09:49 UTC at a 15-minute cadence on owner request, with the stuck threshold and no-repeat-nudge rule unchanged. VFL-61 is a second F1 decision/report-carrier task: Cortana ruled on four open Jorge toolchain questions and re-attached Decisions 2 and 3 to candidate `20736f3`; see the delivery log. VFL-70 was a workaround task MasterChief opened for Jorge after five consecutive wake failures (`spawn E2BIG`, VFL-9's thread grew too large for the process launcher) left Jorge's agent in an error state; Jorge picked it up at 09:44 UTC to act on the Gate 4 verdicts. Owner direction relayed on VFL-70 at 09:57 UTC (relayed from VFL-49) made two rules: stop posting on VFL-9 entirely (its thread hit ~123 KB and every wake was failing with `spawn E2BIG`), and split the remaining F1 work into small child tasks of VFL-70 rather than VFL-9. Jorge split it into six: VFL-73 (one fix task covering all four Opus Reviewer MEDIUM findings from VFL-68, since they share the workspace-root scaffold path), VFL-74 (Halsey's T9 replay onto the new fixed candidate `eab1bc5`), VFL-75/VFL-76/VFL-77 (Arbiter, Test Runner and Opus Reviewer re-running Gate 4 on the `eab1bc5` pair once VFL-74 posts its replay SHA), and VFL-78 (an architecture-document wording question for Cortana on the §A5 TLS sentence, which does not block the code). VFL-70 itself is now `blocked` on VFL-75 and VFL-77 (both in turn blocked on VFL-74). Guilty Spark is holding VFL-73–78 under Unassigned alongside their parent VFL-70 rather than Phase 1, since they are process/re-review tasks rather than new task-matrix items; flagging this placement to MasterChief for confirmation. Guilty Spark's own recurring "Progress tracker update" tasks (VFL-53 onward) are intentionally omitted from this table — see footnote on the summary table.
 
 ## Delivery log
 
@@ -232,6 +238,13 @@ Opened [PR #53](https://github.com/vulcanflow/docs/pull/53) with `VulcanFlow_Dev
 
 ## Status changes
 
+- 2026-10-06T10:26:56Z VFL-70 in_progress -> blocked — "F1 continuation: act on Gate 4 verdicts (VFL-67, VFL-68)", Jorge, project platform-foundation, not in the phase mapping (held under Unassigned) — owner direction on VFL-70 (09:57 UTC) stopped all further posting on VFL-9 (`spawn E2BIG`, ~123 KB thread) and required the remaining F1 work to split into child tasks of VFL-70; now blocked on VFL-75 and VFL-77 (both blocked on VFL-74)
+- 2026-10-06T10:26:24Z VFL-78 (new) -> in_progress — "Architect ruling: §A5 revision 4 TLS sentence vs the reqwest rustls-no-provider row", Cortana, project platform-foundation, child of VFL-70, not in the phase mapping (held under Unassigned) — architecture-document wording gap from Gate 4; does not block the code, the workspace already implements the reading
+- 2026-10-06T10:26:00Z VFL-77 (new) -> blocked — "Opus Reviewer re-review: F1 pair eab1bc5 + the VFL-74 T9 replay", Opus Reviewer, project platform-foundation, child of VFL-70, not in the phase mapping (held under Unassigned) — re-review of Opus Reviewer's own VFL-68 FAIL verdict; blocked on Halsey's T9 replay (VFL-74)
+- 2026-10-06T10:25:30Z VFL-76 (new) -> blocked — "Run T9 against F1 pair eab1bc5 + the VFL-74 replay", Test Runner, project platform-foundation, child of VFL-70, not in the phase mapping (held under Unassigned) — blocked on Halsey's T9 replay (VFL-74)
+- 2026-10-06T10:25:07Z VFL-75 (new) -> blocked — "Arbiter re-review: F1 pair eab1bc5 + the VFL-74 T9 replay", Arbiter, project platform-foundation, child of VFL-70, not in the phase mapping (held under Unassigned) — blocked on Halsey's T9 replay (VFL-74)
+- 2026-10-06T10:24:34Z VFL-74 (new) -> in_progress — "T9 replay onto F1 candidate eab1bc5, plus the five VFL-68 coverage notes", Halsey, project platform-foundation, child of VFL-70, not in the phase mapping (held under Unassigned) — new F1 candidate `eab1bc5` fixes all four Opus Reviewer MEDIUMs plus six of eight LOWs from VFL-68; needs a fresh T9 replay before re-review
+- 2026-10-06T10:22:26Z VFL-73 (new) -> in_progress — "F1 fix pass: the four MEDIUM findings from VFL-68, on jorge/f1-workspace-scaffold", Jorge, project platform-foundation, child of VFL-70, not in the phase mapping (held under Unassigned) — one combined fix task per owner direction on VFL-70, since all four MEDIUM findings share the workspace-root scaffold path
 - 2026-10-06T09:54:12Z VFL-60 blocked -> in_progress — "Board watch: find stuck tasks and nudge owners", MasterChief, project progress-and-docs, not in the phase mapping (held under Unassigned) — resumed on owner request (09:48 UTC) at a 15-minute monitor cadence (was 12 minutes); plan updated to revision 3
 - 2026-10-06T09:44:16Z VFL-70 blocked -> in_progress — "F1 continuation: act on Gate 4 verdicts (VFL-67, VFL-68)", Jorge, project platform-foundation, not in the phase mapping (held under Unassigned) — Jorge picked up the task now that both Gate 4 reviews (VFL-67, VFL-68) have posted
 - 2026-10-06T09:44:15Z VFL-68 in_progress -> done — "Opus Reviewer: F1 workspace scaffold, pair 88a2ef4 + replayed T9", Opus Reviewer, project platform-foundation, Phase 1 Foundation — FAIL verdict, 4 findings above LOW; see delivery log
