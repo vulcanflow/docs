@@ -1,5 +1,5 @@
 {
-  "lastRunAt": "2026-10-06T18:34:23Z",
+  "lastRunAt": "2026-10-06T19:05:35Z",
   "phases": {
     "p1_foundation": {
       "label": "1 Foundation",
@@ -209,7 +209,10 @@
         "VFL-151",
         "VFL-152",
         "VFL-153",
-        "VFL-154"
+        "VFL-154",
+        "VFL-157",
+        "VFL-158",
+        "VFL-159"
       ]
     }
   },
@@ -222,7 +225,7 @@
       "project": "test-packs"
     },
     "VFL-142": {
-      "status": "in_progress",
+      "status": "blocked",
       "completedAt": null,
       "title": "Agent runners have no C toolchain, so no Rust crate can compile or be tested",
       "assignee": "Jorge",
@@ -294,7 +297,7 @@
     "VFL-52": {
       "status": "done",
       "completedAt": "2026-10-05T21:35:57.245Z",
-      "title": "F1 scaffold complete at d61b43f \u2014 carries the VFL-9 report (my run cannot write to VFL-9), two decisions for Cortana",
+      "title": "F1 scaffold complete at d61b43f — carries the VFL-9 report (my run cannot write to VFL-9), two decisions for Cortana",
       "assignee": "Cortana",
       "project": "platform-foundation"
     },
@@ -399,7 +402,7 @@
     "VFL-113": {
       "status": "blocked",
       "completedAt": null,
-      "title": "T1b test pack: vf-meter accounting \u2014 reserve/settle/release, admission, ledger (covers C4)",
+      "title": "T1b test pack: vf-meter accounting — reserve/settle/release, admission, ledger (covers C4)",
       "assignee": "Halsey",
       "project": "test-packs"
     },
@@ -635,8 +638,8 @@
       "project": "core-libraries"
     },
     "VFL-152": {
-      "status": "in_progress",
-      "completedAt": null,
+      "status": "done",
+      "completedAt": "2026-10-06T18:35:24.912Z",
       "title": "Review 8ec435d: cross compiler in the bootstrapped toolchain (VFL-151)",
       "assignee": "Arbiter",
       "project": "core-libraries"
@@ -707,7 +710,7 @@
     "VFL-78": {
       "status": "done",
       "completedAt": "2026-10-06T10:33:26.997Z",
-      "title": "Architect ruling: \u00a7A5 revision 4 TLS sentence vs the reqwest rustls-no-provider row",
+      "title": "Architect ruling: §A5 revision 4 TLS sentence vs the reqwest rustls-no-provider row",
       "assignee": "Cortana",
       "project": "platform-foundation"
     },
@@ -922,14 +925,14 @@
       "project": "platform-foundation"
     },
     "VFL-102": {
-      "status": "blocked",
+      "status": "in_review",
       "completedAt": null,
       "title": "Advisory passes: record the VFL-98 ruling in justfile/deny.toml, `$CARGO_HOME` root, `unsound = \"all\"`",
       "assignee": "Jorge",
       "project": "platform-foundation"
     },
     "VFL-134": {
-      "status": "blocked",
+      "status": "cancelled",
       "completedAt": null,
       "title": "Test Runner: re-run `just check` on VFL-102 candidate 9b14116 with GIT_CONFIG_COUNT unset",
       "assignee": "Test Runner",
@@ -985,14 +988,14 @@
       "project": "platform-foundation"
     },
     "VFL-132": {
-      "status": "blocked",
-      "completedAt": null,
+      "status": "done",
+      "completedAt": "2026-10-06T18:59:42.684Z",
       "title": "Test Runner: run T9 workspace_graph tests for VFL-105 (branch halsey/vfl-105-t9-low-hardening, 6d296fb)",
       "assignee": "Test Runner",
       "project": "platform-foundation"
     },
     "VFL-105": {
-      "status": "blocked",
+      "status": "in_progress",
       "completedAt": null,
       "title": "T9 tests: residual LOW hardening from CodeRabbit PR #12 review",
       "assignee": "Halsey",
@@ -1001,7 +1004,7 @@
     "VFL-115": {
       "status": "done",
       "completedAt": "2026-10-06T14:01:07.885Z",
-      "title": "Opus Reviewer review: VFL-82 README \u00a7A5 revision citation (470c2a0)",
+      "title": "Opus Reviewer review: VFL-82 README §A5 revision citation (470c2a0)",
       "assignee": "Opus Reviewer",
       "project": "platform-foundation"
     },
@@ -1064,14 +1067,14 @@
     "VFL-114": {
       "status": "done",
       "completedAt": "2026-10-06T12:54:02.077Z",
-      "title": "Arbiter review: VFL-82 README \u00a7A5 revision citation (470c2a0)",
+      "title": "Arbiter review: VFL-82 README §A5 revision citation (470c2a0)",
       "assignee": "Arbiter",
       "project": "platform-foundation"
     },
     "VFL-82": {
       "status": "blocked",
       "completedAt": null,
-      "title": "README: cite \u00a7A5 revision 5, not revision 4",
+      "title": "README: cite §A5 revision 5, not revision 4",
       "assignee": "Jorge",
       "project": "platform-foundation"
     },
@@ -1092,21 +1095,21 @@
     "VFL-98": {
       "status": "done",
       "completedAt": "2026-10-06T11:40:01.593Z",
-      "title": "\u00a7A5 ruling: keep both cargo-deny advisories and cargo-audit in `just check`, or collapse to one",
+      "title": "§A5 ruling: keep both cargo-deny advisories and cargo-audit in `just check`, or collapse to one",
       "assignee": "Cortana",
       "project": "platform-foundation"
     },
     "VFL-81": {
       "status": "backlog",
       "completedAt": null,
-      "title": "T9 assertion: per-binary rustls `ring` provider (\u00a7A5 rev 5)",
+      "title": "T9 assertion: per-binary rustls `ring` provider (§A5 rev 5)",
       "assignee": "Halsey",
       "project": "platform-foundation"
     },
     "VFL-80": {
       "status": "backlog",
       "completedAt": null,
-      "title": "graph-rules rule 3: every TLS-initiating binary resolves rustls `ring` on its own (\u00a7A5 rev 5)",
+      "title": "graph-rules rule 3: every TLS-initiating binary resolves rustls `ring` on its own (§A5 rev 5)",
       "assignee": "Jorge",
       "project": "platform-foundation"
     },
@@ -1130,6 +1133,27 @@
       "title": "W5. `vf-graph` WASM packaging and browser parity harness",
       "assignee": "Linda",
       "project": "web"
+    },
+    "VFL-157": {
+      "status": "in_progress",
+      "completedAt": null,
+      "title": "CodeRabbit review: VFL-142 toolchain bootstrap candidate aa3fa71",
+      "assignee": "Arbiter",
+      "project": "core-libraries"
+    },
+    "VFL-158": {
+      "status": "in_progress",
+      "completedAt": null,
+      "title": "Opus Reviewer: review VFL-142 toolchain bootstrap candidate aa3fa71",
+      "assignee": "Opus Reviewer",
+      "project": "core-libraries"
+    },
+    "VFL-159": {
+      "status": "in_progress",
+      "completedAt": null,
+      "title": "Test Runner: required suites on VFL-142 toolchain bootstrap (aa3fa71)",
+      "assignee": "Test Runner",
+      "project": "core-libraries"
     }
   }
 }
