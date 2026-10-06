@@ -1,5 +1,5 @@
 {
-  "lastRunAt": "2026-10-06T09:04:30Z",
+  "lastRunAt": "2026-10-06T09:33:41Z",
   "phases": {
     "p1_foundation": {
       "label": "1 Foundation",
@@ -137,7 +137,8 @@
         "VFL-52",
         "VFL-58",
         "VFL-60",
-        "VFL-61"
+        "VFL-61",
+        "VFL-70"
       ]
     }
   },
@@ -507,7 +508,7 @@
       "project": "platform-foundation"
     },
     "VFL-60": {
-      "status": "in_progress",
+      "status": "blocked",
       "completedAt": null,
       "title": "Board watch: find stuck tasks and nudge owners",
       "assignee": "MasterChief",
@@ -528,31 +529,38 @@
       "project": "test-packs"
     },
     "VFL-65": {
-      "status": "in_progress",
-      "completedAt": null,
+      "status": "done",
+      "completedAt": "2026-10-06T09:01:07.111Z",
       "title": "T9 replay onto F1 candidate 88a2ef4",
       "assignee": "Halsey",
       "project": "test-packs"
     },
     "VFL-66": {
-      "status": "blocked",
-      "completedAt": null,
+      "status": "done",
+      "completedAt": "2026-10-06T09:03:51.017Z",
       "title": "Run T9 against F1 pair 88a2ef4 + replayed T9",
       "assignee": "Test Runner",
       "project": "test-packs"
     },
     "VFL-67": {
-      "status": "blocked",
+      "status": "in_progress",
       "completedAt": null,
       "title": "Arbiter review: F1 workspace scaffold, pair 88a2ef4 + replayed T9",
       "assignee": "Arbiter",
       "project": "platform-foundation"
     },
     "VFL-68": {
-      "status": "blocked",
+      "status": "in_progress",
       "completedAt": null,
       "title": "Opus Reviewer: F1 workspace scaffold, pair 88a2ef4 + replayed T9",
       "assignee": "Opus Reviewer",
+      "project": "platform-foundation"
+    },
+    "VFL-70": {
+      "status": "blocked",
+      "completedAt": null,
+      "title": "F1 continuation: act on Gate 4 verdicts (VFL-67, VFL-68)",
+      "assignee": "Jorge",
       "project": "platform-foundation"
     }
   }

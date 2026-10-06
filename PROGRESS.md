@@ -1,12 +1,12 @@
 # VulcanFlow progress
 
-Last updated: 2026-10-06T09:04:30Z by Guilty Spark. Source: Paperclip company vFlow.
+Last updated: 2026-10-06T09:33:41Z by Guilty Spark. Source: Paperclip company vFlow.
 
 ## Summary table
 
 | Phase | Project(s) | Done | In progress | Blocked | Planned | Total |
 |---|---|---|---|---|---|---|
-| 1 Foundation | platform-foundation, test-packs (T9) | 2 | 2 | 5 | 0 | 9 |
+| 1 Foundation | platform-foundation, test-packs (T9) | 4 | 3 | 2 | 0 | 9 |
 | 2 Libraries | core-libraries, graph-and-execution-contracts, test-packs (T1-T5) | 0 | 0 | 15 | 0 | 15 |
 | 3 API | api, test-packs (T7) | 0 | 0 | 5 | 0 | 5 |
 | 4 Execution | scanners, operator-and-ingest, test-packs (T6) | 0 | 0 | 7 | 1 | 8 |
@@ -14,8 +14,8 @@ Last updated: 2026-10-06T09:04:30Z by Guilty Spark. Source: Paperclip company vF
 | 6 Web | web, test-packs (T8) | 0 | 0 | 5 | 1 | 6 |
 | Later (reporting, infra, ai-gateway) | reporting, infra, ai-gateway | 0 | 0 | 0 | 0 | 0 |
 | Setup and governance | Onboarding | 9 | 0 | 0 | 0 | 9 |
-| Unassigned to a phase[^1] | progress-and-docs (VFL-50, VFL-60), platform-foundation (VFL-52, VFL-58, VFL-61), none (VFL-51) | 4 | 1 | 0 | 0 | 6 |
-| **Total**[^1] | | **15** | **3** | **38** | **2** | **59** |
+| Unassigned to a phase[^1] | progress-and-docs (VFL-50, VFL-60), platform-foundation (VFL-52, VFL-58, VFL-61, VFL-70), none (VFL-51) | 4 | 0 | 2 | 0 | 7 |
+| **Total**[^1] | | **17** | **3** | **37** | **2** | **60** |
 
 [^1]: 1 cancelled task (VFL-51) is counted in Total only; it has no Done/In progress/Blocked/Planned bucket. Guilty Spark's own recurring "Progress tracker update" tasks (VFL-53, VFL-54, VFL-55, ...) are excluded entirely from this document per the skip-own-routine-tasks rule. VFL-9 moved `in_progress` -> `in_review` on 2026-10-05; it is still counted in the "In progress" column (no separate in-review bucket in this table) — see the Status mix pie and Status changes section for the literal status.
 
@@ -23,7 +23,7 @@ Last updated: 2026-10-06T09:04:30Z by Guilty Spark. Source: Paperclip company vF
 
 ```mermaid
 flowchart LR
-  P1["1 Foundation<br/>2/9 done"]
+  P1["1 Foundation<br/>4/9 done"]
   P2["2 Libraries<br/>0/15 done"]
   P3["3 API<br/>0/5 done"]
   P4["4 Execution<br/>0/8 done"]
@@ -57,10 +57,10 @@ flowchart LR
 
 ```mermaid
 pie title Tasks by status
-  "done" : 15
+  "done" : 17
   "in_review" : 1
   "in_progress" : 2
-  "blocked" : 38
+  "blocked" : 37
   "backlog" : 2
   "cancelled" : 1
 ```
@@ -74,10 +74,10 @@ pie title Tasks by status
 | VFL-13 | F3. Infrastructure adapters: `ArtifactStore` and `WakeBus` | Jorge | blocked | | |
 | VFL-39 | T9 test pack: workspace rules | Halsey | done | 2026-10-06 | [VFL-39 comment, 2026-10-06T08:41:59Z](http://paperclip.paperclip.svc.cluster.local/VFL/issues/VFL-39) |
 | VFL-63 | Run T9 pair 892fdf8 (test) / 20736f3 (code) with the shared toolchain | Test Runner | done | 2026-10-06 | [VFL-63 comment, 2026-10-06T08:40:33Z](http://paperclip.paperclip.svc.cluster.local/VFL/issues/VFL-63) |
-| VFL-65 | T9 replay onto F1 candidate 88a2ef4 | Halsey | in_progress | | [VFL-65](http://paperclip.paperclip.svc.cluster.local/VFL/issues/VFL-65) |
-| VFL-66 | Run T9 against F1 pair 88a2ef4 + replayed T9 | Test Runner | blocked | | [VFL-66](http://paperclip.paperclip.svc.cluster.local/VFL/issues/VFL-66) |
-| VFL-67 | Arbiter review: F1 workspace scaffold, pair 88a2ef4 + replayed T9 | Arbiter | blocked | | [VFL-67](http://paperclip.paperclip.svc.cluster.local/VFL/issues/VFL-67) |
-| VFL-68 | Opus Reviewer: F1 workspace scaffold, pair 88a2ef4 + replayed T9 | Opus Reviewer | blocked | | [VFL-68](http://paperclip.paperclip.svc.cluster.local/VFL/issues/VFL-68) |
+| VFL-65 | T9 replay onto F1 candidate 88a2ef4 | Halsey | done | 2026-10-06 | [VFL-65 comment, 2026-10-06T09:00:46Z](http://paperclip.paperclip.svc.cluster.local/VFL/issues/VFL-65) |
+| VFL-66 | Run T9 against F1 pair 88a2ef4 + replayed T9 | Test Runner | done | 2026-10-06 | [VFL-66 comment, 2026-10-06T09:03:46Z](http://paperclip.paperclip.svc.cluster.local/VFL/issues/VFL-66) |
+| VFL-67 | Arbiter review: F1 workspace scaffold, pair 88a2ef4 + replayed T9 | Arbiter | in_progress | | [VFL-67](http://paperclip.paperclip.svc.cluster.local/VFL/issues/VFL-67) |
+| VFL-68 | Opus Reviewer: F1 workspace scaffold, pair 88a2ef4 + replayed T9 | Opus Reviewer | in_progress | | [VFL-68](http://paperclip.paperclip.svc.cluster.local/VFL/issues/VFL-68) |
 
 ## Phase 2: Libraries
 
@@ -165,12 +165,19 @@ No tasks created yet.
 | VFL-51 | PROBE | (unassigned) | cancelled | | no evidence recorded |
 | VFL-52 | F1 scaffold complete at d61b43f — carries the VFL-9 report, two decisions for Cortana | Cortana | done | 2026-10-05 | [VFL-52 comment, 2026-10-05T21:35:57Z](http://paperclip.paperclip.svc.cluster.local/VFL/issues/VFL-52) |
 | VFL-58 | Take over pull request merges: confirm GitHub access, Tekton checks, update gate docs | Cortana | done | 2026-10-06 | [VFL-58 comment, 2026-10-06T07:21:17Z](http://paperclip.paperclip.svc.cluster.local/VFL/issues/VFL-58) |
-| VFL-60 | Board watch: find stuck tasks and nudge owners | MasterChief | in_progress | | [VFL-60](http://paperclip.paperclip.svc.cluster.local/VFL/issues/VFL-60) |
+| VFL-60 | Board watch: find stuck tasks and nudge owners | MasterChief | blocked | | [VFL-60 comment, 2026-10-06T09:31:14Z](http://paperclip.paperclip.svc.cluster.local/VFL/issues/VFL-60) |
 | VFL-61 | F1 rulings: reqwest feature, testcontainers, object_store, chromiumoxide on 20736f3 | Cortana | done | 2026-10-06 | [VFL-61 comment, 2026-10-06T07:52:54Z](http://paperclip.paperclip.svc.cluster.local/VFL/issues/VFL-61) |
+| VFL-70 | F1 continuation: act on Gate 4 verdicts (VFL-67, VFL-68) | Jorge | blocked | | [VFL-70](http://paperclip.paperclip.svc.cluster.local/VFL/issues/VFL-70) |
 
-Notes for MasterChief: VFL-51, VFL-52, VFL-58, VFL-60 and VFL-61 are tasks that do not match any task in the VFL-49 phase mapping or the task matrix, so they are held here rather than filed under Phase 1. VFL-52 is a decision/report-carrier task, not a code deliverable: it records that Cortana reviewed commit `d61b43f` from Jorge's local checkout against the architecture spec, copied the F1 report onto VFL-9, released VFL-39 from its VFL-9 blocker, ratified the licence-exception list, and raised a new Decision 3 (toolchain target) blocking VFL-9 approval. VFL-9 itself is still `in_progress`/`in_review` with no `completedAt`, so this document does not record F1 as delivered yet. VFL-51 ("PROBE", no project, no assignee) was cancelled by Cortana in that same comment. VFL-58 is a governance handover task: Cortana took over pull-request merge ownership, proved GitHub access, and updated the VFL-8 gate documents to the seven-step delivery flow; it left an owner action for MasterChief on Tekton check wiring (see delivery log). VFL-60 is a standing task the owner requested on VFL-49: MasterChief periodically checks the board for stuck tasks and nudges owners; it is intentionally left open and has no delivery date. VFL-61 is a second F1 decision/report-carrier task: Cortana ruled on four open Jorge toolchain questions and re-attached Decisions 2 and 3 to candidate `20736f3`; see the delivery log. Guilty Spark's own recurring "Progress tracker update" tasks (VFL-53 onward) are intentionally omitted from this table — see footnote on the summary table.
+Notes for MasterChief: VFL-51, VFL-52, VFL-58, VFL-60, VFL-61 and VFL-70 are tasks that do not match any task in the VFL-49 phase mapping or the task matrix, so they are held here rather than filed under Phase 1. VFL-52 is a decision/report-carrier task, not a code deliverable: it records that Cortana reviewed commit `d61b43f` from Jorge's local checkout against the architecture spec, copied the F1 report onto VFL-9, released VFL-39 from its VFL-9 blocker, ratified the licence-exception list, and raised a new Decision 3 (toolchain target) blocking VFL-9 approval. VFL-9 itself is still `in_progress`/`in_review` with no `completedAt`, so this document does not record F1 as delivered yet. VFL-51 ("PROBE", no project, no assignee) was cancelled by Cortana in that same comment. VFL-58 is a governance handover task: Cortana took over pull-request merge ownership, proved GitHub access, and updated the VFL-8 gate documents to the seven-step delivery flow; it left an owner action for MasterChief on Tekton check wiring (see delivery log). VFL-60 is a standing task the owner requested on VFL-49: MasterChief periodically checks the board for stuck tasks and nudges owners. It moved to `blocked` at 09:31 UTC after the board user asked for quiet time (09:29 UTC); MasterChief disabled its timer and monitor and named the board user as the unblock owner — resume by commenting "resume board watch" on VFL-60. VFL-61 is a second F1 decision/report-carrier task: Cortana ruled on four open Jorge toolchain questions and re-attached Decisions 2 and 3 to candidate `20736f3`; see the delivery log. VFL-70 is a workaround task MasterChief opened for Jorge after five consecutive wake failures (`spawn E2BIG`, VFL-9's thread grew too large for the process launcher) left Jorge's agent in an error state; it carries a short, self-contained brief and stays blocked until Arbiter (VFL-67) and Opus Reviewer (VFL-68) post their Gate 4 verdicts. Guilty Spark's own recurring "Progress tracker update" tasks (VFL-53 onward) are intentionally omitted from this table — see footnote on the summary table.
 
 ## Delivery log
+
+### 2026-10-06 — VFL-66 Run T9 against F1 pair 88a2ef4 + replayed T9
+Test Runner independently verified both bundles before running anything: `f1-88a2ef4.bundle` (sha256 `7dfe9166…ddccc`) matched its claimed head `88a2ef4f4c8df827d16237c9406538aafdf79183` exactly, and `t9-d4ec86f.bundle` (sha256 `34554f70…709d1`, Halsey's replay from VFL-65) matched head `d4ec86f1943957b59a39692f18abc425b691a5db`, with `88a2ef4` confirmed as an ancestor and `tests/Cargo.toml`/`tests/workspace_graph.rs` byte-identical to the prior `895e133` revision. Using Jorge's shared toolchain (rustc/cargo 1.99.0) in an isolated worktree checked out at `d4ec86f`, `cargo test --manifest-path tests/Cargo.toml` exited 0 with **16 passed, 0 failed**, closing the test-pack re-run gate for the new F1 candidate. No code or test modified; nothing pushed. Evidence: [VFL-66 comment, 2026-10-06T09:03:46Z](http://paperclip.paperclip.svc.cluster.local/VFL/issues/VFL-66).
+
+### 2026-10-06 — VFL-65 T9 replay onto F1 candidate 88a2ef4
+Halsey replayed the T9 workspace-rules test pack onto the new F1 candidate `88a2ef4` after Jorge's branch moved (parent-only change, no content rewrite). In a throwaway worktree, `git cherry-pick 224722d..895e133` onto `88a2ef4` applied with no conflict, and `git diff 895e133 HEAD -- tests/Cargo.toml tests/workspace_graph.rs` came back empty, confirming the replayed files are byte-identical to the prior `895e133` revision. Published bundle `t9-d4ec86f.bundle` (head `d4ec86f1943957b59a39692f18abc425b691a5db`, sha256 `34554f70a24304a009bd99280a9677763a63ca01663f1f6f93eb221c9f2709d1`) for gate participants and updated `README-f1-candidate.md` with the new row and a superseded marker on the old bundle. Nothing pushed; this hands the pack to Test Runner (VFL-66). Evidence: [VFL-65 comment, 2026-10-06T09:00:46Z](http://paperclip.paperclip.svc.cluster.local/VFL/issues/VFL-65).
 
 ### 2026-10-06 — VFL-39 T9 test pack: workspace rules
 Halsey closed T9: the workspace-rules test pack (`tests/Cargo.toml`, `tests/workspace_graph.rs`, 16 `#[test]` functions covering `cargo metadata` graph rules §A1.4, §A5 pin/feature equality amended to Cortana's revision-4 ruling, and the no-unsafe-code/no-cfg-test engineering rules) ran clean — test revision `895e133a19087994544c8926bedac881ffebad16` on `halsey/t9-workspace-graph-v2` against F1 candidate `224722d73b7c366219c304e6e11cb6886e6e1c6d`, `cargo test --manifest-path tests/Cargo.toml` exit 0, 16 passed, 0 failed (Test Runner, VFL-63). The pack went through four rebases as the F1 candidate moved (`d61b43f` → `52015ab` → `20736f3` → `224722d`) while Cortana ruled on four open §A5 toolchain items and Halsey independently fixed a test-extraction bug (naive substring split on the `deny.toml` licence-exceptions header colliding with a prose comment, `134600c`→`895e133`). No open disputes remain. Note: the F1 candidate has since moved again to `88a2ef4` (VFL-65/66), so a fresh T9 replay run is tracked separately and does not reopen this task. Evidence: [VFL-39 comment, 2026-10-06T08:41:59Z](http://paperclip.paperclip.svc.cluster.local/VFL/issues/VFL-39), [VFL-63 comment, 2026-10-06T08:40:33Z](http://paperclip.paperclip.svc.cluster.local/VFL/issues/VFL-63).
@@ -219,6 +226,12 @@ Opened [PR #53](https://github.com/vulcanflow/docs/pull/53) with `VulcanFlow_Dev
 
 ## Status changes
 
+- 2026-10-06T09:31:14Z VFL-60 in_progress -> blocked — "Board watch: find stuck tasks and nudge owners", MasterChief, project progress-and-docs, not in the phase mapping (held under Unassigned) — board user asked for quiet time at 09:29 UTC; timer and 12-minute monitor disabled, unblock owner is the board user, resume by commenting "resume board watch"
+- 2026-10-06T09:18:11Z VFL-70 (new) -> blocked — "F1 continuation: act on Gate 4 verdicts (VFL-67, VFL-68)", Jorge, project platform-foundation, not in the phase mapping (held under Unassigned) — MasterChief opened this short-thread workaround after five consecutive `spawn E2BIG` wake failures put Jorge's agent into an error state on the (now ~112 KB) VFL-9 thread; blocked on VFL-67 and VFL-68
+- 2026-10-06T09:03:51Z VFL-66 blocked -> done — "Run T9 against F1 pair 88a2ef4 + replayed T9", Test Runner, project test-packs, Phase 1 Foundation — 16/16 pass against F1 candidate `88a2ef4`/test `d4ec86f`; see delivery log
+- 2026-10-06T09:02:21Z VFL-67 blocked -> in_progress — "Arbiter review: F1 workspace scaffold, pair 88a2ef4 + replayed T9", Arbiter, project platform-foundation, Phase 1 Foundation — Gate 4 independent review started on the new F1 candidate
+- 2026-10-06T09:01:07Z VFL-68 blocked -> in_progress — "Opus Reviewer: F1 workspace scaffold, pair 88a2ef4 + replayed T9", Opus Reviewer, project platform-foundation, Phase 1 Foundation — Gate 4 independent review started on the new F1 candidate
+- 2026-10-06T09:01:07Z VFL-65 in_progress -> done — "T9 replay onto F1 candidate 88a2ef4", Halsey, project test-packs, Phase 1 Foundation — replay verified byte-identical to prior test revision and published as bundle `t9-d4ec86f.bundle`; see delivery log
 - 2026-10-06T08:52:53Z VFL-68 (new) -> blocked — "Opus Reviewer: F1 workspace scaffold, pair 88a2ef4 + replayed T9", Opus Reviewer, project platform-foundation, Phase 1 Foundation — Gate 4 independent review, blocked on Halsey's T9 replay (VFL-65) and Test Runner's re-run (VFL-66)
 - 2026-10-06T08:52:21Z VFL-67 (new) -> blocked — "Arbiter review: F1 workspace scaffold, pair 88a2ef4 + replayed T9", Arbiter, project platform-foundation, Phase 1 Foundation — Gate 4 independent review (CodeRabbit), same blocker as VFL-68
 - 2026-10-06T08:51:51Z VFL-66 (new) -> blocked — "Run T9 against F1 pair 88a2ef4 + replayed T9", Test Runner, project test-packs, Phase 1 Foundation — the prior 16/16 run on `895e133`/`224722d` was correct but the F1 candidate moved again to `88a2ef4`, so gate 7 needs a fresh run once Halsey posts the replayed test revision
