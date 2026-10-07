@@ -1,5 +1,5 @@
 {
-  "lastRunAt": "2026-10-07T08:05:00Z",
+  "lastRunAt": "2026-10-07T08:30:00Z",
   "phases": {
     "p1_foundation": {
       "label": "1 Foundation",
@@ -71,7 +71,10 @@
         "VFL-229",
         "VFL-231",
         "VFL-232",
-        "VFL-233"
+        "VFL-233",
+        "VFL-235",
+        "VFL-236",
+        "VFL-237"
       ]
     },
     "p3_api": {
@@ -262,7 +265,8 @@
         "VFL-208",
         "VFL-209",
         "VFL-228",
-        "VFL-230"
+        "VFL-230",
+        "VFL-238"
       ]
     }
   },
@@ -408,7 +412,7 @@
       "project": "platform-foundation"
     },
     "VFL-14": {
-      "status": "blocked",
+      "status": "in_progress",
       "completedAt": null,
       "title": "C1. `vf-core` identities, state machines, policy and Problem catalogue",
       "assignee": "Fred",
@@ -429,8 +433,8 @@
       "project": "core-libraries"
     },
     "VFL-231": {
-      "status": "in_progress",
-      "completedAt": null,
+      "status": "done",
+      "completedAt": "2026-10-07T08:09:59.509Z",
       "title": "Test Runner: required runs on C1 pair 88c4287 + T1a 1e7d588 (VFL-14)",
       "assignee": "Test Runner",
       "project": "core-libraries"
@@ -443,10 +447,38 @@
       "project": "core-libraries"
     },
     "VFL-233": {
-      "status": "in_progress",
-      "completedAt": null,
+      "status": "done",
+      "completedAt": "2026-10-07T08:02:02.110Z",
       "title": "Opus Reviewer: review C1 vf-core pair 88c4287 + T1a 1e7d588 (VFL-14)",
       "assignee": "Opus Reviewer",
+      "project": "core-libraries"
+    },
+    "VFL-235": {
+      "status": "done",
+      "completedAt": "2026-10-07T08:22:58.380Z",
+      "title": "Ruling: §15.1 vs §A3.8 observation edges for C1 (VFL-233 MEDIUM-1)",
+      "assignee": "Cortana",
+      "project": "core-libraries"
+    },
+    "VFL-236": {
+      "status": "done",
+      "completedAt": "2026-10-07T08:25:58.768Z",
+      "title": "T1a: pin literal wire values for every vf-core::state enum (VFL-233 MEDIUM-2)",
+      "assignee": "Halsey",
+      "project": "core-libraries"
+    },
+    "VFL-237": {
+      "status": "done",
+      "completedAt": "2026-10-07T08:29:49.655Z",
+      "title": "T1a: encode VFL-235 observation-edge ruling and new Action cells in vf-core tests",
+      "assignee": "Halsey",
+      "project": "core-libraries"
+    },
+    "VFL-238": {
+      "status": "in_progress",
+      "completedAt": null,
+      "title": "VFL-200 cont.: fuzz run evidence, canonical_host/scope_match @ 12801bf (clean pass)",
+      "assignee": "Test Runner",
       "project": "core-libraries"
     },
     "VFL-228": {
@@ -940,7 +972,7 @@
       "project": "core-libraries"
     },
     "VFL-200": {
-      "status": "in_progress",
+      "status": "blocked",
       "completedAt": null,
       "title": "Test Runner: fuzz targets canonical_host/scope_match, candidate c39241c (VFL-145)",
       "assignee": "Test Runner",
