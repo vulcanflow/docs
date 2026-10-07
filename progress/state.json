@@ -1,5 +1,5 @@
 {
-  "lastRunAt": "2026-10-07T18:14:47Z",
+  "lastRunAt": "2026-10-07T18:41:07Z",
   "phases": {
     "p1_foundation": {
       "label": "1 Foundation",
@@ -46,7 +46,8 @@
         "VFL-281",
         "VFL-282",
         "VFL-283",
-        "VFL-286"
+        "VFL-286",
+        "VFL-289"
       ]
     },
     "p2_libraries": {
@@ -90,7 +91,9 @@
         "VFL-263",
         "VFL-264",
         "VFL-265",
-        "VFL-267"
+        "VFL-267",
+        "VFL-290",
+        "VFL-291"
       ]
     },
     "p3_api": {
@@ -298,7 +301,8 @@
         "VFL-273",
         "VFL-277",
         "VFL-278",
-        "VFL-285"
+        "VFL-285",
+        "VFL-288"
       ]
     }
   },
@@ -430,10 +434,10 @@
       "project": "platform-foundation"
     },
     "VFL-16": {
-      "status": "blocked",
+      "status": "in_progress",
       "completedAt": null,
-      "title": "G1. `vf-graph` validator, schema and WASM export (record/index \u2014 continued in VFL-267 once the thread hit 20 comments)",
-      "assignee": "Kelly",
+      "title": "G1. `vf-graph` validator, schema and WASM export",
+      "assignee": "Cortana",
       "project": "graph-and-execution-contracts"
     },
     "VFL-171": {
@@ -1424,9 +1428,9 @@
       "project": "platform-foundation"
     },
     "VFL-250": {
-      "status": "in_progress",
-      "completedAt": null,
-      "title": "F2e. Harness wording LOWs: S3 URL-safe list, migration owner in recipe output (child of VFL-12, after VFL-162)",
+      "status": "done",
+      "completedAt": "2026-10-07T18:35:35.739Z",
+      "title": "F2e. Harness wording LOWs: S3 URL-safe list, migration owner in recipe output (after VFL-162)",
       "assignee": "Jorge",
       "project": "platform-foundation"
     },
@@ -1522,7 +1526,7 @@
       "project": "core-libraries"
     },
     "VFL-194": {
-      "status": "backlog",
+      "status": "in_review",
       "completedAt": null,
       "title": "F2d. `vf-testkit` residual LOWs from F2b review: control-migration `search_path`, fixture-name check, unused `vf-db` edge",
       "assignee": "Jorge",
@@ -1592,7 +1596,7 @@
       "project": "platform-foundation"
     },
     "VFL-92": {
-      "status": "blocked",
+      "status": "in_progress",
       "completedAt": null,
       "title": "T9 follow-up: fix LOW-T1 and LOW-T2 from the VFL-77 re-review",
       "assignee": "Halsey",
@@ -1753,9 +1757,9 @@
       "project": "web"
     },
     "VFL-269": {
-      "status": "blocked",
-      "completedAt": null,
-      "title": "Test Runner: just check, just gate and installer checks on VFL-149 candidate e1d52f3 (child of VFL-149)",
+      "status": "done",
+      "completedAt": "2026-10-07T18:34:26.462Z",
+      "title": "Test Runner: just check, just gate and installer checks on VFL-149 candidate e1d52f3",
       "assignee": "Test Runner",
       "project": "core-libraries"
     },
@@ -1830,18 +1834,46 @@
       "project": "platform-foundation"
     },
     "VFL-285": {
-      "status": "in_progress",
+      "status": "in_review",
       "completedAt": null,
       "title": "Restricted channel needed: security observation on the zozotk.go.ro network edge (from VFL-124)",
       "assignee": "MasterChief",
       "project": "platform-foundation"
     },
     "VFL-286": {
-      "status": "in_progress",
-      "completedAt": null,
-      "title": "Push approval: VFL-250 F2e harness wording at d273c5d (child of VFL-250)",
+      "status": "done",
+      "completedAt": "2026-10-07T18:13:44.416Z",
+      "title": "Push approval: VFL-250 F2e harness wording at d273c5d",
       "assignee": "Cortana",
       "project": "platform-foundation"
+    },
+    "VFL-288": {
+      "status": "done",
+      "completedAt": "2026-10-07T18:21:03.013Z",
+      "title": "CodeRabbit review: VFL-92 LOW-T1/LOW-T2 on b785dd0",
+      "assignee": "Arbiter",
+      "project": "platform-foundation"
+    },
+    "VFL-289": {
+      "status": "done",
+      "completedAt": "2026-10-07T18:33:32.064Z",
+      "title": "Merge PR #19: VFL-250 F2e harness wording at d273c5d",
+      "assignee": "Cortana",
+      "project": "platform-foundation"
+    },
+    "VFL-290": {
+      "status": "in_progress",
+      "completedAt": null,
+      "title": "CodeRabbit review: G1 vf-graph candidate 313d43a (VFL-16, supersedes 4b9a679)",
+      "assignee": "Arbiter",
+      "project": "graph-and-execution-contracts"
+    },
+    "VFL-291": {
+      "status": "done",
+      "completedAt": "2026-10-07T18:40:28.765Z",
+      "title": "Architecture: bound the \u00a7A5 validation error list (truncation marker) \u2014 follow-up from G1 D6",
+      "assignee": "Cortana",
+      "project": "graph-and-execution-contracts"
     }
   }
 }
