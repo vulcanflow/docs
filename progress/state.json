@@ -1,5 +1,5 @@
 {
-  "lastRunAt": "2026-10-07T07:33:57Z",
+  "lastRunAt": "2026-10-07T08:05:00Z",
   "phases": {
     "p1_foundation": {
       "label": "1 Foundation",
@@ -66,7 +66,12 @@
         "VFL-112",
         "VFL-113",
         "VFL-117",
-        "VFL-118"
+        "VFL-118",
+        "VFL-227",
+        "VFL-229",
+        "VFL-231",
+        "VFL-232",
+        "VFL-233"
       ]
     },
     "p3_api": {
@@ -255,7 +260,9 @@
         "VFL-205",
         "VFL-206",
         "VFL-208",
-        "VFL-209"
+        "VFL-209",
+        "VFL-228",
+        "VFL-230"
       ]
     }
   },
@@ -401,10 +408,59 @@
       "project": "platform-foundation"
     },
     "VFL-14": {
-      "status": "in_progress",
+      "status": "blocked",
       "completedAt": null,
       "title": "C1. `vf-core` identities, state machines, policy and Problem catalogue",
       "assignee": "Fred",
+      "project": "core-libraries"
+    },
+    "VFL-227": {
+      "status": "done",
+      "completedAt": "2026-10-07T07:39:39.319Z",
+      "title": "T1a: fix dead_code lint in tests/support/mod.rs so just check passes (C1 pair 88c4287)",
+      "assignee": "Halsey",
+      "project": "core-libraries"
+    },
+    "VFL-229": {
+      "status": "done",
+      "completedAt": "2026-10-07T07:43:08.456Z",
+      "title": "T1a: rustfmt the vf-core test pack so just check fmt-check passes (C1 pair 88c4287)",
+      "assignee": "Halsey",
+      "project": "core-libraries"
+    },
+    "VFL-231": {
+      "status": "in_progress",
+      "completedAt": null,
+      "title": "Test Runner: required runs on C1 pair 88c4287 + T1a 1e7d588 (VFL-14)",
+      "assignee": "Test Runner",
+      "project": "core-libraries"
+    },
+    "VFL-232": {
+      "status": "done",
+      "completedAt": "2026-10-07T07:55:15.909Z",
+      "title": "CodeRabbit review: C1 vf-core pair 88c4287 + T1a 1e7d588 (VFL-14)",
+      "assignee": "Arbiter",
+      "project": "core-libraries"
+    },
+    "VFL-233": {
+      "status": "in_progress",
+      "completedAt": null,
+      "title": "Opus Reviewer: review C1 vf-core pair 88c4287 + T1a 1e7d588 (VFL-14)",
+      "assignee": "Opus Reviewer",
+      "project": "core-libraries"
+    },
+    "VFL-228": {
+      "status": "done",
+      "completedAt": "2026-10-07T07:45:58.022Z",
+      "title": "Cortana ruling: LSan-ptrace exit-1 (zero panics) — does it satisfy VFL-200's fuzz acceptance criterion?",
+      "assignee": "Cortana",
+      "project": "core-libraries"
+    },
+    "VFL-230": {
+      "status": "done",
+      "completedAt": "2026-10-07T08:00:27.948Z",
+      "title": "Jorge: export ASAN_OPTIONS=detect_leaks=0 from fuzz-cxx env.sh (LSan cannot ptrace under ptrace_scope=2; VFL-228 Decision 3)",
+      "assignee": "Jorge",
       "project": "core-libraries"
     },
     "VFL-196": {
