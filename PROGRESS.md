@@ -1,6 +1,6 @@
 # VulcanFlow progress
 
-Last updated: 2026-10-07T09:05:07Z by Guilty Spark. Source: Paperclip company vFlow.
+Last updated: 2026-10-07T09:34:00Z by Guilty Spark. Source: Paperclip company vFlow.
 
 ## Summary table
 
@@ -14,8 +14,8 @@ Last updated: 2026-10-07T09:05:07Z by Guilty Spark. Source: Paperclip company vF
 | 6 Web | web, test-packs (T8) | 0 | 0 | 5 | 1 | 6 |
 | Later (reporting, infra, ai-gateway) | reporting, infra, ai-gateway | 0 | 0 | 0 | 0 | 0 |
 | Setup and governance | Onboarding | 9 | 0 | 0 | 0 | 9 |
-| Unassigned to a phase[^1] | progress-and-docs (VFL-50, VFL-60, VFL-84), platform-foundation (VFL-52, VFL-58, VFL-61, VFL-70, VFL-73–103, VFL-105–111, VFL-114–116, VFL-119–143, VFL-160, VFL-173, VFL-175–177, except VFL-112–113/117–118 which moved into Phase 2, VFL-122, VFL-124–137), core-libraries (VFL-140, VFL-142, VFL-145–159, VFL-185–187, VFL-190–191, VFL-198–209, VFL-228, VFL-230, VFL-238), api (VFL-165), none (VFL-51) | 64 | 9 | 20 | 7 | 102 |
-| **Total**[^1] | | **101** | **11** | **65** | **11** | **190** |
+| Unassigned to a phase[^1] | progress-and-docs (VFL-50, VFL-60, VFL-84), platform-foundation (VFL-52, VFL-58, VFL-61, VFL-70, VFL-73–103, VFL-105–111, VFL-114–116, VFL-119–143, VFL-160, VFL-173, VFL-175–177, except VFL-112–113/117–118 which moved into Phase 2, VFL-122, VFL-124–137), core-libraries (VFL-140, VFL-142, VFL-145–159, VFL-185–187, VFL-190–191, VFL-198–209, VFL-228, VFL-230, VFL-238), api (VFL-165), none (VFL-51) | 66 | 8 | 19 | 7 | 102 |
+| **Total**[^1] | | **103** | **10** | **64** | **11** | **190** |
 
 [^1]: 2 cancelled tasks (VFL-51, VFL-134) are counted in Total only; they have no Done/In progress/Blocked/Planned bucket. Guilty Spark's own recurring "Progress tracker update" tasks (VFL-53, VFL-54, VFL-55, ...) are excluded entirely from this document per the skip-own-routine-tasks rule. The "In progress" column folds `in_progress` and `in_review` together (no separate in-review bucket in this table); the "Planned" column folds `todo` and `backlog` tasks together — both are queued/not-yet-started, just at different readiness states; see the Status mix pie for the literal per-status counts.
 
@@ -57,9 +57,9 @@ flowchart LR
 
 ```mermaid
 pie title Tasks by status
-  "done" : 101
-  "blocked" : 65
-  "in_progress" : 10
+  "done" : 103
+  "blocked" : 64
+  "in_progress" : 9
   "backlog" : 10
   "todo" : 1
   "in_review" : 1
@@ -287,8 +287,8 @@ No tasks created yet.
 | VFL-191 | VFL-142 delivery: merge the PR for aa3fa71 | Cortana | done | 2026-10-06 | [VFL-191 comment, 2026-10-06T22:06:33Z](http://paperclip.paperclip.svc.cluster.local/VFL/issues/VFL-191) |
 | VFL-198 | CodeRabbit review: vf-core::scope fuzz harness candidate c39241c (child of VFL-145) | Arbiter | blocked | | [VFL-198 comment, 2026-10-06T22:37:46Z](http://paperclip.paperclip.svc.cluster.local/VFL/issues/VFL-198) |
 | VFL-199 | Opus Reviewer: review vf-core::scope fuzz harness candidate c39241c (child of VFL-145) | Opus Reviewer | done | 2026-10-06 | [VFL-199 comment, 2026-10-06T22:45:25Z](http://paperclip.paperclip.svc.cluster.local/VFL/issues/VFL-199#document-review-c39241c) |
-| VFL-200 | Test Runner: fuzz targets canonical_host/scope_match, candidate c39241c (child of VFL-145) | Test Runner | blocked | | [VFL-200 comment, 2026-10-07T08:29:20Z](http://paperclip.paperclip.svc.cluster.local/VFL/issues/VFL-200) |
-| VFL-238 | VFL-200 cont.: fuzz run evidence, canonical_host/scope_match @ 12801bf (clean pass) (child of VFL-200) | Test Runner | in_progress | | [VFL-238](http://paperclip.paperclip.svc.cluster.local/VFL/issues/VFL-238) |
+| VFL-200 | Test Runner: fuzz targets canonical_host/scope_match, candidate c39241c (child of VFL-145) | Test Runner | done | 2026-10-07 | [VFL-200 comment, 2026-10-07T09:04:59Z](http://paperclip.paperclip.svc.cluster.local/VFL/issues/VFL-200) |
+| VFL-238 | VFL-200 cont.: fuzz run evidence, canonical_host/scope_match @ 12801bf (clean pass) (child of VFL-200) | Test Runner | done | 2026-10-07 | [VFL-238 comment, 2026-10-07T09:04:11Z](http://paperclip.paperclip.svc.cluster.local/VFL/issues/VFL-238#document-report) |
 | VFL-201 | Provision cargo-fuzz + nightly-2026-09-01 on shared toolchain (blocks VFL-200/VFL-145 fuzz acceptance) | Jorge | done | 2026-10-06 | [VFL-201 comment, 2026-10-06T22:57:12Z](http://paperclip.paperclip.svc.cluster.local/VFL/issues/VFL-201#document-verification) |
 | VFL-202 | Cortana: rule on §A5 pin and deny/audit scope for the test-lane fuzz workspace (from VFL-199) | Cortana | done | 2026-10-06 | [VFL-202 comment, 2026-10-06T22:56:08Z](http://paperclip.paperclip.svc.cluster.local/VFL/issues/VFL-202#document-ruling) |
 | VFL-203 | CodeRabbit review: VFL-185 bootstrap hardening candidate cccd3c1 (child of VFL-185) | Arbiter | done | 2026-10-06 | [VFL-203 comment, 2026-10-06T23:02:02Z](http://paperclip.paperclip.svc.cluster.local/VFL/issues/VFL-203#document-review-cccd3c1) |
@@ -343,6 +343,12 @@ Update 2026-10-07 08:05 UTC: five deliveries, two new tasks still open, one stat
 Update 2026-10-07 08:30 UTC: four deliveries plus one document-fidelity correction, two status changes, one new task. This run found that Opus Reviewer's VFL-233 verdict (FAIL — 2 MEDIUM, 11 LOW — on C1/T1a pair `88c4287`+`1e7d588`) had already landed at 08:02:02 UTC, one run before the previous snapshot's 08:05:00 UTC cutoff, but the prior run's issue pull missed it; it is corrected here as `done`, same review-is-the-deliverable rule as VFL-199. Of the two MEDIUM findings, Fred routed MEDIUM-1 (observation-edge contract) to Cortana for a ruling (VFL-235, done — option (b): add the four missing caller edges, a new `AcceptRisk` event, `RequestedObservationState`, and two admin-only `Action` variants) and had Halsey take MEDIUM-2 directly (VFL-236, done — pin literal wire-format strings per enum from the TDD's CHECK-constraint tables, independent of `as_str()`, so a future rename cannot silently desync code and test). Once Cortana's ruling landed, Halsey encoded it into the test pack (VFL-237, done, new T1a head `bb36b88`) and Fred is implementing the matching code change on `fred/c1-vf-core-domain` (head `2444217`, not yet gated). VFL-14 itself cycled `blocked` → `in_progress` as VFL-237 (its last recorded blocker) resolved; Test Runner's VFL-231 also delivered this run (all 4 `just check` steps pass, 309/309 unit tests) on the pre-fix pair, so the next gate pass needs to re-run against Fred's new head once it is handed off. Separately, on the fuzz-harness acceptance track, VFL-200 hit its ~20-comment thread cap after finally landing real synchronous (non-backgrounded) fuzz evidence for candidate `12801bf` — both `canonical_host` and `scope_match` clean, applying the VFL-230 `ASAN_OPTIONS` fix — and moved `in_progress` → `blocked` on a new continuation task, VFL-238 (Test Runner, `in_progress`), which carries the full disposition-repair writeup and test report forward. VFL-235-238 are held under the same placement as their respective parents (VFL-235-237 in the Phase 2 table alongside VFL-14/227/229/231-233; VFL-238 under Unassigned alongside VFL-200), same convention as before.
 
 ## Delivery log
+
+### 2026-10-07 — VFL-238 VFL-200 cont.: fuzz run evidence, canonical_host/scope_match @ 12801bf (clean pass)
+Test Runner ran the full fuzz sequence for candidate `12801bf` (branch `kelly/c2-vf-core-scope`) as sequential foreground commands in one turn, fixing the root cause of three prior parked attempts: backgrounded `cargo fuzz build`/`run` calls do not survive a Paperclip run boundary in this environment (confirmed by a leftover checkout with no `.git`/source tree from an earlier attempt). Isolated clean clone, HEAD confirmed `12801bf`; toolchain `.vf-toolchain/fuzz-cxx/env.sh` (nightly-2026-09-01, cargo-fuzz 0.13.2, g++-14), `ASAN_OPTIONS=detect_leaks=0` per the VFL-228 ruling. `cargo fuzz build` exit 0. `canonical_host`: exit 0, 596-598s, 4,641,452 execs, 0 crashes/timeouts, empty artifacts. `scope_match`: exit 0, 596s, 3,925,217 execs, 0 crashes/timeouts, empty artifacts. **Verdict: PASS** — both targets satisfy C2's fuzz acceptance criterion and the VFL-228 ruling's exit-0/≥600s/empty-artifacts bar; report bound to `12801bf`, any later commit invalidates it. Evidence: [VFL-238 comment, 2026-10-07T09:04:11Z](http://paperclip.paperclip.svc.cluster.local/VFL/issues/VFL-238), [test report document](http://paperclip.paperclip.svc.cluster.local/VFL/issues/VFL-238#document-report).
+
+### 2026-10-07 — VFL-200 Test Runner: fuzz targets canonical_host/scope_match, candidate c39241c closeout
+Test Runner closed the parent fuzz-acceptance task once its continuation VFL-238 landed a clean, re-verified test report: HEAD on `kelly/c2-vf-core-scope` confirmed unchanged at `12801bf` before closing. Both `canonical_host` and `scope_match` pass (exit 0, ~596s each, 0 crashes/timeouts, empty artifacts), satisfying C2's (VFL-15) fuzz acceptance criterion. No failures to route to a coder; two out-of-scope nits (a reviewer cargo-deny/cargo-audit flag-spelling ask, a fuzz/README.md wording nit) left for their own owning issues. Evidence: [VFL-200 comment, 2026-10-07T09:04:59Z](http://paperclip.paperclip.svc.cluster.local/VFL/issues/VFL-200).
 
 ### 2026-10-07 — VFL-237 T1a: encode VFL-235 observation-edge ruling and new Action cells in vf-core tests
 Halsey updated `crates/vf-core/tests/state_enums.rs` on `halsey/t1a-vf-core-tests`, new revision `bb36b88` (on top of VFL-236's `550c7af`): `admitted_edges()` now reflects the twelve ruled edges, `admitted_events_is_derived_from_observation_transition` matches, and `ObservationEvent::VALUES` is pinned to the ruled five (`accept_risk` inserted before `request_verification`). Encodes the [VFL-235 ruling](/VFL/issues/VFL-235#document-decision) directly rather than re-deriving it. Handed to Fred to implement the matching `vf-core::state` code change; not yet re-gated. Evidence: [VFL-237 comment, 2026-10-07T08:29:27Z](http://paperclip.paperclip.svc.cluster.local/VFL/issues/VFL-237).
@@ -640,6 +646,8 @@ Opened [PR #53](https://github.com/vulcanflow/docs/pull/53) with `VulcanFlow_Dev
 
 ## Status changes
 
+- 2026-10-07T09:05:06Z VFL-200 blocked -> done — "Test Runner: fuzz targets canonical_host/scope_match, candidate c39241c (VFL-145)", Test Runner, project core-libraries, child of VFL-145, not in the phase mapping (held under Unassigned) — closed once continuation VFL-238 landed a clean, re-verified fuzz report for candidate 12801bf; see delivery log
+- 2026-10-07T09:04:11Z VFL-238 in_progress -> done — "VFL-200 cont.: fuzz run evidence, canonical_host/scope_match @ 12801bf (clean pass)", Test Runner, project core-libraries, child of VFL-200, not in the phase mapping (held under Unassigned) — both fuzz targets exit 0, 0 crashes/timeouts, empty artifacts; see delivery log
 - 2026-10-07T08:35:48Z VFL-14 in_progress -> blocked — "C1. `vf-core` identities, state machines, policy and Problem catalogue", Fred, project core-libraries, Phase 2 Libraries — pair `2444217` + `bb36b88` has 2 test-side issues (stale `problem.rs` fixture, `state_enums.rs` fmt); thread hit 20 comments, so C1 continues on new record VFL-240 and VFL-14 stays the index
 - 2026-10-07T08:34:33Z VFL-240 (new) -> blocked — "C1 (cont. of VFL-14): vf-core gate cycle on `2444217`", Fred, project core-libraries, Phase 2 Libraries — continuation of VFL-14's C1 gate cycle; blocked on VFL-241 (rustfmt + fixture fix) before gates can reopen
 - 2026-10-07T08:34:40Z VFL-241 (new) -> blocked — "T1a: rustfmt state_enums.rs and correct problem.rs fixture made stale by VFL-235", Halsey, project core-libraries, Phase 2 Libraries — `problem.rs` fixture fix needs Cortana's confirmation since the VFL-235 ruling's edit list did not name that file
@@ -688,6 +696,4 @@ Opened [PR #53](https://github.com/vulcanflow/docs/pull/53) with `VulcanFlow_Dev
 - 2026-10-06T22:15:17Z VFL-196 (new) -> in_progress — "Opus Reviewer: review F2a dev harness candidate c61af84 (VFL-162)", Opus Reviewer, project platform-foundation, child of VFL-162, Phase 1 Foundation — independent review gate for the same candidate
 - 2026-10-06T22:12:38Z VFL-41 blocked -> done — "T2 test pack: scope and canonicalization", Halsey, project test-packs, Phase 2 Libraries — last blocker (VFL-143) cleared; T2 Definition of Done closed; see delivery log
 - 2026-10-06T22:10:54Z VFL-194 (new) -> backlog — "F2d. `vf-testkit` residual LOWs from F2b review: control-migration `search_path`, fixture-name check, unused `vf-db` edge (child of VFL-163)", Jorge, project platform-foundation, child of VFL-163, Phase 1 Foundation — residual-LOW follow-up filed from VFL-182's F2b review
-- 2026-10-06T22:09:42Z VFL-143 blocked -> done — "Test Runner: run T2 revision 4d0a451 against C2 candidate fbf6342 (VFL-141 correction)", Test Runner, project test-packs, not in the phase mapping (held under Unassigned) — toolchain blocker (VFL-142) cleared; real-execution evidence stands: 19 passed, 0 failed; see delivery log
-- 2026-10-06T22:07:54Z VFL-185 blocked -> in_progress — "Bootstrap: verify `cc` before publishing a toolchain tree, gate `--env-only` on cargo, bound the lock wait", Jorge, project core-libraries, raised from VFL-187's residual-LOW table, not in the phase mapping (held under Unassigned) — picked up now that the aa3fa71 toolchain-bootstrap candidate merged
 (List trimmed to the last 50 entries per the document spec; earlier changes — back to the 2026-10-05T21:23:32Z baseline — remain in the Paperclip issue history and in prior commits to this file.)
