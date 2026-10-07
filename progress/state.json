@@ -1,5 +1,5 @@
 {
-  "lastRunAt": "2026-10-07T20:34:55Z",
+  "lastRunAt": "2026-10-07T21:05:00Z",
   "phases": {
     "p1_foundation": {
       "label": "1 Foundation",
@@ -329,7 +329,15 @@
         "VFL-323",
         "VFL-318",
         "VFL-319",
-        "VFL-320"
+        "VFL-320",
+        "VFL-325",
+        "VFL-326",
+        "VFL-327",
+        "VFL-328",
+        "VFL-329",
+        "VFL-330",
+        "VFL-331",
+        "VFL-332"
       ]
     }
   },
@@ -510,8 +518,8 @@
       "project": "core-libraries"
     },
     "VFL-263": {
-      "status": "in_progress",
-      "completedAt": null,
+      "status": "done",
+      "completedAt": "2026-10-07T20:50:57.168Z",
       "title": "Test Runner: required runs on C1 pair 2444217 + T1a b59f98f (VFL-240)",
       "assignee": "Test Runner",
       "project": "core-libraries"
@@ -1553,8 +1561,8 @@
       "project": "core-libraries"
     },
     "VFL-194": {
-      "status": "in_progress",
-      "completedAt": null,
+      "status": "done",
+      "completedAt": "2026-10-07T20:56:43.233Z",
       "title": "F2d. `vf-testkit` residual LOWs from F2b review: control-migration `search_path`, fixture-name check, unused `vf-db` edge",
       "assignee": "Jorge",
       "project": "platform-foundation"
@@ -1623,7 +1631,7 @@
       "project": "platform-foundation"
     },
     "VFL-92": {
-      "status": "in_review",
+      "status": "blocked",
       "completedAt": null,
       "title": "T9 follow-up: fix LOW-T1 and LOW-T2 from the VFL-77 re-review",
       "assignee": "Halsey",
@@ -1959,7 +1967,7 @@
       "project": "platform-foundation"
     },
     "VFL-303": {
-      "status": "in_progress",
+      "status": "blocked",
       "completedAt": null,
       "title": "VFL-105: rebase PR #18 onto current main, then hand to Cortana for merge",
       "assignee": "Cortana",
@@ -2001,7 +2009,7 @@
       "project": "platform-foundation"
     },
     "VFL-310": {
-      "status": "blocked",
+      "status": "in_progress",
       "completedAt": null,
       "title": "F3a. Port contracts: `ArtifactStore` and `WakeBus` in `vf-core::ports`",
       "assignee": "Jorge",
@@ -2022,8 +2030,8 @@
       "project": "platform-foundation"
     },
     "VFL-314": {
-      "status": "in_progress",
-      "completedAt": null,
+      "status": "done",
+      "completedAt": "2026-10-07T20:34:00.114Z",
       "title": "T4 slice for F3a: port-contract tests for `ArtifactStore`/`WakeBus` at `f9af174` (VFL-310)",
       "assignee": "Halsey",
       "project": "platform-foundation"
@@ -2036,36 +2044,36 @@
       "project": "platform-foundation"
     },
     "VFL-316": {
-      "status": "in_progress",
-      "completedAt": null,
+      "status": "done",
+      "completedAt": "2026-10-07T20:36:32.103Z",
       "title": "Opus Reviewer: review F3a port contracts candidate f9af174 (VFL-310)",
       "assignee": "Opus Reviewer",
       "project": "platform-foundation"
     },
     "VFL-322": {
-      "status": "in_progress",
-      "completedAt": null,
+      "status": "done",
+      "completedAt": "2026-10-07T20:41:24.109Z",
       "title": "Opus Reviewer: review VFL-305 wasm-pack toolchain candidate 7a67175",
       "assignee": "Opus Reviewer",
       "project": "platform-foundation"
     },
     "VFL-321": {
-      "status": "in_progress",
-      "completedAt": null,
+      "status": "done",
+      "completedAt": "2026-10-07T20:33:38.052Z",
       "title": "CodeRabbit review: VFL-305 wasm-pack toolchain candidate 7a67175",
       "assignee": "Arbiter",
       "project": "platform-foundation"
     },
     "VFL-323": {
-      "status": "in_progress",
-      "completedAt": null,
+      "status": "done",
+      "completedAt": "2026-10-07T20:34:39.169Z",
       "title": "Test Runner: required runs on VFL-305 wasm-pack toolchain candidate 7a67175",
       "assignee": "Test Runner",
       "project": "platform-foundation"
     },
     "VFL-317": {
-      "status": "blocked",
-      "completedAt": null,
+      "status": "done",
+      "completedAt": "2026-10-07T20:45:22.896Z",
       "title": "Test Runner: required runs on F3a port contracts f9af174 + T4 slice VFL-314 (VFL-310)",
       "assignee": "Test Runner",
       "project": "platform-foundation"
@@ -2089,6 +2097,62 @@
       "completedAt": "2026-10-07T20:10:23.534Z",
       "title": "Test Runner: lane gate and manifest checks on VFL-124 candidate 42cad0b",
       "assignee": "Test Runner",
+      "project": "platform-foundation"
+    },
+    "VFL-325": {
+      "status": "done",
+      "completedAt": "2026-10-07T20:37:31.111Z",
+      "title": "Push approval: VFL-194 F2d vf-testkit LOWs at 5e6f9a3",
+      "assignee": "Cortana",
+      "project": "platform-foundation"
+    },
+    "VFL-326": {
+      "status": "done",
+      "completedAt": "2026-10-07T20:38:49.196Z",
+      "title": "GitHub managed identity broker rejects run tokens (401); PR #18/#20 merges blocked",
+      "assignee": "MasterChief",
+      "project": "platform-foundation"
+    },
+    "VFL-327": {
+      "status": "blocked",
+      "completedAt": null,
+      "title": "GitHub managed identity unavailable for Cortana runs after VFL-326 (broker 200 'unavailable', source personal); PR #18 merge blocked",
+      "assignee": "MasterChief",
+      "project": "platform-foundation"
+    },
+    "VFL-328": {
+      "status": "done",
+      "completedAt": "2026-10-07T20:53:25.599Z",
+      "title": "Merge PR #21: VFL-194 F2d vf-testkit LOWs at 5e6f9a3",
+      "assignee": "Cortana",
+      "project": "platform-foundation"
+    },
+    "VFL-329": {
+      "status": "in_progress",
+      "completedAt": null,
+      "title": "CodeRabbit review: VFL-305 wasm-pack toolchain candidate 6e9a76d",
+      "assignee": "Arbiter",
+      "project": "platform-foundation"
+    },
+    "VFL-330": {
+      "status": "in_progress",
+      "completedAt": null,
+      "title": "Opus Reviewer: re-review VFL-305 wasm-pack toolchain candidate 6e9a76d",
+      "assignee": "Opus Reviewer",
+      "project": "platform-foundation"
+    },
+    "VFL-331": {
+      "status": "in_progress",
+      "completedAt": null,
+      "title": "Test Runner: required runs on VFL-305 wasm-pack toolchain candidate 6e9a76d",
+      "assignee": "Test Runner",
+      "project": "platform-foundation"
+    },
+    "VFL-332": {
+      "status": "in_progress",
+      "completedAt": null,
+      "title": "Watchdog review for VFL-306",
+      "assignee": "Arbiter",
       "project": "platform-foundation"
     }
   }
