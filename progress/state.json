@@ -1,5 +1,5 @@
 {
-  "lastRunAt": "2026-10-07T17:06:04Z",
+  "lastRunAt": "2026-10-07T17:40:11Z",
   "phases": {
     "p1_foundation": {
       "label": "1 Foundation",
@@ -41,7 +41,11 @@
         "VFL-250",
         "VFL-251",
         "VFL-260",
-        "VFL-276"
+        "VFL-276",
+        "VFL-280",
+        "VFL-281",
+        "VFL-282",
+        "VFL-283"
       ]
     },
     "p2_libraries": {
@@ -424,10 +428,10 @@
       "project": "platform-foundation"
     },
     "VFL-16": {
-      "status": "in_review",
+      "status": "in_progress",
       "completedAt": null,
       "title": "G1. `vf-graph` validator, schema and WASM export",
-      "assignee": "Arbiter",
+      "assignee": "Kelly",
       "project": "graph-and-execution-contracts"
     },
     "VFL-171": {
@@ -480,7 +484,7 @@
       "project": "core-libraries"
     },
     "VFL-13": {
-      "status": "in_progress",
+      "status": "in_review",
       "completedAt": null,
       "title": "F3. Infrastructure adapters: `ArtifactStore` and `WakeBus`",
       "assignee": "Jorge",
@@ -683,8 +687,8 @@
       "project": "platform-foundation"
     },
     "VFL-163": {
-      "status": "blocked",
-      "completedAt": null,
+      "status": "done",
+      "completedAt": "2026-10-07T17:19:09.319Z",
       "title": "F2b. `vf-testkit`: TestDb, fixtures, clock, ids, token, entitlements",
       "assignee": "Jorge",
       "project": "platform-foundation"
@@ -1418,15 +1422,15 @@
       "project": "platform-foundation"
     },
     "VFL-250": {
-      "status": "in_progress",
+      "status": "blocked",
       "completedAt": null,
       "title": "F2e. Harness wording LOWs: S3 URL-safe list, migration owner in recipe output (after VFL-162)",
       "assignee": "Jorge",
       "project": "platform-foundation"
     },
     "VFL-186": {
-      "status": "blocked",
-      "completedAt": null,
+      "status": "done",
+      "completedAt": "2026-10-07T17:04:08.308Z",
       "title": "resolve-debs.py: count resolved virtual providers, verify InRelease digests, retry fetches",
       "assignee": "Jorge",
       "project": "core-libraries"
@@ -1768,15 +1772,15 @@
       "project": "progress-and-docs"
     },
     "VFL-273": {
-      "status": "in_progress",
-      "completedAt": null,
+      "status": "done",
+      "completedAt": "2026-10-07T17:01:44.207Z",
       "title": "Merge PR #16: VFL-186 resolve-debs at d148a05",
       "assignee": "Cortana",
       "project": "core-libraries"
     },
     "VFL-276": {
-      "status": "in_progress",
-      "completedAt": null,
+      "status": "done",
+      "completedAt": "2026-10-07T17:08:48.485Z",
       "title": "Push approval: VFL-163 F2b vf-testkit at d9bf212 (rebase of reviewed 2a2d1a7)",
       "assignee": "Cortana",
       "project": "platform-foundation"
@@ -1794,6 +1798,34 @@
       "title": "Board watch pass 16:46 UTC: post nudges and re-arm the VFL-272 monitor (task-bound run)",
       "assignee": "MasterChief",
       "project": null
+    },
+    "VFL-280": {
+      "status": "done",
+      "completedAt": "2026-10-07T17:17:50.512Z",
+      "title": "Merge PR #17: VFL-163 F2b vf-testkit at d9bf212",
+      "assignee": "Cortana",
+      "project": "platform-foundation"
+    },
+    "VFL-282": {
+      "status": "in_progress",
+      "completedAt": null,
+      "title": "Opus Reviewer: review F2e harness wording candidate d273c5d (VFL-250)",
+      "assignee": "Opus Reviewer",
+      "project": "platform-foundation"
+    },
+    "VFL-281": {
+      "status": "in_progress",
+      "completedAt": null,
+      "title": "CodeRabbit review: F2e harness wording candidate d273c5d (VFL-250)",
+      "assignee": "Arbiter",
+      "project": "platform-foundation"
+    },
+    "VFL-283": {
+      "status": "in_progress",
+      "completedAt": null,
+      "title": "Test Runner: required runs on F2e harness wording candidate d273c5d (VFL-250)",
+      "assignee": "Test Runner",
+      "project": "platform-foundation"
     }
   }
 }
