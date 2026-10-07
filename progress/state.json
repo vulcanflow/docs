@@ -1,5 +1,5 @@
 {
-  "lastRunAt": "2026-10-07T08:30:00Z",
+  "lastRunAt": "2026-10-07T09:05:07Z",
   "phases": {
     "p1_foundation": {
       "label": "1 Foundation",
@@ -74,7 +74,9 @@
         "VFL-233",
         "VFL-235",
         "VFL-236",
-        "VFL-237"
+        "VFL-237",
+        "VFL-240",
+        "VFL-241"
       ]
     },
     "p3_api": {
@@ -393,7 +395,7 @@
     "VFL-52": {
       "status": "done",
       "completedAt": "2026-10-05T21:35:57.245Z",
-      "title": "F1 scaffold complete at d61b43f — carries the VFL-9 report (my run cannot write to VFL-9), two decisions for Cortana",
+      "title": "F1 scaffold complete at d61b43f \u2014 carries the VFL-9 report (my run cannot write to VFL-9), two decisions for Cortana",
       "assignee": "Cortana",
       "project": "platform-foundation"
     },
@@ -412,7 +414,7 @@
       "project": "platform-foundation"
     },
     "VFL-14": {
-      "status": "in_progress",
+      "status": "blocked",
       "completedAt": null,
       "title": "C1. `vf-core` identities, state machines, policy and Problem catalogue",
       "assignee": "Fred",
@@ -456,7 +458,7 @@
     "VFL-235": {
       "status": "done",
       "completedAt": "2026-10-07T08:22:58.380Z",
-      "title": "Ruling: §15.1 vs §A3.8 observation edges for C1 (VFL-233 MEDIUM-1)",
+      "title": "Ruling: \u00a715.1 vs \u00a7A3.8 observation edges for C1 (VFL-233 MEDIUM-1)",
       "assignee": "Cortana",
       "project": "core-libraries"
     },
@@ -484,7 +486,7 @@
     "VFL-228": {
       "status": "done",
       "completedAt": "2026-10-07T07:45:58.022Z",
-      "title": "Cortana ruling: LSan-ptrace exit-1 (zero panics) — does it satisfy VFL-200's fuzz acceptance criterion?",
+      "title": "Cortana ruling: LSan-ptrace exit-1 (zero panics) \u2014 does it satisfy VFL-200's fuzz acceptance criterion?",
       "assignee": "Cortana",
       "project": "core-libraries"
     },
@@ -624,7 +626,7 @@
     "VFL-173": {
       "status": "done",
       "completedAt": "2026-10-06T21:33:38.233Z",
-      "title": "§A5 ruling: RUSTSEC-2023-0071 (`rsa` via jsonwebtoken `rust_crypto`): exception or alternative",
+      "title": "\u00a7A5 ruling: RUSTSEC-2023-0071 (`rsa` via jsonwebtoken `rust_crypto`): exception or alternative",
       "assignee": "Cortana",
       "project": "platform-foundation"
     },
@@ -736,7 +738,7 @@
     "VFL-113": {
       "status": "blocked",
       "completedAt": null,
-      "title": "T1b test pack: vf-meter accounting — reserve/settle/release, admission, ledger (covers C4)",
+      "title": "T1b test pack: vf-meter accounting \u2014 reserve/settle/release, admission, ledger (covers C4)",
       "assignee": "Halsey",
       "project": "test-packs"
     },
@@ -1072,7 +1074,7 @@
     "VFL-78": {
       "status": "done",
       "completedAt": "2026-10-06T10:33:26.997Z",
-      "title": "Architect ruling: §A5 revision 4 TLS sentence vs the reqwest rustls-no-provider row",
+      "title": "Architect ruling: \u00a7A5 revision 4 TLS sentence vs the reqwest rustls-no-provider row",
       "assignee": "Cortana",
       "project": "platform-foundation"
     },
@@ -1310,14 +1312,14 @@
     "VFL-177": {
       "status": "backlog",
       "completedAt": null,
-      "title": "Decide: project-controlled image mirror for the §A5 compose pin set (MinIO digest first)",
+      "title": "Decide: project-controlled image mirror for the \u00a7A5 compose pin set (MinIO digest first)",
       "assignee": "MasterChief",
       "project": "platform-foundation"
     },
     "VFL-176": {
       "status": "backlog",
       "completedAt": null,
-      "title": "§A5 follow-up: retire the RUSTSEC-2023-0071 (`rsa` Marvin) exception when a patched `rsa` ships",
+      "title": "\u00a7A5 follow-up: retire the RUSTSEC-2023-0071 (`rsa` Marvin) exception when a patched `rsa` ships",
       "assignee": "Jorge",
       "project": "platform-foundation"
     },
@@ -1338,7 +1340,7 @@
     "VFL-98": {
       "status": "done",
       "completedAt": "2026-10-06T11:40:01.593Z",
-      "title": "§A5 ruling: keep both cargo-deny advisories and cargo-audit in `just check`, or collapse to one",
+      "title": "\u00a7A5 ruling: keep both cargo-deny advisories and cargo-audit in `just check`, or collapse to one",
       "assignee": "Cortana",
       "project": "platform-foundation"
     },
@@ -1415,7 +1417,7 @@
     "VFL-115": {
       "status": "done",
       "completedAt": "2026-10-06T14:01:07.885Z",
-      "title": "Opus Reviewer review: VFL-82 README §A5 revision citation (470c2a0)",
+      "title": "Opus Reviewer review: VFL-82 README \u00a7A5 revision citation (470c2a0)",
       "assignee": "Opus Reviewer",
       "project": "platform-foundation"
     },
@@ -1478,14 +1480,14 @@
     "VFL-114": {
       "status": "done",
       "completedAt": "2026-10-06T12:54:02.077Z",
-      "title": "Arbiter review: VFL-82 README §A5 revision citation (470c2a0)",
+      "title": "Arbiter review: VFL-82 README \u00a7A5 revision citation (470c2a0)",
       "assignee": "Arbiter",
       "project": "platform-foundation"
     },
     "VFL-82": {
       "status": "blocked",
       "completedAt": null,
-      "title": "README: cite §A5 revision 5, not revision 4",
+      "title": "README: cite \u00a7A5 revision 5, not revision 4",
       "assignee": "Jorge",
       "project": "platform-foundation"
     },
@@ -1506,14 +1508,14 @@
     "VFL-81": {
       "status": "backlog",
       "completedAt": null,
-      "title": "T9 assertion: per-binary rustls `ring` provider (§A5 rev 5)",
+      "title": "T9 assertion: per-binary rustls `ring` provider (\u00a7A5 rev 5)",
       "assignee": "Halsey",
       "project": "platform-foundation"
     },
     "VFL-80": {
       "status": "backlog",
       "completedAt": null,
-      "title": "graph-rules rule 3: every TLS-initiating binary resolves rustls `ring` on its own (§A5 rev 5)",
+      "title": "graph-rules rule 3: every TLS-initiating binary resolves rustls `ring` on its own (\u00a7A5 rev 5)",
       "assignee": "Jorge",
       "project": "platform-foundation"
     },
@@ -1541,7 +1543,7 @@
     "VFL-202": {
       "status": "done",
       "completedAt": "2026-10-06T22:56:06.613Z",
-      "title": "Cortana: rule on §A5 pin and deny/audit scope for the test-lane fuzz workspace (from VFL-199 F5)",
+      "title": "Cortana: rule on \u00a7A5 pin and deny/audit scope for the test-lane fuzz workspace (from VFL-199 F5)",
       "assignee": "Cortana",
       "project": "core-libraries"
     },
@@ -1576,7 +1578,7 @@
     "VFL-208": {
       "status": "done",
       "completedAt": "2026-10-07T07:29:16.097Z",
-      "title": "Clear VFL-14 → VFL-112 blocker deadlock so T1a can start on C1 candidate 18258f0",
+      "title": "Clear VFL-14 \u2192 VFL-112 blocker deadlock so T1a can start on C1 candidate 18258f0",
       "assignee": "Halsey",
       "project": "core-libraries"
     },
@@ -1585,6 +1587,20 @@
       "completedAt": "2026-10-06T23:20:32.780Z",
       "title": "Opus Reviewer: review vf-core::scope fuzz harness candidate db2c068 (VFL-145 rework)",
       "assignee": "Opus Reviewer",
+      "project": "core-libraries"
+    },
+    "VFL-240": {
+      "status": "blocked",
+      "completedAt": null,
+      "title": "C1 (cont. of VFL-14): vf-core gate cycle on `2444217`",
+      "assignee": "Fred",
+      "project": "core-libraries"
+    },
+    "VFL-241": {
+      "status": "blocked",
+      "completedAt": null,
+      "title": "T1a: rustfmt state_enums.rs and correct problem.rs fixture made stale by VFL-235",
+      "assignee": "Halsey",
       "project": "core-libraries"
     }
   }
