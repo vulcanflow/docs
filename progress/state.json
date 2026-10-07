@@ -1,5 +1,5 @@
 {
-  "lastRunAt": "2026-10-07T13:49:26Z",
+  "lastRunAt": "2026-10-07T14:35:00Z",
   "phases": {
     "p1_foundation": {
       "label": "1 Foundation",
@@ -80,7 +80,11 @@
         "VFL-237",
         "VFL-240",
         "VFL-241",
-        "VFL-247"
+        "VFL-247",
+        "VFL-263",
+        "VFL-264",
+        "VFL-265",
+        "VFL-267"
       ]
     },
     "p3_api": {
@@ -278,7 +282,10 @@
         "VFL-255",
         "VFL-256",
         "VFL-257",
-        "VFL-258"
+        "VFL-258",
+        "VFL-261",
+        "VFL-262",
+        "VFL-266"
       ]
     }
   },
@@ -409,6 +416,41 @@
       "assignee": "Cortana",
       "project": "platform-foundation"
     },
+    "VFL-16": {
+      "status": "in_review",
+      "completedAt": null,
+      "title": "G1. `vf-graph` validator, schema and WASM export",
+      "assignee": "Arbiter",
+      "project": "graph-and-execution-contracts"
+    },
+    "VFL-171": {
+      "status": "in_progress",
+      "completedAt": null,
+      "title": "F2a acceptance: run `dev-up` (120 s, clean machine) and `db-template` determinism on a container runtime (VFL-162)",
+      "assignee": "Test Runner",
+      "project": "platform-foundation"
+    },
+    "VFL-264": {
+      "status": "todo",
+      "completedAt": null,
+      "title": "CodeRabbit review: C1 vf-core pair 2444217 + T1a b59f98f (VFL-240)",
+      "assignee": "Arbiter",
+      "project": "core-libraries"
+    },
+    "VFL-267": {
+      "status": "blocked",
+      "completedAt": null,
+      "title": "G1 (continuation): review-gate thread for candidate 4b9a679",
+      "assignee": "Cortana",
+      "project": "graph-and-execution-contracts"
+    },
+    "VFL-183": {
+      "status": "blocked",
+      "completedAt": null,
+      "title": "Test Runner: required runs on F2b vf-testkit candidate 2a2d1a7 (VFL-163)",
+      "assignee": "Test Runner",
+      "project": "platform-foundation"
+    },
     "VFL-149": {
       "status": "in_progress",
       "completedAt": null,
@@ -416,67 +458,137 @@
       "assignee": "Jorge",
       "project": "core-libraries"
     },
-    "VFL-183": {
+    "VFL-266": {
+      "status": "done",
+      "completedAt": "2026-10-07T14:26:19.456Z",
+      "title": "CodeRabbit review: VFL-149 just/cargo-deny/cargo-audit bootstrap candidate e1d52f3",
+      "assignee": "Arbiter",
+      "project": "core-libraries"
+    },
+    "VFL-263": {
       "status": "in_progress",
       "completedAt": null,
-      "title": "Test Runner: required runs on F2b vf-testkit candidate 2a2d1a7 (VFL-163)",
+      "title": "Test Runner: required runs on C1 pair 2444217 + T1a b59f98f (VFL-240)",
+      "assignee": "Test Runner",
+      "project": "core-libraries"
+    },
+    "VFL-13": {
+      "status": "in_progress",
+      "completedAt": null,
+      "title": "F3. Infrastructure adapters: `ArtifactStore` and `WakeBus`",
+      "assignee": "Jorge",
+      "project": "platform-foundation"
+    },
+    "VFL-162": {
+      "status": "done",
+      "completedAt": "2026-10-07T14:13:34.431Z",
+      "title": "F2a. Dev harness: compose stand-ins, `.env.example`, `just` recipes",
+      "assignee": "Jorge",
+      "project": "platform-foundation"
+    },
+    "VFL-265": {
+      "status": "in_progress",
+      "completedAt": null,
+      "title": "Opus Reviewer: review C1 vf-core pair 2444217 + T1a b59f98f (VFL-240)",
+      "assignee": "Opus Reviewer",
+      "project": "core-libraries"
+    },
+    "VFL-240": {
+      "status": "blocked",
+      "completedAt": null,
+      "title": "C1 (cont. of VFL-14): vf-core gate cycle on `2444217`",
+      "assignee": "Fred",
+      "project": "core-libraries"
+    },
+    "VFL-260": {
+      "status": "done",
+      "completedAt": "2026-10-07T13:56:01.804Z",
+      "title": "Merge PR #15: VFL-162 F2a dev harness at c61af84",
+      "assignee": "Cortana",
+      "project": "platform-foundation"
+    },
+    "VFL-117": {
+      "status": "blocked",
+      "completedAt": null,
+      "title": "T3a. vf-graph conformance corpus & native/WASM parity (G1)",
+      "assignee": "Halsey",
+      "project": "test-packs"
+    },
+    "VFL-17": {
+      "status": "blocked",
+      "completedAt": null,
+      "title": "C3. `vf-db` schemas, migrations, `TenantTx`, repositories, outbox",
+      "assignee": "Fred",
+      "project": "core-libraries"
+    },
+    "VFL-255": {
+      "status": "done",
+      "completedAt": "2026-10-07T13:23:28.719Z",
+      "title": "Board watch: task-bound run to post 12 pending nudges and re-arm the VFL-84 monitor",
+      "assignee": "MasterChief",
+      "project": "progress-and-docs"
+    },
+    "VFL-251": {
+      "status": "done",
+      "completedAt": "2026-10-07T13:22:48.154Z",
+      "title": "Push approval: VFL-162 F2a dev harness at c61af84",
+      "assignee": "Cortana",
+      "project": "platform-foundation"
+    },
+    "VFL-8": {
+      "status": "done",
+      "completedAt": "2026-10-05T19:49:29.166Z",
+      "title": "Architecture documentation and first coding task list (from approved plan)",
+      "assignee": "Cortana",
+      "project": null
+    },
+    "VFL-254": {
+      "status": "done",
+      "completedAt": "2026-10-07T13:19:12.335Z",
+      "title": "Platform: free disk on /paperclip (94% used, ENOSPC risk)",
+      "assignee": "Jorge",
+      "project": "core-libraries"
+    },
+    "VFL-112": {
+      "status": "done",
+      "completedAt": "2026-10-07T11:54:35.203Z",
+      "title": "T1a test pack: vf-core identities, state machines, policy, Problem catalogue (covers C1)",
+      "assignee": "Halsey",
+      "project": "test-packs"
+    },
+    "VFL-136": {
+      "status": "cancelled",
+      "completedAt": null,
+      "title": "T3a. vf-graph test pack: conformance corpus, native/wasm parity, schema drift",
+      "assignee": "Halsey",
+      "project": "test-packs"
+    },
+    "VFL-241": {
+      "status": "done",
+      "completedAt": "2026-10-07T11:38:35.160Z",
+      "title": "T1a: rustfmt state_enums.rs and correct problem.rs fixture made stale by VFL-235",
+      "assignee": "Halsey",
+      "project": "core-libraries"
+    },
+    "VFL-197": {
+      "status": "done",
+      "completedAt": "2026-10-07T11:37:31.019Z",
+      "title": "Test Runner: required runs on F2a dev harness candidate c61af84 (VFL-162)",
       "assignee": "Test Runner",
       "project": "platform-foundation"
+    },
+    "VFL-247": {
+      "status": "done",
+      "completedAt": "2026-10-07T11:33:22.789Z",
+      "title": "Decide: card 3e8b95c1 on VFL-240 (problem.rs illegal-transition fixture pair)",
+      "assignee": "Cortana",
+      "project": "core-libraries"
     },
     "VFL-14": {
       "status": "blocked",
       "completedAt": null,
       "title": "C1. `vf-core` identities, state machines, policy and Problem catalogue",
       "assignee": "Fred",
-      "project": "core-libraries"
-    },
-    "VFL-227": {
-      "status": "done",
-      "completedAt": "2026-10-07T07:39:39.319Z",
-      "title": "T1a: fix dead_code lint in tests/support/mod.rs so just check passes (C1 pair 88c4287)",
-      "assignee": "Halsey",
-      "project": "core-libraries"
-    },
-    "VFL-229": {
-      "status": "done",
-      "completedAt": "2026-10-07T07:43:08.456Z",
-      "title": "T1a: rustfmt the vf-core test pack so just check fmt-check passes (C1 pair 88c4287)",
-      "assignee": "Halsey",
-      "project": "core-libraries"
-    },
-    "VFL-231": {
-      "status": "done",
-      "completedAt": "2026-10-07T08:09:59.509Z",
-      "title": "Test Runner: required runs on C1 pair 88c4287 + T1a 1e7d588 (VFL-14)",
-      "assignee": "Test Runner",
-      "project": "core-libraries"
-    },
-    "VFL-232": {
-      "status": "done",
-      "completedAt": "2026-10-07T07:55:15.909Z",
-      "title": "CodeRabbit review: C1 vf-core pair 88c4287 + T1a 1e7d588 (VFL-14)",
-      "assignee": "Arbiter",
-      "project": "core-libraries"
-    },
-    "VFL-233": {
-      "status": "done",
-      "completedAt": "2026-10-07T08:02:02.110Z",
-      "title": "Opus Reviewer: review C1 vf-core pair 88c4287 + T1a 1e7d588 (VFL-14)",
-      "assignee": "Opus Reviewer",
-      "project": "core-libraries"
-    },
-    "VFL-235": {
-      "status": "done",
-      "completedAt": "2026-10-07T08:22:58.380Z",
-      "title": "Ruling: \u00a715.1 vs \u00a7A3.8 observation edges for C1 (VFL-233 MEDIUM-1)",
-      "assignee": "Cortana",
-      "project": "core-libraries"
-    },
-    "VFL-236": {
-      "status": "done",
-      "completedAt": "2026-10-07T08:25:58.768Z",
-      "title": "T1a: pin literal wire values for every vf-core::state enum (VFL-233 MEDIUM-2)",
-      "assignee": "Halsey",
       "project": "core-libraries"
     },
     "VFL-237": {
@@ -486,24 +598,66 @@
       "assignee": "Halsey",
       "project": "core-libraries"
     },
-    "VFL-238": {
+    "VFL-236": {
       "status": "done",
-      "completedAt": "2026-10-07T09:04:11.714Z",
-      "title": "VFL-200 cont.: fuzz run evidence, canonical_host/scope_match @ 12801bf (clean pass)",
-      "assignee": "Test Runner",
+      "completedAt": "2026-10-07T08:25:58.768Z",
+      "title": "T1a: pin literal wire values for every vf-core::state enum (VFL-233 MEDIUM-2)",
+      "assignee": "Halsey",
       "project": "core-libraries"
     },
-    "VFL-228": {
+    "VFL-235": {
       "status": "done",
-      "completedAt": "2026-10-07T07:45:58.022Z",
-      "title": "Cortana ruling: LSan-ptrace exit-1 (zero panics) \u2014 does it satisfy VFL-200's fuzz acceptance criterion?",
+      "completedAt": "2026-10-07T08:22:58.380Z",
+      "title": "Ruling: \u00a715.1 vs \u00a7A3.8 observation edges for C1 (VFL-233 MEDIUM-1)",
       "assignee": "Cortana",
       "project": "core-libraries"
     },
-    "VFL-230": {
+    "VFL-231": {
       "status": "done",
-      "completedAt": "2026-10-07T08:00:27.948Z",
-      "title": "Jorge: export ASAN_OPTIONS=detect_leaks=0 from fuzz-cxx env.sh (LSan cannot ptrace under ptrace_scope=2; VFL-228 Decision 3)",
+      "completedAt": "2026-10-07T08:09:59.509Z",
+      "title": "Test Runner: required runs on C1 pair 88c4287 + T1a 1e7d588 (VFL-14)",
+      "assignee": "Test Runner",
+      "project": "core-libraries"
+    },
+    "VFL-233": {
+      "status": "done",
+      "completedAt": "2026-10-07T08:02:02.110Z",
+      "title": "Opus Reviewer: review C1 vf-core pair 88c4287 + T1a 1e7d588 (VFL-14)",
+      "assignee": "Opus Reviewer",
+      "project": "core-libraries"
+    },
+    "VFL-232": {
+      "status": "done",
+      "completedAt": "2026-10-07T07:55:15.909Z",
+      "title": "CodeRabbit review: C1 vf-core pair 88c4287 + T1a 1e7d588 (VFL-14)",
+      "assignee": "Arbiter",
+      "project": "core-libraries"
+    },
+    "VFL-229": {
+      "status": "done",
+      "completedAt": "2026-10-07T07:43:08.456Z",
+      "title": "T1a: rustfmt the vf-core test pack so just check fmt-check passes (C1 pair 88c4287)",
+      "assignee": "Halsey",
+      "project": "core-libraries"
+    },
+    "VFL-227": {
+      "status": "done",
+      "completedAt": "2026-10-07T07:39:39.319Z",
+      "title": "T1a: fix dead_code lint in tests/support/mod.rs so just check passes (C1 pair 88c4287)",
+      "assignee": "Halsey",
+      "project": "core-libraries"
+    },
+    "VFL-208": {
+      "status": "done",
+      "completedAt": "2026-10-07T07:29:16.097Z",
+      "title": "Clear VFL-14 \u2192 VFL-112 blocker deadlock so T1a can start on C1 candidate 18258f0",
+      "assignee": "Halsey",
+      "project": "core-libraries"
+    },
+    "VFL-201": {
+      "status": "done",
+      "completedAt": "2026-10-06T22:57:12.478Z",
+      "title": "Provision cargo-fuzz + nightly-2026-09-01 on shared toolchain (blocks VFL-200/VFL-145 fuzz acceptance)",
       "assignee": "Jorge",
       "project": "core-libraries"
     },
@@ -514,32 +668,11 @@
       "assignee": "Opus Reviewer",
       "project": "platform-foundation"
     },
-    "VFL-201": {
-      "status": "done",
-      "completedAt": "2026-10-06T22:57:12.478Z",
-      "title": "Provision cargo-fuzz + nightly-2026-09-01 on shared toolchain (blocks VFL-200/VFL-145 fuzz acceptance)",
-      "assignee": "Jorge",
-      "project": "core-libraries"
-    },
-    "VFL-197": {
-      "status": "done",
-      "completedAt": "2026-10-07T11:37:31.019Z",
-      "title": "Test Runner: required runs on F2a dev harness candidate c61af84 (VFL-162)",
-      "assignee": "Test Runner",
-      "project": "platform-foundation"
-    },
     "VFL-195": {
       "status": "done",
       "completedAt": "2026-10-06T22:23:17.536Z",
       "title": "CodeRabbit review: F2a dev harness candidate c61af84 (VFL-162)",
       "assignee": "Arbiter",
-      "project": "platform-foundation"
-    },
-    "VFL-162": {
-      "status": "blocked",
-      "completedAt": null,
-      "title": "F2a. Dev harness: compose stand-ins, `.env.example`, `just` recipes",
-      "assignee": "Jorge",
       "project": "platform-foundation"
     },
     "VFL-163": {
@@ -619,13 +752,6 @@
       "assignee": "Arbiter",
       "project": "platform-foundation"
     },
-    "VFL-171": {
-      "status": "blocked",
-      "completedAt": null,
-      "title": "F2a acceptance: run `dev-up` (120 s, clean machine) and `db-template` determinism on a container runtime (VFL-162)",
-      "assignee": "Test Runner",
-      "project": "platform-foundation"
-    },
     "VFL-175": {
       "status": "done",
       "completedAt": "2026-10-06T21:35:14.460Z",
@@ -639,13 +765,6 @@
       "title": "\u00a7A5 ruling: RUSTSEC-2023-0071 (`rsa` via jsonwebtoken `rust_crypto`): exception or alternative",
       "assignee": "Cortana",
       "project": "platform-foundation"
-    },
-    "VFL-8": {
-      "status": "done",
-      "completedAt": "2026-10-05T19:49:29.166Z",
-      "title": "Architecture documentation and first coding task list (from approved plan)",
-      "assignee": "Cortana",
-      "project": "unknown"
     },
     "VFL-169": {
       "status": "done",
@@ -675,13 +794,6 @@
       "assignee": "Cortana",
       "project": "platform-foundation"
     },
-    "VFL-13": {
-      "status": "in_progress",
-      "completedAt": null,
-      "title": "F3. Infrastructure adapters: `ArtifactStore` and `WakeBus`",
-      "assignee": "Jorge",
-      "project": "platform-foundation"
-    },
     "VFL-165": {
       "status": "done",
       "completedAt": "2026-10-06T20:35:12.940Z",
@@ -696,20 +808,6 @@
       "assignee": "Kelly",
       "project": "core-libraries"
     },
-    "VFL-117": {
-      "status": "blocked",
-      "completedAt": null,
-      "title": "T3a. vf-graph conformance corpus & native/WASM parity (G1)",
-      "assignee": "Halsey",
-      "project": "test-packs"
-    },
-    "VFL-16": {
-      "status": "in_review",
-      "completedAt": null,
-      "title": "G1. `vf-graph` validator, schema and WASM export",
-      "assignee": "Cortana",
-      "project": "graph-and-execution-contracts"
-    },
     "VFL-42": {
       "status": "blocked",
       "completedAt": null,
@@ -721,13 +819,6 @@
       "status": "blocked",
       "completedAt": null,
       "title": "T3b. vf-translator test pack: argv goldens, candidates, cascade, SCB snapshots",
-      "assignee": "Halsey",
-      "project": "test-packs"
-    },
-    "VFL-136": {
-      "status": "cancelled",
-      "completedAt": null,
-      "title": "T3a. vf-graph test pack: conformance corpus, native/wasm parity, schema drift",
       "assignee": "Halsey",
       "project": "test-packs"
     },
@@ -749,13 +840,6 @@
       "status": "blocked",
       "completedAt": null,
       "title": "T1b test pack: vf-meter accounting \u2014 reserve/settle/release, admission, ledger (covers C4)",
-      "assignee": "Halsey",
-      "project": "test-packs"
-    },
-    "VFL-112": {
-      "status": "done",
-      "completedAt": "2026-10-07T11:54:35.203Z",
-      "title": "T1a test pack: vf-core identities, state machines, policy, Problem catalogue (covers C1)",
       "assignee": "Halsey",
       "project": "test-packs"
     },
@@ -962,31 +1046,17 @@
       "assignee": "Kelly",
       "project": "graph-and-execution-contracts"
     },
-    "VFL-17": {
-      "status": "blocked",
+    "VFL-84": {
+      "status": "in_progress",
       "completedAt": null,
-      "title": "C3. `vf-db` schemas, migrations, `TenantTx`, repositories, outbox",
-      "assignee": "Fred",
-      "project": "core-libraries"
+      "title": "Board watch (continuation 1): find stuck tasks and nudge owners",
+      "assignee": "MasterChief",
+      "project": "progress-and-docs"
     },
     "VFL-154": {
       "status": "in_progress",
       "completedAt": null,
       "title": "Run the required tests on 8ec435d: cross toolchain bootstrap (VFL-151)",
-      "assignee": "Test Runner",
-      "project": "core-libraries"
-    },
-    "VFL-199": {
-      "status": "done",
-      "completedAt": "2026-10-06T22:45:25.137Z",
-      "title": "Opus Reviewer: review vf-core::scope fuzz harness candidate c39241c (VFL-145)",
-      "assignee": "Opus Reviewer",
-      "project": "core-libraries"
-    },
-    "VFL-200": {
-      "status": "done",
-      "completedAt": "2026-10-07T09:05:06.815Z",
-      "title": "Test Runner: fuzz targets canonical_host/scope_match, candidate c39241c (VFL-145)",
       "assignee": "Test Runner",
       "project": "core-libraries"
     },
@@ -997,20 +1067,6 @@
       "assignee": "Arbiter",
       "project": "core-libraries"
     },
-    "VFL-145": {
-      "status": "blocked",
-      "completedAt": null,
-      "title": "T2 addendum: fuzz targets canonical_host and scope_match for vf-core::scope",
-      "assignee": "Halsey",
-      "project": "core-libraries"
-    },
-    "VFL-193": {
-      "status": "backlog",
-      "completedAt": null,
-      "title": "F2c. Bound `TestDb`'s Postgres connections: PgBouncer idle timeout and per-process handle cap",
-      "assignee": "Jorge",
-      "project": "platform-foundation"
-    },
     "VFL-151": {
       "status": "blocked",
       "completedAt": null,
@@ -1019,11 +1075,74 @@
       "project": "core-libraries"
     },
     "VFL-153": {
-      "status": "in_progress",
-      "completedAt": null,
+      "status": "done",
+      "completedAt": "2026-10-07T14:00:28.205Z",
       "title": "Independent review of 8ec435d: cross compiler in the bootstrapped toolchain (VFL-151)",
       "assignee": "Opus Reviewer",
       "project": "core-libraries"
+    },
+    "VFL-200": {
+      "status": "done",
+      "completedAt": "2026-10-07T09:05:06.815Z",
+      "title": "Test Runner: fuzz targets canonical_host/scope_match, candidate c39241c (VFL-145)",
+      "assignee": "Test Runner",
+      "project": "core-libraries"
+    },
+    "VFL-238": {
+      "status": "done",
+      "completedAt": "2026-10-07T09:04:11.714Z",
+      "title": "VFL-200 cont.: fuzz run evidence, canonical_host/scope_match @ 12801bf (clean pass)",
+      "assignee": "Test Runner",
+      "project": "core-libraries"
+    },
+    "VFL-230": {
+      "status": "done",
+      "completedAt": "2026-10-07T08:00:27.948Z",
+      "title": "Jorge: export ASAN_OPTIONS=detect_leaks=0 from fuzz-cxx env.sh (LSan cannot ptrace under ptrace_scope=2; VFL-228 Decision 3)",
+      "assignee": "Jorge",
+      "project": "core-libraries"
+    },
+    "VFL-228": {
+      "status": "done",
+      "completedAt": "2026-10-07T07:45:58.022Z",
+      "title": "Cortana ruling: LSan-ptrace exit-1 (zero panics) \u2014 does it satisfy VFL-200's fuzz acceptance criterion?",
+      "assignee": "Cortana",
+      "project": "core-libraries"
+    },
+    "VFL-145": {
+      "status": "blocked",
+      "completedAt": null,
+      "title": "T2 addendum: fuzz targets canonical_host and scope_match for vf-core::scope",
+      "assignee": "Halsey",
+      "project": "core-libraries"
+    },
+    "VFL-209": {
+      "status": "done",
+      "completedAt": "2026-10-06T23:20:32.780Z",
+      "title": "Opus Reviewer: review vf-core::scope fuzz harness candidate db2c068 (VFL-145 rework)",
+      "assignee": "Opus Reviewer",
+      "project": "core-libraries"
+    },
+    "VFL-206": {
+      "status": "blocked",
+      "completedAt": null,
+      "title": "Bootstrap: C++ shim, nightly and cargo-fuzz for the fuzz lane in ci/bootstrap-toolchain.sh",
+      "assignee": "Jorge",
+      "project": "core-libraries"
+    },
+    "VFL-199": {
+      "status": "done",
+      "completedAt": "2026-10-06T22:45:25.137Z",
+      "title": "Opus Reviewer: review vf-core::scope fuzz harness candidate c39241c (VFL-145)",
+      "assignee": "Opus Reviewer",
+      "project": "core-libraries"
+    },
+    "VFL-193": {
+      "status": "backlog",
+      "completedAt": null,
+      "title": "F2c. Bound `TestDb`'s Postgres connections: PgBouncer idle timeout and per-process handle cap",
+      "assignee": "Jorge",
+      "project": "platform-foundation"
     },
     "VFL-152": {
       "status": "done",
@@ -1045,13 +1164,6 @@
       "title": "CI on Tekton (1/4): GitHub webhook to a Tekton EventListener at zozotk.go.ro",
       "assignee": "Jorge",
       "project": "platform-foundation"
-    },
-    "VFL-84": {
-      "status": "in_progress",
-      "completedAt": null,
-      "title": "Board watch (continuation 1): find stuck tasks and nudge owners",
-      "assignee": "MasterChief",
-      "project": "progress-and-docs"
     },
     "VFL-99": {
       "status": "done",
@@ -1078,7 +1190,7 @@
       "status": "done",
       "completedAt": "2026-10-06T10:59:55.885Z",
       "title": "Board watch: find stuck tasks and nudge owners",
-      "assignee": "(unassigned)",
+      "assignee": null,
       "project": "progress-and-docs"
     },
     "VFL-78": {
@@ -1092,8 +1204,8 @@
       "status": "cancelled",
       "completedAt": null,
       "title": "PROBE",
-      "assignee": "(unassigned)",
-      "project": "unknown"
+      "assignee": null,
+      "project": null
     },
     "VFL-50": {
       "status": "done",
@@ -1114,7 +1226,7 @@
       "completedAt": "2026-10-05T20:01:04.840Z",
       "title": "create technical workflow",
       "assignee": "MasterChief",
-      "project": "unknown"
+      "project": null
     },
     "VFL-47": {
       "status": "blocked",
@@ -1240,49 +1352,42 @@
       "completedAt": "2026-10-05T18:36:41.929Z",
       "title": "check GitHub org repositories",
       "assignee": "MasterChief",
-      "project": "unknown"
+      "project": null
     },
     "VFL-6": {
       "status": "done",
       "completedAt": "2026-10-05T18:31:15.362Z",
       "title": "Architect audit: vulcanflow GitHub repositories (keep / create / remove)",
       "assignee": "Cortana",
-      "project": "unknown"
+      "project": null
     },
     "VFL-3": {
       "status": "done",
       "completedAt": "2026-10-05T18:03:17.375Z",
       "title": "Hire the agents to work on this project.",
       "assignee": "MasterChief",
-      "project": "unknown"
+      "project": null
     },
     "VFL-4": {
       "status": "done",
       "completedAt": "2026-10-05T16:31:18.914Z",
       "title": "Install coderabbit skill",
       "assignee": "MasterChief",
-      "project": "unknown"
+      "project": null
     },
     "VFL-1": {
       "status": "done",
       "completedAt": "2026-10-05T15:39:11.139Z",
       "title": "Paperclip onboarding",
       "assignee": "MasterChief",
-      "project": "onboarding"
+      "project": "Onboarding"
     },
     "VFL-2": {
       "status": "done",
       "completedAt": "2026-10-05T14:04:56.921Z",
       "title": "push the plan to GitHub using the existing connection",
       "assignee": "MasterChief",
-      "project": "unknown"
-    },
-    "VFL-186": {
-      "status": "in_progress",
-      "completedAt": null,
-      "title": "resolve-debs.py: count resolved virtual providers, verify InRelease digests, retry fetches",
-      "assignee": "Jorge",
-      "project": "core-libraries"
+      "project": null
     },
     "VFL-116": {
       "status": "in_progress",
@@ -1291,6 +1396,48 @@
       "assignee": "Test Runner",
       "project": "platform-foundation"
     },
+    "VFL-105": {
+      "status": "in_review",
+      "completedAt": null,
+      "title": "T9 tests: residual LOW hardening from CodeRabbit PR #12 review",
+      "assignee": "Halsey",
+      "project": "platform-foundation"
+    },
+    "VFL-106": {
+      "status": "in_progress",
+      "completedAt": null,
+      "title": "CodeRabbit review: SHA-pin the GitHub Actions + rust-check header (e5eaac0)",
+      "assignee": "Arbiter",
+      "project": "platform-foundation"
+    },
+    "VFL-250": {
+      "status": "in_progress",
+      "completedAt": null,
+      "title": "F2e. Harness wording LOWs: S3 URL-safe list, migration owner in recipe output (after VFL-162)",
+      "assignee": "Jorge",
+      "project": "platform-foundation"
+    },
+    "VFL-186": {
+      "status": "blocked",
+      "completedAt": null,
+      "title": "resolve-debs.py: count resolved virtual providers, verify InRelease digests, retry fetches",
+      "assignee": "Jorge",
+      "project": "core-libraries"
+    },
+    "VFL-262": {
+      "status": "done",
+      "completedAt": "2026-10-07T14:19:27.104Z",
+      "title": "Push approval: VFL-186 resolve-debs at 9c7408c",
+      "assignee": "Cortana",
+      "project": "core-libraries"
+    },
+    "VFL-205": {
+      "status": "in_progress",
+      "completedAt": null,
+      "title": "Test Runner: VFL-185 bootstrap hardening candidate cccd3c1",
+      "assignee": "Test Runner",
+      "project": "core-libraries"
+    },
     "VFL-108": {
       "status": "in_progress",
       "completedAt": null,
@@ -1298,12 +1445,61 @@
       "assignee": "Test Runner",
       "project": "platform-foundation"
     },
-    "VFL-106": {
-      "status": "blocked",
+    "VFL-261": {
+      "status": "backlog",
       "completedAt": null,
-      "title": "CodeRabbit review: SHA-pin the GitHub Actions + rust-check header (e5eaac0)",
+      "title": "resolve-debs.py: fix the 8 residual LOWs from the VFL-186 reviews",
+      "assignee": "Jorge",
+      "project": "core-libraries"
+    },
+    "VFL-257": {
+      "status": "done",
+      "completedAt": "2026-10-07T13:40:12.423Z",
+      "title": "Opus Reviewer: review VFL-186 resolve-debs candidate 9c7408c",
+      "assignee": "Opus Reviewer",
+      "project": "core-libraries"
+    },
+    "VFL-256": {
+      "status": "done",
+      "completedAt": "2026-10-07T13:31:50.361Z",
+      "title": "CodeRabbit review: VFL-186 resolve-debs candidate 9c7408c",
       "assignee": "Arbiter",
-      "project": "platform-foundation"
+      "project": "core-libraries"
+    },
+    "VFL-258": {
+      "status": "done",
+      "completedAt": "2026-10-07T13:22:34.153Z",
+      "title": "Test Runner: VFL-186 resolve-debs candidate 9c7408c (py_compile, AC4 lock, keyring negatives)",
+      "assignee": "Test Runner",
+      "project": "core-libraries"
+    },
+    "VFL-249": {
+      "status": "done",
+      "completedAt": "2026-10-07T12:07:41.803Z",
+      "title": "Design ruling: InRelease signature verification for resolve-debs.py (VFL-186 AC2)",
+      "assignee": "Cortana",
+      "project": "core-libraries"
+    },
+    "VFL-204": {
+      "status": "done",
+      "completedAt": "2026-10-06T23:05:39.080Z",
+      "title": "Opus Reviewer: review VFL-185 bootstrap hardening candidate cccd3c1",
+      "assignee": "Opus Reviewer",
+      "project": "core-libraries"
+    },
+    "VFL-203": {
+      "status": "done",
+      "completedAt": "2026-10-06T23:02:07.441Z",
+      "title": "CodeRabbit review: VFL-185 bootstrap hardening candidate cccd3c1",
+      "assignee": "Arbiter",
+      "project": "core-libraries"
+    },
+    "VFL-202": {
+      "status": "done",
+      "completedAt": "2026-10-06T22:56:06.613Z",
+      "title": "Cortana: rule on \u00a7A5 pin and deny/audit scope for the test-lane fuzz workspace (from VFL-199 F5)",
+      "assignee": "Cortana",
+      "project": "core-libraries"
     },
     "VFL-185": {
       "status": "blocked",
@@ -1352,13 +1548,6 @@
       "completedAt": "2026-10-06T11:40:01.593Z",
       "title": "\u00a7A5 ruling: keep both cargo-deny advisories and cargo-audit in `just check`, or collapse to one",
       "assignee": "Cortana",
-      "project": "platform-foundation"
-    },
-    "VFL-105": {
-      "status": "in_review",
-      "completedAt": null,
-      "title": "T9 tests: residual LOW hardening from CodeRabbit PR #12 review",
-      "assignee": "Halsey",
       "project": "platform-foundation"
     },
     "VFL-132": {
@@ -1534,7 +1723,7 @@
       "completedAt": "2026-10-05T19:55:39.476Z",
       "title": "Append related-task links to the remaining 19 VulcanFlow tasks",
       "assignee": "MasterChief",
-      "project": "unknown"
+      "project": null
     },
     "VFL-38": {
       "status": "blocked",
@@ -1549,139 +1738,6 @@
       "title": "W5. `vf-graph` WASM packaging and browser parity harness",
       "assignee": "Linda",
       "project": "web"
-    },
-    "VFL-202": {
-      "status": "done",
-      "completedAt": "2026-10-06T22:56:06.613Z",
-      "title": "Cortana: rule on \u00a7A5 pin and deny/audit scope for the test-lane fuzz workspace (from VFL-199 F5)",
-      "assignee": "Cortana",
-      "project": "core-libraries"
-    },
-    "VFL-203": {
-      "status": "done",
-      "completedAt": "2026-10-06T23:02:07.441Z",
-      "title": "CodeRabbit review: VFL-185 bootstrap hardening candidate cccd3c1",
-      "assignee": "Arbiter",
-      "project": "core-libraries"
-    },
-    "VFL-204": {
-      "status": "done",
-      "completedAt": "2026-10-06T23:05:39.080Z",
-      "title": "Opus Reviewer: review VFL-185 bootstrap hardening candidate cccd3c1",
-      "assignee": "Opus Reviewer",
-      "project": "core-libraries"
-    },
-    "VFL-205": {
-      "status": "in_progress",
-      "completedAt": null,
-      "title": "Test Runner: VFL-185 bootstrap hardening candidate cccd3c1",
-      "assignee": "Test Runner",
-      "project": "core-libraries"
-    },
-    "VFL-206": {
-      "status": "blocked",
-      "completedAt": null,
-      "title": "Bootstrap: C++ shim, nightly and cargo-fuzz for the fuzz lane in ci/bootstrap-toolchain.sh",
-      "assignee": "Jorge",
-      "project": "core-libraries"
-    },
-    "VFL-208": {
-      "status": "done",
-      "completedAt": "2026-10-07T07:29:16.097Z",
-      "title": "Clear VFL-14 \u2192 VFL-112 blocker deadlock so T1a can start on C1 candidate 18258f0",
-      "assignee": "Halsey",
-      "project": "core-libraries"
-    },
-    "VFL-209": {
-      "status": "done",
-      "completedAt": "2026-10-06T23:20:32.780Z",
-      "title": "Opus Reviewer: review vf-core::scope fuzz harness candidate db2c068 (VFL-145 rework)",
-      "assignee": "Opus Reviewer",
-      "project": "core-libraries"
-    },
-    "VFL-240": {
-      "status": "in_progress",
-      "completedAt": null,
-      "title": "C1 (cont. of VFL-14): vf-core gate cycle on `2444217`",
-      "assignee": "Fred",
-      "project": "core-libraries"
-    },
-    "VFL-241": {
-      "status": "done",
-      "completedAt": "2026-10-07T11:38:35.160Z",
-      "title": "T1a: rustfmt state_enums.rs and correct problem.rs fixture made stale by VFL-235",
-      "assignee": "Halsey",
-      "project": "core-libraries"
-    },
-    "VFL-247": {
-      "status": "done",
-      "completedAt": "2026-10-07T11:33:22.789Z",
-      "title": "Decide: card 3e8b95c1 on VFL-240 (problem.rs illegal-transition fixture pair)",
-      "assignee": "Cortana",
-      "project": "core-libraries"
-    },
-    "VFL-249": {
-      "status": "done",
-      "completedAt": "2026-10-07T12:07:41.803Z",
-      "title": "Design ruling: InRelease signature verification for resolve-debs.py (VFL-186 AC2)",
-      "assignee": "Cortana",
-      "project": "core-libraries"
-    },
-    "VFL-250": {
-      "status": "blocked",
-      "completedAt": null,
-      "title": "F2e. Harness wording LOWs: S3 URL-safe list, migration owner in recipe output (after VFL-162)",
-      "assignee": "Jorge",
-      "project": "platform-foundation"
-    },
-    "VFL-251": {
-      "status": "done",
-      "completedAt": "2026-10-07T13:22:48.154Z",
-      "title": "Push approval: VFL-162 F2a dev harness at c61af84",
-      "assignee": "Cortana",
-      "project": "platform-foundation"
-    },
-    "VFL-260": {
-      "status": "in_progress",
-      "completedAt": null,
-      "title": "Merge PR #15: VFL-162 F2a dev harness at c61af84",
-      "assignee": "Cortana",
-      "project": "platform-foundation"
-    },
-    "VFL-255": {
-      "status": "done",
-      "completedAt": "2026-10-07T13:23:28.719Z",
-      "title": "Board watch: task-bound run to post 12 pending nudges and re-arm the VFL-84 monitor",
-      "assignee": "MasterChief",
-      "project": "progress-and-docs"
-    },
-    "VFL-254": {
-      "status": "done",
-      "completedAt": "2026-10-07T13:19:12.335Z",
-      "title": "Platform: free disk on /paperclip (94% used, ENOSPC risk)",
-      "assignee": "Jorge",
-      "project": "core-libraries"
-    },
-    "VFL-257": {
-      "status": "done",
-      "completedAt": "2026-10-07T13:40:12.423Z",
-      "title": "Opus Reviewer: review VFL-186 resolve-debs candidate 9c7408c",
-      "assignee": "Opus Reviewer",
-      "project": "core-libraries"
-    },
-    "VFL-256": {
-      "status": "done",
-      "completedAt": "2026-10-07T13:31:50.361Z",
-      "title": "CodeRabbit review: VFL-186 resolve-debs candidate 9c7408c",
-      "assignee": "Arbiter",
-      "project": "core-libraries"
-    },
-    "VFL-258": {
-      "status": "done",
-      "completedAt": "2026-10-07T13:22:34.153Z",
-      "title": "Test Runner: VFL-186 resolve-debs candidate 9c7408c (py_compile, AC4 lock, keyring negatives)",
-      "assignee": "Test Runner",
-      "project": "core-libraries"
     }
   }
 }
