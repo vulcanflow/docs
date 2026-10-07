@@ -1,5 +1,5 @@
 {
-  "lastRunAt": "2026-10-07T17:40:11Z",
+  "lastRunAt": "2026-10-07T18:14:47Z",
   "phases": {
     "p1_foundation": {
       "label": "1 Foundation",
@@ -45,7 +45,8 @@
         "VFL-280",
         "VFL-281",
         "VFL-282",
-        "VFL-283"
+        "VFL-283",
+        "VFL-286"
       ]
     },
     "p2_libraries": {
@@ -296,7 +297,8 @@
         "VFL-272",
         "VFL-273",
         "VFL-277",
-        "VFL-278"
+        "VFL-278",
+        "VFL-285"
       ]
     }
   },
@@ -428,9 +430,9 @@
       "project": "platform-foundation"
     },
     "VFL-16": {
-      "status": "in_progress",
+      "status": "blocked",
       "completedAt": null,
-      "title": "G1. `vf-graph` validator, schema and WASM export",
+      "title": "G1. `vf-graph` validator, schema and WASM export (record/index \u2014 continued in VFL-267 once the thread hit 20 comments)",
       "assignee": "Kelly",
       "project": "graph-and-execution-contracts"
     },
@@ -1163,14 +1165,14 @@
       "project": "core-libraries"
     },
     "VFL-125": {
-      "status": "blocked",
+      "status": "in_progress",
       "completedAt": null,
       "title": "CI on Tekton (2/4): pipeline definitions equivalent to lane-gate and rust-check",
       "assignee": "Jorge",
       "project": "platform-foundation"
     },
     "VFL-124": {
-      "status": "blocked",
+      "status": "in_review",
       "completedAt": null,
       "title": "CI on Tekton (1/4): GitHub webhook to a Tekton EventListener at zozotk.go.ro",
       "assignee": "Jorge",
@@ -1422,9 +1424,9 @@
       "project": "platform-foundation"
     },
     "VFL-250": {
-      "status": "blocked",
+      "status": "in_progress",
       "completedAt": null,
-      "title": "F2e. Harness wording LOWs: S3 URL-safe list, migration owner in recipe output (after VFL-162)",
+      "title": "F2e. Harness wording LOWs: S3 URL-safe list, migration owner in recipe output (child of VFL-12, after VFL-162)",
       "assignee": "Jorge",
       "project": "platform-foundation"
     },
@@ -1751,9 +1753,9 @@
       "project": "web"
     },
     "VFL-269": {
-      "status": "in_progress",
+      "status": "blocked",
       "completedAt": null,
-      "title": "Test Runner: just check, just gate and installer checks on VFL-149 candidate e1d52f3",
+      "title": "Test Runner: just check, just gate and installer checks on VFL-149 candidate e1d52f3 (child of VFL-149)",
       "assignee": "Test Runner",
       "project": "core-libraries"
     },
@@ -1807,24 +1809,38 @@
       "project": "platform-foundation"
     },
     "VFL-282": {
-      "status": "in_progress",
-      "completedAt": null,
-      "title": "Opus Reviewer: review F2e harness wording candidate d273c5d (VFL-250)",
+      "status": "done",
+      "completedAt": "2026-10-07T17:36:25.993Z",
+      "title": "Opus Reviewer: review F2e harness wording candidate d273c5d (child of VFL-250)",
       "assignee": "Opus Reviewer",
       "project": "platform-foundation"
     },
     "VFL-281": {
-      "status": "in_progress",
-      "completedAt": null,
-      "title": "CodeRabbit review: F2e harness wording candidate d273c5d (VFL-250)",
+      "status": "done",
+      "completedAt": "2026-10-07T17:43:28.939Z",
+      "title": "CodeRabbit review: F2e harness wording candidate d273c5d (child of VFL-250)",
       "assignee": "Arbiter",
       "project": "platform-foundation"
     },
     "VFL-283": {
+      "status": "done",
+      "completedAt": "2026-10-07T17:54:01.364Z",
+      "title": "Test Runner: required runs on F2e harness wording candidate d273c5d (child of VFL-250)",
+      "assignee": "Test Runner",
+      "project": "platform-foundation"
+    },
+    "VFL-285": {
       "status": "in_progress",
       "completedAt": null,
-      "title": "Test Runner: required runs on F2e harness wording candidate d273c5d (VFL-250)",
-      "assignee": "Test Runner",
+      "title": "Restricted channel needed: security observation on the zozotk.go.ro network edge (from VFL-124)",
+      "assignee": "MasterChief",
+      "project": "platform-foundation"
+    },
+    "VFL-286": {
+      "status": "in_progress",
+      "completedAt": null,
+      "title": "Push approval: VFL-250 F2e harness wording at d273c5d (child of VFL-250)",
+      "assignee": "Cortana",
       "project": "platform-foundation"
     }
   }
