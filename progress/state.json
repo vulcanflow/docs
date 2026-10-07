@@ -1,5 +1,5 @@
 {
-  "lastRunAt": "2026-10-07T09:34:00Z",
+  "lastRunAt": "2026-10-07T12:34:00Z",
   "phases": {
     "p1_foundation": {
       "label": "1 Foundation",
@@ -37,7 +37,9 @@
         "VFL-194",
         "VFL-195",
         "VFL-196",
-        "VFL-197"
+        "VFL-197",
+        "VFL-250",
+        "VFL-251"
       ]
     },
     "p2_libraries": {
@@ -76,7 +78,8 @@
         "VFL-236",
         "VFL-237",
         "VFL-240",
-        "VFL-241"
+        "VFL-241",
+        "VFL-247"
       ]
     },
     "p3_api": {
@@ -268,7 +271,8 @@
         "VFL-209",
         "VFL-228",
         "VFL-230",
-        "VFL-238"
+        "VFL-238",
+        "VFL-249"
       ]
     }
   },
@@ -400,7 +404,7 @@
       "project": "platform-foundation"
     },
     "VFL-149": {
-      "status": "in_progress",
+      "status": "blocked",
       "completedAt": null,
       "title": "Bootstrap just, cargo-deny and cargo-audit so just check runs on the runners",
       "assignee": "Jorge",
@@ -512,8 +516,8 @@
       "project": "core-libraries"
     },
     "VFL-197": {
-      "status": "in_progress",
-      "completedAt": null,
+      "status": "done",
+      "completedAt": "2026-10-07T11:37:31.019Z",
       "title": "Test Runner: required runs on F2a dev harness candidate c61af84 (VFL-162)",
       "assignee": "Test Runner",
       "project": "platform-foundation"
@@ -694,7 +698,7 @@
       "project": "test-packs"
     },
     "VFL-16": {
-      "status": "blocked",
+      "status": "in_progress",
       "completedAt": null,
       "title": "G1. `vf-graph` validator, schema and WASM export",
       "assignee": "Kelly",
@@ -715,7 +719,7 @@
       "project": "test-packs"
     },
     "VFL-136": {
-      "status": "blocked",
+      "status": "cancelled",
       "completedAt": null,
       "title": "T3a. vf-graph test pack: conformance corpus, native/wasm parity, schema drift",
       "assignee": "Halsey",
@@ -743,8 +747,8 @@
       "project": "test-packs"
     },
     "VFL-112": {
-      "status": "in_progress",
-      "completedAt": null,
+      "status": "done",
+      "completedAt": "2026-10-07T11:54:35.203Z",
       "title": "T1a test pack: vf-core identities, state machines, policy, Problem catalogue (covers C1)",
       "assignee": "Halsey",
       "project": "test-packs"
@@ -981,7 +985,7 @@
       "project": "core-libraries"
     },
     "VFL-198": {
-      "status": "blocked",
+      "status": "todo",
       "completedAt": null,
       "title": "CodeRabbit review: vf-core::scope fuzz harness candidate c39241c (VFL-145)",
       "assignee": "Arbiter",
@@ -1037,10 +1041,10 @@
       "project": "platform-foundation"
     },
     "VFL-84": {
-      "status": "todo",
+      "status": "in_progress",
       "completedAt": null,
       "title": "Board watch (continuation 1): find stuck tasks and nudge owners",
-      "assignee": "(unassigned)",
+      "assignee": "MasterChief",
       "project": "progress-and-docs"
     },
     "VFL-99": {
@@ -1268,7 +1272,7 @@
       "project": "unknown"
     },
     "VFL-186": {
-      "status": "in_progress",
+      "status": "blocked",
       "completedAt": null,
       "title": "resolve-debs.py: count resolved virtual providers, verify InRelease digests, retry fetches",
       "assignee": "Jorge",
@@ -1289,7 +1293,7 @@
       "project": "platform-foundation"
     },
     "VFL-106": {
-      "status": "in_progress",
+      "status": "blocked",
       "completedAt": null,
       "title": "CodeRabbit review: SHA-pin the GitHub Actions + rust-check header (e5eaac0)",
       "assignee": "Arbiter",
@@ -1590,18 +1594,46 @@
       "project": "core-libraries"
     },
     "VFL-240": {
-      "status": "blocked",
+      "status": "in_progress",
       "completedAt": null,
       "title": "C1 (cont. of VFL-14): vf-core gate cycle on `2444217`",
       "assignee": "Fred",
       "project": "core-libraries"
     },
     "VFL-241": {
-      "status": "blocked",
-      "completedAt": null,
+      "status": "done",
+      "completedAt": "2026-10-07T11:38:35.160Z",
       "title": "T1a: rustfmt state_enums.rs and correct problem.rs fixture made stale by VFL-235",
       "assignee": "Halsey",
       "project": "core-libraries"
+    },
+    "VFL-247": {
+      "status": "done",
+      "completedAt": "2026-10-07T11:33:22.789Z",
+      "title": "Decide: card 3e8b95c1 on VFL-240 (problem.rs illegal-transition fixture pair)",
+      "assignee": "Cortana",
+      "project": "core-libraries"
+    },
+    "VFL-249": {
+      "status": "done",
+      "completedAt": "2026-10-07T12:07:41.803Z",
+      "title": "Design ruling: InRelease signature verification for resolve-debs.py (VFL-186 AC2)",
+      "assignee": "Cortana",
+      "project": "core-libraries"
+    },
+    "VFL-250": {
+      "status": "blocked",
+      "completedAt": null,
+      "title": "F2e. Harness wording LOWs: S3 URL-safe list, migration owner in recipe output (after VFL-162)",
+      "assignee": "Jorge",
+      "project": "platform-foundation"
+    },
+    "VFL-251": {
+      "status": "blocked",
+      "completedAt": null,
+      "title": "Push approval: VFL-162 F2a dev harness at c61af84",
+      "assignee": "Cortana",
+      "project": "platform-foundation"
     }
   }
 }
