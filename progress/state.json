@@ -1,5 +1,5 @@
 {
-  "lastRunAt": "2026-10-06T23:03:10Z",
+  "lastRunAt": "2026-10-07T07:08:54Z",
   "phases": {
     "p1_foundation": {
       "label": "1 Foundation",
@@ -253,7 +253,9 @@
         "VFL-203",
         "VFL-204",
         "VFL-205",
-        "VFL-206"
+        "VFL-206",
+        "VFL-208",
+        "VFL-209"
       ]
     }
   },
@@ -399,7 +401,7 @@
       "project": "platform-foundation"
     },
     "VFL-14": {
-      "status": "in_progress",
+      "status": "blocked",
       "completedAt": null,
       "title": "C1. `vf-core` identities, state machines, policy and Problem catalogue",
       "assignee": "Fred",
@@ -1456,15 +1458,15 @@
       "project": "core-libraries"
     },
     "VFL-203": {
-      "status": "in_progress",
-      "completedAt": null,
+      "status": "done",
+      "completedAt": "2026-10-06T23:02:07.441Z",
       "title": "CodeRabbit review: VFL-185 bootstrap hardening candidate cccd3c1",
       "assignee": "Arbiter",
       "project": "core-libraries"
     },
     "VFL-204": {
-      "status": "in_progress",
-      "completedAt": null,
+      "status": "done",
+      "completedAt": "2026-10-06T23:05:39.080Z",
       "title": "Opus Reviewer: review VFL-185 bootstrap hardening candidate cccd3c1",
       "assignee": "Opus Reviewer",
       "project": "core-libraries"
@@ -1481,6 +1483,20 @@
       "completedAt": null,
       "title": "Bootstrap: C++ shim, nightly and cargo-fuzz for the fuzz lane in ci/bootstrap-toolchain.sh",
       "assignee": "Jorge",
+      "project": "core-libraries"
+    },
+    "VFL-208": {
+      "status": "in_progress",
+      "completedAt": null,
+      "title": "Clear VFL-14 \u2192 VFL-112 blocker deadlock so T1a can start on C1 candidate 18258f0",
+      "assignee": "Halsey",
+      "project": "core-libraries"
+    },
+    "VFL-209": {
+      "status": "done",
+      "completedAt": "2026-10-06T23:20:32.780Z",
+      "title": "Opus Reviewer: review vf-core::scope fuzz harness candidate db2c068 (VFL-145 rework)",
+      "assignee": "Opus Reviewer",
       "project": "core-libraries"
     }
   }
