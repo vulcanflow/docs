@@ -1,5 +1,5 @@
 {
-  "lastRunAt": "2026-10-07T18:41:07Z",
+  "lastRunAt": "2026-10-07T19:06:13Z",
   "phases": {
     "p1_foundation": {
       "label": "1 Foundation",
@@ -302,7 +302,10 @@
         "VFL-277",
         "VFL-278",
         "VFL-285",
-        "VFL-288"
+        "VFL-288",
+        "VFL-294",
+        "VFL-295",
+        "VFL-296"
       ]
     }
   },
@@ -434,7 +437,7 @@
       "project": "platform-foundation"
     },
     "VFL-16": {
-      "status": "in_progress",
+      "status": "blocked",
       "completedAt": null,
       "title": "G1. `vf-graph` validator, schema and WASM export",
       "assignee": "Cortana",
@@ -1176,7 +1179,7 @@
       "project": "platform-foundation"
     },
     "VFL-124": {
-      "status": "in_review",
+      "status": "blocked",
       "completedAt": null,
       "title": "CI on Tekton (1/4): GitHub webhook to a Tekton EventListener at zozotk.go.ro",
       "assignee": "Jorge",
@@ -1834,8 +1837,8 @@
       "project": "platform-foundation"
     },
     "VFL-285": {
-      "status": "in_review",
-      "completedAt": null,
+      "status": "done",
+      "completedAt": "2026-10-07T18:44:52.038Z",
       "title": "Restricted channel needed: security observation on the zozotk.go.ro network edge (from VFL-124)",
       "assignee": "MasterChief",
       "project": "platform-foundation"
@@ -1862,8 +1865,8 @@
       "project": "platform-foundation"
     },
     "VFL-290": {
-      "status": "in_progress",
-      "completedAt": null,
+      "status": "done",
+      "completedAt": "2026-10-07T18:44:15.560Z",
       "title": "CodeRabbit review: G1 vf-graph candidate 313d43a (VFL-16, supersedes 4b9a679)",
       "assignee": "Arbiter",
       "project": "graph-and-execution-contracts"
@@ -1874,6 +1877,27 @@
       "title": "Architecture: bound the \u00a7A5 validation error list (truncation marker) \u2014 follow-up from G1 D6",
       "assignee": "Cortana",
       "project": "graph-and-execution-contracts"
+    },
+    "VFL-294": {
+      "status": "in_progress",
+      "completedAt": null,
+      "title": "CodeRabbit review: VFL-124 Tekton webhook EventListener manifests (cab9d1d)",
+      "assignee": null,
+      "project": "platform-foundation"
+    },
+    "VFL-295": {
+      "status": "in_progress",
+      "completedAt": null,
+      "title": "Opus Reviewer: review VFL-124 Tekton webhook EventListener manifests (cab9d1d)",
+      "assignee": null,
+      "project": "platform-foundation"
+    },
+    "VFL-296": {
+      "status": "done",
+      "completedAt": "2026-10-07T19:01:01.945Z",
+      "title": "Test Runner: lane gate and manifest checks on VFL-124 candidate cab9d1d",
+      "assignee": null,
+      "project": "platform-foundation"
     }
   }
 }
