@@ -1,13 +1,13 @@
 # VulcanFlow progress
 
-Last updated: 2026-10-07T08:30:00Z by Guilty Spark. Source: Paperclip company vFlow.
+Last updated: 2026-10-07T09:05:07Z by Guilty Spark. Source: Paperclip company vFlow.
 
 ## Summary table
 
 | Phase | Project(s) | Done | In progress | Blocked | Planned | Total |
 |---|---|---|---|---|---|---|
 | 1 Foundation | platform-foundation, test-packs (T9) | 19 | 1 | 8 | 2 | 30 |
-| 2 Libraries | core-libraries, graph-and-execution-contracts, test-packs (T1-T5) | 9 | 2 | 16 | 0 | 27 |
+| 2 Libraries | core-libraries, graph-and-execution-contracts, test-packs (T1-T5) | 9 | 1 | 19 | 0 | 29 |
 | 3 API | api, test-packs (T7) | 0 | 0 | 5 | 0 | 5 |
 | 4 Execution | scanners, operator-and-ingest, test-packs (T6) | 0 | 0 | 7 | 1 | 8 |
 | 5 Findings API | api | 0 | 0 | 1 | 0 | 1 |
@@ -15,7 +15,7 @@ Last updated: 2026-10-07T08:30:00Z by Guilty Spark. Source: Paperclip company vF
 | Later (reporting, infra, ai-gateway) | reporting, infra, ai-gateway | 0 | 0 | 0 | 0 | 0 |
 | Setup and governance | Onboarding | 9 | 0 | 0 | 0 | 9 |
 | Unassigned to a phase[^1] | progress-and-docs (VFL-50, VFL-60, VFL-84), platform-foundation (VFL-52, VFL-58, VFL-61, VFL-70, VFL-73–103, VFL-105–111, VFL-114–116, VFL-119–143, VFL-160, VFL-173, VFL-175–177, except VFL-112–113/117–118 which moved into Phase 2, VFL-122, VFL-124–137), core-libraries (VFL-140, VFL-142, VFL-145–159, VFL-185–187, VFL-190–191, VFL-198–209, VFL-228, VFL-230, VFL-238), api (VFL-165), none (VFL-51) | 64 | 9 | 20 | 7 | 102 |
-| **Total**[^1] | | **101** | **12** | **62** | **11** | **188** |
+| **Total**[^1] | | **101** | **11** | **65** | **11** | **190** |
 
 [^1]: 2 cancelled tasks (VFL-51, VFL-134) are counted in Total only; they have no Done/In progress/Blocked/Planned bucket. Guilty Spark's own recurring "Progress tracker update" tasks (VFL-53, VFL-54, VFL-55, ...) are excluded entirely from this document per the skip-own-routine-tasks rule. The "In progress" column folds `in_progress` and `in_review` together (no separate in-review bucket in this table); the "Planned" column folds `todo` and `backlog` tasks together — both are queued/not-yet-started, just at different readiness states; see the Status mix pie for the literal per-status counts.
 
@@ -24,7 +24,7 @@ Last updated: 2026-10-07T08:30:00Z by Guilty Spark. Source: Paperclip company vF
 ```mermaid
 flowchart LR
   P1["1 Foundation<br/>19/30 done"]
-  P2["2 Libraries<br/>9/27 done"]
+  P2["2 Libraries<br/>9/29 done"]
   P3["3 API<br/>0/5 done"]
   P4["4 Execution<br/>0/8 done"]
   P5["5 Findings API<br/>0/1 done"]
@@ -58,8 +58,8 @@ flowchart LR
 ```mermaid
 pie title Tasks by status
   "done" : 101
-  "blocked" : 62
-  "in_progress" : 11
+  "blocked" : 65
+  "in_progress" : 10
   "backlog" : 10
   "todo" : 1
   "in_review" : 1
@@ -105,7 +105,9 @@ pie title Tasks by status
 
 | Task | Title | Owner | Status | Delivered | Evidence |
 |---|---|---|---|---|---|
-| VFL-14 | C1. `vf-core` identities, state machines, policy and Problem (record/index — review chain VFL-227/229/231-233/235-237) | Fred | in_progress | | [VFL-14 comment, 2026-10-07T08:28:57Z](http://paperclip.paperclip.svc.cluster.local/VFL/issues/VFL-14) |
+| VFL-14 | C1. `vf-core` identities, state machines, policy and Problem (record/index — review chain VFL-227/229/231-233/235-237, continued in VFL-240) | Fred | blocked | | [VFL-14 comment, 2026-10-07T08:35:48Z](http://paperclip.paperclip.svc.cluster.local/VFL/issues/VFL-14) |
+| VFL-240 | C1 (cont. of VFL-14): vf-core gate cycle on `2444217` | Fred | blocked | | [VFL-240](http://paperclip.paperclip.svc.cluster.local/VFL/issues/VFL-240) |
+| VFL-241 | T1a: rustfmt `state_enums.rs` and correct `problem.rs` fixture made stale by VFL-235 | Halsey | blocked | | [VFL-241](http://paperclip.paperclip.svc.cluster.local/VFL/issues/VFL-241) |
 | VFL-227 | T1a: fix `dead_code` lint in `tests/support/mod.rs` so `just check` passes (child of VFL-14) | Halsey | done | 2026-10-07 | [VFL-227 comment, 2026-10-07T07:39:39Z](http://paperclip.paperclip.svc.cluster.local/VFL/issues/VFL-227) |
 | VFL-229 | T1a: rustfmt the vf-core test pack so `just check` fmt-check passes (child of VFL-14) | Halsey | done | 2026-10-07 | [VFL-229 comment, 2026-10-07T07:43:08Z](http://paperclip.paperclip.svc.cluster.local/VFL/issues/VFL-229) |
 | VFL-231 | Test Runner: required runs on C1 pair 88c4287 + T1a 1e7d588 (child of VFL-14) | Test Runner | done | 2026-10-07 | [VFL-231 comment, 2026-10-07T08:09:57Z](http://paperclip.paperclip.svc.cluster.local/VFL/issues/VFL-231) |
@@ -638,6 +640,9 @@ Opened [PR #53](https://github.com/vulcanflow/docs/pull/53) with `VulcanFlow_Dev
 
 ## Status changes
 
+- 2026-10-07T08:35:48Z VFL-14 in_progress -> blocked — "C1. `vf-core` identities, state machines, policy and Problem catalogue", Fred, project core-libraries, Phase 2 Libraries — pair `2444217` + `bb36b88` has 2 test-side issues (stale `problem.rs` fixture, `state_enums.rs` fmt); thread hit 20 comments, so C1 continues on new record VFL-240 and VFL-14 stays the index
+- 2026-10-07T08:34:33Z VFL-240 (new) -> blocked — "C1 (cont. of VFL-14): vf-core gate cycle on `2444217`", Fred, project core-libraries, Phase 2 Libraries — continuation of VFL-14's C1 gate cycle; blocked on VFL-241 (rustfmt + fixture fix) before gates can reopen
+- 2026-10-07T08:34:40Z VFL-241 (new) -> blocked — "T1a: rustfmt state_enums.rs and correct problem.rs fixture made stale by VFL-235", Halsey, project core-libraries, Phase 2 Libraries — `problem.rs` fixture fix needs Cortana's confirmation since the VFL-235 ruling's edit list did not name that file
 - 2026-10-07T08:29:59Z VFL-14 blocked -> in_progress — "C1. `vf-core` identities, state machines, policy and Problem catalogue", Fred, project core-libraries, Phase 2 Libraries — last recorded blocker VFL-237 resolved done, auto-woke VFL-14
 - 2026-10-07T08:29:54Z VFL-200 in_progress -> blocked — "Test Runner: fuzz targets canonical_host/scope_match, candidate c39241c (VFL-145)", Test Runner, project core-libraries, child of VFL-145, not in the phase mapping (held under Unassigned) — thread hit the comment cap after landing real fuzz evidence for 12801bf; continuation moved to new child VFL-238
 - 2026-10-07T08:28:50Z VFL-238 (new) -> in_progress — "VFL-200 cont.: fuzz run evidence, canonical_host/scope_match @ 12801bf (clean pass)", Test Runner, project core-libraries, child of VFL-200, not in the phase mapping (held under Unassigned) — continuation task carrying VFL-200's disposition-repair writeup and test report forward
@@ -685,7 +690,4 @@ Opened [PR #53](https://github.com/vulcanflow/docs/pull/53) with `VulcanFlow_Dev
 - 2026-10-06T22:10:54Z VFL-194 (new) -> backlog — "F2d. `vf-testkit` residual LOWs from F2b review: control-migration `search_path`, fixture-name check, unused `vf-db` edge (child of VFL-163)", Jorge, project platform-foundation, child of VFL-163, Phase 1 Foundation — residual-LOW follow-up filed from VFL-182's F2b review
 - 2026-10-06T22:09:42Z VFL-143 blocked -> done — "Test Runner: run T2 revision 4d0a451 against C2 candidate fbf6342 (VFL-141 correction)", Test Runner, project test-packs, not in the phase mapping (held under Unassigned) — toolchain blocker (VFL-142) cleared; real-execution evidence stands: 19 passed, 0 failed; see delivery log
 - 2026-10-06T22:07:54Z VFL-185 blocked -> in_progress — "Bootstrap: verify `cc` before publishing a toolchain tree, gate `--env-only` on cargo, bound the lock wait", Jorge, project core-libraries, raised from VFL-187's residual-LOW table, not in the phase mapping (held under Unassigned) — picked up now that the aa3fa71 toolchain-bootstrap candidate merged
-- 2026-10-06T22:07:54Z VFL-186 blocked -> in_progress — "`resolve-debs.py`: count resolved virtual providers, verify InRelease digests, retry fetches", Jorge, project core-libraries, raised from VFL-187's residual-LOW table, not in the phase mapping (held under Unassigned) — picked up alongside VFL-185 now that the toolchain-bootstrap candidate merged
-- 2026-10-06T22:07:49Z VFL-14 blocked -> in_progress — "C1. `vf-core` identities, state machines, policy and Problem catalogue", Fred, project core-libraries, Phase 2 Libraries — started once the VFL-142 toolchain blocker cleared
-- 2026-10-06T22:07:41Z VFL-142 blocked -> done — "Agent runners have no C toolchain, so no Rust crate can compile or be tested", Jorge, project core-libraries, not in the phase mapping (held under Unassigned) — PR #14 merged to `vulcanflow/platform` main as `b5ee40e`, tree matches the VFL-187 pre-approval exactly; see delivery log
 (List trimmed to the last 50 entries per the document spec; earlier changes — back to the 2026-10-05T21:23:32Z baseline — remain in the Paperclip issue history and in prior commits to this file.)
