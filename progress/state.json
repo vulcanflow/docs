@@ -1,5 +1,5 @@
 {
-  "lastRunAt": "2026-10-07T14:35:00Z",
+  "lastRunAt": "2026-10-07T15:39:05Z",
   "phases": {
     "p1_foundation": {
       "label": "1 Foundation",
@@ -285,7 +285,9 @@
         "VFL-258",
         "VFL-261",
         "VFL-262",
-        "VFL-266"
+        "VFL-266",
+        "VFL-268",
+        "VFL-269"
       ]
     }
   },
@@ -417,14 +419,14 @@
       "project": "platform-foundation"
     },
     "VFL-16": {
-      "status": "in_review",
+      "status": "blocked",
       "completedAt": null,
       "title": "G1. `vf-graph` validator, schema and WASM export",
       "assignee": "Arbiter",
       "project": "graph-and-execution-contracts"
     },
     "VFL-171": {
-      "status": "in_progress",
+      "status": "blocked",
       "completedAt": null,
       "title": "F2a acceptance: run `dev-up` (120 s, clean machine) and `db-template` determinism on a container runtime (VFL-162)",
       "assignee": "Test Runner",
@@ -452,7 +454,7 @@
       "project": "platform-foundation"
     },
     "VFL-149": {
-      "status": "in_progress",
+      "status": "blocked",
       "completedAt": null,
       "title": "Bootstrap just, cargo-deny and cargo-audit so just check runs on the runners",
       "assignee": "Jorge",
@@ -466,7 +468,7 @@
       "project": "core-libraries"
     },
     "VFL-263": {
-      "status": "in_progress",
+      "status": "blocked",
       "completedAt": null,
       "title": "Test Runner: required runs on C1 pair 2444217 + T1a b59f98f (VFL-240)",
       "assignee": "Test Runner",
@@ -487,8 +489,8 @@
       "project": "platform-foundation"
     },
     "VFL-265": {
-      "status": "in_progress",
-      "completedAt": null,
+      "status": "done",
+      "completedAt": "2026-10-07T14:36:42.961Z",
       "title": "Opus Reviewer: review C1 vf-core pair 2444217 + T1a b59f98f (VFL-240)",
       "assignee": "Opus Reviewer",
       "project": "core-libraries"
@@ -1054,7 +1056,7 @@
       "project": "progress-and-docs"
     },
     "VFL-154": {
-      "status": "in_progress",
+      "status": "blocked",
       "completedAt": null,
       "title": "Run the required tests on 8ec435d: cross toolchain bootstrap (VFL-151)",
       "assignee": "Test Runner",
@@ -1404,8 +1406,8 @@
       "project": "platform-foundation"
     },
     "VFL-106": {
-      "status": "in_progress",
-      "completedAt": null,
+      "status": "done",
+      "completedAt": "2026-10-07T14:39:40.321Z",
       "title": "CodeRabbit review: SHA-pin the GitHub Actions + rust-check header (e5eaac0)",
       "assignee": "Arbiter",
       "project": "platform-foundation"
@@ -1579,7 +1581,7 @@
       "project": "platform-foundation"
     },
     "VFL-92": {
-      "status": "blocked",
+      "status": "in_progress",
       "completedAt": null,
       "title": "T9 follow-up: fix LOW-T1 and LOW-T2 from the VFL-77 re-review",
       "assignee": "Halsey",
@@ -1738,6 +1740,20 @@
       "title": "W5. `vf-graph` WASM packaging and browser parity harness",
       "assignee": "Linda",
       "project": "web"
+    },
+    "VFL-269": {
+      "status": "in_progress",
+      "completedAt": null,
+      "title": "Test Runner: just check, just gate and installer checks on VFL-149 candidate e1d52f3",
+      "assignee": "Test Runner",
+      "project": "core-libraries"
+    },
+    "VFL-268": {
+      "status": "done",
+      "completedAt": "2026-10-07T14:54:09.888Z",
+      "title": "Opus Reviewer: review VFL-149 just/cargo-deny/cargo-audit bootstrap candidate e1d52f3",
+      "assignee": "Opus Reviewer",
+      "project": "core-libraries"
     }
   }
 }
