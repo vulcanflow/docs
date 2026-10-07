@@ -1,5 +1,5 @@
 {
-  "lastRunAt": "2026-10-07T20:09:04Z",
+  "lastRunAt": "2026-10-07T20:34:55Z",
   "phases": {
     "p1_foundation": {
       "label": "1 Foundation",
@@ -56,7 +56,8 @@
         "VFL-312",
         "VFL-314",
         "VFL-315",
-        "VFL-316"
+        "VFL-316",
+        "VFL-317"
       ]
     },
     "p2_libraries": {
@@ -322,7 +323,13 @@
         "VFL-302",
         "VFL-303",
         "VFL-305",
-        "VFL-306"
+        "VFL-306",
+        "VFL-321",
+        "VFL-322",
+        "VFL-323",
+        "VFL-318",
+        "VFL-319",
+        "VFL-320"
       ]
     }
   },
@@ -510,7 +517,7 @@
       "project": "core-libraries"
     },
     "VFL-13": {
-      "status": "in_progress",
+      "status": "blocked",
       "completedAt": null,
       "title": "F3. Infrastructure adapters: `ArtifactStore` and `WakeBus`",
       "assignee": "Jorge",
@@ -1196,7 +1203,7 @@
       "project": "platform-foundation"
     },
     "VFL-124": {
-      "status": "in_progress",
+      "status": "blocked",
       "completedAt": null,
       "title": "CI on Tekton (1/4): GitHub webhook to a Tekton EventListener at zozotk.go.ro",
       "assignee": "Jorge",
@@ -1546,7 +1553,7 @@
       "project": "core-libraries"
     },
     "VFL-194": {
-      "status": "blocked",
+      "status": "in_progress",
       "completedAt": null,
       "title": "F2d. `vf-testkit` residual LOWs from F2b review: control-migration `search_path`, fixture-name check, unused `vf-db` edge",
       "assignee": "Jorge",
@@ -1812,8 +1819,8 @@
       "project": "platform-foundation"
     },
     "VFL-277": {
-      "status": "in_progress",
-      "completedAt": null,
+      "status": "done",
+      "completedAt": "2026-10-07T20:10:00.729Z",
       "title": "Run the required tests on 8ec435d: cross toolchain bootstrap (VFL-151), continuation of VFL-154",
       "assignee": "Test Runner",
       "project": "core-libraries"
@@ -1952,14 +1959,14 @@
       "project": "platform-foundation"
     },
     "VFL-303": {
-      "status": "blocked",
+      "status": "in_progress",
       "completedAt": null,
       "title": "VFL-105: rebase PR #18 onto current main, then hand to Cortana for merge",
-      "assignee": "Halsey",
+      "assignee": "Cortana",
       "project": "platform-foundation"
     },
     "VFL-305": {
-      "status": "in_progress",
+      "status": "blocked",
       "completedAt": null,
       "title": "Toolchain: add pinned wasm-pack to bootstrap-toolchain.sh and env.sh so `just wasm-test` runs on the agent runners",
       "assignee": "Jorge",
@@ -1973,28 +1980,28 @@
       "project": "platform-foundation"
     },
     "VFL-307": {
-      "status": "in_progress",
-      "completedAt": null,
+      "status": "done",
+      "completedAt": "2026-10-07T20:30:29.983Z",
       "title": "CodeRabbit review: F2d vf-testkit LOWs candidate 5e6f9a3 (VFL-194)",
       "assignee": "Arbiter",
       "project": "platform-foundation"
     },
     "VFL-308": {
-      "status": "in_progress",
-      "completedAt": null,
+      "status": "done",
+      "completedAt": "2026-10-07T20:17:02.137Z",
       "title": "Opus Reviewer: review F2d vf-testkit LOWs candidate 5e6f9a3 (VFL-194)",
       "assignee": "Opus Reviewer",
       "project": "platform-foundation"
     },
     "VFL-309": {
-      "status": "in_progress",
-      "completedAt": null,
+      "status": "done",
+      "completedAt": "2026-10-07T20:11:19.570Z",
       "title": "Test Runner: required runs on F2d vf-testkit LOWs candidate 5e6f9a3 (VFL-194)",
       "assignee": "Test Runner",
       "project": "platform-foundation"
     },
     "VFL-310": {
-      "status": "backlog",
+      "status": "blocked",
       "completedAt": null,
       "title": "F3a. Port contracts: `ArtifactStore` and `WakeBus` in `vf-core::ports`",
       "assignee": "Jorge",
@@ -2022,8 +2029,8 @@
       "project": "platform-foundation"
     },
     "VFL-315": {
-      "status": "in_progress",
-      "completedAt": null,
+      "status": "done",
+      "completedAt": "2026-10-07T20:16:11.557Z",
       "title": "CodeRabbit review: F3a port contracts candidate f9af174 (VFL-310)",
       "assignee": "Arbiter",
       "project": "platform-foundation"
@@ -2033,6 +2040,55 @@
       "completedAt": null,
       "title": "Opus Reviewer: review F3a port contracts candidate f9af174 (VFL-310)",
       "assignee": "Opus Reviewer",
+      "project": "platform-foundation"
+    },
+    "VFL-322": {
+      "status": "in_progress",
+      "completedAt": null,
+      "title": "Opus Reviewer: review VFL-305 wasm-pack toolchain candidate 7a67175",
+      "assignee": "Opus Reviewer",
+      "project": "platform-foundation"
+    },
+    "VFL-321": {
+      "status": "in_progress",
+      "completedAt": null,
+      "title": "CodeRabbit review: VFL-305 wasm-pack toolchain candidate 7a67175",
+      "assignee": "Arbiter",
+      "project": "platform-foundation"
+    },
+    "VFL-323": {
+      "status": "in_progress",
+      "completedAt": null,
+      "title": "Test Runner: required runs on VFL-305 wasm-pack toolchain candidate 7a67175",
+      "assignee": "Test Runner",
+      "project": "platform-foundation"
+    },
+    "VFL-317": {
+      "status": "blocked",
+      "completedAt": null,
+      "title": "Test Runner: required runs on F3a port contracts f9af174 + T4 slice VFL-314 (VFL-310)",
+      "assignee": "Test Runner",
+      "project": "platform-foundation"
+    },
+    "VFL-318": {
+      "status": "in_progress",
+      "completedAt": null,
+      "title": "CodeRabbit review: VFL-124 Tekton webhook manifests, round 2 (42cad0b)",
+      "assignee": "Arbiter",
+      "project": "platform-foundation"
+    },
+    "VFL-319": {
+      "status": "done",
+      "completedAt": "2026-10-07T20:16:05.080Z",
+      "title": "Opus Reviewer: review VFL-124 Tekton webhook manifests, round 2 (42cad0b)",
+      "assignee": "Opus Reviewer",
+      "project": "platform-foundation"
+    },
+    "VFL-320": {
+      "status": "done",
+      "completedAt": "2026-10-07T20:10:23.534Z",
+      "title": "Test Runner: lane gate and manifest checks on VFL-124 candidate 42cad0b",
+      "assignee": "Test Runner",
       "project": "platform-foundation"
     }
   }
