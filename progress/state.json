@@ -1,5 +1,5 @@
 {
-  "lastRunAt": "2026-10-07T12:34:00Z",
+  "lastRunAt": "2026-10-07T13:49:26Z",
   "phases": {
     "p1_foundation": {
       "label": "1 Foundation",
@@ -39,7 +39,8 @@
         "VFL-196",
         "VFL-197",
         "VFL-250",
-        "VFL-251"
+        "VFL-251",
+        "VFL-260"
       ]
     },
     "p2_libraries": {
@@ -272,7 +273,12 @@
         "VFL-228",
         "VFL-230",
         "VFL-238",
-        "VFL-249"
+        "VFL-249",
+        "VFL-254",
+        "VFL-255",
+        "VFL-256",
+        "VFL-257",
+        "VFL-258"
       ]
     }
   },
@@ -404,14 +410,14 @@
       "project": "platform-foundation"
     },
     "VFL-149": {
-      "status": "blocked",
+      "status": "in_progress",
       "completedAt": null,
       "title": "Bootstrap just, cargo-deny and cargo-audit so just check runs on the runners",
       "assignee": "Jorge",
       "project": "core-libraries"
     },
     "VFL-183": {
-      "status": "blocked",
+      "status": "in_progress",
       "completedAt": null,
       "title": "Test Runner: required runs on F2b vf-testkit candidate 2a2d1a7 (VFL-163)",
       "assignee": "Test Runner",
@@ -670,7 +676,7 @@
       "project": "platform-foundation"
     },
     "VFL-13": {
-      "status": "blocked",
+      "status": "in_progress",
       "completedAt": null,
       "title": "F3. Infrastructure adapters: `ArtifactStore` and `WakeBus`",
       "assignee": "Jorge",
@@ -698,10 +704,10 @@
       "project": "test-packs"
     },
     "VFL-16": {
-      "status": "in_progress",
+      "status": "in_review",
       "completedAt": null,
       "title": "G1. `vf-graph` validator, schema and WASM export",
-      "assignee": "Kelly",
+      "assignee": "Cortana",
       "project": "graph-and-execution-contracts"
     },
     "VFL-42": {
@@ -1013,7 +1019,7 @@
       "project": "core-libraries"
     },
     "VFL-153": {
-      "status": "blocked",
+      "status": "in_progress",
       "completedAt": null,
       "title": "Independent review of 8ec435d: cross compiler in the bootstrapped toolchain (VFL-151)",
       "assignee": "Opus Reviewer",
@@ -1272,7 +1278,7 @@
       "project": "unknown"
     },
     "VFL-186": {
-      "status": "blocked",
+      "status": "in_progress",
       "completedAt": null,
       "title": "resolve-debs.py: count resolved virtual providers, verify InRelease digests, retry fetches",
       "assignee": "Jorge",
@@ -1629,11 +1635,53 @@
       "project": "platform-foundation"
     },
     "VFL-251": {
-      "status": "blocked",
-      "completedAt": null,
+      "status": "done",
+      "completedAt": "2026-10-07T13:22:48.154Z",
       "title": "Push approval: VFL-162 F2a dev harness at c61af84",
       "assignee": "Cortana",
       "project": "platform-foundation"
+    },
+    "VFL-260": {
+      "status": "in_progress",
+      "completedAt": null,
+      "title": "Merge PR #15: VFL-162 F2a dev harness at c61af84",
+      "assignee": "Cortana",
+      "project": "platform-foundation"
+    },
+    "VFL-255": {
+      "status": "done",
+      "completedAt": "2026-10-07T13:23:28.719Z",
+      "title": "Board watch: task-bound run to post 12 pending nudges and re-arm the VFL-84 monitor",
+      "assignee": "MasterChief",
+      "project": "progress-and-docs"
+    },
+    "VFL-254": {
+      "status": "done",
+      "completedAt": "2026-10-07T13:19:12.335Z",
+      "title": "Platform: free disk on /paperclip (94% used, ENOSPC risk)",
+      "assignee": "Jorge",
+      "project": "core-libraries"
+    },
+    "VFL-257": {
+      "status": "done",
+      "completedAt": "2026-10-07T13:40:12.423Z",
+      "title": "Opus Reviewer: review VFL-186 resolve-debs candidate 9c7408c",
+      "assignee": "Opus Reviewer",
+      "project": "core-libraries"
+    },
+    "VFL-256": {
+      "status": "done",
+      "completedAt": "2026-10-07T13:31:50.361Z",
+      "title": "CodeRabbit review: VFL-186 resolve-debs candidate 9c7408c",
+      "assignee": "Arbiter",
+      "project": "core-libraries"
+    },
+    "VFL-258": {
+      "status": "done",
+      "completedAt": "2026-10-07T13:22:34.153Z",
+      "title": "Test Runner: VFL-186 resolve-debs candidate 9c7408c (py_compile, AC4 lock, keyring negatives)",
+      "assignee": "Test Runner",
+      "project": "core-libraries"
     }
   }
 }
