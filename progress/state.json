@@ -1,5 +1,5 @@
 {
-  "lastRunAt": "2026-10-07T16:05:18Z",
+  "lastRunAt": "2026-10-07T17:06:04Z",
   "phases": {
     "p1_foundation": {
       "label": "1 Foundation",
@@ -40,7 +40,8 @@
         "VFL-197",
         "VFL-250",
         "VFL-251",
-        "VFL-260"
+        "VFL-260",
+        "VFL-276"
       ]
     },
     "p2_libraries": {
@@ -289,7 +290,9 @@
         "VFL-268",
         "VFL-269",
         "VFL-272",
-        "VFL-273"
+        "VFL-273",
+        "VFL-277",
+        "VFL-278"
       ]
     }
   },
@@ -680,7 +683,7 @@
       "project": "platform-foundation"
     },
     "VFL-163": {
-      "status": "in_progress",
+      "status": "blocked",
       "completedAt": null,
       "title": "F2b. `vf-testkit`: TestDb, fixtures, clock, ids, token, entitlements",
       "assignee": "Jorge",
@@ -1058,7 +1061,7 @@
       "project": "progress-and-docs"
     },
     "VFL-154": {
-      "status": "in_progress",
+      "status": "cancelled",
       "completedAt": null,
       "title": "Run the required tests on 8ec435d: cross toolchain bootstrap (VFL-151)",
       "assignee": "Test Runner",
@@ -1770,6 +1773,27 @@
       "title": "Merge PR #16: VFL-186 resolve-debs at d148a05",
       "assignee": "Cortana",
       "project": "core-libraries"
+    },
+    "VFL-276": {
+      "status": "in_progress",
+      "completedAt": null,
+      "title": "Push approval: VFL-163 F2b vf-testkit at d9bf212 (rebase of reviewed 2a2d1a7)",
+      "assignee": "Cortana",
+      "project": "platform-foundation"
+    },
+    "VFL-277": {
+      "status": "in_progress",
+      "completedAt": null,
+      "title": "Run the required tests on 8ec435d: cross toolchain bootstrap (VFL-151), continuation of VFL-154",
+      "assignee": "Test Runner",
+      "project": "core-libraries"
+    },
+    "VFL-278": {
+      "status": "done",
+      "completedAt": "2026-10-07T17:00:10.153Z",
+      "title": "Board watch pass 16:46 UTC: post nudges and re-arm the VFL-272 monitor (task-bound run)",
+      "assignee": "MasterChief",
+      "project": null
     }
   }
 }
