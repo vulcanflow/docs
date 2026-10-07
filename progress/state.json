@@ -1,5 +1,5 @@
 {
-  "lastRunAt": "2026-10-07T09:05:07Z",
+  "lastRunAt": "2026-10-07T09:34:00Z",
   "phases": {
     "p1_foundation": {
       "label": "1 Foundation",
@@ -477,8 +477,8 @@
       "project": "core-libraries"
     },
     "VFL-238": {
-      "status": "in_progress",
-      "completedAt": null,
+      "status": "done",
+      "completedAt": "2026-10-07T09:04:11.714Z",
       "title": "VFL-200 cont.: fuzz run evidence, canonical_host/scope_match @ 12801bf (clean pass)",
       "assignee": "Test Runner",
       "project": "core-libraries"
@@ -974,8 +974,8 @@
       "project": "core-libraries"
     },
     "VFL-200": {
-      "status": "blocked",
-      "completedAt": null,
+      "status": "done",
+      "completedAt": "2026-10-07T09:05:06.815Z",
       "title": "Test Runner: fuzz targets canonical_host/scope_match, candidate c39241c (VFL-145)",
       "assignee": "Test Runner",
       "project": "core-libraries"
