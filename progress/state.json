@@ -1,5 +1,5 @@
 {
-  "lastRunAt": "2026-10-07T15:39:05Z",
+  "lastRunAt": "2026-10-07T16:05:18Z",
   "phases": {
     "p1_foundation": {
       "label": "1 Foundation",
@@ -287,7 +287,9 @@
         "VFL-262",
         "VFL-266",
         "VFL-268",
-        "VFL-269"
+        "VFL-269",
+        "VFL-272",
+        "VFL-273"
       ]
     }
   },
@@ -419,7 +421,7 @@
       "project": "platform-foundation"
     },
     "VFL-16": {
-      "status": "blocked",
+      "status": "in_review",
       "completedAt": null,
       "title": "G1. `vf-graph` validator, schema and WASM export",
       "assignee": "Arbiter",
@@ -447,14 +449,14 @@
       "project": "graph-and-execution-contracts"
     },
     "VFL-183": {
-      "status": "blocked",
-      "completedAt": null,
+      "status": "done",
+      "completedAt": "2026-10-07T16:01:14.717Z",
       "title": "Test Runner: required runs on F2b vf-testkit candidate 2a2d1a7 (VFL-163)",
       "assignee": "Test Runner",
       "project": "platform-foundation"
     },
     "VFL-149": {
-      "status": "blocked",
+      "status": "todo",
       "completedAt": null,
       "title": "Bootstrap just, cargo-deny and cargo-audit so just check runs on the runners",
       "assignee": "Jorge",
@@ -468,7 +470,7 @@
       "project": "core-libraries"
     },
     "VFL-263": {
-      "status": "blocked",
+      "status": "todo",
       "completedAt": null,
       "title": "Test Runner: required runs on C1 pair 2444217 + T1a b59f98f (VFL-240)",
       "assignee": "Test Runner",
@@ -678,7 +680,7 @@
       "project": "platform-foundation"
     },
     "VFL-163": {
-      "status": "blocked",
+      "status": "in_progress",
       "completedAt": null,
       "title": "F2b. `vf-testkit`: TestDb, fixtures, clock, ids, token, entitlements",
       "assignee": "Jorge",
@@ -1049,14 +1051,14 @@
       "project": "graph-and-execution-contracts"
     },
     "VFL-84": {
-      "status": "in_progress",
-      "completedAt": null,
+      "status": "done",
+      "completedAt": "2026-10-07T15:42:55.652Z",
       "title": "Board watch (continuation 1): find stuck tasks and nudge owners",
       "assignee": "MasterChief",
       "project": "progress-and-docs"
     },
     "VFL-154": {
-      "status": "blocked",
+      "status": "in_progress",
       "completedAt": null,
       "title": "Run the required tests on 8ec435d: cross toolchain bootstrap (VFL-151)",
       "assignee": "Test Runner",
@@ -1581,7 +1583,7 @@
       "project": "platform-foundation"
     },
     "VFL-92": {
-      "status": "in_progress",
+      "status": "blocked",
       "completedAt": null,
       "title": "T9 follow-up: fix LOW-T1 and LOW-T2 from the VFL-77 re-review",
       "assignee": "Halsey",
@@ -1753,6 +1755,20 @@
       "completedAt": "2026-10-07T14:54:09.888Z",
       "title": "Opus Reviewer: review VFL-149 just/cargo-deny/cargo-audit bootstrap candidate e1d52f3",
       "assignee": "Opus Reviewer",
+      "project": "core-libraries"
+    },
+    "VFL-272": {
+      "status": "in_progress",
+      "completedAt": null,
+      "title": "Board watch (continuation 2): find stuck tasks and nudge owners",
+      "assignee": "MasterChief",
+      "project": "progress-and-docs"
+    },
+    "VFL-273": {
+      "status": "in_progress",
+      "completedAt": null,
+      "title": "Merge PR #16: VFL-186 resolve-debs at d148a05",
+      "assignee": "Cortana",
       "project": "core-libraries"
     }
   }
