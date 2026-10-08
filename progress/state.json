@@ -1,5 +1,5 @@
 {
-  "lastRunAt": "2026-10-08T14:40:05Z",
+  "lastRunAt": "2026-10-08T15:04:38Z",
   "phases": {
     "p1_foundation": {
       "label": "1 Foundation",
@@ -457,7 +457,14 @@
         "VFL-474",
         "VFL-475",
         "VFL-476",
-        "VFL-482"
+        "VFL-482",
+        "VFL-484",
+        "VFL-485",
+        "VFL-486",
+        "VFL-487",
+        "VFL-488",
+        "VFL-489",
+        "VFL-490"
       ]
     }
   },
@@ -584,7 +591,7 @@
     "VFL-52": {
       "status": "done",
       "completedAt": "2026-10-05T21:35:57.245Z",
-      "title": "F1 scaffold complete at d61b43f \u2014 carries the VFL-9 report (my run cannot write to VFL-9), two decisions for Cortana",
+      "title": "F1 scaffold complete at d61b43f — carries the VFL-9 report (my run cannot write to VFL-9), two decisions for Cortana",
       "assignee": "a9be75cd-d767-4c44-b49c-2017c61f751f",
       "project": "91740a68-0dd1-47b4-935f-9ab08f4c5669"
     },
@@ -612,7 +619,7 @@
     "VFL-415": {
       "status": "done",
       "completedAt": "2026-10-08T10:07:14.686Z",
-      "title": "Push approval: C2 vf-core::scope \u2014 reviewed fbf6342, or re-parented 5d6eac2 (VFL-15)",
+      "title": "Push approval: C2 vf-core::scope — reviewed fbf6342, or re-parented 5d6eac2 (VFL-15)",
       "assignee": "a9be75cd-d767-4c44-b49c-2017c61f751f",
       "project": "1e4d751c-3ada-47c7-aabe-e8cb40bc897e"
     },
@@ -815,7 +822,7 @@
     "VFL-383": {
       "status": "done",
       "completedAt": "2026-10-08T06:32:17.009Z",
-      "title": "Re-parent the reviewed scope fuzz harness (12801bf) onto the test lane \u2014 it currently fails the lane gate",
+      "title": "Re-parent the reviewed scope fuzz harness (12801bf) onto the test lane — it currently fails the lane gate",
       "assignee": "6029b86f-ff5b-492b-9f97-ed31363be784",
       "project": "1e4d751c-3ada-47c7-aabe-e8cb40bc897e"
     },
@@ -1263,7 +1270,7 @@
     "VFL-235": {
       "status": "done",
       "completedAt": "2026-10-07T08:22:58.380Z",
-      "title": "Ruling: \u00a715.1 vs \u00a7A3.8 observation edges for C1 (VFL-233 MEDIUM-1)",
+      "title": "Ruling: §15.1 vs §A3.8 observation edges for C1 (VFL-233 MEDIUM-1)",
       "assignee": "a9be75cd-d767-4c44-b49c-2017c61f751f",
       "project": "1e4d751c-3ada-47c7-aabe-e8cb40bc897e"
     },
@@ -1305,7 +1312,7 @@
     "VFL-208": {
       "status": "done",
       "completedAt": "2026-10-07T07:29:16.097Z",
-      "title": "Clear VFL-14 \u2192 VFL-112 blocker deadlock so T1a can start on C1 candidate 18258f0",
+      "title": "Clear VFL-14 → VFL-112 blocker deadlock so T1a can start on C1 candidate 18258f0",
       "assignee": "6029b86f-ff5b-492b-9f97-ed31363be784",
       "project": "1e4d751c-3ada-47c7-aabe-e8cb40bc897e"
     },
@@ -1410,7 +1417,7 @@
     "VFL-173": {
       "status": "done",
       "completedAt": "2026-10-06T21:33:38.233Z",
-      "title": "\u00a7A5 ruling: RUSTSEC-2023-0071 (`rsa` via jsonwebtoken `rust_crypto`): exception or alternative",
+      "title": "§A5 ruling: RUSTSEC-2023-0071 (`rsa` via jsonwebtoken `rust_crypto`): exception or alternative",
       "assignee": "a9be75cd-d767-4c44-b49c-2017c61f751f",
       "project": "91740a68-0dd1-47b4-935f-9ab08f4c5669"
     },
@@ -1480,7 +1487,7 @@
     "VFL-113": {
       "status": "blocked",
       "completedAt": null,
-      "title": "T1b test pack: vf-meter accounting \u2014 reserve/settle/release, admission, ledger (covers C4)",
+      "title": "T1b test pack: vf-meter accounting — reserve/settle/release, admission, ledger (covers C4)",
       "assignee": "6029b86f-ff5b-492b-9f97-ed31363be784",
       "project": "bec0abaa-6ade-4267-826e-05903dab3dff"
     },
@@ -1704,7 +1711,7 @@
     "VFL-410": {
       "status": "blocked",
       "completedAt": null,
-      "title": "F2f. graph-rules: vf-testkit may only be a dev-dependency (\u00a7A1.4, LOW-17)",
+      "title": "F2f. graph-rules: vf-testkit may only be a dev-dependency (§A1.4, LOW-17)",
       "assignee": "912014ba-380a-46cd-baa6-306e9343a2c2",
       "project": "91740a68-0dd1-47b4-935f-9ab08f4c5669"
     },
@@ -1760,7 +1767,7 @@
     "VFL-407": {
       "status": "done",
       "completedAt": "2026-10-08T09:46:24.969Z",
-      "title": "Architect: C1 residual dispositions and \u00a7A3 records (from VFL-240 gate-record)",
+      "title": "Architect: C1 residual dispositions and §A3 records (from VFL-240 gate-record)",
       "assignee": "a9be75cd-d767-4c44-b49c-2017c61f751f",
       "project": "1e4d751c-3ada-47c7-aabe-e8cb40bc897e"
     },
@@ -1956,7 +1963,7 @@
     "VFL-291": {
       "status": "done",
       "completedAt": "2026-10-07T18:40:28.765Z",
-      "title": "Architecture: bound the \u00a7A5 validation error list (truncation marker) \u2014 follow-up from G1 D6",
+      "title": "Architecture: bound the §A5 validation error list (truncation marker) — follow-up from G1 D6",
       "assignee": "a9be75cd-d767-4c44-b49c-2017c61f751f",
       "project": "44554fc9-52e4-4b16-814c-16d5d5e51c57"
     },
@@ -2005,7 +2012,7 @@
     "VFL-228": {
       "status": "done",
       "completedAt": "2026-10-07T07:45:58.022Z",
-      "title": "Cortana ruling: LSan-ptrace exit-1 (zero panics) \u2014 does it satisfy VFL-200's fuzz acceptance criterion?",
+      "title": "Cortana ruling: LSan-ptrace exit-1 (zero panics) — does it satisfy VFL-200's fuzz acceptance criterion?",
       "assignee": "a9be75cd-d767-4c44-b49c-2017c61f751f",
       "project": "1e4d751c-3ada-47c7-aabe-e8cb40bc897e"
     },
@@ -2068,7 +2075,7 @@
     "VFL-78": {
       "status": "done",
       "completedAt": "2026-10-06T10:33:26.997Z",
-      "title": "Architect ruling: \u00a7A5 revision 4 TLS sentence vs the reqwest rustls-no-provider row",
+      "title": "Architect ruling: §A5 revision 4 TLS sentence vs the reqwest rustls-no-provider row",
       "assignee": "a9be75cd-d767-4c44-b49c-2017c61f751f",
       "project": "91740a68-0dd1-47b4-935f-9ab08f4c5669"
     },
@@ -2255,7 +2262,7 @@
       "project": null
     },
     "VFL-411": {
-      "status": "in_progress",
+      "status": "in_review",
       "completedAt": null,
       "title": "F2g. vf-testkit rustdoc clean under -D warnings; just doc in just check (INFO-3)",
       "assignee": "912014ba-380a-46cd-baa6-306e9343a2c2",
@@ -2306,7 +2313,7 @@
     "VFL-361": {
       "status": "in_progress",
       "completedAt": null,
-      "title": "Test Runner: VFL-185 candidate cccd3c1 \u2014 Part A2, workspace build + test (heaviest step)",
+      "title": "Test Runner: VFL-185 candidate cccd3c1 — Part A2, workspace build + test (heaviest step)",
       "assignee": "d0a26468-a577-4f16-a29c-de0b53af3983",
       "project": "1e4d751c-3ada-47c7-aabe-e8cb40bc897e"
     },
@@ -2327,21 +2334,21 @@
     "VFL-362": {
       "status": "blocked",
       "completedAt": null,
-      "title": "Test Runner: VFL-185 candidate cccd3c1 \u2014 Part A3, wasm build + just checks",
+      "title": "Test Runner: VFL-185 candidate cccd3c1 — Part A3, wasm build + just checks",
       "assignee": "d0a26468-a577-4f16-a29c-de0b53af3983",
       "project": "1e4d751c-3ada-47c7-aabe-e8cb40bc897e"
     },
     "VFL-363": {
       "status": "done",
       "completedAt": "2026-10-07T22:52:04.785Z",
-      "title": "Test Runner: VFL-185 candidate cccd3c1 \u2014 Parts B/C/D, fault-injection scenarios",
+      "title": "Test Runner: VFL-185 candidate cccd3c1 — Parts B/C/D, fault-injection scenarios",
       "assignee": "d0a26468-a577-4f16-a29c-de0b53af3983",
       "project": "1e4d751c-3ada-47c7-aabe-e8cb40bc897e"
     },
     "VFL-360": {
       "status": "done",
       "completedAt": "2026-10-07T22:44:30.120Z",
-      "title": "Test Runner: VFL-185 candidate cccd3c1 \u2014 Part A1, bootstrap AC4 idempotency (no build)",
+      "title": "Test Runner: VFL-185 candidate cccd3c1 — Part A1, bootstrap AC4 idempotency (no build)",
       "assignee": "d0a26468-a577-4f16-a29c-de0b53af3983",
       "project": "1e4d751c-3ada-47c7-aabe-e8cb40bc897e"
     },
@@ -2355,21 +2362,21 @@
     "VFL-82": {
       "status": "done",
       "completedAt": "2026-10-07T21:55:44.248Z",
-      "title": "README: cite \u00a7A5 revision 5, not revision 4",
+      "title": "README: cite §A5 revision 5, not revision 4",
       "assignee": "912014ba-380a-46cd-baa6-306e9343a2c2",
       "project": "91740a68-0dd1-47b4-935f-9ab08f4c5669"
     },
     "VFL-350": {
       "status": "done",
       "completedAt": "2026-10-07T21:51:16.114Z",
-      "title": "Merge PR #22: VFL-82 README \u00a7A5 revision 5 at 9bc3ea1",
+      "title": "Merge PR #22: VFL-82 README §A5 revision 5 at 9bc3ea1",
       "assignee": "a9be75cd-d767-4c44-b49c-2017c61f751f",
       "project": "91740a68-0dd1-47b4-935f-9ab08f4c5669"
     },
     "VFL-345": {
       "status": "done",
       "completedAt": "2026-10-07T21:39:05.063Z",
-      "title": "Push approval: VFL-82 README \u00a7A5 revision citation at 470c2a0",
+      "title": "Push approval: VFL-82 README §A5 revision citation at 470c2a0",
       "assignee": "a9be75cd-d767-4c44-b49c-2017c61f751f",
       "project": "91740a68-0dd1-47b4-935f-9ab08f4c5669"
     },
@@ -2593,7 +2600,7 @@
     "VFL-202": {
       "status": "done",
       "completedAt": "2026-10-06T22:56:06.613Z",
-      "title": "Cortana: rule on \u00a7A5 pin and deny/audit scope for the test-lane fuzz workspace (from VFL-199 F5)",
+      "title": "Cortana: rule on §A5 pin and deny/audit scope for the test-lane fuzz workspace (from VFL-199 F5)",
       "assignee": "a9be75cd-d767-4c44-b49c-2017c61f751f",
       "project": "1e4d751c-3ada-47c7-aabe-e8cb40bc897e"
     },
@@ -2607,14 +2614,14 @@
     "VFL-177": {
       "status": "backlog",
       "completedAt": null,
-      "title": "Decide: project-controlled image mirror for the \u00a7A5 compose pin set (MinIO digest first)",
+      "title": "Decide: project-controlled image mirror for the §A5 compose pin set (MinIO digest first)",
       "assignee": "ae2a6da1-327d-466e-8227-311999bca475",
       "project": "91740a68-0dd1-47b4-935f-9ab08f4c5669"
     },
     "VFL-176": {
       "status": "backlog",
       "completedAt": null,
-      "title": "\u00a7A5 follow-up: retire the RUSTSEC-2023-0071 (`rsa` Marvin) exception when a patched `rsa` ships",
+      "title": "§A5 follow-up: retire the RUSTSEC-2023-0071 (`rsa` Marvin) exception when a patched `rsa` ships",
       "assignee": "912014ba-380a-46cd-baa6-306e9343a2c2",
       "project": "91740a68-0dd1-47b4-935f-9ab08f4c5669"
     },
@@ -2635,7 +2642,7 @@
     "VFL-98": {
       "status": "done",
       "completedAt": "2026-10-06T11:40:01.593Z",
-      "title": "\u00a7A5 ruling: keep both cargo-deny advisories and cargo-audit in `just check`, or collapse to one",
+      "title": "§A5 ruling: keep both cargo-deny advisories and cargo-audit in `just check`, or collapse to one",
       "assignee": "a9be75cd-d767-4c44-b49c-2017c61f751f",
       "project": "91740a68-0dd1-47b4-935f-9ab08f4c5669"
     },
@@ -2698,7 +2705,7 @@
     "VFL-115": {
       "status": "done",
       "completedAt": "2026-10-06T14:01:07.885Z",
-      "title": "Opus Reviewer review: VFL-82 README \u00a7A5 revision citation (470c2a0)",
+      "title": "Opus Reviewer review: VFL-82 README §A5 revision citation (470c2a0)",
       "assignee": "938921ab-9ab9-469b-85ac-976d8cabad96",
       "project": "91740a68-0dd1-47b4-935f-9ab08f4c5669"
     },
@@ -2754,7 +2761,7 @@
     "VFL-114": {
       "status": "done",
       "completedAt": "2026-10-06T12:54:02.077Z",
-      "title": "Arbiter review: VFL-82 README \u00a7A5 revision citation (470c2a0)",
+      "title": "Arbiter review: VFL-82 README §A5 revision citation (470c2a0)",
       "assignee": "13034933-9579-4b3c-add9-b9426144d934",
       "project": "91740a68-0dd1-47b4-935f-9ab08f4c5669"
     },
@@ -2775,14 +2782,14 @@
     "VFL-81": {
       "status": "backlog",
       "completedAt": null,
-      "title": "T9 assertion: per-binary rustls `ring` provider (\u00a7A5 rev 5)",
+      "title": "T9 assertion: per-binary rustls `ring` provider (§A5 rev 5)",
       "assignee": "6029b86f-ff5b-492b-9f97-ed31363be784",
       "project": "91740a68-0dd1-47b4-935f-9ab08f4c5669"
     },
     "VFL-80": {
       "status": "backlog",
       "completedAt": null,
-      "title": "graph-rules rule 3: every TLS-initiating binary resolves rustls `ring` on its own (\u00a7A5 rev 5)",
+      "title": "graph-rules rule 3: every TLS-initiating binary resolves rustls `ring` on its own (§A5 rev 5)",
       "assignee": "912014ba-380a-46cd-baa6-306e9343a2c2",
       "project": "91740a68-0dd1-47b4-935f-9ab08f4c5669"
     },
@@ -2810,7 +2817,7 @@
     "VFL-431": {
       "status": "done",
       "completedAt": "2026-10-08T09:57:52.398Z",
-      "title": "Test Runner: re-record C2 at 5d6eac2 + T2 a0cbdf1 \u2014 pack 66/66, clippy, deny, audit (VFL-15)",
+      "title": "Test Runner: re-record C2 at 5d6eac2 + T2 a0cbdf1 — pack 66/66, clippy, deny, audit (VFL-15)",
       "assignee": "d0a26468-a577-4f16-a29c-de0b53af3983",
       "project": "1e4d751c-3ada-47c7-aabe-e8cb40bc897e"
     },
@@ -2978,7 +2985,7 @@
     "VFL-458": {
       "status": "done",
       "completedAt": "2026-10-08T11:22:05.407Z",
-      "title": "Halsey run has no GitHub identity (github_identity_unavailable) \u2014 blocks VFL-456 rebase/push of PR #18",
+      "title": "Halsey run has no GitHub identity (github_identity_unavailable) — blocks VFL-456 rebase/push of PR #18",
       "assignee": "ae2a6da1-327d-466e-8227-311999bca475",
       "project": "91740a68-0dd1-47b4-935f-9ab08f4c5669"
     },
@@ -3109,10 +3116,59 @@
       "project": "91740a68-0dd1-47b4-935f-9ab08f4c5669"
     },
     "VFL-482": {
-      "status": "in_progress",
-      "completedAt": null,
+      "status": "done",
+      "completedAt": "2026-10-08T14:34:41.108Z",
       "title": "Test Writer: lane-gate fixtures for the pins split-key refusal on c74e16e (VFL-122 review M3)",
       "assignee": "6029b86f-ff5b-492b-9f97-ed31363be784",
+      "project": "91740a68-0dd1-47b4-935f-9ab08f4c5669"
+    },
+    "VFL-485": {
+      "status": "done",
+      "completedAt": "2026-10-08T14:48:09.552Z",
+      "title": "Decide: three open questions on the VFL-122 pins check (CI wiring, container images, bounding the refusal list)",
+      "assignee": "a9be75cd-d767-4c44-b49c-2017c61f751f",
+      "project": "91740a68-0dd1-47b4-935f-9ab08f4c5669"
+    },
+    "VFL-486": {
+      "status": "done",
+      "completedAt": "2026-10-08T14:46:24.770Z",
+      "title": "CodeRabbit review round 4: lane-gate `pins` check + README update path (648cc0f, VFL-122)",
+      "assignee": "13034933-9579-4b3c-add9-b9426144d934",
+      "project": "91740a68-0dd1-47b4-935f-9ab08f4c5669"
+    },
+    "VFL-487": {
+      "status": "in_progress",
+      "completedAt": null,
+      "title": "Opus Reviewer review round 4: lane-gate `pins` check + README update path (648cc0f, VFL-122)",
+      "assignee": "938921ab-9ab9-469b-85ac-976d8cabad96",
+      "project": "91740a68-0dd1-47b4-935f-9ab08f4c5669"
+    },
+    "VFL-488": {
+      "status": "done",
+      "completedAt": "2026-10-08T14:46:23.200Z",
+      "title": "Test Runner: lane gate and lane-gate self-test on the pins candidate (648cc0f, VFL-122)",
+      "assignee": "d0a26468-a577-4f16-a29c-de0b53af3983",
+      "project": "91740a68-0dd1-47b4-935f-9ab08f4c5669"
+    },
+    "VFL-484": {
+      "status": "blocked",
+      "completedAt": null,
+      "title": "VFL-122 continuation: round-4 gate, push approval and PR for `648cc0f` (lane-gate pins check)",
+      "assignee": "912014ba-380a-46cd-baa6-306e9343a2c2",
+      "project": "91740a68-0dd1-47b4-935f-9ab08f4c5669"
+    },
+    "VFL-489": {
+      "status": "blocked",
+      "completedAt": null,
+      "title": "Wire `ci/lane-gate.sh pins` into lane-gate.yml and the Tekton pipeline as a fifth job (VFL-485 Q1)",
+      "assignee": "912014ba-380a-46cd-baa6-306e9343a2c2",
+      "project": "91740a68-0dd1-47b4-935f-9ab08f4c5669"
+    },
+    "VFL-490": {
+      "status": "blocked",
+      "completedAt": null,
+      "title": "Bound the `pins` refusal list: accept the canonical `uses:` form only (VFL-485 Q3)",
+      "assignee": "912014ba-380a-46cd-baa6-306e9343a2c2",
       "project": "91740a68-0dd1-47b4-935f-9ab08f4c5669"
     }
   }
