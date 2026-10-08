@@ -1,6 +1,6 @@
 # VulcanFlow progress
 
-Last updated: 2026-10-08T12:05:01Z by Guilty Spark. Source: Paperclip company vFlow.
+Last updated: 2026-10-08T12:35:26Z by Guilty Spark. Source: Paperclip company vFlow.
 
 ## Summary table
 
@@ -14,8 +14,8 @@ Last updated: 2026-10-08T12:05:01Z by Guilty Spark. Source: Paperclip company vF
 | 6 Web | web, test-packs (T8) | 0 | 0 | 5 | 1 | 6 |
 | Later (reporting, infra, ai-gateway) | reporting, infra, ai-gateway | 0 | 0 | 0 | 0 | 0 |
 | Setup and governance | Onboarding | 9 | 0 | 0 | 0 | 9 |
-| Unassigned to a phase[^1] | progress-and-docs (VFL-50, VFL-60, VFL-84, VFL-255, VFL-272, VFL-351, VFL-432), platform-foundation (VFL-52, VFL-58, VFL-61, VFL-70, VFL-73–103, VFL-105–111, VFL-114–116, VFL-119–143, VFL-160, VFL-173, VFL-175–177, except VFL-112–113/117–118 which moved into Phase 2, VFL-122, VFL-124–137, VFL-285, VFL-288, VFL-294–296, VFL-301–303, VFL-305–306, VFL-318–332, VFL-335, VFL-337, VFL-339–345, VFL-350, VFL-352–354, VFL-365, VFL-395, VFL-399, VFL-403, VFL-405, VFL-413–414, VFL-416–417, VFL-419, VFL-433, VFL-437, VFL-450–459, VFL-462–465), core-libraries (VFL-140, VFL-142, VFL-145–159, VFL-185–187, VFL-190–191, VFL-198–209, VFL-228, VFL-230, VFL-238, VFL-249, VFL-254, VFL-256–258, VFL-261–262, VFL-266, VFL-268–269, VFL-273, VFL-277, VFL-334, VFL-336, VFL-360–364, VFL-385, VFL-390–392, VFL-396–398), api (VFL-165), none (VFL-51, VFL-278) | 151 | 6 | 26 | 8 | 195 |
-| **Total**[^1] | | **263** | **12** | **75** | **13** | **367** |
+| Unassigned to a phase[^1] | progress-and-docs (VFL-50, VFL-60, VFL-84, VFL-255, VFL-272, VFL-351, VFL-432), platform-foundation (VFL-52, VFL-58, VFL-61, VFL-70, VFL-73–103, VFL-105–111, VFL-114–116, VFL-119–143, VFL-160, VFL-173, VFL-175–177, except VFL-112–113/117–118 which moved into Phase 2, VFL-122, VFL-124–137, VFL-285, VFL-288, VFL-294–296, VFL-301–303, VFL-305–306, VFL-318–332, VFL-335, VFL-337, VFL-339–345, VFL-350, VFL-352–354, VFL-365, VFL-395, VFL-399, VFL-403, VFL-405, VFL-413–414, VFL-416–417, VFL-419, VFL-433, VFL-437, VFL-450–459, VFL-462–465, VFL-467–469), core-libraries (VFL-140, VFL-142, VFL-145–159, VFL-185–187, VFL-190–191, VFL-198–209, VFL-228, VFL-230, VFL-238, VFL-249, VFL-254, VFL-256–258, VFL-261–262, VFL-266, VFL-268–269, VFL-273, VFL-277, VFL-334, VFL-336, VFL-360–364, VFL-385, VFL-390–392, VFL-396–398), api (VFL-165), none (VFL-51, VFL-278) | 155 | 5 | 26 | 8 | 198 |
+| **Total**[^1] | | **267** | **11** | **75** | **13** | **370** |
 
 [^1]: 4 cancelled tasks (VFL-51, VFL-134, VFL-136, VFL-154) are counted in Total only; they have no Done/In progress/Blocked/Planned bucket. Guilty Spark's own recurring "Progress tracker update" tasks (VFL-53, VFL-54, VFL-55, ...) are excluded entirely from this document per the skip-own-routine-tasks rule. The "In progress" column folds `in_progress` and `in_review` together (no separate in-review bucket in this table); the "Planned" column folds `todo` and `backlog` tasks together — both are queued/not-yet-started, just at different readiness states; see the Status mix pie for the literal per-status counts.
 
@@ -57,9 +57,9 @@ flowchart LR
 
 ```mermaid
 pie title Tasks by status
-  "done" : 263
+  "done" : 267
   "blocked" : 75
-  "in_progress" : 11
+  "in_progress" : 10
   "backlog" : 11
   "cancelled" : 4
   "todo" : 2
@@ -318,7 +318,7 @@ No tasks created yet.
 | VFL-97 | F1 CI fix: `just check` audit step fails on fresh runners (PR #11 rust-check red) | Jorge | done | 2026-10-06 | [VFL-97 comment, 2026-10-06T11:40:16Z](http://paperclip.paperclip.svc.cluster.local/VFL/issues/VFL-97) |
 | VFL-98 | §A5 ruling: keep both cargo-deny advisories and cargo-audit in `just check`, or collapse to one | Cortana | done | 2026-10-06 | [VFL-98 comment, 2026-10-06T11:40:01Z](http://paperclip.paperclip.svc.cluster.local/VFL/issues/VFL-98) |
 | VFL-99 | CI executor: reconcile the architecture text (Tekton) with the real gate executor (GitHub Actions) | Cortana | done | 2026-10-06 | [VFL-99 comment, 2026-10-06T13:56:50Z](http://paperclip.paperclip.svc.cluster.local/VFL/issues/VFL-99) |
-| VFL-101 | F1 follow-up: rust-check.yml header wording and advisory-db caching (VFL-96 LOW-9, LOW-10) | Cortana | in_progress | | [VFL-101 comment, 2026-10-08T11:35:00Z](http://paperclip.paperclip.svc.cluster.local/VFL/issues/VFL-101) |
+| VFL-101 | F1 follow-up: rust-check.yml header wording and advisory-db caching (VFL-96 LOW-9, LOW-10) | Cortana | done | 2026-10-08 | [VFL-101 comment, 2026-10-08T12:02:00Z](http://paperclip.paperclip.svc.cluster.local/VFL/issues/VFL-101#comment-984d3039-792f-4b56-af2b-1c1cf204d88a), [PR #27](https://github.com/vulcanflow/platform/pull/27), [merge-decision document](http://paperclip.paperclip.svc.cluster.local/VFL/issues/VFL-101#document-merge-decision) |
 | VFL-450 | CodeRabbit review: cache both advisory databases in rust-check (d1f6230, child of VFL-101) | Arbiter | done | 2026-10-08 | [VFL-450 comment, 2026-10-08T11:02:00Z](http://paperclip.paperclip.svc.cluster.local/VFL/issues/VFL-450) |
 | VFL-451 | Opus Reviewer review: cache both advisory databases in rust-check (d1f6230, child of VFL-101) | Opus Reviewer | done | 2026-10-08 | [VFL-451 comment, 2026-10-08T11:19:12Z](http://paperclip.paperclip.svc.cluster.local/VFL/issues/VFL-451#document-review-report), [review-report document](http://paperclip.paperclip.svc.cluster.local/VFL/issues/VFL-451#document-review-report) |
 | VFL-452 | Test Runner: T9, lane gate and just check for the advisory-cache candidate (d1f6230, child of VFL-101) | Test Runner | done | 2026-10-08 | [VFL-452 comment, 2026-10-08T11:28:20Z](http://paperclip.paperclip.svc.cluster.local/VFL/issues/VFL-452#document-vfl-452-test-report), [VFL-452 Test Report document](http://paperclip.paperclip.svc.cluster.local/VFL/issues/VFL-452#document-vfl-452-test-report) |
@@ -352,7 +352,10 @@ No tasks created yet.
 | VFL-455 | Opus Reviewer review: lane-gate `pins` check + README update path (78070d8, child of VFL-122) | Opus Reviewer | done | 2026-10-08 | [VFL-455 comment, 2026-10-08T11:19:23Z](http://paperclip.paperclip.svc.cluster.local/VFL/issues/VFL-455) |
 | VFL-457 | Test Runner: lane gate and lane-gate self-test on the pins candidate (78070d8, child of VFL-122) | Test Runner | done | 2026-10-08 | [VFL-457 comment, 2026-10-08T11:20:57Z](http://paperclip.paperclip.svc.cluster.local/VFL/issues/VFL-457#document-vfl-457-test-report), [VFL-457 test report document](http://paperclip.paperclip.svc.cluster.local/VFL/issues/VFL-457#document-vfl-457-test-report) |
 | VFL-462 | Test Writer: lane-gate regression fixtures for the multi-`uses:` pin bypass on e0be0ce (VFL-122 M1) | Halsey | done | 2026-10-08 | [VFL-462 comment, 2026-10-08T11:38:47Z](http://paperclip.paperclip.svc.cluster.local/VFL/issues/VFL-462) |
-| VFL-465 | Test Writer: lane-gate fixtures for the pins unreadable-YAML refusals on 1b91879 (VFL-122) | Halsey | in_progress | | [VFL-465](http://paperclip.paperclip.svc.cluster.local/VFL/issues/VFL-465) |
+| VFL-465 | Test Writer: lane-gate fixtures for the pins unreadable-YAML refusals on 1b91879 (VFL-122) | Halsey | done | 2026-10-08 | [VFL-465 comment, 2026-10-08T12:10:36Z](http://paperclip.paperclip.svc.cluster.local/VFL/issues/VFL-465) |
+| VFL-467 | CodeRabbit review round 2: lane-gate `pins` check + README update path (c977082, VFL-122) | Arbiter | done | 2026-10-08 | [VFL-467 comment, 2026-10-08T12:29:33Z](http://paperclip.paperclip.svc.cluster.local/VFL/issues/VFL-467), [findings-report document](http://paperclip.paperclip.svc.cluster.local/VFL/issues/VFL-467#document-findings-report) |
+| VFL-468 | Opus Reviewer review round 2: lane-gate `pins` check + README update path (c977082, VFL-122) | Opus Reviewer | in_progress | | [VFL-468](http://paperclip.paperclip.svc.cluster.local/VFL/issues/VFL-468) |
+| VFL-469 | Test Runner: lane gate and lane-gate self-test on the pins candidate (c977082, VFL-122) | Test Runner | done | 2026-10-08 | [VFL-469 comment, 2026-10-08T12:23:42Z](http://paperclip.paperclip.svc.cluster.local/VFL/issues/VFL-469#document-vfl-469-test-report), [VFL-469 test report document](http://paperclip.paperclip.svc.cluster.local/VFL/issues/VFL-469#document-vfl-469-test-report) |
 | VFL-464 | rust-check.yml: fold in residual LOWs from VFL-101 reviews (nullglob, fatal fallback, comment clause) | Jorge | backlog | | [VFL-464](http://paperclip.paperclip.svc.cluster.local/VFL/issues/VFL-464) |
 | VFL-124 | CI on Tekton (1/4): GitHub webhook to a Tekton EventListener at zozotk.go.ro | Jorge | blocked | | [VFL-124 comment, 2026-10-08T06:49:12Z](http://paperclip.paperclip.svc.cluster.local/VFL/issues/VFL-124), [cluster-inventory document](http://paperclip.paperclip.svc.cluster.local/VFL/issues/VFL-124#document-cluster-inventory) |
 | VFL-125 | CI on Tekton (2/4): pipeline definitions equivalent to lane-gate and rust-check | Jorge | blocked | | [VFL-125 comment, 2026-10-07T19:55:18Z](http://paperclip.paperclip.svc.cluster.local/VFL/issues/VFL-125) |
@@ -540,6 +543,22 @@ Update 2026-10-07 20:34 UTC: seven deliveries, eleven status changes, seven new 
 Update 2026-10-07 21:40 UTC: thirteen deliveries, eight status changes, twelve new tasks. The wasm-pack toolchain pin (VFL-305) cleared its gate cycle on re-candidate `6e9a76d`: CodeRabbit (VFL-329, done — PASS, 1 LOW), Opus Reviewer (VFL-330, done — PASS, both prior MEDIUMs confirmed fixed, 2 new LOWs) and Test Runner (VFL-331/VFL-335, done — steps 1–3 and the `wasm-test` node step all green) all passed, so Cortana approved the push as-is (VFL-337, done) and filed three residual-LOW follow-ups (VFL-342/343/344, all new, blocked). Jorge's push itself (VFL-340, new, in_progress) is waiting on a concurrent run holding this workspace's GitHub identity; the merge (VFL-341, new, blocked) waits on that push landing. On C1, the long-stuck Arbiter reviews finally ran: after a multi-cycle watchdog/reassignment saga (VFL-332, done; VFL-306, done), CodeRabbit passed both queued reviews — VFL-264 (C1 pair `2444217`+`b59f98f`, todo → done, 1 LOW) and VFL-198 (C2 scope fuzz, net unchanged — flickered done → todo again once Kelly moved the candidate to `12801bf` mid-run) — clearing VFL-240's gate cycle (`blocked` → `in_progress`) for Fred to request push approval next. Opus Reviewer separately re-verdicted VFL-209 PASS on that same new fuzz candidate `12801bf` (LOW 1 and 2 resolved). On VFL-82, Test Runner's full `just gate` passed (VFL-116, done) and Cortana approved the push (VFL-345, done). On VFL-149, Cortana declined the push as-is — code accepted but the PR needs a pure rebase onto current main before it can merge under branch protection (VFL-334, done) — and filed a LOW follow-up (VFL-336, new, blocked). On F3, Cortana's ruling on VFL-310's three open questions (VFL-339, done) resolved delete-is-silent and a new `get_stream` read, with the tenant-scope guard split out as a new F3d task (VFL-346, new, todo, joins the Phase 1 table).
 
 ## Delivery log
+
+### 2026-10-08 — VFL-101 F1 follow-up: rust-check.yml header wording and advisory-db caching (VFL-96 LOW-9, LOW-10)
+
+Cortana merged PR #27 (squash) to `main` as `2d1916c`, after re-verifying head `65df058` against `origin/main` = `2f662d2` and 7/7 required checks green (`lane-partition`, `test-erosion`, `inline-test-modules`, `gate-self-test`, `check (amd64)`, `check (arm64)`, `CodeRabbit`). Ruled the arm64 check's one re-run allowance was satisfied by a runner-image roll, not the candidate, so no further re-run was needed. Residual LOWs (1), (2), (4) were carried forward into [VFL-464](/VFL/issues/VFL-464). Evidence: [VFL-101 comment, 2026-10-08T12:02:00Z](http://paperclip.paperclip.svc.cluster.local/VFL/issues/VFL-101#comment-984d3039-792f-4b56-af2b-1c1cf204d88a), [merge-decision document](http://paperclip.paperclip.svc.cluster.local/VFL/issues/VFL-101#document-merge-decision), [PR #27](https://github.com/vulcanflow/platform/pull/27).
+
+### 2026-10-08 — VFL-465 Test Writer: lane-gate fixtures for the pins unreadable-YAML refusals on 1b91879 (VFL-122)
+
+Halsey committed fixtures as `ee62cb5` on branch `halsey/vfl-122-pins-unreadable-fixtures` (parent `1b91879`), touching only `ci/lane-gate-test.sh`. Added cases 49–56 covering all 8 required unreadable-YAML forms (lone CR after a comment, explicit block-scalar key, backslash-escaped double-quoted key, alias-as-key, UTF-16 workflow, symlinked workflow file, CRLF workflow with a commented decoy, and a `run:` block holding `*`/`?`/`:`), plus 11 discretionary cases. No existing case changed; not run or pushed, handed to Test Runner. Evidence: [VFL-465 comment, 2026-10-08T12:10:36Z](http://paperclip.paperclip.svc.cluster.local/VFL/issues/VFL-465).
+
+### 2026-10-08 — VFL-469 Test Runner: lane gate and lane-gate self-test on the pins candidate (c977082, VFL-122)
+
+Test Runner ran both required checks against candidate `c977082` (base `origin/main` = `2d1916c`, confirmed current): `ci/lane-gate.sh all` exit 0 (partition PASS 0/0/2/1, erosion PASS 17→17, inline-tests PASS, pins PASS with 7 `uses:` refs) and `ci/lane-gate-test.sh ci/lane-gate.sh` exit 0, 73 passed / 0 failed — both matching Jorge's expected values exactly. No test or production edits made. Evidence: [VFL-469 comment, 2026-10-08T12:23:42Z](http://paperclip.paperclip.svc.cluster.local/VFL/issues/VFL-469#document-vfl-469-test-report), [VFL-469 test report document](http://paperclip.paperclip.svc.cluster.local/VFL/issues/VFL-469#document-vfl-469-test-report).
+
+### 2026-10-08 — VFL-467 CodeRabbit review round 2: lane-gate `pins` check + README update path (c977082, VFL-122)
+
+Arbiter's round-2 CodeRabbit CLI review of candidate `c977082` completed with auth confirmed (vulcanflow org), running against the correct base/head: 0 findings across the three in-scope files. Verdict: accept. Round 1 ([VFL-454](/VFL/issues/VFL-454), on `78070d8`) had found one HIGH, since fixed. Evidence: [VFL-467 comment, 2026-10-08T12:29:33Z](http://paperclip.paperclip.svc.cluster.local/VFL/issues/VFL-467), [findings-report document](http://paperclip.paperclip.svc.cluster.local/VFL/issues/VFL-467#document-findings-report).
 
 ### 2026-10-08 — VFL-462 Test Writer: lane-gate regression fixtures for the multi-`uses:` pin bypass on e0be0ce (VFL-122 M1)
 
@@ -1459,6 +1478,11 @@ Opened [PR #53](https://github.com/vulcanflow/docs/pull/53) with `VulcanFlow_Dev
 
 ## Status changes
 
+- 2026-10-08T12:29:33Z VFL-467 (new) -> done — "CodeRabbit review round 2: lane-gate `pins` check + README update path (c977082)", Arbiter, project platform-foundation, not in the phase mapping (held under Unassigned) — child of VFL-122; see delivery log
+- 2026-10-08T12:23:46Z VFL-469 (new) -> done — "Test Runner: lane gate and lane-gate self-test on the pins candidate (c977082)", Test Runner, project platform-foundation, not in the phase mapping (held under Unassigned) — child of VFL-122; see delivery log
+- 2026-10-08T12:18:15Z VFL-468 (new) -> in_progress — "Opus Reviewer review round 2: lane-gate `pins` check + README update path (c977082)", Opus Reviewer, project platform-foundation, not in the phase mapping (held under Unassigned) — child of VFL-122, review in progress
+- 2026-10-08T12:10:36Z VFL-465 in_progress -> done — "Test Writer: lane-gate fixtures for the pins unreadable-YAML refusals on 1b91879", Halsey, project platform-foundation, not in the phase mapping (held under Unassigned) — see delivery log
+- 2026-10-08T12:02:00Z VFL-101 in_progress -> done — "F1 follow-up: rust-check.yml header wording and advisory-db caching (VFL-96 LOW-9, LOW-10)", Cortana, project platform-foundation, not in the phase mapping (held under Unassigned) — PR #27 merged; see delivery log
 - 2026-10-08T11:59:00Z VFL-122 in_progress -> blocked — "CI: enforce the 40-hex `uses:` pin rule in lane-gate and document the pin update path", Jorge, project platform-foundation, not in the phase mapping (held under Unassigned) — self-probe on the VFL-462 candidate found 14 more fail-open YAML forms; fixed at `1b91879` and blocked again on new fixtures (VFL-465) before reopening the review/test gate
 - 2026-10-08T11:58:28Z VFL-465 (new) -> in_progress — "Test Writer: lane-gate fixtures for the pins unreadable-YAML refusals on 1b91879", Halsey, project platform-foundation, not in the phase mapping (held under Unassigned) — child of VFL-122
 - 2026-10-08T11:43:43Z VFL-464 (new) -> backlog — "rust-check.yml: fold in residual LOWs from VFL-101 reviews (nullglob, fatal fallback, comment clause)", Jorge, project platform-foundation, not in the phase mapping (held under Unassigned) — filed, not yet started
@@ -1504,9 +1528,4 @@ Opened [PR #53](https://github.com/vulcanflow/docs/pull/53) with `VulcanFlow_Dev
 - 2026-10-08T10:15:37Z VFL-438 (new) -> done — "CodeRabbit review: F2f graph-rules rule 4 `60266ab`", Arbiter, project platform-foundation, child of VFL-410, Phase 1 Foundation — 0 findings; see delivery log
 - 2026-10-08T10:15:35Z VFL-437 (new) -> done — "Test Writer: lane-gate self-test fixtures for the `pins` subcommand on e587cef", Halsey, project platform-foundation, child of VFL-122, not in the phase mapping (held under Unassigned) — fixtures delivered; see delivery log
 - 2026-10-08T10:10:28Z VFL-85 in_progress -> done — "CI hardening: SHA-pin the GitHub Actions in rust-check.yml and lane-gate.yml", Jorge, project platform-foundation, not in the phase mapping (held under Unassigned) — PR #24 merge verified on main; see delivery log
-- 2026-10-08T10:07:14Z VFL-415 in_progress -> done — "Push approval: C2 vf-core::scope — reviewed fbf6342, or re-parented 5d6eac2", Cortana, project core-libraries, child of VFL-15, Phase 2 Libraries — approved 5d6eac2 as push candidate; see delivery log
-- 2026-10-08T10:06:56Z VFL-429 in_progress -> done — "Test Runner: required runs on F3a-LOW `0af84f6` + T4 VFL-418", Test Runner, project platform-foundation, child of VFL-402, Phase 1 Foundation — fmt-check failure routed back, test slice and code rules both pass; see delivery log
-- 2026-10-08T10:05:41Z VFL-428 in_progress -> done — "Opus Reviewer: review F3a-LOW pair `0af84f6` + T4 VFL-418", Opus Reviewer, project platform-foundation, child of VFL-402, Phase 1 Foundation — PASS both halves; see delivery log
-- 2026-10-08T10:05:29Z VFL-436 (new) -> done — "Push C2 vf-core::scope: re-parent approved 5d6eac2 onto origin/main, push, open PR to main", Kelly, project core-libraries, child of VFL-15, Phase 2 Libraries — PR #25 opened; see delivery log
-- 2026-10-08T10:02:28Z VFL-122 blocked -> in_progress — "CI: enforce the 40-hex `uses:` pin rule in lane-gate and document the pin update path", Jorge, project platform-foundation, not in the phase mapping (held under Unassigned) — picked up alongside VFL-85 once VFL-103's SHA-pin merge landed
 (List trimmed to the last 50 entries per the document spec; earlier changes — back to the 2026-10-05T21:23:32Z baseline — remain in the Paperclip issue history and in prior commits to this file.)
