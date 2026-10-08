@@ -1,5 +1,5 @@
 {
-  "lastRunAt": "2026-10-08T06:11:45Z",
+  "lastRunAt": "2026-10-08T06:33:00Z",
   "phases": {
     "p1_foundation": {
       "label": "1 Foundation",
@@ -114,7 +114,11 @@
         "VFL-300",
         "VFL-349",
         "VFL-347",
-        "VFL-348"
+        "VFL-348",
+        "VFL-380",
+        "VFL-381",
+        "VFL-382",
+        "VFL-383"
       ]
     },
     "p3_api": {
@@ -513,14 +517,14 @@
       "project": "1e4d751c-3ada-47c7-aabe-e8cb40bc897e"
     },
     "VFL-358": {
-      "status": "in_progress",
+      "status": "todo",
       "completedAt": null,
       "title": "Test Runner: required runs on F3a rev2 `ecaa7d1` + T4 VFL-355 (VFL-310)",
       "assignee": "d0a26468-a577-4f16-a29c-de0b53af3983",
       "project": "91740a68-0dd1-47b4-935f-9ab08f4c5669"
     },
     "VFL-327": {
-      "status": "in_progress",
+      "status": "blocked",
       "completedAt": null,
       "title": "GitHub managed identity unavailable for Cortana runs after VFL-326 (broker 200 'unavailable', source personal); PR #18 merge blocked",
       "assignee": "ae2a6da1-327d-466e-8227-311999bca475",
@@ -1500,7 +1504,7 @@
       "project": "91740a68-0dd1-47b4-935f-9ab08f4c5669"
     },
     "VFL-346": {
-      "status": "todo",
+      "status": "blocked",
       "completedAt": null,
       "title": "F3d. `TenantWakeBus`: tenant-scoped `Topic` and `BucketKey` wrapper in `vf-core::ports::wake`",
       "assignee": "912014ba-380a-46cd-baa6-306e9343a2c2",
@@ -1892,14 +1896,14 @@
       "project": "91740a68-0dd1-47b4-935f-9ab08f4c5669"
     },
     "VFL-362": {
-      "status": "in_progress",
+      "status": "blocked",
       "completedAt": null,
       "title": "Test Runner: VFL-185 candidate cccd3c1 \u2014 Part A3, wasm build + just checks",
       "assignee": "d0a26468-a577-4f16-a29c-de0b53af3983",
       "project": "1e4d751c-3ada-47c7-aabe-e8cb40bc897e"
     },
     "VFL-361": {
-      "status": "in_progress",
+      "status": "blocked",
       "completedAt": null,
       "title": "Test Runner: VFL-185 candidate cccd3c1 \u2014 Part A2, workspace build + test (heaviest step)",
       "assignee": "d0a26468-a577-4f16-a29c-de0b53af3983",
@@ -2394,6 +2398,34 @@
       "title": "W5. `vf-graph` WASM packaging and browser parity harness",
       "assignee": "0afa4b23-efae-4c2e-b45e-069c5c993421",
       "project": "4a2e2884-3cd3-4140-a2d3-16b38914c683"
+    },
+    "VFL-380": {
+      "status": "in_progress",
+      "completedAt": null,
+      "title": "CodeRabbit review: C2 vf-core::scope pair fbf6342 + T2 4d0a451 (VFL-15)",
+      "assignee": "13034933-9579-4b3c-add9-b9426144d934",
+      "project": "1e4d751c-3ada-47c7-aabe-e8cb40bc897e"
+    },
+    "VFL-381": {
+      "status": "in_progress",
+      "completedAt": null,
+      "title": "Opus Reviewer: review C2 vf-core::scope pair fbf6342 + T2 4d0a451 (VFL-15)",
+      "assignee": "938921ab-9ab9-469b-85ac-976d8cabad96",
+      "project": "1e4d751c-3ada-47c7-aabe-e8cb40bc897e"
+    },
+    "VFL-382": {
+      "status": "in_progress",
+      "completedAt": null,
+      "title": "Test Runner: full T2 pack (3 files) at 4d0a451 against C2 candidate fbf6342",
+      "assignee": "d0a26468-a577-4f16-a29c-de0b53af3983",
+      "project": "1e4d751c-3ada-47c7-aabe-e8cb40bc897e"
+    },
+    "VFL-383": {
+      "status": "in_progress",
+      "completedAt": null,
+      "title": "Re-parent the reviewed scope fuzz harness (12801bf) onto the test lane \u2014 it currently fails the lane gate",
+      "assignee": "6029b86f-ff5b-492b-9f97-ed31363be784",
+      "project": "1e4d751c-3ada-47c7-aabe-e8cb40bc897e"
     }
   }
 }
