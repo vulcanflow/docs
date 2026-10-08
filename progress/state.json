@@ -1,5 +1,5 @@
 {
-  "lastRunAt": "2026-10-08T16:10:00Z",
+  "lastRunAt": "2026-10-08T16:40:00Z",
   "phases": {
     "p1_foundation": {
       "label": "1 Foundation",
@@ -95,7 +95,12 @@
         "VFL-502",
         "VFL-503",
         "VFL-498",
-        "VFL-504"
+        "VFL-504",
+        "VFL-505",
+        "VFL-506",
+        "VFL-508",
+        "VFL-509",
+        "VFL-511"
       ]
     },
     "p2_libraries": {
@@ -171,7 +176,8 @@
         "VFL-453",
         "VFL-460",
         "VFL-496",
-        "VFL-495"
+        "VFL-495",
+        "VFL-507"
       ]
     },
     "p3_api": {
@@ -614,8 +620,8 @@
       "project": "1e4d751c-3ada-47c7-aabe-e8cb40bc897e"
     },
     "VFL-421": {
-      "status": "in_progress",
-      "completedAt": null,
+      "status": "done",
+      "completedAt": "2026-10-08T16:10:53.400Z",
       "title": "Test Runner: required runs on C1 pair a869a06 + T1a b59f98f (VFL-240)",
       "assignee": "d0a26468-a577-4f16-a29c-de0b53af3983",
       "project": "1e4d751c-3ada-47c7-aabe-e8cb40bc897e"
@@ -2798,7 +2804,7 @@
       "project": "91740a68-0dd1-47b4-935f-9ab08f4c5669"
     },
     "VFL-80": {
-      "status": "backlog",
+      "status": "blocked",
       "completedAt": null,
       "title": "graph-rules rule 3: every TLS-initiating binary resolves rustls `ring` on its own (\u00a7A5 rev 5)",
       "assignee": "912014ba-380a-46cd-baa6-306e9343a2c2",
@@ -2840,7 +2846,7 @@
       "project": "91740a68-0dd1-47b4-935f-9ab08f4c5669"
     },
     "VFL-434": {
-      "status": "blocked",
+      "status": "in_progress",
       "completedAt": null,
       "title": "C1 (cont. of VFL-240): push approval, PR and CI for `a869a06` + `b59f98f`",
       "assignee": "349b5411-a09e-40b6-a523-08c13e6824a5",
@@ -2855,8 +2861,8 @@
     },
     "VFL-444": {
       "status": "done",
-      "completedAt": "2026-10-08T15:55:29.673Z",
-      "title": "Test Runner: required runs on F3a-LOW `2337ec4` + T4 rev2 VFL-441 (child of VFL-402)",
+      "completedAt": "2026-10-08T15:55:29.707Z",
+      "title": "Test Runner: required runs on F3a-LOW `2337ec4` + T4 rev2 VFL-441 (VFL-402)",
       "assignee": "d0a26468-a577-4f16-a29c-de0b53af3983",
       "project": "91740a68-0dd1-47b4-935f-9ab08f4c5669"
     },
@@ -2903,16 +2909,16 @@
       "project": "91740a68-0dd1-47b4-935f-9ab08f4c5669"
     },
     "VFL-440": {
-      "status": "in_progress",
-      "completedAt": null,
+      "status": "done",
+      "completedAt": "2026-10-08T16:03:28.831Z",
       "title": "Test Runner: required runs on F2f `60266ab` (VFL-410)",
       "assignee": "d0a26468-a577-4f16-a29c-de0b53af3983",
       "project": "91740a68-0dd1-47b4-935f-9ab08f4c5669"
     },
     "VFL-445": {
       "status": "done",
-      "completedAt": "2026-10-08T15:44:13.249Z",
-      "title": "CodeRabbit re-review: F3d rev2 `ba428c1` + T4 `6abf710` (child of VFL-346)",
+      "completedAt": "2026-10-08T15:44:13.376Z",
+      "title": "CodeRabbit re-review: F3d rev2 `ba428c1` + T4 `6abf710` (VFL-346)",
       "assignee": "13034933-9579-4b3c-add9-b9426144d934",
       "project": "91740a68-0dd1-47b4-935f-9ab08f4c5669"
     },
@@ -3017,7 +3023,7 @@
     "VFL-460": {
       "status": "blocked",
       "completedAt": null,
-      "title": "Merge PR #26: T2 scope pack for vf-core::scope (child of VFL-15)",
+      "title": "Merge PR #26: T2 scope pack for vf-core::scope (VFL-15)",
       "assignee": "a9be75cd-d767-4c44-b49c-2017c61f751f",
       "project": "1e4d751c-3ada-47c7-aabe-e8cb40bc897e"
     },
@@ -3190,8 +3196,8 @@
       "project": "91740a68-0dd1-47b4-935f-9ab08f4c5669"
     },
     "VFL-496": {
-      "status": "in_progress",
-      "completedAt": null,
+      "status": "done",
+      "completedAt": "2026-10-08T16:09:59.991Z",
       "title": "Re-parent PR #26 onto main 2d1916c and rustfmt the T2 scope pack (VFL-460)",
       "assignee": "6029b86f-ff5b-492b-9f97-ed31363be784",
       "project": "1e4d751c-3ada-47c7-aabe-e8cb40bc897e"
@@ -3204,43 +3210,43 @@
       "project": "1e4d751c-3ada-47c7-aabe-e8cb40bc897e"
     },
     "VFL-499": {
-      "status": "in_progress",
-      "completedAt": null,
+      "status": "done",
+      "completedAt": "2026-10-08T16:04:27.753Z",
       "title": "T4 slice for F3a-LOW rev3: fmt (M1) and clippy fixes on `0696c67` (VFL-402)",
       "assignee": "6029b86f-ff5b-492b-9f97-ed31363be784",
       "project": "91740a68-0dd1-47b4-935f-9ab08f4c5669"
     },
     "VFL-500": {
-      "status": "blocked",
-      "completedAt": null,
+      "status": "done",
+      "completedAt": "2026-10-08T16:15:14.315Z",
       "title": "CodeRabbit review: F3a-LOW test half rev3 VFL-499 on `2337ec4` (VFL-402)",
       "assignee": "13034933-9579-4b3c-add9-b9426144d934",
       "project": "91740a68-0dd1-47b4-935f-9ab08f4c5669"
     },
     "VFL-502": {
-      "status": "blocked",
-      "completedAt": null,
+      "status": "done",
+      "completedAt": "2026-10-08T16:19:50.707Z",
       "title": "Opus Reviewer: re-review F3a-LOW test half rev3 VFL-499 on `2337ec4` (VFL-402)",
       "assignee": "938921ab-9ab9-469b-85ac-976d8cabad96",
       "project": "91740a68-0dd1-47b4-935f-9ab08f4c5669"
     },
     "VFL-503": {
-      "status": "blocked",
-      "completedAt": null,
+      "status": "done",
+      "completedAt": "2026-10-08T16:19:53.599Z",
       "title": "Test Runner: required runs on F3a-LOW `2337ec4` + T4 rev3 VFL-499 (VFL-402)",
       "assignee": "d0a26468-a577-4f16-a29c-de0b53af3983",
       "project": "91740a68-0dd1-47b4-935f-9ab08f4c5669"
     },
     "VFL-498": {
-      "status": "in_progress",
-      "completedAt": null,
+      "status": "done",
+      "completedAt": "2026-10-08T16:20:20.344Z",
       "title": "Test Runner re-record: F3d rev3 `fd7f685` + T4 `6abf710`, tree `f71bc66` (VFL-346)",
       "assignee": "d0a26468-a577-4f16-a29c-de0b53af3983",
       "project": "91740a68-0dd1-47b4-935f-9ab08f4c5669"
     },
     "VFL-504": {
-      "status": "blocked",
-      "completedAt": null,
+      "status": "done",
+      "completedAt": "2026-10-08T16:26:36.284Z",
       "title": "Push approval: F3d TenantWakeBus at `fd7f685` + T4 `6abf710` (VFL-346)",
       "assignee": "a9be75cd-d767-4c44-b49c-2017c61f751f",
       "project": "91740a68-0dd1-47b4-935f-9ab08f4c5669"
@@ -3257,6 +3263,48 @@
       "completedAt": null,
       "title": "VFL-105 continuation: confirm CI green on c0c0df5 and hand off to Cortana for merge",
       "assignee": "6029b86f-ff5b-492b-9f97-ed31363be784",
+      "project": "91740a68-0dd1-47b4-935f-9ab08f4c5669"
+    },
+    "VFL-507": {
+      "status": "in_progress",
+      "completedAt": null,
+      "title": "Fix clippy manual_repeat_n in T2 scope pack (H2), re-record + re-review, then push on approval (VFL-460)",
+      "assignee": "6029b86f-ff5b-492b-9f97-ed31363be784",
+      "project": "1e4d751c-3ada-47c7-aabe-e8cb40bc897e"
+    },
+    "VFL-508": {
+      "status": "in_progress",
+      "completedAt": null,
+      "title": "Test Runner re-record: F3a-LOW `fc128ee` + T4 `9036d43`, tree `013b401` (VFL-402)",
+      "assignee": "d0a26468-a577-4f16-a29c-de0b53af3983",
+      "project": "91740a68-0dd1-47b4-935f-9ab08f4c5669"
+    },
+    "VFL-509": {
+      "status": "blocked",
+      "completedAt": null,
+      "title": "Push approval: F3a-LOW at `fc128ee` + T4 `9036d43` (VFL-402)",
+      "assignee": "a9be75cd-d767-4c44-b49c-2017c61f751f",
+      "project": "91740a68-0dd1-47b4-935f-9ab08f4c5669"
+    },
+    "VFL-511": {
+      "status": "in_progress",
+      "completedAt": null,
+      "title": "Merge PR #28: F3d TenantWakeBus at `fd7f685` (VFL-346)",
+      "assignee": "a9be75cd-d767-4c44-b49c-2017c61f751f",
+      "project": "91740a68-0dd1-47b4-935f-9ab08f4c5669"
+    },
+    "VFL-505": {
+      "status": "done",
+      "completedAt": "2026-10-08T16:17:41.950Z",
+      "title": "Push approval: F2f graph-rules rule 4 at `60266ab` (VFL-410)",
+      "assignee": "a9be75cd-d767-4c44-b49c-2017c61f751f",
+      "project": "91740a68-0dd1-47b4-935f-9ab08f4c5669"
+    },
+    "VFL-506": {
+      "status": "blocked",
+      "completedAt": null,
+      "title": "graph-rules rule 4: fail when no workspace member is named vf-testkit (Opus LOW-1 on VFL-410)",
+      "assignee": "912014ba-380a-46cd-baa6-306e9343a2c2",
       "project": "91740a68-0dd1-47b4-935f-9ab08f4c5669"
     }
   }
