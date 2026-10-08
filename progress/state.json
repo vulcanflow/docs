@@ -1,5 +1,5 @@
 {
-  "lastRunAt": "2026-10-08T17:35:00Z",
+  "lastRunAt": "2026-10-08T18:00:00Z",
   "phases": {
     "p1_foundation": {
       "label": "1 Foundation",
@@ -103,7 +103,10 @@
         "VFL-511",
         "VFL-515",
         "VFL-516",
-        "VFL-518"
+        "VFL-518",
+        "VFL-520",
+        "VFL-521",
+        "VFL-522"
       ]
     },
     "p2_libraries": {
@@ -3258,8 +3261,8 @@
       "project": "platform-foundation"
     },
     "VFL-497": {
-      "status": "in_progress",
-      "completedAt": null,
+      "status": "done",
+      "completedAt": "2026-10-08T17:04:42.776Z",
       "title": "Watchdog review for VFL-414",
       "assignee": "Arbiter",
       "project": "platform-foundation"
@@ -3349,10 +3352,31 @@
       "project": "core-libraries"
     },
     "VFL-518": {
-      "status": "in_progress",
-      "completedAt": null,
+      "status": "done",
+      "completedAt": "2026-10-08T17:41:28.320Z",
       "title": "T4 rebase: F3a-LOW test delta 18e038e..9036d43 onto main c1bae41 (VFL-402)",
       "assignee": "Halsey",
+      "project": "platform-foundation"
+    },
+    "VFL-520": {
+      "status": "in_progress",
+      "completedAt": null,
+      "title": "CodeRabbit delta review: F3a-LOW test half `e11f448` on `c1bae41` (VFL-402)",
+      "assignee": "Arbiter",
+      "project": "platform-foundation"
+    },
+    "VFL-521": {
+      "status": "in_progress",
+      "completedAt": null,
+      "title": "Opus Reviewer: delta re-review F3a-LOW test half `e11f448` on `c1bae41` (VFL-402)",
+      "assignee": "Opus Reviewer",
+      "project": "platform-foundation"
+    },
+    "VFL-522": {
+      "status": "in_progress",
+      "completedAt": null,
+      "title": "Test Runner: F3a-LOW `ea1913d` + T4 `e11f448`, tree `ce7ba5f` (VFL-402)",
+      "assignee": "Test Runner",
       "project": "platform-foundation"
     }
   }
