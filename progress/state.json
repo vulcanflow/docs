@@ -1,5 +1,5 @@
 {
-  "lastRunAt": "2026-10-08T12:05:01Z",
+  "lastRunAt": "2026-10-08T12:35:26Z",
   "phases": {
     "p1_foundation": {
       "label": "1 Foundation",
@@ -445,7 +445,10 @@
         "VFL-462",
         "VFL-463",
         "VFL-464",
-        "VFL-465"
+        "VFL-465",
+        "VFL-467",
+        "VFL-468",
+        "VFL-469"
       ]
     }
   },
@@ -2754,8 +2757,8 @@
       "project": "91740a68-0dd1-47b4-935f-9ab08f4c5669"
     },
     "VFL-101": {
-      "status": "in_progress",
-      "completedAt": null,
+      "status": "done",
+      "completedAt": "2026-10-08T12:02:00.141Z",
       "title": "F1 follow-up: rust-check.yml header wording and advisory-db caching (VFL-96 LOW-9, LOW-10)",
       "assignee": "a9be75cd-d767-4c44-b49c-2017c61f751f",
       "project": "91740a68-0dd1-47b4-935f-9ab08f4c5669"
@@ -2992,8 +2995,8 @@
       "project": "1e4d751c-3ada-47c7-aabe-e8cb40bc897e"
     },
     "VFL-465": {
-      "status": "in_progress",
-      "completedAt": null,
+      "status": "done",
+      "completedAt": "2026-10-08T12:10:36.929Z",
       "title": "Test Writer: lane-gate fixtures for the pins unreadable-YAML refusals on 1b91879 (VFL-122)",
       "assignee": "6029b86f-ff5b-492b-9f97-ed31363be784",
       "project": "91740a68-0dd1-47b4-935f-9ab08f4c5669"
@@ -3016,6 +3019,27 @@
       "status": "done",
       "completedAt": "2026-10-08T11:37:45.803Z",
       "title": "Test Runner: re-record lane gate and T9 on the re-parented advisory-cache candidate (65df058)",
+      "assignee": "d0a26468-a577-4f16-a29c-de0b53af3983",
+      "project": "91740a68-0dd1-47b4-935f-9ab08f4c5669"
+    },
+    "VFL-467": {
+      "status": "done",
+      "completedAt": "2026-10-08T12:29:33.443Z",
+      "title": "CodeRabbit review round 2: lane-gate `pins` check + README update path (c977082, VFL-122)",
+      "assignee": "13034933-9579-4b3c-add9-b9426144d934",
+      "project": "91740a68-0dd1-47b4-935f-9ab08f4c5669"
+    },
+    "VFL-468": {
+      "status": "in_progress",
+      "completedAt": null,
+      "title": "Opus Reviewer review round 2: lane-gate `pins` check + README update path (c977082, VFL-122)",
+      "assignee": "938921ab-9ab9-469b-85ac-976d8cabad96",
+      "project": "91740a68-0dd1-47b4-935f-9ab08f4c5669"
+    },
+    "VFL-469": {
+      "status": "done",
+      "completedAt": "2026-10-08T12:23:46.437Z",
+      "title": "Test Runner: lane gate and lane-gate self-test on the pins candidate (c977082, VFL-122)",
       "assignee": "d0a26468-a577-4f16-a29c-de0b53af3983",
       "project": "91740a68-0dd1-47b4-935f-9ab08f4c5669"
     }
