@@ -1,5 +1,5 @@
 {
-  "lastRunAt": "2026-10-08T07:45:00Z",
+  "lastRunAt": "2026-10-08T08:16:00Z",
   "phases": {
     "p1_foundation": {
       "label": "1 Foundation",
@@ -64,7 +64,9 @@
         "VFL-356",
         "VFL-355",
         "VFL-393",
-        "VFL-394"
+        "VFL-394",
+        "VFL-401",
+        "VFL-402"
       ]
     },
     "p2_libraries": {
@@ -124,7 +126,8 @@
         "VFL-384",
         "VFL-386",
         "VFL-387",
-        "VFL-388"
+        "VFL-388",
+        "VFL-406"
       ]
     },
     "p3_api": {
@@ -386,7 +389,9 @@
         "VFL-396",
         "VFL-397",
         "VFL-398",
-        "VFL-399"
+        "VFL-399",
+        "VFL-403",
+        "VFL-405"
       ]
     }
   },
@@ -574,8 +579,8 @@
       "project": "91740a68-0dd1-47b4-935f-9ab08f4c5669"
     },
     "VFL-310": {
-      "status": "blocked",
-      "completedAt": null,
+      "status": "done",
+      "completedAt": "2026-10-08T08:02:10.043Z",
       "title": "F3a. Port contracts: `ArtifactStore` and `WakeBus` in `vf-core::ports`",
       "assignee": "912014ba-380a-46cd-baa6-306e9343a2c2",
       "project": "91740a68-0dd1-47b4-935f-9ab08f4c5669"
@@ -609,7 +614,7 @@
       "project": "91740a68-0dd1-47b4-935f-9ab08f4c5669"
     },
     "VFL-240": {
-      "status": "in_review",
+      "status": "in_progress",
       "completedAt": null,
       "title": "C1 (cont. of VFL-14): vf-core gate cycle on `2444217`",
       "assignee": "349b5411-a09e-40b6-a523-08c13e6824a5",
@@ -1519,7 +1524,7 @@
       "project": "91740a68-0dd1-47b4-935f-9ab08f4c5669"
     },
     "VFL-346": {
-      "status": "blocked",
+      "status": "in_progress",
       "completedAt": null,
       "title": "F3d. `TenantWakeBus`: tenant-scoped `Topic` and `BucketKey` wrapper in `vf-core::ports::wake`",
       "assignee": "912014ba-380a-46cd-baa6-306e9343a2c2",
@@ -2499,8 +2504,8 @@
       "project": "1e4d751c-3ada-47c7-aabe-e8cb40bc897e"
     },
     "VFL-393": {
-      "status": "in_progress",
-      "completedAt": null,
+      "status": "done",
+      "completedAt": "2026-10-08T07:36:31.014Z",
       "title": "T4 pure rebase: halsey/vfl-355-f3a-rev2-tests onto F3a ecaa7d1 (VFL-310)",
       "assignee": "6029b86f-ff5b-492b-9f97-ed31363be784",
       "project": "91740a68-0dd1-47b4-935f-9ab08f4c5669"
@@ -2534,8 +2539,8 @@
       "project": "1e4d751c-3ada-47c7-aabe-e8cb40bc897e"
     },
     "VFL-399": {
-      "status": "in_progress",
-      "completedAt": null,
+      "status": "done",
+      "completedAt": "2026-10-08T07:59:31.009Z",
       "title": "Push approval: VFL-103 SHA pins at a8db4b5",
       "assignee": "a9be75cd-d767-4c44-b49c-2017c61f751f",
       "project": "91740a68-0dd1-47b4-935f-9ab08f4c5669"
@@ -2546,6 +2551,41 @@
       "title": "Test Runner: re-record ci/lane-gate.sh all on the re-parented SHA-pin candidate (a8db4b5)",
       "assignee": "d0a26468-a577-4f16-a29c-de0b53af3983",
       "project": "91740a68-0dd1-47b4-935f-9ab08f4c5669"
+    },
+    "VFL-401": {
+      "status": "done",
+      "completedAt": "2026-10-08T07:49:59.640Z",
+      "title": "Merge PR #23: F3a port contracts at ecaa7d1 (VFL-310)",
+      "assignee": "a9be75cd-d767-4c44-b49c-2017c61f751f",
+      "project": "91740a68-0dd1-47b4-935f-9ab08f4c5669"
+    },
+    "VFL-402": {
+      "status": "in_progress",
+      "completedAt": null,
+      "title": "F3a-LOW. Port contract LOWs: CR-1, S1, S2, S3 (255-byte segment cap) in `vf-core::ports`",
+      "assignee": "912014ba-380a-46cd-baa6-306e9343a2c2",
+      "project": "91740a68-0dd1-47b4-935f-9ab08f4c5669"
+    },
+    "VFL-403": {
+      "status": "in_progress",
+      "completedAt": null,
+      "title": "Push approval: VFL-103 SHA pins re-parented onto a8ad7ae (condition 2, second pass)",
+      "assignee": "912014ba-380a-46cd-baa6-306e9343a2c2",
+      "project": "91740a68-0dd1-47b4-935f-9ab08f4c5669"
+    },
+    "VFL-405": {
+      "status": "done",
+      "completedAt": "2026-10-08T08:10:51.056Z",
+      "title": "Test Runner: re-record ci/lane-gate.sh all on the re-parented SHA-pin candidate (0170c00)",
+      "assignee": "d0a26468-a577-4f16-a29c-de0b53af3983",
+      "project": "91740a68-0dd1-47b4-935f-9ab08f4c5669"
+    },
+    "VFL-406": {
+      "status": "in_progress",
+      "completedAt": null,
+      "title": "Wake: answer the push approval card on VFL-240 (C1 code 18455cd + T1a tests b59f98f)",
+      "assignee": "a9be75cd-d767-4c44-b49c-2017c61f751f",
+      "project": "1e4d751c-3ada-47c7-aabe-e8cb40bc897e"
     }
   }
 }
