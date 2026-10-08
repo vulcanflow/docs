@@ -1,5 +1,5 @@
 {
-  "lastRunAt": "2026-10-08T19:50:05Z",
+  "lastRunAt": "2026-10-08T21:34:40Z",
   "phases": {
     "p1_foundation": {
       "label": "1 Foundation",
@@ -113,7 +113,24 @@
         "VFL-546",
         "VFL-530",
         "VFL-536",
-        "VFL-538"
+        "VFL-538",
+        "VFL-550",
+        "VFL-553",
+        "VFL-555",
+        "VFL-564",
+        "VFL-560",
+        "VFL-566",
+        "VFL-554",
+        "VFL-548",
+        "VFL-563",
+        "VFL-549",
+        "VFL-562",
+        "VFL-551",
+        "VFL-547",
+        "VFL-558",
+        "VFL-557",
+        "VFL-556",
+        "VFL-561"
       ]
     },
     "p2_libraries": {
@@ -198,7 +215,9 @@
         "VFL-529",
         "VFL-532",
         "VFL-533",
-        "VFL-535"
+        "VFL-535",
+        "VFL-567",
+        "VFL-568"
       ]
     },
     "p3_api": {
@@ -510,7 +529,10 @@
         "VFL-540",
         "VFL-541",
         "VFL-542",
-        "VFL-527"
+        "VFL-527",
+        "VFL-544",
+        "VFL-552",
+        "VFL-559"
       ]
     }
   },
@@ -684,8 +706,8 @@
       "project": "core-libraries"
     },
     "VFL-402": {
-      "status": "blocked",
-      "completedAt": null,
+      "status": "done",
+      "completedAt": "2026-10-08T19:49:59.121Z",
       "title": "F3a-LOW. Port contract LOWs: CR-1, S1, S2, S3 (255-byte segment cap) in `vf-core::ports`",
       "assignee": "Jorge",
       "project": "platform-foundation"
@@ -1874,7 +1896,7 @@
       "project": "core-libraries"
     },
     "VFL-398": {
-      "status": "in_progress",
+      "status": "blocked",
       "completedAt": null,
       "title": "Run the required tests on c0b7127: cross toolchain bootstrap (VFL-151)",
       "assignee": "Test Runner",
@@ -2357,7 +2379,7 @@
       "project": "platform-foundation"
     },
     "VFL-361": {
-      "status": "in_progress",
+      "status": "blocked",
       "completedAt": null,
       "title": "Test Runner: VFL-185 candidate cccd3c1 \u2014 Part A2, workspace build + test (heaviest step)",
       "assignee": "Test Runner",
@@ -2875,15 +2897,15 @@
       "project": "platform-foundation"
     },
     "VFL-434": {
-      "status": "in_review",
+      "status": "blocked",
       "completedAt": null,
       "title": "C1 (cont. of VFL-240): push approval, PR and CI for `84faee4` (r4) + `b59f98f`",
       "assignee": "Fred",
       "project": "core-libraries"
     },
     "VFL-432": {
-      "status": "in_progress",
-      "completedAt": null,
+      "status": "done",
+      "completedAt": "2026-10-08T19:03:17.402Z",
       "title": "Board watch (continuation 4): find stuck tasks and nudge owners",
       "assignee": "MasterChief",
       "project": "progress-and-docs"
@@ -3435,8 +3457,8 @@
       "project": "platform-foundation"
     },
     "VFL-546": {
-      "status": "in_progress",
-      "completedAt": null,
+      "status": "done",
+      "completedAt": "2026-10-08T19:43:50.656Z",
       "title": "Push T4 test branch rebased on main cb23084 and open the test PR (VFL-402)",
       "assignee": "Halsey",
       "project": "platform-foundation"
@@ -3491,7 +3513,7 @@
       "project": "core-libraries"
     },
     "VFL-534": {
-      "status": "in_progress",
+      "status": "in_review",
       "completedAt": null,
       "title": "VFL-124 continuation: push approval, PR and webhook evidence for ec00b55",
       "assignee": "Jorge",
@@ -3519,8 +3541,8 @@
       "project": "platform-foundation"
     },
     "VFL-541": {
-      "status": "in_progress",
-      "completedAt": null,
+      "status": "done",
+      "completedAt": "2026-10-08T20:04:56.539Z",
       "title": "Opus Reviewer review round 5: lane-gate `pins` check + README update path (6cac319, VFL-122)",
       "assignee": "Opus Reviewer",
       "project": "platform-foundation"
@@ -3537,6 +3559,160 @@
       "completedAt": "2026-10-08T18:46:48.996Z",
       "title": "Wake: answer the two pending approval cards (VFL-411 push, VFL-484 scope)",
       "assignee": "Cortana",
+      "project": "platform-foundation"
+    },
+    "VFL-550": {
+      "status": "in_progress",
+      "completedAt": null,
+      "title": "Test Runner: F3a-LOW-2 doc-only `ae7455a` (VFL-530)",
+      "assignee": "Test Runner",
+      "project": "platform-foundation"
+    },
+    "VFL-567": {
+      "status": "in_progress",
+      "completedAt": null,
+      "title": "Merge PR #33: C1 vf-core at `84faee4` (VFL-434)",
+      "assignee": "Cortana",
+      "project": "core-libraries"
+    },
+    "VFL-561": {
+      "status": "blocked",
+      "completedAt": null,
+      "title": "T4 slice for F3b: ArtifactStore conformance on S3, LocalFs, InMemory at `92306cf` (VFL-311)",
+      "assignee": "Halsey",
+      "project": "platform-foundation"
+    },
+    "VFL-559": {
+      "status": "blocked",
+      "completedAt": null,
+      "title": "Cortana wake: resolve push card `09b63033` (VFL-434) and finish the doctest decision (VFL-536)",
+      "assignee": "Cortana",
+      "project": "core-libraries"
+    },
+    "VFL-553": {
+      "status": "in_progress",
+      "completedAt": null,
+      "title": "CodeRabbit delta review: F3a-LOW-2 `ae7455a..2d43fb8` (VFL-530)",
+      "assignee": "Arbiter",
+      "project": "platform-foundation"
+    },
+    "VFL-555": {
+      "status": "blocked",
+      "completedAt": null,
+      "title": "Test Runner: F3a-LOW-2 doc-only `2d43fb8`, full re-record (VFL-530)",
+      "assignee": "Test Runner",
+      "project": "platform-foundation"
+    },
+    "VFL-568": {
+      "status": "blocked",
+      "completedAt": null,
+      "title": "T1a rebase: `halsey/t1a-vf-core-tests` (`b59f98f`) onto `main` after C1 PR #33 merges (VFL-14)",
+      "assignee": "Halsey",
+      "project": "core-libraries"
+    },
+    "VFL-564": {
+      "status": "blocked",
+      "completedAt": null,
+      "title": "Test Runner: required runs on F3b `92306cf` + T4 VFL-561 (VFL-311)",
+      "assignee": "Test Runner",
+      "project": "platform-foundation"
+    },
+    "VFL-560": {
+      "status": "done",
+      "completedAt": "2026-10-08T21:03:47.604Z",
+      "title": "Decide: where F3b S3 conformance (rustfs + minio) and 100 MiB multipart evidence runs (VFL-311)",
+      "assignee": "Cortana",
+      "project": "platform-foundation"
+    },
+    "VFL-566": {
+      "status": "blocked",
+      "completedAt": null,
+      "title": "F3b container-runtime acceptance: S3 conformance (rustfs + minio) and 100 MiB multipart, owner-run (VFL-311)",
+      "assignee": "Test Runner",
+      "project": "platform-foundation"
+    },
+    "VFL-554": {
+      "status": "done",
+      "completedAt": "2026-10-08T20:53:46.546Z",
+      "title": "Opus Reviewer delta review: F3a-LOW-2 `ae7455a..2d43fb8` (VFL-530)",
+      "assignee": "Opus Reviewer",
+      "project": "platform-foundation"
+    },
+    "VFL-548": {
+      "status": "done",
+      "completedAt": "2026-10-08T20:50:36.006Z",
+      "title": "CodeRabbit review: F3a-LOW-2 doc-only `ae7455a` (VFL-530)",
+      "assignee": "Arbiter",
+      "project": "platform-foundation"
+    },
+    "VFL-563": {
+      "status": "blocked",
+      "completedAt": null,
+      "title": "Opus Reviewer: review F3b artifact adapters `92306cf` + T4 VFL-561 (VFL-311)",
+      "assignee": "Opus Reviewer",
+      "project": "platform-foundation"
+    },
+    "VFL-549": {
+      "status": "done",
+      "completedAt": "2026-10-08T20:47:30.493Z",
+      "title": "Opus Reviewer: F3a-LOW-2 doc-only `ae7455a` (VFL-530)",
+      "assignee": "Opus Reviewer",
+      "project": "platform-foundation"
+    },
+    "VFL-562": {
+      "status": "blocked",
+      "completedAt": null,
+      "title": "CodeRabbit review: F3b artifact adapters `92306cf` + T4 VFL-561 (VFL-311)",
+      "assignee": "Arbiter",
+      "project": "platform-foundation"
+    },
+    "VFL-551": {
+      "status": "done",
+      "completedAt": "2026-10-08T20:30:17.349Z",
+      "title": "Ruling: item 8 precedence, TooLarge vs Backend on one chunk (VFL-530)",
+      "assignee": "Cortana",
+      "project": "platform-foundation"
+    },
+    "VFL-547": {
+      "status": "done",
+      "completedAt": "2026-10-08T19:48:09.279Z",
+      "title": "Merge PR #32: F3a-LOW T4 tests at `0d28ff4` (VFL-402)",
+      "assignee": "Cortana",
+      "project": "platform-foundation"
+    },
+    "VFL-544": {
+      "status": "in_progress",
+      "completedAt": null,
+      "title": "Board watch (continuation 5): find stuck tasks and nudge owners",
+      "assignee": "MasterChief",
+      "project": "progress-and-docs"
+    },
+    "VFL-558": {
+      "status": "todo",
+      "completedAt": null,
+      "title": "Test Runner: F2h `test-doc` recipe `a3aa436` (VFL-538)",
+      "assignee": "Test Runner",
+      "project": "platform-foundation"
+    },
+    "VFL-557": {
+      "status": "done",
+      "completedAt": "2026-10-08T21:17:12.372Z",
+      "title": "Opus Reviewer: F2h `test-doc` recipe `a3aa436` (VFL-538)",
+      "assignee": "Opus Reviewer",
+      "project": "platform-foundation"
+    },
+    "VFL-556": {
+      "status": "done",
+      "completedAt": "2026-10-08T20:52:11.793Z",
+      "title": "CodeRabbit review: F2h `test-doc` recipe `a3aa436` (VFL-538)",
+      "assignee": "Arbiter",
+      "project": "platform-foundation"
+    },
+    "VFL-552": {
+      "status": "done",
+      "completedAt": "2026-10-08T20:38:57.786Z",
+      "title": "Test Writer: lane-gate fixtures for the pins ls-tree -z fix on `0068b1c` (VFL-122 review M5)",
+      "assignee": "Halsey",
       "project": "platform-foundation"
     }
   }
