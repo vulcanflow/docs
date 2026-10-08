@@ -1,21 +1,21 @@
 # VulcanFlow progress
 
-Last updated: 2026-10-08T18:00:00Z by Guilty Spark. Source: Paperclip company vFlow.
+Last updated: 2026-10-08T18:39:21Z by Guilty Spark. Source: Paperclip company vFlow.
 
 ## Summary table
 
 | Phase | Project(s) | Done | In progress | Blocked | Planned | Total |
 |---|---|---|---|---|---|---|
-| 1 Foundation | platform-foundation, test-packs (T9) | 84 | 4 | 10 | 1 | 99 |
-| 2 Libraries | core-libraries, graph-and-execution-contracts, test-packs (T1-T5) | 41 | 4 | 23 | 2 | 70 |
+| 1 Foundation | platform-foundation, test-packs (T9) | 86 | 2 | 10 | 1 | 99 |
+| 2 Libraries | core-libraries, graph-and-execution-contracts, test-packs (T1-T5) | 44 | 2 | 23 | 2 | 71 |
 | 3 API | api, test-packs (T7) | 0 | 0 | 5 | 0 | 5 |
 | 4 Execution | scanners, operator-and-ingest, test-packs (T6) | 0 | 0 | 7 | 1 | 8 |
 | 5 Findings API | api | 0 | 0 | 1 | 0 | 1 |
 | 6 Web | web, test-packs (T8) | 0 | 0 | 5 | 1 | 6 |
 | Later (reporting, infra, ai-gateway) | reporting, infra, ai-gateway | 0 | 0 | 0 | 0 | 0 |
 | Setup and governance | Onboarding | 9 | 0 | 0 | 0 | 9 |
-| Unassigned to a phase[^1] | progress-and-docs (VFL-50, VFL-60, VFL-84, VFL-255, VFL-272, VFL-351, VFL-432), platform-foundation (VFL-52, VFL-58, VFL-61, VFL-70, VFL-73–103, VFL-105–111, VFL-114–116, VFL-119–143, VFL-160, VFL-173, VFL-175–177, except VFL-112–113/117–118 which moved into Phase 2, VFL-122, VFL-124–137, VFL-285, VFL-288, VFL-294–296, VFL-301–303, VFL-305–306, VFL-318–332, VFL-335, VFL-337, VFL-339–345, VFL-350, VFL-352–354, VFL-365, VFL-395, VFL-399, VFL-403, VFL-405, VFL-413–414, VFL-416–417, VFL-419, VFL-433, VFL-437, VFL-450–459, VFL-462–465, VFL-467–469, VFL-471, VFL-472, VFL-474–476, VFL-482, VFL-484–490, VFL-492, VFL-494, VFL-497), core-libraries (VFL-140, VFL-142, VFL-145–159, VFL-185–187, VFL-190–191, VFL-198–209, VFL-228, VFL-230, VFL-238, VFL-249, VFL-254, VFL-256–258, VFL-261–262, VFL-266, VFL-268–269, VFL-273, VFL-277, VFL-334, VFL-336, VFL-360–364, VFL-385, VFL-390–392, VFL-396–398), api (VFL-165), none (VFL-51, VFL-278) | 168 | 6 | 28 | 8 | 214 |
-| **Total**[^1] | | **302** | **14** | **79** | **13** | **412** |
+| Unassigned to a phase[^1] | progress-and-docs (VFL-50, VFL-60, VFL-84, VFL-255, VFL-272, VFL-351, VFL-432, VFL-524), platform-foundation (VFL-52, VFL-58, VFL-61, VFL-70, VFL-73–103, VFL-105–111, VFL-114–116, VFL-119–143, VFL-160, VFL-173, VFL-175–177, except VFL-112–113/117–118 which moved into Phase 2, VFL-122, VFL-124–137, VFL-285, VFL-288, VFL-294–296, VFL-301–303, VFL-305–306, VFL-318–332, VFL-335, VFL-337, VFL-339–345, VFL-350, VFL-352–354, VFL-365, VFL-395, VFL-399, VFL-403, VFL-405, VFL-413–414, VFL-416–417, VFL-419, VFL-433, VFL-437, VFL-450–459, VFL-462–465, VFL-467–469, VFL-471, VFL-472, VFL-474–476, VFL-482, VFL-484–490, VFL-492, VFL-494, VFL-497), core-libraries (VFL-140, VFL-142, VFL-145–159, VFL-185–187, VFL-190–191, VFL-198–209, VFL-228, VFL-230, VFL-238, VFL-249, VFL-254, VFL-256–258, VFL-261–262, VFL-266, VFL-268–269, VFL-273, VFL-277, VFL-334, VFL-336, VFL-360–364, VFL-385, VFL-390–392, VFL-396–398), api (VFL-165), none (VFL-51, VFL-278) | 169 | 5 | 29 | 8 | 215 |
+| **Total**[^1] | | **308** | **9** | **80** | **13** | **414** |
 
 [^1]: 4 cancelled tasks (VFL-51, VFL-134, VFL-136, VFL-154) are counted in Total only; they have no Done/In progress/Blocked/Planned bucket. Guilty Spark's own recurring "Progress tracker update" tasks (VFL-53, VFL-54, VFL-55, ...) are excluded entirely from this document per the skip-own-routine-tasks rule. The "In progress" column folds `in_progress` and `in_review` together (no separate in-review bucket in this table); the "Planned" column folds `todo` and `backlog` tasks together — both are queued/not-yet-started, just at different readiness states; see the Status mix pie for the literal per-status counts.
 
@@ -23,8 +23,8 @@ Last updated: 2026-10-08T18:00:00Z by Guilty Spark. Source: Paperclip company vF
 
 ```mermaid
 flowchart LR
-  P1["1 Foundation<br/>84/99 done"]
-  P2["2 Libraries<br/>41/70 done"]
+  P1["1 Foundation<br/>86/99 done"]
+  P2["2 Libraries<br/>44/71 done"]
   P3["3 API<br/>0/5 done"]
   P4["4 Execution<br/>0/8 done"]
   P5["5 Findings API<br/>0/1 done"]
@@ -57,9 +57,9 @@ flowchart LR
 
 ```mermaid
 pie title Tasks by status
-  "done" : 302
-  "blocked" : 79
-  "in_progress" : 11
+  "done" : 308
+  "blocked" : 80
+  "in_progress" : 6
   "backlog" : 10
   "cancelled" : 4
   "todo" : 3
@@ -150,8 +150,8 @@ pie title Tasks by status
 | VFL-508 | Test Runner re-record: F3a-LOW `fc128ee` + T4 `9036d43`, tree `013b401` (child of VFL-402) | Test Runner | done | 2026-10-08 | [VFL-508 comment, 2026-10-08T16:49:54Z](http://paperclip.paperclip.svc.cluster.local/VFL/issues/VFL-508) — all gates PASS, T4 67/0/0 |
 | VFL-509 | Push approval: F3a-LOW at `fc128ee` + T4 `9036d43` (child of VFL-402) | Cortana | done | 2026-10-08 | [VFL-509 comment, 2026-10-08T17:15:47Z](http://paperclip.paperclip.svc.cluster.local/VFL/issues/VFL-509#document-decision), [decision document](http://paperclip.paperclip.svc.cluster.local/VFL/issues/VFL-509#document-decision) — ruled: content accepted but `fc128ee` not pushable since main moved to `c1bae41`; re-record required |
 | VFL-518 | T4 rebase: F3a-LOW test delta `18e038e..9036d43` onto main `c1bae41` (child of VFL-402) | Halsey | done | 2026-10-08 | [VFL-518 comment, 2026-10-08T17:39:54Z](http://paperclip.paperclip.svc.cluster.local/VFL/issues/VFL-518) — rebased to head `e11f448` on `c1bae41`, kept main's `wake_port_contract.rs` tests and spliced in 3 new ones, extended L6 with `OutsideTenantNamespace` (closes F3d LOW-3); nothing pushed yet |
-| VFL-520 | CodeRabbit delta review: F3a-LOW test half `e11f448` on `c1bae41` (child of VFL-402) | Arbiter | in_progress | | [VFL-520](http://paperclip.paperclip.svc.cluster.local/VFL/issues/VFL-520) |
-| VFL-521 | Opus Reviewer: delta re-review F3a-LOW test half `e11f448` on `c1bae41` (child of VFL-402) | Opus Reviewer | in_progress | | [VFL-521](http://paperclip.paperclip.svc.cluster.local/VFL/issues/VFL-521) |
+| VFL-520 | CodeRabbit delta review: F3a-LOW test half `e11f448` on `c1bae41` (child of VFL-402) | Arbiter | done | 2026-10-08 | [VFL-520 comment, 2026-10-08T18:30:07Z](http://paperclip.paperclip.svc.cluster.local/VFL/issues/VFL-520) — DONE, 1 MAJOR finding (`ArtifactKey::parse` missing the 255-byte segment check in this T-only worktree; cap lives in companion branch H, not a regression from this delta) routed to Jorge |
+| VFL-521 | Opus Reviewer: delta re-review F3a-LOW test half `e11f448` on `c1bae41` (child of VFL-402) | Opus Reviewer | done | 2026-10-08 | [VFL-521 comment, 2026-10-08T18:13:25Z](http://paperclip.paperclip.svc.cluster.local/VFL/issues/VFL-521#document-review-report), [review-report document](http://paperclip.paperclip.svc.cluster.local/VFL/issues/VFL-521#document-review-report) — PASS, no finding above LOW; F3d LOW-3 closed (exhaustive sweep now 9/9 `WakeBusError` variants) |
 | VFL-522 | Test Runner: F3a-LOW `ea1913d` + T4 `e11f448`, tree `ce7ba5f` (child of VFL-402) | Test Runner | in_progress | | [VFL-522](http://paperclip.paperclip.svc.cluster.local/VFL/issues/VFL-522) |
 | VFL-410 | F2f. graph-rules: vf-testkit may only be a dev-dependency (§A1.4, LOW-17) (child of VFL-12) | Jorge | blocked | | [VFL-410 comment, 2026-10-08T10:52:48Z](http://paperclip.paperclip.svc.cluster.local/VFL/issues/VFL-410) |
 | VFL-438 | CodeRabbit review: F2f graph-rules rule 4 `60266ab` (child of VFL-410) | Arbiter | done | 2026-10-08 | [VFL-438 comment, 2026-10-08T10:28:41Z](http://paperclip.paperclip.svc.cluster.local/VFL/issues/VFL-438#document-review), [review document](http://paperclip.paperclip.svc.cluster.local/VFL/issues/VFL-438#document-review) |
@@ -187,10 +187,10 @@ pie title Tasks by status
 | VFL-426 | Opus Reviewer: review C1 vf-core pair a869a06 + T1a b59f98f (child of VFL-240) | Opus Reviewer | done | 2026-10-08 | [VFL-426 comment, 2026-10-08T09:34:09Z](http://paperclip.paperclip.svc.cluster.local/VFL/issues/VFL-426#document-review), [review document](http://paperclip.paperclip.svc.cluster.local/VFL/issues/VFL-426#document-review) |
 | VFL-421 | Test Runner: required runs on C1 pair a869a06 + T1a b59f98f (child of VFL-240) | Test Runner | done | 2026-10-08 | [VFL-421 comment, 2026-10-08T16:10:33Z](http://paperclip.paperclip.svc.cluster.local/VFL/issues/VFL-421) — full gate PASS, 330/330 tests |
 | VFL-407 | Architect: C1 residual dispositions and §A3 records (from VFL-240 gate-record) | Cortana | done | 2026-10-08 | [VFL-407 comment, 2026-10-08T09:46:22Z](http://paperclip.paperclip.svc.cluster.local/VFL/issues/VFL-407#document-decision), [decision document](http://paperclip.paperclip.svc.cluster.local/VFL/issues/VFL-407#document-decision) |
-| VFL-434 | C1 (cont. of VFL-240): push approval, PR and CI for `a869a06` + `b59f98f` | Fred | blocked | | [VFL-434](http://paperclip.paperclip.svc.cluster.local/VFL/issues/VFL-434) — round 4 review opened (VFL-512/513/514) on pair `84faee4` + T1a `b59f98f` |
-| VFL-512 | Test Runner: required runs on C1 r4 pair 84faee4 + T1a b59f98f (child of VFL-434) | Test Runner | in_progress | | [VFL-512](http://paperclip.paperclip.svc.cluster.local/VFL/issues/VFL-512) |
+| VFL-434 | C1 (cont. of VFL-240): push approval, PR and CI for `a869a06` + `b59f98f` | Fred | blocked | | [VFL-434](http://paperclip.paperclip.svc.cluster.local/VFL/issues/VFL-434) — round 4 review on pair `84faee4` + T1a `b59f98f`: Test Runner (VFL-512) and Opus Reviewer (VFL-514) PASS; CodeRabbit (VFL-513) still in progress |
+| VFL-512 | Test Runner: required runs on C1 r4 pair 84faee4 + T1a b59f98f (child of VFL-434) | Test Runner | done | 2026-10-08 | [VFL-512 comment, 2026-10-08T18:28:56Z](http://paperclip.paperclip.svc.cluster.local/VFL/issues/VFL-512) — all 6 required gates re-run in one continuous foreground pass on a fresh worktree, all pass |
 | VFL-513 | CodeRabbit review: C1 r4 pair 84faee4 + T1a b59f98f (child of VFL-434) | Arbiter | in_progress | | [VFL-513](http://paperclip.paperclip.svc.cluster.local/VFL/issues/VFL-513) |
-| VFL-514 | Opus Reviewer: review C1 r4 pair 84faee4 + T1a b59f98f (child of VFL-434) | Opus Reviewer | in_progress | | [VFL-514](http://paperclip.paperclip.svc.cluster.local/VFL/issues/VFL-514) |
+| VFL-514 | Opus Reviewer: review C1 r4 pair 84faee4 + T1a b59f98f (child of VFL-434) | Opus Reviewer | done | 2026-10-08 | [VFL-514 comment, 2026-10-08T18:22:49Z](http://paperclip.paperclip.svc.cluster.local/VFL/issues/VFL-514#document-opus-review-r4), [opus-review-r4 document](http://paperclip.paperclip.svc.cluster.local/VFL/issues/VFL-514#document-opus-review-r4) — PASS, no finding above LOW, all 7 C1 acceptance criteria met |
 | VFL-408 | C1b. vf-core residuals from the C1 gate: TraceId (LOW-12), UnitSummary invariant (LOW-13), TenantSlug (slug rules) (from VFL-407 decision) | Fred | todo | | [VFL-408](http://paperclip.paperclip.svc.cluster.local/VFL/issues/VFL-408) |
 | VFL-409 | T1c: vf-core tests for C1b (TraceId, TenantSlug, UnitSummary::is_consistent; authorized trace-id fixture change) | Halsey | todo | | [VFL-409](http://paperclip.paperclip.svc.cluster.local/VFL/issues/VFL-409) |
 | VFL-247 | Decide: card `3e8b95c1` on VFL-240 (`problem.rs` illegal-transition fixture pair) | Cortana | done | 2026-10-07 | [VFL-247 comment, 2026-10-07T11:33:29Z](http://paperclip.paperclip.svc.cluster.local/VFL/issues/VFL-247) |
@@ -219,7 +219,8 @@ pie title Tasks by status
 | VFL-453 | Push and open test PR: T2 scope pack a0cbdf1 rebased onto main 2f662d2 (child of VFL-15) | Halsey | blocked | | [VFL-453 comment, 2026-10-08T11:30:47Z](http://paperclip.paperclip.svc.cluster.local/VFL/issues/VFL-453), [PR #26](https://github.com/vulcanflow/platform/pull/26) |
 | VFL-460 | Merge PR #26: T2 scope pack for vf-core::scope (child of VFL-15) | Cortana | blocked | | [VFL-460 comment, 2026-10-08T15:47:06Z](http://paperclip.paperclip.svc.cluster.local/VFL/issues/VFL-460), [PR #26](https://github.com/vulcanflow/platform/pull/26) — `rust-check` red on both architectures (fmt-check, three test files) and branch behind `main` at `65c1f3c`; not merged |
 | VFL-496 | Re-parent PR #26 onto main `2d1916c` and rustfmt the T2 scope pack (child of VFL-460) | Halsey | done | 2026-10-08 | [VFL-496 comment, 2026-10-08T16:09:43Z](http://paperclip.paperclip.svc.cluster.local/VFL/issues/VFL-496), [evidence document](http://paperclip.paperclip.svc.cluster.local/VFL/issues/VFL-496#document-evidence-vfl-496) — pushed H1; CI check(amd64/arm64) failure flagged to Cortana, out of scope |
-| VFL-507 | Fix clippy manual_repeat_n in T2 scope pack (H2), re-record + re-review, then push on approval (child of VFL-460) | Halsey | in_progress | | [VFL-507](http://paperclip.paperclip.svc.cluster.local/VFL/issues/VFL-507) |
+| VFL-507 | Fix clippy manual_repeat_n in T2 scope pack (H2), re-record + re-review, then push on approval (child of VFL-460) | Halsey | in_progress | | [VFL-507](http://paperclip.paperclip.svc.cluster.local/VFL/issues/VFL-507) — picks up VFL-525's cargo-deny flag fix by cherry-pick |
+| VFL-525 | Fix cargo-deny CLI flag order in `justfile:340` for cargo-deny 0.20.2 (blocks VFL-507/VFL-460, child of VFL-507) | Jorge | done | 2026-10-08 | [VFL-525 comment, 2026-10-08T18:26:08Z](http://paperclip.paperclip.svc.cluster.local/VFL/issues/VFL-525) — fix is commit `d2ae3f0` (not pushed); `just deny` exits 0, hands off to VFL-507 to cherry-pick onto PR #26 |
 | VFL-495 | T2 fuzz follow-up: force ≥1 label in `canonical_host` Descendant arm (residual LOW, PR #26) | Halsey | blocked | | [VFL-495 comment, 2026-10-08T15:50:46Z](http://paperclip.paperclip.svc.cluster.local/VFL/issues/VFL-495) |
 | VFL-17 | C3. `vf-db` schemas, migrations, `TenantTx`, repositories | Fred | blocked | | |
 | VFL-20 | C4. `vf-meter` accounting library | Fred | blocked | | |
@@ -329,6 +330,7 @@ No tasks created yet.
 | VFL-351 | Board watch (continuation 3): find stuck tasks and nudge owners (child of VFL-272) | MasterChief | done | 2026-10-08 | [VFL-351 comment, 2026-10-08T09:44:45Z](http://paperclip.paperclip.svc.cluster.local/VFL/issues/VFL-351) |
 | VFL-432 | Board watch (continuation 4): find stuck tasks and nudge owners (child of VFL-351, closed at the 20-comment limit) | MasterChief | in_progress | | [VFL-432](http://paperclip.paperclip.svc.cluster.local/VFL/issues/VFL-432) — re-checked out 2026-10-08T12:52:33Z, no new comment yet since the 11:07 retry-budget-spent note |
 | VFL-255 | Board watch: task-bound run to post 12 pending nudges and re-arm the VFL-84 monitor | MasterChief | done | 2026-10-07 | [VFL-255 comment, 2026-10-07T13:23:28Z](http://paperclip.paperclip.svc.cluster.local/VFL/issues/VFL-255) |
+| VFL-524 | GitHub managed-credential broker unreachable (blocks VFL-523 progress push) | MasterChief | done | 2026-10-08 | [VFL-524 comment, 2026-10-08T18:20:39Z](http://paperclip.paperclip.svc.cluster.local/VFL/issues/VFL-524) — re-checked broker and git auth from a fresh run, both healthy; transient outage, no config change; cleared the blocker on [VFL-523](http://paperclip.paperclip.svc.cluster.local/VFL/issues/VFL-523) |
 | VFL-85 | CI hardening: SHA-pin the GitHub Actions in rust-check.yml and lane-gate.yml | Jorge | done | 2026-10-08 | [VFL-85 comment, 2026-10-08T10:10:32Z](http://paperclip.paperclip.svc.cluster.local/VFL/issues/VFL-85#document-pin-evidence), [pin-evidence document](http://paperclip.paperclip.svc.cluster.local/VFL/issues/VFL-85#document-pin-evidence), [PR #24](https://github.com/vulcanflow/platform/pull/24) |
 | VFL-87 | T9: NO_IO_CRATES covers 4 of the 7 crates graph-rules.sh checks, and does not split by target (record/index — review chain VFL-119/120) | Halsey | blocked | | [VFL-87](http://paperclip.paperclip.svc.cluster.local/VFL/issues/VFL-87) |
 | VFL-88 | F1 delivery: merge the production PR for eab1bc5 | Cortana | done | 2026-10-06 | [VFL-88 comment, 2026-10-06T12:19:40Z](http://paperclip.paperclip.svc.cluster.local/VFL/issues/VFL-88), [PR #11](https://github.com/vulcanflow/platform/pull/11) |
@@ -465,7 +467,7 @@ No tasks created yet.
 | VFL-385 | Wake: VFL-149 rebase of `e1d52f3` onto `origin/main` and re-gate (child of VFL-149) | Jorge | done | 2026-10-08 | [VFL-385 comment, 2026-10-08T07:04:04Z](http://paperclip.paperclip.svc.cluster.local/VFL/issues/VFL-385), [rebase-70e0e33 document](http://paperclip.paperclip.svc.cluster.local/VFL/issues/VFL-149#document-rebase-70e0e33) |
 | VFL-390 | CodeRabbit delta review: VFL-149 rebased candidate 70e0e33, pure rebase of e1d52f3 (child of VFL-149) | Arbiter | done | 2026-10-08 | [VFL-390 comment, 2026-10-08T07:15:49Z](http://paperclip.paperclip.svc.cluster.local/VFL/issues/VFL-390) |
 | VFL-391 | Opus Reviewer delta review: VFL-149 rebased candidate 70e0e33, pure rebase of e1d52f3 (child of VFL-149) | Opus Reviewer | done | 2026-10-08 | [VFL-391 comment, 2026-10-08T07:17:23Z](http://paperclip.paperclip.svc.cluster.local/VFL/issues/VFL-391), [review-70e0e33 document](http://paperclip.paperclip.svc.cluster.local/VFL/issues/VFL-391#document-review-70e0e33) |
-| VFL-392 | Test Runner: installer checks, just check and just gate on VFL-149 rebased candidate 70e0e33 (child of VFL-149) | Test Runner | in_progress | | [VFL-392 comment, 2026-10-08T17:31:45Z](http://paperclip.paperclip.svc.cluster.local/VFL/issues/VFL-392) — board watch found the `blocked` disposition was a repair artifact of a dead run, not a real blocker; resumed |
+| VFL-392 | Test Runner: installer checks, just check and just gate on VFL-149 rebased candidate 70e0e33 (child of VFL-149) | Test Runner | blocked | | [VFL-392 comment, 2026-10-08T18:19:21Z](http://paperclip.paperclip.svc.cluster.local/VFL/issues/VFL-392) — Paperclip's disposition-repair backstop exhausted its retry budget (`unchanged_source_state_exhausted`) after repeated `just gate` runs were backgrounded across heartbeats and lost; recovery owner is the board |
 | VFL-266 | CodeRabbit review: VFL-149 just/cargo-deny/cargo-audit bootstrap candidate e1d52f3 (child of VFL-149) | Arbiter | done | 2026-10-07 | [VFL-266 comment, 2026-10-07T14:26:01Z](http://paperclip.paperclip.svc.cluster.local/VFL/issues/VFL-266) |
 | VFL-268 | Opus Reviewer: review VFL-149 just/cargo-deny/cargo-audit bootstrap candidate e1d52f3 (child of VFL-149) | Opus Reviewer | done | 2026-10-07 | [VFL-268 comment, 2026-10-07T14:53:48Z](http://paperclip.paperclip.svc.cluster.local/VFL/issues/VFL-268), [review document](http://paperclip.paperclip.svc.cluster.local/VFL/issues/VFL-268#document-review-e1d52f3) |
 | VFL-269 | Test Runner: just check, just gate and installer checks on VFL-149 candidate e1d52f3 (child of VFL-149) | Test Runner | done | 2026-10-07 | [VFL-269 comment, 2026-10-07T18:34:04Z](http://paperclip.paperclip.svc.cluster.local/VFL/issues/VFL-269) |
@@ -585,6 +587,30 @@ Update 2026-10-07 20:34 UTC: seven deliveries, eleven status changes, seven new 
 Update 2026-10-07 21:40 UTC: thirteen deliveries, eight status changes, twelve new tasks. The wasm-pack toolchain pin (VFL-305) cleared its gate cycle on re-candidate `6e9a76d`: CodeRabbit (VFL-329, done — PASS, 1 LOW), Opus Reviewer (VFL-330, done — PASS, both prior MEDIUMs confirmed fixed, 2 new LOWs) and Test Runner (VFL-331/VFL-335, done — steps 1–3 and the `wasm-test` node step all green) all passed, so Cortana approved the push as-is (VFL-337, done) and filed three residual-LOW follow-ups (VFL-342/343/344, all new, blocked). Jorge's push itself (VFL-340, new, in_progress) is waiting on a concurrent run holding this workspace's GitHub identity; the merge (VFL-341, new, blocked) waits on that push landing. On C1, the long-stuck Arbiter reviews finally ran: after a multi-cycle watchdog/reassignment saga (VFL-332, done; VFL-306, done), CodeRabbit passed both queued reviews — VFL-264 (C1 pair `2444217`+`b59f98f`, todo → done, 1 LOW) and VFL-198 (C2 scope fuzz, net unchanged — flickered done → todo again once Kelly moved the candidate to `12801bf` mid-run) — clearing VFL-240's gate cycle (`blocked` → `in_progress`) for Fred to request push approval next. Opus Reviewer separately re-verdicted VFL-209 PASS on that same new fuzz candidate `12801bf` (LOW 1 and 2 resolved). On VFL-82, Test Runner's full `just gate` passed (VFL-116, done) and Cortana approved the push (VFL-345, done). On VFL-149, Cortana declined the push as-is — code accepted but the PR needs a pure rebase onto current main before it can merge under branch protection (VFL-334, done) — and filed a LOW follow-up (VFL-336, new, blocked). On F3, Cortana's ruling on VFL-310's three open questions (VFL-339, done) resolved delete-is-silent and a new `get_stream` read, with the tenant-scope guard split out as a new F3d task (VFL-346, new, todo, joins the Phase 1 table).
 
 ## Delivery log
+
+### 2026-10-08 — VFL-520 CodeRabbit delta review: F3a-LOW test half e11f448 on c1bae41 (child of VFL-402)
+
+Arbiter's delta review of `c1bae41..e11f448` completed after a prior run's backgrounded CodeRabbit process was killed by its own run-scratch-dir cleanup; this run rebuilt the worktree at a durable path and relaunched the review as a harness-tracked background job. Result: the delta touches only the two test files (+252/-1), `wake_port_contract.rs` is pure insertion (main's 37 tests untouched), and the only removal anywhere is the authorized exactly-at-cap rewrite. One MAJOR finding: `crates/vf-core/tests/artifact_port_contract.rs:428` expects `ArtifactKey::parse` to reject a 256-byte segment, but that cap lives in companion branch H (`ea1913d`, VFL-442 already PASS) and is not merged into this T-only worktree — read as a review-scope artifact rather than a regression, routed to Jorge/Cortana for disposition. Evidence: [VFL-520 comment, 2026-10-08T18:30:07Z](http://paperclip.paperclip.svc.cluster.local/VFL/issues/VFL-520).
+
+### 2026-10-08 — VFL-521 Opus Reviewer: delta re-review F3a-LOW test half e11f448 on c1bae41 (child of VFL-402)
+
+Opus Reviewer's delta re-review confirmed all four checks: the `wake_port_contract.rs` splice is pure insertion (84/0, one hunk) with all 37 of main's tests untouched and 3 added; the `is_recoverable()` sweep is now exhaustive over all 9 `WakeBusError` variants (was 8/9), closing F3d LOW-3; the artifact test file is byte- and source-identical to the already-approved `9036d43`/`ea1913d`. PASS, no finding above LOW. Full report: [review-report document](http://paperclip.paperclip.svc.cluster.local/VFL/issues/VFL-521#document-review-report). Evidence: [VFL-521 comment, 2026-10-08T18:13:25Z](http://paperclip.paperclip.svc.cluster.local/VFL/issues/VFL-521#document-review-report).
+
+### 2026-10-08 — VFL-512 Test Runner: required runs on C1 r4 pair 84faee4 + T1a b59f98f (child of VFL-434)
+
+After two prior runs died on the ACP startup handshake mid-work, Test Runner reran all 6 required gates for C1 round-4 pair `84faee4` + T1a `b59f98f` in one continuous foreground pass on a fresh `/tmp` worktree (no cross-turn backgrounding). Pre-verified the exact diff ranges (`b5ee40e..b59f98f` = 6 test files +2312/-0; `2d1916c..84faee4` = 8 files +2188/-26) before running anything. All gates — `just check` (fmt, clippy, deny, audit), tests, `graph-rules`, `lane-gate` and `rustdoc` — passed. This closes out the required-runs gate for [VFL-434](http://paperclip.paperclip.svc.cluster.local/VFL/issues/VFL-434)'s round 4; CodeRabbit (VFL-513) is still in progress. Evidence: [VFL-512 comment, 2026-10-08T18:28:56Z](http://paperclip.paperclip.svc.cluster.local/VFL/issues/VFL-512).
+
+### 2026-10-08 — VFL-514 Opus Reviewer: review C1 r4 pair 84faee4 + T1a b59f98f (child of VFL-434)
+
+Opus Reviewer closed out the round-4 C1 review after a lost run left only the `cargo test` result outstanding (static review, fmt and clippy were already published). Reviewed the full candidate, not just the rebase delta: code `84faee4` (`2d1916c..84faee4`, 8 files, +2188/-26) and tests `b59f98f` (`b5ee40e..b59f98f`, 6 files, +2312). **PASS**, no finding above LOW, all 7 C1 acceptance criteria met. Full report: [opus-review-r4 document](http://paperclip.paperclip.svc.cluster.local/VFL/issues/VFL-514#document-opus-review-r4). Evidence: [VFL-514 comment, 2026-10-08T18:22:49Z](http://paperclip.paperclip.svc.cluster.local/VFL/issues/VFL-514#document-opus-review-r4).
+
+### 2026-10-08 — VFL-525 Fix cargo-deny CLI flag order in justfile:340 for cargo-deny 0.20.2 (blocks VFL-507/VFL-460, child of VFL-507)
+
+Jorge fixed a cargo-deny 0.20.2 invocation bug blocking [VFL-507](http://paperclip.paperclip.svc.cluster.local/VFL/issues/VFL-507)/[VFL-460](http://paperclip.paperclip.svc.cluster.local/VFL/issues/VFL-460): `--manifest-path`, `--locked` and `--config` are top-level cargo-deny options in 0.20.2, not `check` subcommand flags. Fix is commit `d2ae3f0` on local branch `jorge/vfl-525-deny-flag-order` (justfile only, +5/-1), not pushed. `deny.toml` policy is unchanged; `just deny` exits 0 with advisories/bans/licenses/sources all ok (log attached as `vfl-525-just-deny-d2ae3f0.log`). Hands off to VFL-507 to cherry-pick `d2ae3f0` onto PR #26's next head alongside the re-record and re-review. Evidence: [VFL-525 comment, 2026-10-08T18:26:08Z](http://paperclip.paperclip.svc.cluster.local/VFL/issues/VFL-525).
+
+### 2026-10-08 — VFL-524 GitHub managed-credential broker unreachable (blocks VFL-523 progress push)
+
+MasterChief re-checked the GitHub managed-credential broker from a fresh run after the prior Guilty Spark run (VFL-523) reported `broker_transport_unavailable` with PROGRESS.md/state.json staged but uncommitted on branch `progress/20261008-1812`. The broker answered HTTP 200 (`status: available`) and `git ls-remote --heads origin` succeeded end to end from the `vulcanflow/docs` workspace; no configuration was changed, so this is treated as a transient connectivity outage rather than a broker defect. This cleared the blocker and let [VFL-523](http://paperclip.paperclip.svc.cluster.local/VFL/issues/VFL-523) finish on its next run: commit, push, open PR, squash-merge and delete the branch, landing commit `691e874` on `main`. Evidence: [VFL-524 comment, 2026-10-08T18:20:39Z](http://paperclip.paperclip.svc.cluster.local/VFL/issues/VFL-524).
 
 ### 2026-10-08 — VFL-518 T4 rebase: F3a-LOW test delta 18e038e..9036d43 onto main c1bae41 (child of VFL-402)
 
@@ -1660,6 +1686,13 @@ Opened [PR #53](https://github.com/vulcanflow/docs/pull/53) with `VulcanFlow_Dev
 
 ## Status changes
 
+- 2026-10-08T18:26:05Z VFL-525 (new) -> done — "Fix cargo-deny CLI flag order in `justfile:340` for cargo-deny 0.20.2", Jorge, project core-libraries, Phase 2 Libraries — fix is commit `d2ae3f0`, not pushed; hands off to VFL-507; see delivery log
+- 2026-10-08T18:20:40Z VFL-524 (new) -> done — "GitHub managed-credential broker unreachable (blocks VFL-523 progress push)", MasterChief, project progress-and-docs, not in the phase mapping (held under Unassigned) — transient outage, broker and git auth confirmed healthy; cleared VFL-523's blocker; see delivery log
+- 2026-10-08T18:30:15Z VFL-520 in_progress -> done — "CodeRabbit delta review: F3a-LOW test half `e11f448` on `c1bae41`", Arbiter, project platform-foundation, Phase 1 Foundation — DONE, 1 MAJOR finding routed to Jorge/Cortana; see delivery log
+- 2026-10-08T18:14:03Z VFL-521 in_progress -> done — "Opus Reviewer: delta re-review F3a-LOW test half `e11f448` on `c1bae41`", Opus Reviewer, project platform-foundation, Phase 1 Foundation — PASS, no finding above LOW; F3d LOW-3 closed; see delivery log
+- 2026-10-08T18:28:57Z VFL-512 in_progress -> done — "Test Runner: required runs on C1 r4 pair 84faee4 + T1a b59f98f", Test Runner, project core-libraries, Phase 2 Libraries — all 6 required gates PASS; see delivery log
+- 2026-10-08T18:23:03Z VFL-514 in_progress -> done — "Opus Reviewer: review C1 r4 pair 84faee4 + T1a b59f98f", Opus Reviewer, project core-libraries, Phase 2 Libraries — PASS, no finding above LOW; see delivery log
+- 2026-10-08T18:19:21Z VFL-392 in_progress -> blocked — "Test Runner: installer checks, just check and just gate on VFL-149 rebased candidate 70e0e33", Test Runner, project core-libraries, not in the phase mapping (held under Unassigned) — disposition-repair backstop exhausted (`unchanged_source_state_exhausted`) after backgrounded `just gate` runs were lost across heartbeats again; recovery owner is the board
 - 2026-10-08T17:59:54Z VFL-522 (new) -> in_progress — "Test Runner: F3a-LOW `ea1913d` + T4 `e11f448`, tree `ce7ba5f`", Test Runner, project platform-foundation, Phase 1 Foundation — delta gate opened on VFL-518's rebased head
 - 2026-10-08T17:59:49Z VFL-521 (new) -> in_progress — "Opus Reviewer: delta re-review F3a-LOW test half `e11f448` on `c1bae41`", Opus Reviewer, project platform-foundation, Phase 1 Foundation — delta gate opened on VFL-518's rebased head
 - 2026-10-08T17:59:38Z VFL-520 (new) -> in_progress — "CodeRabbit delta review: F3a-LOW test half `e11f448` on `c1bae41`", Arbiter, project platform-foundation, Phase 1 Foundation — delta gate opened on VFL-518's rebased head
@@ -1703,11 +1736,4 @@ Opened [PR #53](https://github.com/vulcanflow/docs/pull/53) with `VulcanFlow_Dev
 - 2026-10-08T15:55:29Z VFL-444 in_progress -> done — "Test Runner: required runs on F3a-LOW `2337ec4` + T4 rev2 VFL-441", Test Runner, project platform-foundation, Phase 1 Foundation — fmt-check/clippy FAIL (test files only), T4 67/67 PASS; see delivery log
 - 2026-10-08T15:47:06Z VFL-460 in_progress -> blocked — "Merge PR #26: T2 scope pack for vf-core::scope", Cortana, project core-libraries, Phase 2 Libraries — `rust-check` red and branch behind main; not merged
 - 2026-10-08T15:45:26Z VFL-496 (new) -> in_progress — "Re-parent PR #26 onto main `2d1916c` and rustfmt the T2 scope pack", Halsey, project core-libraries, Phase 2 Libraries — fix for VFL-460's merge blocker
-- 2026-10-08T15:44:32Z VFL-495 (new) -> blocked — "T2 fuzz follow-up: force ≥1 label in `canonical_host` Descendant arm", Halsey, project core-libraries, Phase 2 Libraries — residual LOW from PR #26
-- 2026-10-08T15:44:13Z VFL-445 in_progress -> done — "CodeRabbit re-review: F3d rev2 `ba428c1` + T4 `6abf710`", Arbiter, project platform-foundation, Phase 1 Foundation — PASS, 0 findings; see delivery log
-- 2026-10-08T15:39:22Z VFL-494 (new) -> blocked — "VFL-105 continuation: confirm CI green on `c0c0df5` and hand off to Cortana for merge", Halsey, project platform-foundation, not in the phase mapping (held under Unassigned) — waiting on CI
-- 2026-10-08T15:27:36Z VFL-484 blocked -> in_progress — "VFL-122 continuation: round-4 gate, push approval and PR for `648cc0f`", Jorge, project platform-foundation, not in the phase mapping (held under Unassigned) — Jorge fixed Opus's M4 at `c1a46cf` instead of waiting for push approval; fixtures child VFL-492 filed for Halsey
-- 2026-10-08T15:27:34Z VFL-492 (new) -> done — "Test Writer: lane-gate fixtures for the pins blob text check on c1a46cf", Halsey, project platform-foundation, child of VFL-484, not in the phase mapping (held under Unassigned) — fixtures delivered, routed to Test Runner; see delivery log
-- 2026-10-08T15:09:48Z VFL-487 in_progress -> done — "Opus Reviewer review round 4: lane-gate `pins` check + README update path (648cc0f)", Opus Reviewer, project platform-foundation, child of VFL-484, not in the phase mapping (held under Unassigned) — FAIL, new MEDIUM M4; see delivery log
-- 2026-10-08T14:48:09Z VFL-485 (new) -> done — "Decide: three open questions on the VFL-122 pins check", Cortana, project platform-foundation, not in the phase mapping (held under Unassigned) — all three ruled; see delivery log
 (List trimmed to the last 50 entries per the document spec; earlier changes — back to the 2026-10-05T21:23:32Z baseline — remain in the Paperclip issue history and in prior commits to this file.)
