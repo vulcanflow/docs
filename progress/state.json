@@ -1,5 +1,5 @@
 {
-  "lastRunAt": "2026-10-08T13:08:33Z",
+  "lastRunAt": "2026-10-08T13:33:46Z",
   "phases": {
     "p1_foundation": {
       "label": "1 Foundation",
@@ -2713,7 +2713,7 @@
       "project": "91740a68-0dd1-47b4-935f-9ab08f4c5669"
     },
     "VFL-122": {
-      "status": "blocked",
+      "status": "in_progress",
       "completedAt": null,
       "title": "CI: enforce the 40-hex `uses:` pin rule in lane-gate and document the pin update path (VFL-103 residual LOW 1+2)",
       "assignee": "912014ba-380a-46cd-baa6-306e9343a2c2",
@@ -3063,22 +3063,22 @@
       "project": "91740a68-0dd1-47b4-935f-9ab08f4c5669"
     },
     "VFL-474": {
-      "status": "in_progress",
-      "completedAt": null,
+      "status": "done",
+      "completedAt": "2026-10-08T13:14:27.656Z",
       "title": "CodeRabbit review round 3: lane-gate `pins` check + README update path (ced2971, VFL-122)",
       "assignee": "13034933-9579-4b3c-add9-b9426144d934",
       "project": "91740a68-0dd1-47b4-935f-9ab08f4c5669"
     },
     "VFL-475": {
-      "status": "in_progress",
-      "completedAt": null,
+      "status": "done",
+      "completedAt": "2026-10-08T13:28:00.935Z",
       "title": "Opus Reviewer review round 3: lane-gate `pins` check + README update path (ced2971, VFL-122)",
       "assignee": "938921ab-9ab9-469b-85ac-976d8cabad96",
       "project": "91740a68-0dd1-47b4-935f-9ab08f4c5669"
     },
     "VFL-476": {
-      "status": "in_progress",
-      "completedAt": null,
+      "status": "done",
+      "completedAt": "2026-10-08T13:13:53.394Z",
       "title": "Test Runner: lane gate and lane-gate self-test on the pins candidate (ced2971, VFL-122)",
       "assignee": "d0a26468-a577-4f16-a29c-de0b53af3983",
       "project": "91740a68-0dd1-47b4-935f-9ab08f4c5669"
