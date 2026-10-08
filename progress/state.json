@@ -1,5 +1,5 @@
 {
-  "lastRunAt": "2026-10-08T17:06:00Z",
+  "lastRunAt": "2026-10-08T17:35:00Z",
   "phases": {
     "p1_foundation": {
       "label": "1 Foundation",
@@ -102,7 +102,8 @@
         "VFL-509",
         "VFL-511",
         "VFL-515",
-        "VFL-516"
+        "VFL-516",
+        "VFL-518"
       ]
     },
     "p2_libraries": {
@@ -723,7 +724,7 @@
       "project": "core-libraries"
     },
     "VFL-392": {
-      "status": "blocked",
+      "status": "in_progress",
       "completedAt": null,
       "title": "Test Runner: installer checks, just check and just gate on VFL-149 rebased candidate 70e0e33",
       "assignee": "Test Runner",
@@ -3285,8 +3286,8 @@
       "project": "platform-foundation"
     },
     "VFL-509": {
-      "status": "in_progress",
-      "completedAt": null,
+      "status": "done",
+      "completedAt": "2026-10-08T17:15:47.714Z",
       "title": "Push approval: F3a-LOW at `fc128ee` + T4 `9036d43` (VFL-402)",
       "assignee": "Cortana",
       "project": "platform-foundation"
@@ -3327,10 +3328,10 @@
       "project": "core-libraries"
     },
     "VFL-516": {
-      "status": "in_progress",
-      "completedAt": null,
+      "status": "done",
+      "completedAt": "2026-10-08T17:09:49.691Z",
       "title": "Merge PR #29: T4 port-contract tests for F3a and F3d (VFL-314, VFL-355, VFL-420)",
-      "assignee": "Halsey",
+      "assignee": "Cortana",
       "project": "platform-foundation"
     },
     "VFL-515": {
@@ -3346,6 +3347,13 @@
       "title": "Test Runner: required runs on C1 r4 pair 84faee4 + T1a b59f98f (VFL-434)",
       "assignee": "Test Runner",
       "project": "core-libraries"
+    },
+    "VFL-518": {
+      "status": "in_progress",
+      "completedAt": null,
+      "title": "T4 rebase: F3a-LOW test delta 18e038e..9036d43 onto main c1bae41 (VFL-402)",
+      "assignee": "Halsey",
+      "project": "platform-foundation"
     }
   }
 }
