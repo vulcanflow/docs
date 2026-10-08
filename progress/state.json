@@ -1,5 +1,5 @@
 {
-  "lastRunAt": "2026-10-08T09:21:06Z",
+  "lastRunAt": "2026-10-08T10:08:18Z",
   "phases": {
     "p1_foundation": {
       "label": "1 Foundation",
@@ -145,7 +145,8 @@
         "VFL-408",
         "VFL-409",
         "VFL-415",
-        "VFL-431"
+        "VFL-431",
+        "VFL-434"
       ]
     },
     "p3_api": {
@@ -414,7 +415,9 @@
         "VFL-414",
         "VFL-416",
         "VFL-417",
-        "VFL-413"
+        "VFL-413",
+        "VFL-432",
+        "VFL-433"
       ]
     }
   },
@@ -546,8 +549,8 @@
       "project": "91740a68-0dd1-47b4-935f-9ab08f4c5669"
     },
     "VFL-426": {
-      "status": "in_progress",
-      "completedAt": null,
+      "status": "done",
+      "completedAt": "2026-10-08T09:34:19.144Z",
       "title": "Opus Reviewer: review C1 vf-core pair a869a06 + T1a b59f98f (VFL-240)",
       "assignee": "938921ab-9ab9-469b-85ac-976d8cabad96",
       "project": "1e4d751c-3ada-47c7-aabe-e8cb40bc897e"
@@ -560,14 +563,14 @@
       "project": "1e4d751c-3ada-47c7-aabe-e8cb40bc897e"
     },
     "VFL-418": {
-      "status": "in_progress",
-      "completedAt": null,
+      "status": "done",
+      "completedAt": "2026-10-08T09:53:21.077Z",
       "title": "T4 slice for F3a-LOW: S3 segment-cap tests and S4 Debug redaction on `0af84f6` (VFL-402)",
       "assignee": "6029b86f-ff5b-492b-9f97-ed31363be784",
       "project": "91740a68-0dd1-47b4-935f-9ab08f4c5669"
     },
     "VFL-415": {
-      "status": "blocked",
+      "status": "in_progress",
       "completedAt": null,
       "title": "Push approval: C2 vf-core::scope — reviewed fbf6342, or re-parented 5d6eac2 (VFL-15)",
       "assignee": "a9be75cd-d767-4c44-b49c-2017c61f751f",
@@ -581,8 +584,8 @@
       "project": "1e4d751c-3ada-47c7-aabe-e8cb40bc897e"
     },
     "VFL-423": {
-      "status": "blocked",
-      "completedAt": null,
+      "status": "done",
+      "completedAt": "2026-10-08T09:56:35.139Z",
       "title": "CodeRabbit review: C1 vf-core pair a869a06 + T1a b59f98f (VFL-240)",
       "assignee": "13034933-9579-4b3c-add9-b9426144d934",
       "project": "1e4d751c-3ada-47c7-aabe-e8cb40bc897e"
@@ -602,21 +605,21 @@
       "project": "1e4d751c-3ada-47c7-aabe-e8cb40bc897e"
     },
     "VFL-429": {
-      "status": "todo",
+      "status": "in_progress",
       "completedAt": null,
       "title": "Test Runner: required runs on F3a-LOW `0af84f6` + T4 VFL-418 (VFL-402)",
       "assignee": "d0a26468-a577-4f16-a29c-de0b53af3983",
       "project": "91740a68-0dd1-47b4-935f-9ab08f4c5669"
     },
     "VFL-428": {
-      "status": "todo",
+      "status": "in_progress",
       "completedAt": null,
       "title": "Opus Reviewer: review F3a-LOW pair `0af84f6` + T4 VFL-418 (VFL-402)",
       "assignee": "938921ab-9ab9-469b-85ac-976d8cabad96",
       "project": "91740a68-0dd1-47b4-935f-9ab08f4c5669"
     },
     "VFL-425": {
-      "status": "todo",
+      "status": "in_progress",
       "completedAt": null,
       "title": "CodeRabbit review: F3a-LOW pair `0af84f6` + T4 VFL-418 (VFL-402)",
       "assignee": "13034933-9579-4b3c-add9-b9426144d934",
@@ -1645,8 +1648,8 @@
       "project": "44554fc9-52e4-4b16-814c-16d5d5e51c57"
     },
     "VFL-420": {
-      "status": "in_progress",
-      "completedAt": null,
+      "status": "done",
+      "completedAt": "2026-10-08T09:18:05.175Z",
       "title": "T4 slice for F3d: `TenantWakeBus` tenant-namespace tests at `5ca5dc3` (VFL-346)",
       "assignee": "6029b86f-ff5b-492b-9f97-ed31363be784",
       "project": "91740a68-0dd1-47b4-935f-9ab08f4c5669"
@@ -1666,8 +1669,8 @@
       "project": "91740a68-0dd1-47b4-935f-9ab08f4c5669"
     },
     "VFL-351": {
-      "status": "in_progress",
-      "completedAt": null,
+      "status": "done",
+      "completedAt": "2026-10-08T09:44:51.640Z",
       "title": "Board watch (continuation 3): find stuck tasks and nudge owners",
       "assignee": "ae2a6da1-327d-466e-8227-311999bca475",
       "project": "c38f8495-f564-4816-b305-9518483d7162"
@@ -1694,7 +1697,7 @@
       "project": "91740a68-0dd1-47b4-935f-9ab08f4c5669"
     },
     "VFL-346": {
-      "status": "blocked",
+      "status": "in_progress",
       "completedAt": null,
       "title": "F3d. `TenantWakeBus`: tenant-scoped `Topic` and `BucketKey` wrapper in `vf-core::ports::wake`",
       "assignee": "912014ba-380a-46cd-baa6-306e9343a2c2",
@@ -1708,22 +1711,22 @@
       "project": "91740a68-0dd1-47b4-935f-9ab08f4c5669"
     },
     "VFL-427": {
-      "status": "blocked",
-      "completedAt": null,
+      "status": "done",
+      "completedAt": "2026-10-08T09:59:06.751Z",
       "title": "Test Runner: required runs on F3d `5ca5dc3` + T4 VFL-420 (VFL-346)",
       "assignee": "d0a26468-a577-4f16-a29c-de0b53af3983",
       "project": "91740a68-0dd1-47b4-935f-9ab08f4c5669"
     },
     "VFL-407": {
-      "status": "in_progress",
-      "completedAt": null,
+      "status": "done",
+      "completedAt": "2026-10-08T09:46:24.969Z",
       "title": "Architect: C1 residual dispositions and §A3 records (from VFL-240 gate-record)",
       "assignee": "a9be75cd-d767-4c44-b49c-2017c61f751f",
       "project": "1e4d751c-3ada-47c7-aabe-e8cb40bc897e"
     },
     "VFL-424": {
-      "status": "blocked",
-      "completedAt": null,
+      "status": "done",
+      "completedAt": "2026-10-08T09:36:55.226Z",
       "title": "Opus Reviewer: review F3d pair `5ca5dc3` + T4 VFL-420 (VFL-346)",
       "assignee": "938921ab-9ab9-469b-85ac-976d8cabad96",
       "project": "91740a68-0dd1-47b4-935f-9ab08f4c5669"
@@ -1736,8 +1739,8 @@
       "project": "6b33380d-e29e-43b9-abde-0a191afb3920"
     },
     "VFL-422": {
-      "status": "blocked",
-      "completedAt": null,
+      "status": "done",
+      "completedAt": "2026-10-08T09:33:52.487Z",
       "title": "CodeRabbit review: F3d pair `5ca5dc3` + T4 VFL-420 (VFL-346)",
       "assignee": "13034933-9579-4b3c-add9-b9426144d934",
       "project": "91740a68-0dd1-47b4-935f-9ab08f4c5669"
@@ -2219,15 +2222,15 @@
       "project": "91740a68-0dd1-47b4-935f-9ab08f4c5669"
     },
     "VFL-419": {
-      "status": "in_progress",
-      "completedAt": null,
+      "status": "done",
+      "completedAt": "2026-10-08T09:56:18.498Z",
       "title": "VFL-103 delivery: open the PR to main for 0170c00 (SHA pins)",
       "assignee": "912014ba-380a-46cd-baa6-306e9343a2c2",
       "project": "91740a68-0dd1-47b4-935f-9ab08f4c5669"
     },
     "VFL-103": {
-      "status": "blocked",
-      "completedAt": null,
+      "status": "done",
+      "completedAt": "2026-10-08T10:02:26.322Z",
       "title": "VFL-85 continuation: apply the SHA-pin commit and take it through the gate",
       "assignee": "912014ba-380a-46cd-baa6-306e9343a2c2",
       "project": "91740a68-0dd1-47b4-935f-9ab08f4c5669"
@@ -2674,7 +2677,7 @@
       "project": "91740a68-0dd1-47b4-935f-9ab08f4c5669"
     },
     "VFL-122": {
-      "status": "blocked",
+      "status": "in_progress",
       "completedAt": null,
       "title": "CI: enforce the 40-hex `uses:` pin rule in lane-gate and document the pin update path (VFL-103 residual LOW 1+2)",
       "assignee": "912014ba-380a-46cd-baa6-306e9343a2c2",
@@ -2716,7 +2719,7 @@
       "project": "91740a68-0dd1-47b4-935f-9ab08f4c5669"
     },
     "VFL-85": {
-      "status": "blocked",
+      "status": "in_progress",
       "completedAt": null,
       "title": "CI hardening: SHA-pin the GitHub Actions in rust-check.yml and lane-gate.yml",
       "assignee": "912014ba-380a-46cd-baa6-306e9343a2c2",
@@ -2765,11 +2768,32 @@
       "project": "4a2e2884-3cd3-4140-a2d3-16b38914c683"
     },
     "VFL-431": {
-      "status": "in_progress",
-      "completedAt": null,
+      "status": "done",
+      "completedAt": "2026-10-08T09:57:52.398Z",
       "title": "Test Runner: re-record C2 at 5d6eac2 + T2 a0cbdf1 — pack 66/66, clippy, deny, audit (VFL-15)",
       "assignee": "d0a26468-a577-4f16-a29c-de0b53af3983",
       "project": "1e4d751c-3ada-47c7-aabe-e8cb40bc897e"
+    },
+    "VFL-433": {
+      "status": "done",
+      "completedAt": "2026-10-08T09:59:08.047Z",
+      "title": "Merge PR #24: VFL-103 SHA pins at 0170c00",
+      "assignee": "a9be75cd-d767-4c44-b49c-2017c61f751f",
+      "project": "91740a68-0dd1-47b4-935f-9ab08f4c5669"
+    },
+    "VFL-434": {
+      "status": "blocked",
+      "completedAt": null,
+      "title": "C1 (cont. of VFL-240): push approval, PR and CI for `a869a06` + `b59f98f`",
+      "assignee": "349b5411-a09e-40b6-a523-08c13e6824a5",
+      "project": "1e4d751c-3ada-47c7-aabe-e8cb40bc897e"
+    },
+    "VFL-432": {
+      "status": "in_progress",
+      "completedAt": null,
+      "title": "Board watch (continuation 4): find stuck tasks and nudge owners",
+      "assignee": "ae2a6da1-327d-466e-8227-311999bca475",
+      "project": "c38f8495-f564-4816-b305-9518483d7162"
     }
   }
 }
