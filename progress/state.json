@@ -1,5 +1,5 @@
 {
-  "lastRunAt": "2026-10-08T22:39:56Z",
+  "lastRunAt": "2026-10-08T23:02:00Z",
   "phases": {
     "p1_foundation": {
       "label": "1 Foundation",
@@ -217,7 +217,10 @@
         "VFL-533",
         "VFL-535",
         "VFL-567",
-        "VFL-568"
+        "VFL-568",
+        "VFL-574",
+        "VFL-575",
+        "VFL-576"
       ]
     },
     "p3_api": {
@@ -535,7 +538,8 @@
         "VFL-559",
         "VFL-570",
         "VFL-571",
-        "VFL-572"
+        "VFL-572",
+        "VFL-573"
       ]
     }
   },
@@ -1899,7 +1903,7 @@
       "project": "core-libraries"
     },
     "VFL-398": {
-      "status": "blocked",
+      "status": "in_progress",
       "completedAt": null,
       "title": "Run the required tests on c0b7127: cross toolchain bootstrap (VFL-151)",
       "assignee": "Test Runner",
@@ -3579,7 +3583,7 @@
       "project": "core-libraries"
     },
     "VFL-561": {
-      "status": "blocked",
+      "status": "in_progress",
       "completedAt": null,
       "title": "T4 slice for F3b: ArtifactStore conformance on S3, LocalFs, InMemory at `92306cf` (VFL-311)",
       "assignee": "Halsey",
@@ -3600,14 +3604,14 @@
       "project": "platform-foundation"
     },
     "VFL-555": {
-      "status": "blocked",
+      "status": "in_progress",
       "completedAt": null,
       "title": "Test Runner: F3a-LOW-2 doc-only `2d43fb8`, full re-record (VFL-530)",
       "assignee": "Test Runner",
       "project": "platform-foundation"
     },
     "VFL-568": {
-      "status": "blocked",
+      "status": "in_progress",
       "completedAt": null,
       "title": "T1a rebase: `halsey/t1a-vf-core-tests` (`b59f98f`) onto `main` after C1 PR #33 merges (VFL-14)",
       "assignee": "Halsey",
@@ -3738,6 +3742,34 @@
       "title": "Test Runner: lane gate and lane-gate self-test on the pins candidate (ebd3374, VFL-122)",
       "assignee": "Test Runner",
       "project": "platform-foundation"
+    },
+    "VFL-573": {
+      "status": "in_progress",
+      "completedAt": null,
+      "title": "Toolchain: zig c++ shim rejects the Rust host triple; just fuzz-check fails on aarch64 (blocks VFL-529)",
+      "assignee": "Jorge",
+      "project": "core-libraries"
+    },
+    "VFL-574": {
+      "status": "in_progress",
+      "completedAt": null,
+      "title": "Test Runner: rerun required steps on T1a rebase f3fff75 + main (VFL-568)",
+      "assignee": "Test Runner",
+      "project": "core-libraries"
+    },
+    "VFL-575": {
+      "status": "in_progress",
+      "completedAt": null,
+      "title": "CodeRabbit review: verify range-diff for T1a rebase f3fff75 (VFL-568)",
+      "assignee": "Arbiter",
+      "project": "core-libraries"
+    },
+    "VFL-576": {
+      "status": "in_progress",
+      "completedAt": null,
+      "title": "Opus Reviewer: verify range-diff for T1a rebase f3fff75 (VFL-568)",
+      "assignee": "Opus Reviewer",
+      "project": "core-libraries"
     }
   }
 }
