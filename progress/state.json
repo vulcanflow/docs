@@ -1,5 +1,5 @@
 {
-  "lastRunAt": "2026-10-08T23:39:54Z",
+  "lastRunAt": "2026-10-09T00:25:18Z",
   "phases": {
     "p1_foundation": {
       "label": "1 Foundation",
@@ -222,7 +222,12 @@
         "VFL-575",
         "VFL-576",
         "VFL-579",
-        "VFL-581"
+        "VFL-581",
+        "VFL-587",
+        "VFL-593",
+        "VFL-595",
+        "VFL-594",
+        "VFL-586"
       ]
     },
     "p3_api": {
@@ -543,7 +548,15 @@
         "VFL-572",
         "VFL-573",
         "VFL-577",
-        "VFL-578"
+        "VFL-578",
+        "VFL-588",
+        "VFL-590",
+        "VFL-583",
+        "VFL-582",
+        "VFL-585",
+        "VFL-584",
+        "VFL-592",
+        "VFL-589"
       ]
     }
   },
@@ -675,22 +688,22 @@
       "project": "platform-foundation"
     },
     "VFL-581": {
-      "status": "todo",
+      "status": "blocked",
       "completedAt": null,
       "title": "Bring PR #26 up to date with main: merge commit M on H2, Test Runner on M, push on conditional approval (VFL-460)",
       "assignee": "Halsey",
       "project": "core-libraries"
     },
     "VFL-579": {
-      "status": "in_progress",
-      "completedAt": null,
+      "status": "done",
+      "completedAt": "2026-10-08T23:34:00.793Z",
       "title": "Cortana: push approval for PR #26 head H2 (VFL-460)",
       "assignee": "Cortana",
       "project": "core-libraries"
     },
     "VFL-507": {
-      "status": "blocked",
-      "completedAt": null,
+      "status": "done",
+      "completedAt": "2026-10-08T23:38:34.215Z",
       "title": "Fix clippy manual_repeat_n in T2 scope pack (H2), re-record + re-review, then push on approval (VFL-460)",
       "assignee": "Halsey",
       "project": "core-libraries"
@@ -703,15 +716,15 @@
       "project": "core-libraries"
     },
     "VFL-561": {
-      "status": "in_progress",
-      "completedAt": null,
+      "status": "done",
+      "completedAt": "2026-10-08T23:49:59.992Z",
       "title": "T4 slice for F3b: ArtifactStore conformance on S3, LocalFs, InMemory at `92306cf` (VFL-311)",
       "assignee": "Halsey",
       "project": "platform-foundation"
     },
     "VFL-555": {
-      "status": "in_progress",
-      "completedAt": null,
+      "status": "done",
+      "completedAt": "2026-10-08T23:34:36.481Z",
       "title": "Test Runner: F3a-LOW-2 doc-only `2d43fb8`, full re-record (VFL-530)",
       "assignee": "Test Runner",
       "project": "platform-foundation"
@@ -794,15 +807,15 @@
       "project": "platform-foundation"
     },
     "VFL-311": {
-      "status": "blocked",
+      "status": "in_progress",
       "completedAt": null,
       "title": "F3b. Artifact adapters: S3, LocalFs and InMemory `ArtifactStore`",
       "assignee": "Jorge",
       "project": "platform-foundation"
     },
     "VFL-564": {
-      "status": "blocked",
-      "completedAt": null,
+      "status": "done",
+      "completedAt": "2026-10-09T00:10:51.479Z",
       "title": "Test Runner: required runs on F3b `92306cf` + T4 VFL-561 (VFL-311)",
       "assignee": "Test Runner",
       "project": "platform-foundation"
@@ -815,7 +828,7 @@
       "project": "platform-foundation"
     },
     "VFL-566": {
-      "status": "blocked",
+      "status": "in_review",
       "completedAt": null,
       "title": "F3b container-runtime acceptance: S3 conformance (rustfs + minio) and 100 MiB multipart, owner-run (VFL-311)",
       "assignee": "Test Runner",
@@ -836,8 +849,8 @@
       "project": "platform-foundation"
     },
     "VFL-563": {
-      "status": "blocked",
-      "completedAt": null,
+      "status": "done",
+      "completedAt": "2026-10-09T00:09:52.042Z",
       "title": "Opus Reviewer: review F3b artifact adapters `92306cf` + T4 VFL-561 (VFL-311)",
       "assignee": "Opus Reviewer",
       "project": "platform-foundation"
@@ -850,8 +863,8 @@
       "project": "platform-foundation"
     },
     "VFL-562": {
-      "status": "blocked",
-      "completedAt": null,
+      "status": "done",
+      "completedAt": "2026-10-09T00:03:53.719Z",
       "title": "CodeRabbit review: F3b artifact adapters `92306cf` + T4 VFL-561 (VFL-311)",
       "assignee": "Arbiter",
       "project": "platform-foundation"
@@ -1000,7 +1013,7 @@
       "status": "done",
       "completedAt": "2026-10-08T18:20:40.378Z",
       "title": "GitHub managed-credential broker unreachable (blocks VFL-523 progress push)",
-      "assignee": "MasterChief",
+      "assignee": "ae2a6da1-327d-466e-8227-311999bca475",
       "project": "progress-and-docs"
     },
     "VFL-521": {
@@ -1112,14 +1125,14 @@
       "status": "blocked",
       "completedAt": null,
       "title": "Cortana merge run for PR #18 (VFL-303) has no GitHub identity; merge blocked until a Cortana run resolves one",
-      "assignee": "MasterChief",
+      "assignee": "ae2a6da1-327d-466e-8227-311999bca475",
       "project": "platform-foundation"
     },
     "VFL-471": {
       "status": "todo",
       "completedAt": null,
       "title": "Owner action: restart the GitHub identity chain so Cortana can merge PR #18",
-      "assignee": "user:6V7ZcYxpm1GXkJVicEAGVKgfJLRYoQY5",
+      "assignee": null,
       "project": "platform-foundation"
     },
     "VFL-453": {
@@ -1147,7 +1160,7 @@
       "status": "done",
       "completedAt": "2026-10-08T11:22:05.407Z",
       "title": "Halsey run has no GitHub identity (github_identity_unavailable) \u2014 blocks VFL-456 rebase/push of PR #18",
-      "assignee": "MasterChief",
+      "assignee": "ae2a6da1-327d-466e-8227-311999bca475",
       "project": "platform-foundation"
     },
     "VFL-456": {
@@ -1161,14 +1174,14 @@
       "status": "done",
       "completedAt": "2026-10-08T11:05:42.343Z",
       "title": "GitHub managed identity unavailable for Cortana runs after VFL-326 (broker 200 'unavailable', source personal); PR #18 merge blocked",
-      "assignee": "MasterChief",
+      "assignee": "ae2a6da1-327d-466e-8227-311999bca475",
       "project": "platform-foundation"
     },
     "VFL-15": {
       "status": "done",
       "completedAt": "2026-10-08T10:57:12.470Z",
       "title": "C2. `vf-core::scope`: canonical hosts, scope matching, IPv4 destinations",
-      "assignee": "Kelly",
+      "assignee": "8e2f4479-d1f5-4cfd-b56a-ceeda5a84e58",
       "project": "core-libraries"
     },
     "VFL-442": {
@@ -1210,7 +1223,7 @@
       "status": "done",
       "completedAt": "2026-10-08T10:23:58.647Z",
       "title": "Push C2 vf-core::scope: re-parent approved 5d6eac2 onto origin/main, push, open PR to main (VFL-15)",
-      "assignee": "Kelly",
+      "assignee": "8e2f4479-d1f5-4cfd-b56a-ceeda5a84e58",
       "project": "core-libraries"
     },
     "VFL-415": {
@@ -1546,7 +1559,7 @@
       "status": "done",
       "completedAt": "2026-10-07T20:38:49.196Z",
       "title": "GitHub managed identity broker rejects run tokens (401); PR #18/#20 merges blocked",
-      "assignee": "MasterChief",
+      "assignee": "ae2a6da1-327d-466e-8227-311999bca475",
       "project": "platform-foundation"
     },
     "VFL-316": {
@@ -1644,7 +1657,7 @@
       "status": "blocked",
       "completedAt": null,
       "title": "G1. `vf-graph` validator, schema and WASM export",
-      "assignee": "Kelly",
+      "assignee": "8e2f4479-d1f5-4cfd-b56a-ceeda5a84e58",
       "project": "graph-and-execution-contracts"
     },
     "VFL-267": {
@@ -1686,7 +1699,7 @@
       "status": "done",
       "completedAt": "2026-10-07T17:00:10.153Z",
       "title": "Board watch pass 16:46 UTC: post nudges and re-arm the VFL-272 monitor (task-bound run)",
-      "assignee": "MasterChief",
+      "assignee": "ae2a6da1-327d-466e-8227-311999bca475",
       "project": null
     },
     "VFL-183": {
@@ -1742,7 +1755,7 @@
       "status": "done",
       "completedAt": "2026-10-07T13:23:28.719Z",
       "title": "Board watch: task-bound run to post 12 pending nudges and re-arm the VFL-84 monitor",
-      "assignee": "MasterChief",
+      "assignee": "ae2a6da1-327d-466e-8227-311999bca475",
       "project": "progress-and-docs"
     },
     "VFL-251": {
@@ -2183,14 +2196,14 @@
       "status": "blocked",
       "completedAt": null,
       "title": "W1. SPA scaffold, auth, generated client, mock server",
-      "assignee": "Linda",
+      "assignee": "0afa4b23-efae-4c2e-b45e-069c5c993421",
       "project": "web"
     },
     "VFL-11": {
       "status": "backlog",
       "completedAt": null,
       "title": "S1. Scanner output and SCB parser fixture corpus",
-      "assignee": "Kelly",
+      "assignee": "8e2f4479-d1f5-4cfd-b56a-ceeda5a84e58",
       "project": "scanners"
     },
     "VFL-31": {
@@ -2225,7 +2238,7 @@
       "status": "blocked",
       "completedAt": null,
       "title": "G3. `vf-authz`: Track A challenges, basis lifecycle, start-barrier decision",
-      "assignee": "Kelly",
+      "assignee": "8e2f4479-d1f5-4cfd-b56a-ceeda5a84e58",
       "project": "graph-and-execution-contracts"
     },
     "VFL-44": {
@@ -2236,7 +2249,7 @@
       "project": "test-packs"
     },
     "VFL-408": {
-      "status": "in_progress",
+      "status": "blocked",
       "completedAt": null,
       "title": "C1b. vf-core residuals from the C1 gate: TraceId (LOW-12), UnitSummary invariant (LOW-13), TenantSlug (slug rules)",
       "assignee": "Fred",
@@ -2257,8 +2270,8 @@
       "project": "core-libraries"
     },
     "VFL-573": {
-      "status": "in_progress",
-      "completedAt": null,
+      "status": "done",
+      "completedAt": "2026-10-09T00:01:42.052Z",
       "title": "Toolchain: zig c++ shim rejects the Rust host triple; `just fuzz-check` fails on aarch64 (blocks VFL-529)",
       "assignee": "Jorge",
       "project": "core-libraries"
@@ -2274,7 +2287,7 @@
       "status": "in_progress",
       "completedAt": null,
       "title": "Board watch (continuation 5): find stuck tasks and nudge owners",
-      "assignee": "MasterChief",
+      "assignee": "ae2a6da1-327d-466e-8227-311999bca475",
       "project": "progress-and-docs"
     },
     "VFL-398": {
@@ -2316,7 +2329,7 @@
       "status": "done",
       "completedAt": "2026-10-08T19:03:17.402Z",
       "title": "Board watch (continuation 4): find stuck tasks and nudge owners",
-      "assignee": "MasterChief",
+      "assignee": "ae2a6da1-327d-466e-8227-311999bca475",
       "project": "progress-and-docs"
     },
     "VFL-537": {
@@ -2456,7 +2469,7 @@
       "status": "done",
       "completedAt": "2026-10-08T09:44:51.640Z",
       "title": "Board watch (continuation 3): find stuck tasks and nudge owners",
-      "assignee": "MasterChief",
+      "assignee": "ae2a6da1-327d-466e-8227-311999bca475",
       "project": "progress-and-docs"
     },
     "VFL-424": {
@@ -2582,7 +2595,7 @@
       "status": "done",
       "completedAt": "2026-10-07T21:58:12.553Z",
       "title": "Board watch (continuation 2): find stuck tasks and nudge owners",
-      "assignee": "MasterChief",
+      "assignee": "ae2a6da1-327d-466e-8227-311999bca475",
       "project": "progress-and-docs"
     },
     "VFL-318": {
@@ -2652,7 +2665,7 @@
       "status": "done",
       "completedAt": "2026-10-07T18:44:52.038Z",
       "title": "Restricted channel needed: security observation on the zozotk.go.ro network edge (from VFL-124)",
-      "assignee": "MasterChief",
+      "assignee": "ae2a6da1-327d-466e-8227-311999bca475",
       "project": "platform-foundation"
     },
     "VFL-291": {
@@ -2673,7 +2686,7 @@
       "status": "done",
       "completedAt": "2026-10-07T15:42:55.652Z",
       "title": "Board watch (continuation 1): find stuck tasks and nudge owners",
-      "assignee": "MasterChief",
+      "assignee": "ae2a6da1-327d-466e-8227-311999bca475",
       "project": "progress-and-docs"
     },
     "VFL-153": {
@@ -2764,7 +2777,7 @@
       "status": "done",
       "completedAt": "2026-10-06T10:59:55.885Z",
       "title": "Board watch: find stuck tasks and nudge owners",
-      "assignee": "(unassigned)",
+      "assignee": null,
       "project": "progress-and-docs"
     },
     "VFL-78": {
@@ -2778,14 +2791,14 @@
       "status": "cancelled",
       "completedAt": null,
       "title": "PROBE",
-      "assignee": "(unassigned)",
+      "assignee": null,
       "project": null
     },
     "VFL-50": {
       "status": "done",
       "completedAt": "2026-10-05T21:26:28.848Z",
       "title": "Seed PROGRESS.md in vulcanflow/docs and create the progress routine",
-      "assignee": "Guilty Spark",
+      "assignee": "4c51148f-5d9c-451b-96eb-3fed6cc5042e",
       "project": "progress-and-docs"
     },
     "VFL-43": {
@@ -2799,7 +2812,7 @@
       "status": "done",
       "completedAt": "2026-10-05T20:01:04.840Z",
       "title": "create technical workflow",
-      "assignee": "MasterChief",
+      "assignee": "ae2a6da1-327d-466e-8227-311999bca475",
       "project": null
     },
     "VFL-47": {
@@ -2827,21 +2840,21 @@
       "status": "blocked",
       "completedAt": null,
       "title": "W4. Findings table, remediation panel, triage, verification action",
-      "assignee": "Linda",
+      "assignee": "0afa4b23-efae-4c2e-b45e-069c5c993421",
       "project": "web"
     },
     "VFL-35": {
       "status": "blocked",
       "completedAt": null,
       "title": "W3. Run submission, live progress and usage",
-      "assignee": "Linda",
+      "assignee": "0afa4b23-efae-4c2e-b45e-069c5c993421",
       "project": "web"
     },
     "VFL-34": {
       "status": "blocked",
       "completedAt": null,
       "title": "W2. Targets and authorization UI",
-      "assignee": "Linda",
+      "assignee": "0afa4b23-efae-4c2e-b45e-069c5c993421",
       "project": "web"
     },
     "VFL-33": {
@@ -2883,14 +2896,14 @@
       "status": "blocked",
       "completedAt": null,
       "title": "G5. `vf-scanner-adapter` and `vf-hook-notify`",
-      "assignee": "Kelly",
+      "assignee": "8e2f4479-d1f5-4cfd-b56a-ceeda5a84e58",
       "project": "graph-and-execution-contracts"
     },
     "VFL-22": {
       "status": "blocked",
       "completedAt": null,
       "title": "G4. `vf-admission` validating handler",
-      "assignee": "Kelly",
+      "assignee": "8e2f4479-d1f5-4cfd-b56a-ceeda5a84e58",
       "project": "graph-and-execution-contracts"
     },
     "VFL-21": {
@@ -2904,14 +2917,14 @@
       "status": "blocked",
       "completedAt": null,
       "title": "G2. `vf-translator`: candidates, typed SCB objects, argv builders",
-      "assignee": "Kelly",
+      "assignee": "8e2f4479-d1f5-4cfd-b56a-ceeda5a84e58",
       "project": "graph-and-execution-contracts"
     },
     "VFL-5": {
       "status": "done",
       "completedAt": "2026-10-05T18:36:41.929Z",
       "title": "check GitHub org repositories",
-      "assignee": "MasterChief",
+      "assignee": "ae2a6da1-327d-466e-8227-311999bca475",
       "project": null
     },
     "VFL-6": {
@@ -2925,28 +2938,28 @@
       "status": "done",
       "completedAt": "2026-10-05T18:03:17.375Z",
       "title": "Hire the agents to work on this project.",
-      "assignee": "MasterChief",
+      "assignee": "ae2a6da1-327d-466e-8227-311999bca475",
       "project": null
     },
     "VFL-4": {
       "status": "done",
       "completedAt": "2026-10-05T16:31:18.914Z",
       "title": "Install coderabbit skill",
-      "assignee": "MasterChief",
+      "assignee": "ae2a6da1-327d-466e-8227-311999bca475",
       "project": null
     },
     "VFL-1": {
       "status": "done",
       "completedAt": "2026-10-05T15:39:11.139Z",
       "title": "Paperclip onboarding",
-      "assignee": "MasterChief",
-      "project": "Onboarding"
+      "assignee": "ae2a6da1-327d-466e-8227-311999bca475",
+      "project": "onboarding"
     },
     "VFL-2": {
       "status": "done",
       "completedAt": "2026-10-05T14:04:56.921Z",
       "title": "push the plan to GitHub using the existing connection",
-      "assignee": "MasterChief",
+      "assignee": "ae2a6da1-327d-466e-8227-311999bca475",
       "project": null
     },
     "VFL-361": {
@@ -3436,7 +3449,7 @@
       "status": "blocked",
       "completedAt": null,
       "title": "install-tools.sh: count installed tools against the lock, key the tree on the installer, fixed-string tar match (VFL-268 LOW-1/2/4)",
-      "assignee": "(unassigned)",
+      "assignee": null,
       "project": "core-libraries"
     },
     "VFL-194": {
@@ -3632,7 +3645,7 @@
       "status": "backlog",
       "completedAt": null,
       "title": "Decide: project-controlled image mirror for the \u00a7A5 compose pin set (MinIO digest first)",
-      "assignee": "MasterChief",
+      "assignee": "ae2a6da1-327d-466e-8227-311999bca475",
       "project": "platform-foundation"
     },
     "VFL-176": {
@@ -3653,7 +3666,7 @@
       "status": "backlog",
       "completedAt": null,
       "title": "Sandbox: empty GIT_CONFIG_COUNT breaks cargo-audit clones; toolchain lost between heartbeats",
-      "assignee": "MasterChief",
+      "assignee": "ae2a6da1-327d-466e-8227-311999bca475",
       "project": "platform-foundation"
     },
     "VFL-98": {
@@ -3786,22 +3799,113 @@
       "status": "done",
       "completedAt": "2026-10-05T19:55:39.476Z",
       "title": "Append related-task links to the remaining 19 VulcanFlow tasks",
-      "assignee": "MasterChief",
+      "assignee": "ae2a6da1-327d-466e-8227-311999bca475",
       "project": null
     },
     "VFL-38": {
       "status": "blocked",
       "completedAt": null,
       "title": "S2. Local scanner image definitions for the skeleton pipeline",
-      "assignee": "Kelly",
+      "assignee": "8e2f4479-d1f5-4cfd-b56a-ceeda5a84e58",
       "project": "scanners"
     },
     "VFL-37": {
       "status": "blocked",
       "completedAt": null,
       "title": "W5. `vf-graph` WASM packaging and browser parity harness",
-      "assignee": "Linda",
+      "assignee": "0afa4b23-efae-4c2e-b45e-069c5c993421",
       "project": "web"
+    },
+    "VFL-587": {
+      "status": "in_progress",
+      "completedAt": null,
+      "title": "Test Runner: record M 7ae4351 \u2014 merge of origin/main into H2, T2 scope pack, just check, just test-unit, fuzz-check (VFL-581)",
+      "assignee": "Test Runner",
+      "project": "core-libraries"
+    },
+    "VFL-588": {
+      "status": "done",
+      "completedAt": "2026-10-08T23:50:33.114Z",
+      "title": "Test Runner: re-run just fuzz-check on H2 b6f1488 under the fuzz-cxx env (VFL-585 ruling)",
+      "assignee": "Test Runner",
+      "project": "core-libraries"
+    },
+    "VFL-593": {
+      "status": "in_progress",
+      "completedAt": null,
+      "title": "Test Runner: required runs on C1b pair 954eac3 + T1c-r2 6b1495b (VFL-408)",
+      "assignee": "Test Runner",
+      "project": "core-libraries"
+    },
+    "VFL-595": {
+      "status": "in_progress",
+      "completedAt": null,
+      "title": "Opus Reviewer: review C1b pair 954eac3 + T1c-r2 6b1495b (VFL-408)",
+      "assignee": "Opus Reviewer",
+      "project": "core-libraries"
+    },
+    "VFL-594": {
+      "status": "in_progress",
+      "completedAt": null,
+      "title": "CodeRabbit review: C1b pair 954eac3 + T1c-r2 6b1495b (VFL-408)",
+      "assignee": "Arbiter",
+      "project": "core-libraries"
+    },
+    "VFL-590": {
+      "status": "done",
+      "completedAt": "2026-10-08T23:58:15.568Z",
+      "title": "Acceptance: VFL-573 r2 zig cc/c++ shims (c++ f9fe329 / cc 22fa48a)",
+      "assignee": "Cortana",
+      "project": "core-libraries"
+    },
+    "VFL-583": {
+      "status": "done",
+      "completedAt": "2026-10-08T23:51:11.857Z",
+      "title": "Review (Opus): VFL-573 r2 zig cc/c++ shims, c++ f9fe329 / cc 22fa48a",
+      "assignee": "Opus Reviewer",
+      "project": "core-libraries"
+    },
+    "VFL-586": {
+      "status": "done",
+      "completedAt": "2026-10-08T23:50:54.384Z",
+      "title": "T1c-r2: rebuild T1c on committed T1a pack f3fff75 (compile + rustfmt fix)",
+      "assignee": "Halsey",
+      "project": "test-packs"
+    },
+    "VFL-582": {
+      "status": "done",
+      "completedAt": "2026-10-08T23:46:12.614Z",
+      "title": "Review (CodeRabbit): VFL-573 r2 zig cc/c++ shims, c++ f9fe329 / cc 22fa48a",
+      "assignee": "Arbiter",
+      "project": "core-libraries"
+    },
+    "VFL-585": {
+      "status": "done",
+      "completedAt": "2026-10-08T23:45:12.782Z",
+      "title": "Ruling: fuzz lane C/C++ env \u2014 zig toolchain/env.sh or VFL-201 fuzz-cxx (gcc-14)?",
+      "assignee": "Cortana",
+      "project": "core-libraries"
+    },
+    "VFL-584": {
+      "status": "done",
+      "completedAt": "2026-10-08T23:42:52.121Z",
+      "title": "Test Runner: VFL-573 r2 \u2014 self-test + just fuzz-check on H2 b6f1488 (c++ f9fe329)",
+      "assignee": "Test Runner",
+      "project": "core-libraries"
+    },
+    "VFL-592": {
+      "status": "in_progress",
+      "completedAt": null,
+      "title": "Toolchain: zig shim follow-up \u2014 -Xlinker pair, sibling linker wrappers + env.sh export, self-test gaps (VFL-573 LOWs)",
+      "assignee": "Jorge",
+      "project": "core-libraries"
+    },
+    "VFL-589": {
+      "status": "done",
+      "completedAt": "2026-10-08T23:49:55.804Z",
+      "title": "Halsey: fuzz/README.md + justfile fuzz-check comment name the fuzz-lane env (VFL-585 ruling, LOW)",
+      "assignee": "Halsey",
+      "project": "core-libraries"
     }
   }
 }
