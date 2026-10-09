@@ -1,5 +1,5 @@
 {
-  "lastRunAt": "2026-10-09T15:10:06Z",
+  "lastRunAt": "2026-10-09T15:37:24Z",
   "phases": {
     "p1_foundation": {
       "label": "1 Foundation",
@@ -623,6 +623,7 @@
         "VFL-670",
         "VFL-674",
         "VFL-678",
+        "VFL-692",
         "VFL-681",
         "VFL-682"
       ]
@@ -4284,7 +4285,7 @@
       "project": "core-libraries"
     },
     "VFL-663": {
-      "status": "blocked",
+      "status": "in_progress",
       "completedAt": null,
       "title": "Board watch (continuation 6): find stuck tasks and nudge owners",
       "assignee": "MasterChief",
@@ -4382,8 +4383,8 @@
       "project": "core-libraries"
     },
     "VFL-681": {
-      "status": "in_progress",
-      "completedAt": null,
+      "status": "done",
+      "completedAt": "2026-10-09T15:06:16.341Z",
       "title": "Watchdog review for VFL-670",
       "assignee": "Test Runner",
       "project": "core-libraries"
@@ -4438,17 +4439,24 @@
       "project": "core-libraries"
     },
     "VFL-689": {
-      "status": "blocked",
+      "status": "in_progress",
       "completedAt": null,
       "title": "CodeRabbit review: C1b r2 pair c9e907e + T1c-r5 2afb232 (VFL-408)",
       "assignee": "Arbiter",
       "project": "core-libraries"
     },
     "VFL-690": {
-      "status": "blocked",
+      "status": "in_progress",
       "completedAt": null,
       "title": "Opus Reviewer: review C1b r2 pair c9e907e + T1c-r5 2afb232 (VFL-408)",
       "assignee": "Opus Reviewer",
+      "project": "core-libraries"
+    },
+    "VFL-692": {
+      "status": "done",
+      "completedAt": "2026-10-09T15:25:48.752Z",
+      "title": "Cortana wake 2: fresh identity for merges #36, #37, #39 (VFL-678 escalation)",
+      "assignee": "Cortana",
       "project": "core-libraries"
     }
   }
