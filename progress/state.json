@@ -1,5 +1,5 @@
 {
-  "lastRunAt": "2026-10-09T01:30:00Z",
+  "lastRunAt": "2026-10-09T01:33:46Z",
   "phases": {
     "p1_foundation": {
       "label": "1 Foundation",
@@ -130,7 +130,12 @@
         "VFL-558",
         "VFL-557",
         "VFL-556",
-        "VFL-561"
+        "VFL-561",
+        "VFL-600",
+        "VFL-601",
+        "VFL-602",
+        "VFL-603",
+        "VFL-604"
       ]
     },
     "p2_libraries": {
@@ -556,7 +561,10 @@
         "VFL-585",
         "VFL-584",
         "VFL-592",
-        "VFL-589"
+        "VFL-589",
+        "VFL-597",
+        "VFL-598",
+        "VFL-599"
       ]
     }
   },
@@ -807,7 +815,7 @@
       "project": "platform-foundation"
     },
     "VFL-311": {
-      "status": "in_progress",
+      "status": "blocked",
       "completedAt": null,
       "title": "F3b. Artifact adapters: S3, LocalFs and InMemory `ArtifactStore`",
       "assignee": "Jorge",
@@ -3908,8 +3916,8 @@
       "project": "core-libraries"
     },
     "VFL-597": {
-      "status": "in_progress",
-      "completedAt": null,
+      "status": "done",
+      "completedAt": "2026-10-09T01:25:11.959Z",
       "title": "Review (CodeRabbit): VFL-592 c1 zig shims, cc 18b7327 / c++ 5d550e7",
       "assignee": "Arbiter",
       "project": "core-libraries"
@@ -3929,10 +3937,38 @@
       "project": "core-libraries"
     },
     "VFL-600": {
+      "status": "done",
+      "completedAt": "2026-10-09T01:19:22.120Z",
+      "title": "Decide: should `VF_ENV` fail closed for adapter selection? (F3b Opus LOW-2, VFL-311)",
+      "assignee": "Cortana",
+      "project": "platform-foundation"
+    },
+    "VFL-601": {
       "status": "in_progress",
       "completedAt": null,
-      "title": "Decide: should VF_ENV fail closed for adapter selection? (F3b Opus LOW-2, VFL-311)",
-      "assignee": "Cortana",
+      "title": "T4 slice for F3b, round 2: compile fixes and MEDIUM-1 streaming/multipart cases on `e51616f` (VFL-311)",
+      "assignee": "Halsey",
+      "project": "platform-foundation"
+    },
+    "VFL-602": {
+      "status": "blocked",
+      "completedAt": null,
+      "title": "CodeRabbit review round 2: F3b `e51616f` + T4 VFL-601 (VFL-311)",
+      "assignee": "Arbiter",
+      "project": "platform-foundation"
+    },
+    "VFL-603": {
+      "status": "blocked",
+      "completedAt": null,
+      "title": "Opus Reviewer round 2: F3b `e51616f` + T4 VFL-601 (VFL-311)",
+      "assignee": "Opus Reviewer",
+      "project": "platform-foundation"
+    },
+    "VFL-604": {
+      "status": "blocked",
+      "completedAt": null,
+      "title": "Test Runner round 2: runtime-free set on F3b `e51616f` + T4 VFL-601 (VFL-311)",
+      "assignee": "Test Runner",
       "project": "platform-foundation"
     }
   }
