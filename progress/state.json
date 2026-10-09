@@ -1,5 +1,5 @@
 {
-  "lastRunAt": "2026-10-09T14:38:00Z",
+  "lastRunAt": "2026-10-09T15:10:06Z",
   "phases": {
     "p1_foundation": {
       "label": "1 Foundation",
@@ -258,7 +258,10 @@
         "VFL-683",
         "VFL-684",
         "VFL-685",
-        "VFL-686"
+        "VFL-686",
+        "VFL-688",
+        "VFL-689",
+        "VFL-690"
       ]
     },
     "p3_api": {
@@ -2314,7 +2317,7 @@
       "project": "test-packs"
     },
     "VFL-408": {
-      "status": "in_progress",
+      "status": "blocked",
       "completedAt": null,
       "title": "C1b. vf-core residuals from the C1 gate: TraceId (LOW-12), UnitSummary invariant (LOW-13), TenantSlug (slug rules)",
       "assignee": "Fred",
@@ -4426,6 +4429,27 @@
       "title": "T1c-r5: rustfmt reflow of ids.rs deserialize_str_err on T1c-r4 c6ad21e",
       "assignee": "Halsey",
       "project": "test-packs"
+    },
+    "VFL-688": {
+      "status": "todo",
+      "completedAt": null,
+      "title": "Test Runner: required runs on C1b r2 pair c9e907e + T1c-r5 2afb232 (VFL-408)",
+      "assignee": "Test Runner",
+      "project": "core-libraries"
+    },
+    "VFL-689": {
+      "status": "blocked",
+      "completedAt": null,
+      "title": "CodeRabbit review: C1b r2 pair c9e907e + T1c-r5 2afb232 (VFL-408)",
+      "assignee": "Arbiter",
+      "project": "core-libraries"
+    },
+    "VFL-690": {
+      "status": "blocked",
+      "completedAt": null,
+      "title": "Opus Reviewer: review C1b r2 pair c9e907e + T1c-r5 2afb232 (VFL-408)",
+      "assignee": "Opus Reviewer",
+      "project": "core-libraries"
     }
   }
 }
