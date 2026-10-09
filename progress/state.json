@@ -1,5 +1,5 @@
 {
-  "lastRunAt": "2026-10-09T12:38:21Z",
+  "lastRunAt": "2026-10-09T13:09:47Z",
   "phases": {
     "p1_foundation": {
       "label": "1 Foundation",
@@ -247,7 +247,8 @@
         "VFL-642",
         "VFL-643",
         "VFL-645",
-        "VFL-646"
+        "VFL-646",
+        "VFL-665"
       ]
     },
     "p3_api": {
@@ -599,7 +600,10 @@
         "VFL-651",
         "VFL-652",
         "VFL-653",
-        "VFL-660"
+        "VFL-660",
+        "VFL-662",
+        "VFL-663",
+        "VFL-664"
       ]
     }
   },
@@ -731,8 +735,8 @@
       "project": "platform-foundation"
     },
     "VFL-581": {
-      "status": "blocked",
-      "completedAt": null,
+      "status": "done",
+      "completedAt": "2026-10-09T12:45:03.319Z",
       "title": "Bring PR #26 up to date with main: merge commit M on H2, Test Runner on M, push on conditional approval (VFL-460)",
       "assignee": "Halsey",
       "project": "core-libraries"
@@ -871,7 +875,7 @@
       "project": "platform-foundation"
     },
     "VFL-566": {
-      "status": "in_review",
+      "status": "in_progress",
       "completedAt": null,
       "title": "F3b container-runtime acceptance: S3 conformance (rustfs + minio) and 100 MiB multipart, owner-run (VFL-311)",
       "assignee": "Test Runner",
@@ -969,7 +973,7 @@
       "project": "core-libraries"
     },
     "VFL-149": {
-      "status": "blocked",
+      "status": "todo",
       "completedAt": null,
       "title": "Bootstrap just, cargo-deny and cargo-audit so just check runs on the runners",
       "assignee": "Jorge",
@@ -1109,8 +1113,8 @@
       "project": "platform-foundation"
     },
     "VFL-460": {
-      "status": "blocked",
-      "completedAt": null,
+      "status": "done",
+      "completedAt": "2026-10-09T12:53:45.106Z",
       "title": "Merge PR #26: T2 scope pack for vf-core::scope (VFL-15)",
       "assignee": "Cortana",
       "project": "core-libraries"
@@ -1179,8 +1183,8 @@
       "project": "platform-foundation"
     },
     "VFL-453": {
-      "status": "blocked",
-      "completedAt": null,
+      "status": "done",
+      "completedAt": "2026-10-09T12:53:57.308Z",
       "title": "Push and open test PR: T2 scope pack a0cbdf1 rebased onto main 2f662d2 (VFL-15)",
       "assignee": "Halsey",
       "project": "core-libraries"
@@ -2327,10 +2331,10 @@
       "project": "core-libraries"
     },
     "VFL-544": {
-      "status": "in_progress",
-      "completedAt": null,
+      "status": "done",
+      "completedAt": "2026-10-09T12:41:08.490Z",
       "title": "Board watch (continuation 5): find stuck tasks and nudge owners",
-      "assignee": "ae2a6da1-327d-466e-8227-311999bca475",
+      "assignee": "MasterChief",
       "project": "progress-and-docs"
     },
     "VFL-398": {
@@ -2565,10 +2569,10 @@
       "project": "operator-and-ingest"
     },
     "VFL-151": {
-      "status": "in_review",
+      "status": "in_progress",
       "completedAt": null,
       "title": "just check-cross cannot run on the agent runners: the bootstrapped toolchain is host-only",
-      "assignee": "912014ba-380a-46cd-baa6-306e9343a2c2",
+      "assignee": "Jorge",
       "project": "core-libraries"
     },
     "VFL-397": {
@@ -3104,7 +3108,7 @@
       "project": "platform-foundation"
     },
     "VFL-495": {
-      "status": "blocked",
+      "status": "in_progress",
       "completedAt": null,
       "title": "T2 fuzz follow-up: force \u22651 label in canonical_host Descendant arm (residual LOW, PR #26)",
       "assignee": "Halsey",
@@ -3433,7 +3437,7 @@
       "project": "core-libraries"
     },
     "VFL-205": {
-      "status": "blocked",
+      "status": "cancelled",
       "completedAt": null,
       "title": "Test Runner: VFL-185 bootstrap hardening candidate cccd3c1",
       "assignee": "Test Runner",
@@ -3790,7 +3794,7 @@
       "project": "platform-foundation"
     },
     "VFL-87": {
-      "status": "blocked",
+      "status": "in_progress",
       "completedAt": null,
       "title": "T9: NO_IO_CRATES covers 4 of the 7 crates graph-rules.sh checks, and does not split by target",
       "assignee": "Halsey",
@@ -3860,8 +3864,8 @@
       "project": "web"
     },
     "VFL-587": {
-      "status": "blocked",
-      "completedAt": null,
+      "status": "done",
+      "completedAt": "2026-10-09T12:40:24.250Z",
       "title": "Test Runner: record M 7ae4351 \u2014 merge of origin/main into H2, T2 scope pack, just check, just test-unit, fuzz-check (VFL-581)",
       "assignee": "Test Runner",
       "project": "core-libraries"
@@ -3888,10 +3892,10 @@
       "project": "core-libraries"
     },
     "VFL-594": {
-      "status": "in_progress",
-      "completedAt": null,
+      "status": "done",
+      "completedAt": "2026-10-09T12:41:31.214Z",
       "title": "CodeRabbit review: C1b pair 954eac3 + T1c-r2 6b1495b (VFL-408)",
-      "assignee": "13034933-9579-4b3c-add9-b9426144d934",
+      "assignee": "Arbiter",
       "project": "core-libraries"
     },
     "VFL-590": {
@@ -4126,10 +4130,10 @@
       "project": "core-libraries"
     },
     "VFL-639": {
-      "status": "in_progress",
-      "completedAt": null,
+      "status": "done",
+      "completedAt": "2026-10-09T12:38:58.180Z",
       "title": "Test Runner: `just check` on M 7ae4351 (VFL-587 split 1/4)",
-      "assignee": "d0a26468-a577-4f16-a29c-de0b53af3983",
+      "assignee": "Test Runner",
       "project": "core-libraries"
     },
     "VFL-640": {
@@ -4217,7 +4221,7 @@
       "project": "core-libraries"
     },
     "VFL-653": {
-      "status": "in_review",
+      "status": "in_progress",
       "completedAt": null,
       "title": "VFL-122 continuation 2: push approval and PR for rebased `06cad62` (lane-gate pins check)",
       "assignee": "Jorge",
@@ -4250,6 +4254,34 @@
       "title": "Push approval: VFL-151 cross compiler in the bootstrapped toolchain at d26638e",
       "assignee": "a9be75cd-d767-4c44-b49c-2017c61f751f",
       "project": "core-libraries"
+    },
+    "VFL-662": {
+      "status": "done",
+      "completedAt": "2026-10-09T12:46:45.799Z",
+      "title": "Cortana wake: push approvals 06cad62 (VFL-653) and f3fff75 (VFL-568), ruling card on VFL-408",
+      "assignee": "Cortana",
+      "project": "core-libraries"
+    },
+    "VFL-663": {
+      "status": "in_progress",
+      "completedAt": null,
+      "title": "Board watch (continuation 6): find stuck tasks and nudge owners",
+      "assignee": "MasterChief",
+      "project": "core-libraries"
+    },
+    "VFL-665": {
+      "status": "in_progress",
+      "completedAt": null,
+      "title": "T1c-r3: fix pipeline_outcome.rs Scope/Limit fixtures to Skipped (C1b HIGH-1 ruling) on code r2 c9e907e",
+      "assignee": "Halsey",
+      "project": "test-packs"
+    },
+    "VFL-664": {
+      "status": "done",
+      "completedAt": "2026-10-09T12:55:30.117Z",
+      "title": "Arbiter review: VFL-87 NO_IO_CRATES test fix (branch halsey/vfl-87-no-io-crates, f7fc592)",
+      "assignee": "Arbiter",
+      "project": "platform-foundation"
     }
   }
 }
