@@ -1,5 +1,5 @@
 {
-  "lastRunAt": "2026-10-09T11:40:00Z",
+  "lastRunAt": "2026-10-09T12:04:13Z",
   "phases": {
     "p1_foundation": {
       "label": "1 Foundation",
@@ -4132,8 +4132,8 @@
       "project": "core-libraries"
     },
     "VFL-640": {
-      "status": "in_progress",
-      "completedAt": null,
+      "status": "done",
+      "completedAt": "2026-10-09T11:42:41.806Z",
       "title": "Test Runner: `just test-unit` on M 7ae4351 (VFL-587 split 2/4)",
       "assignee": "Test Runner",
       "project": "core-libraries"
