@@ -1,21 +1,21 @@
 # VulcanFlow progress
 
-Last updated: 2026-10-09T15:37:24Z by Guilty Spark. Source: Paperclip company vFlow.
+Last updated: 2026-10-09T16:11:33Z by Guilty Spark. Source: Paperclip company vFlow.
 
 ## Summary table
 
 | Phase | Project(s) | Done | In progress | Blocked | Planned | Total |
 |---|---|---|---|---|---|---|
 | 1 Foundation[^1] | platform-foundation, test-packs (T9) | 118 | 1 | 12 | 4 | 137 |
-| 2 Libraries[^1] | core-libraries, graph-and-execution-contracts, test-packs (T1-T5) | 80 | 4 | 21 | 1 | 107 |
+| 2 Libraries[^1] | core-libraries, graph-and-execution-contracts, test-packs (T1-T5) | 80 | 3 | 23 | 0 | 107 |
 | 3 API | api, test-packs (T7) | 0 | 0 | 5 | 0 | 5 |
 | 4 Execution | scanners, operator-and-ingest, test-packs (T6) | 0 | 0 | 7 | 1 | 8 |
 | 5 Findings API | api | 0 | 0 | 1 | 0 | 1 |
 | 6 Web | web, test-packs (T8) | 0 | 0 | 5 | 1 | 6 |
 | Later (reporting, infra, ai-gateway) | reporting, infra, ai-gateway | 0 | 0 | 0 | 0 | 0 |
 | Setup and governance | Onboarding | 9 | 0 | 0 | 0 | 9 |
-| Unassigned to a phase[^1] | progress-and-docs (VFL-50, VFL-60, VFL-84, VFL-255, VFL-272, VFL-351, VFL-432, VFL-524, VFL-544), platform-foundation (VFL-52, VFL-58, VFL-61, VFL-70, VFL-73–103, VFL-105–111, VFL-114–116, VFL-119–143, VFL-160, VFL-173, VFL-175–177, except VFL-112–113/117–118 which moved into Phase 2, VFL-122, VFL-124–137, VFL-285, VFL-288, VFL-294–296, VFL-301–303, VFL-305–306, VFL-318–332, VFL-335, VFL-337, VFL-339–345, VFL-350, VFL-352–354, VFL-365, VFL-395, VFL-399, VFL-403, VFL-405, VFL-413–414, VFL-416–417, VFL-419, VFL-433, VFL-437, VFL-450–459, VFL-462–465, VFL-467–469, VFL-471, VFL-472, VFL-474–476, VFL-482, VFL-484–490, VFL-492, VFL-494, VFL-497, VFL-527, VFL-534, VFL-537, VFL-539–542, VFL-552, VFL-559, VFL-570–572, VFL-653, VFL-664, VFL-682), core-libraries (VFL-140, VFL-142, VFL-145–159, VFL-185–187, VFL-190–191, VFL-198–209, VFL-228, VFL-230, VFL-238, VFL-249, VFL-254, VFL-256–258, VFL-261–262, VFL-266, VFL-268–269, VFL-273, VFL-277, VFL-334, VFL-336, VFL-360–364, VFL-385, VFL-390–392, VFL-396–398, VFL-573–578, VFL-582–585, VFL-588–590, VFL-592, VFL-597–599, VFL-606–610, VFL-615, VFL-628–636, VFL-644, VFL-650–652, VFL-660, VFL-662–663, VFL-667–670, VFL-674, VFL-678, VFL-681, VFL-692), api (VFL-165), none (VFL-51, VFL-278) | 222 | 7 | 29 | 9 | 274 |
-| **Total**[^1] | | **429** | **12** | **80** | **16** | **547** |
+| Unassigned to a phase[^1] | progress-and-docs (VFL-50, VFL-60, VFL-84, VFL-255, VFL-272, VFL-351, VFL-432, VFL-524, VFL-544), platform-foundation (VFL-52, VFL-58, VFL-61, VFL-70, VFL-73–103, VFL-105–111, VFL-114–116, VFL-119–143, VFL-160, VFL-173, VFL-175–177, except VFL-112–113/117–118 which moved into Phase 2, VFL-122, VFL-124–137, VFL-285, VFL-288, VFL-294–296, VFL-301–303, VFL-305–306, VFL-318–332, VFL-335, VFL-337, VFL-339–345, VFL-350, VFL-352–354, VFL-365, VFL-395, VFL-399, VFL-403, VFL-405, VFL-413–414, VFL-416–417, VFL-419, VFL-433, VFL-437, VFL-450–459, VFL-462–465, VFL-467–469, VFL-471, VFL-472, VFL-474–476, VFL-482, VFL-484–490, VFL-492, VFL-494, VFL-497, VFL-527, VFL-534, VFL-537, VFL-539–542, VFL-552, VFL-559, VFL-570–572, VFL-653, VFL-664, VFL-682), core-libraries (VFL-140, VFL-142, VFL-145–159, VFL-185–187, VFL-190–191, VFL-198–209, VFL-228, VFL-230, VFL-238, VFL-249, VFL-254, VFL-256–258, VFL-261–262, VFL-266, VFL-268–269, VFL-273, VFL-277, VFL-334, VFL-336, VFL-360–364, VFL-385, VFL-390–392, VFL-396–398, VFL-573–578, VFL-582–585, VFL-588–590, VFL-592, VFL-597–599, VFL-606–610, VFL-615, VFL-628–636, VFL-644, VFL-650–652, VFL-660, VFL-662–663, VFL-667–670, VFL-674, VFL-678, VFL-681, VFL-692), api (VFL-165), none (VFL-51, VFL-278) | 222 | 6 | 30 | 9 | 274 |
+| **Total**[^1] | | **429** | **10** | **83** | **15** | **547** |
 
 [^1]: 10 cancelled tasks (VFL-51, VFL-134, VFL-136, VFL-154, VFL-205, VFL-361, VFL-398, VFL-550, VFL-593, VFL-604) are counted in Total only; they have no Done/In progress/Blocked/Planned bucket (VFL-550 and VFL-604 are the two cancellations in Phase 1 — its row's four buckets sum to 135, two short of the 137 total; VFL-593 is the one cancellation in Phase 2 — its row's four buckets sum to 106, one short of the 107 total; the other seven are in the Unassigned row, whose four buckets sum to 267, seven short of the 274 total). Guilty Spark's own recurring "Progress tracker update" tasks (VFL-53, VFL-54, VFL-55, ...) are excluded entirely from this document per the skip-own-routine-tasks rule. The "In progress" column folds `in_progress` and `in_review` together (no separate in-review bucket in this table); the "Planned" column folds `todo` and `backlog` tasks together — both are queued/not-yet-started, just at different readiness states; see the Status mix pie for the literal per-status counts.
 
@@ -58,12 +58,12 @@ flowchart LR
 ```mermaid
 pie title Tasks by status
   "done" : 429
-  "blocked" : 80
-  "in_progress" : 8
+  "blocked" : 83
+  "in_progress" : 7
   "backlog" : 10
   "cancelled" : 10
-  "todo" : 6
-  "in_review" : 4
+  "todo" : 5
+  "in_review" : 3
 ```
 
 ## Phase 1: Foundation
@@ -291,9 +291,9 @@ pie title Tasks by status
 | VFL-665 | T1c-r3: fix `pipeline_outcome.rs` Scope/Limit fixtures to Skipped (C1b HIGH-1 ruling, child of VFL-408) | Halsey | done | 2026-10-09 | [VFL-665 comment, 2026-10-09T13:04:28Z](http://paperclip.paperclip.svc.cluster.local/VFL/issues/VFL-665) — branch `halsey/t1c-vf-core-c1b-r3` `c48a10c`, local only; merged C1b code r2 first, then the `terminal(class)` fix plus two optional LOW cleanups; handed to Fred for precheck |
 | VFL-680 | T1c-r4: fix `ids.rs` `deserialize_str_err` compile error (Debug bound) on T1c-r3 c48a10c (child of VFL-408) | Halsey | done | 2026-10-09 | [VFL-680 comment, 2026-10-09T14:02:29Z](http://paperclip.paperclip.svc.cluster.local/VFL/issues/VFL-680) — branch `halsey/t1c-vf-core-c1b-r4` (local only) `c6ad21e` on T1c-r3 `c48a10c`; one-line fix, `deserialize_str_err` uses `.err().expect(...)` instead of `.unwrap_err()` to drop the `T: Debug` bound; handed to Fred/Test Runner for precheck rerun |
 | VFL-686 | T1c-r5: rustfmt reflow of `ids.rs` `deserialize_str_err` on T1c-r4 c6ad21e (child of VFL-408) | Halsey | done | 2026-10-09 | [VFL-686 comment, 2026-10-09T14:36:03Z](http://paperclip.paperclip.svc.cluster.local/VFL/issues/VFL-686) — branch `halsey/t1c-vf-core-c1b-r5` (local only) head `2afb232` on T1c-r4 `c6ad21e`; one commit, rustfmt reflow of the `deserialize_str_err` method chain in `crates/vf-core/tests/ids.rs`, `cargo fmt --all -- --check` exit 0, diff +3/-1, no assertion changes; handed to Fred for precheck rerun |
-| VFL-688 | Test Runner: required runs on C1b r2 pair c9e907e + T1c-r5 2afb232 (child of VFL-408) | Test Runner | todo | | [VFL-688](http://paperclip.paperclip.svc.cluster.local/VFL/issues/VFL-688) |
+| VFL-688 | Test Runner: required runs on C1b r2 pair c9e907e + T1c-r5 2afb232 (child of VFL-408) | Test Runner | blocked | | [VFL-688](http://paperclip.paperclip.svc.cluster.local/VFL/issues/VFL-688) — run was mid-`cargo audit` when the terminal access failed; moved to blocked for intervention |
 | VFL-689 | CodeRabbit review: C1b r2 pair c9e907e + T1c-r5 2afb232 (child of VFL-408) | Arbiter | in_progress | | [VFL-689](http://paperclip.paperclip.svc.cluster.local/VFL/issues/VFL-689) — auto-resumed from blocked; still no run comment past the repeated `The ACP startup handshake did not finish before the startup deadline`, same handshake-failure pattern as VFL-663/VFL-678/VFL-692 |
-| VFL-690 | Opus Reviewer: review C1b r2 pair c9e907e + T1c-r5 2afb232 (child of VFL-408) | Opus Reviewer | in_progress | | [VFL-690](http://paperclip.paperclip.svc.cluster.local/VFL/issues/VFL-690) — auto-resumed from blocked; still no run comment past the repeated `The ACP startup handshake did not finish before the startup deadline`, same handshake-failure pattern as VFL-663/VFL-678/VFL-692 |
+| VFL-690 | Opus Reviewer: review C1b r2 pair c9e907e + T1c-r5 2afb232 (child of VFL-408) | Opus Reviewer | blocked | | [VFL-690](http://paperclip.paperclip.svc.cluster.local/VFL/issues/VFL-690) — repeated ACP startup handshake timeouts exhausted the bounded retry budget; moved to blocked for intervention |
 | VFL-17 | C3. `vf-db` schemas, migrations, `TenantTx`, repositories | Fred | blocked | | |
 | VFL-20 | C4. `vf-meter` accounting library | Fred | blocked | | |
 | VFL-21 | C5. `vf-remediation` library: guidance resolution, verification | Fred | blocked | | |
@@ -500,7 +500,7 @@ No tasks created yet.
 | VFL-416 | Opus Reviewer: review VFL-124 Tekton webhook manifests, round 4 (ec00b55) (child of VFL-124) | Opus Reviewer | done | 2026-10-08 | [VFL-416 comment, 2026-10-08T09:09:37Z](http://paperclip.paperclip.svc.cluster.local/VFL/issues/VFL-416#document-review), [review document](http://paperclip.paperclip.svc.cluster.local/VFL/issues/VFL-416#document-review) |
 | VFL-417 | Test Runner: lane gate and manifest checks on VFL-124 candidate ec00b55 (child of VFL-124) | Test Runner | done | 2026-10-08 | [VFL-417 comment, 2026-10-08T08:51:07Z](http://paperclip.paperclip.svc.cluster.local/VFL/issues/VFL-417) |
 | VFL-413 | Decision for VFL-124: accept CWE-295 (webhook SSL verification off)? | Cortana | done | 2026-10-08 | [VFL-413 comment, 2026-10-08T08:48:54Z](http://paperclip.paperclip.svc.cluster.local/VFL/issues/VFL-413), [decision document](http://paperclip.paperclip.svc.cluster.local/VFL/issues/VFL-413#document-decision) |
-| VFL-534 | VFL-124 continuation: push approval, PR and webhook evidence for `ec00b55` | Jorge | in_review | | [VFL-534 comment, 2026-10-09T12:20:36Z](http://paperclip.paperclip.svc.cluster.local/VFL/issues/VFL-534) — waiting on the owner's webhook card `8af5473a`; acceptance (a) still has no recorded `pull_request` run |
+| VFL-534 | VFL-124 continuation: push approval, PR and webhook evidence for `ec00b55` | Jorge | in_progress | | [VFL-534 comment, 2026-10-09T12:20:36Z](http://paperclip.paperclip.svc.cluster.local/VFL/issues/VFL-534) — waiting on the owner's webhook card `8af5473a`; acceptance (a) still has no recorded `pull_request` run |
 | VFL-537 | Push approval: VFL-124 Tekton EventListener at `ec00b55` (child of VFL-534) | Cortana | done | 2026-10-08 | [VFL-537 comment, 2026-10-08T18:55:39Z](http://paperclip.paperclip.svc.cluster.local/VFL/issues/VFL-537#document-approval), [approval document](http://paperclip.paperclip.svc.cluster.local/VFL/issues/VFL-537#document-approval) — approved for exact SHA `ec00b55`, no rebase |
 | VFL-539 | VFL-124 follow-up: README-only fixes for Opus round-4 LOW-6..9, 11..14 | Jorge | blocked | | [VFL-539](http://paperclip.paperclip.svc.cluster.local/VFL/issues/VFL-539) |
 | VFL-301 | Cortana: four decisions waiting since 17:09 UTC (VFL-13 split, VFL-105 merge, VFL-194 R2, VFL-92 push) | Cortana | done | 2026-10-07 | [VFL-301 comment, 2026-10-07T19:31:02Z](http://paperclip.paperclip.svc.cluster.local/VFL/issues/VFL-301) |
@@ -604,7 +604,7 @@ No tasks created yet.
 | VFL-674 | Toolchain: remove the four stray .o files left by self-test and review probes (child of VFL-644 follow-up) | Jorge | in_progress | | [VFL-674 comment, 2026-10-09T13:27:25Z](http://paperclip.paperclip.svc.cluster.local/VFL/issues/VFL-674) — paused: the platform worktree needed for cleanup is held by a concurrent Opus Reviewer run (VFL-669); nothing deleted yet, read-only `ls` confirms all four stray files still present |
 | VFL-653 | VFL-122 continuation 2: push approval and PR for rebased `06cad62` (lane-gate pins check) (child of VFL-122) | Jorge | in_review | | [VFL-653 comment, 2026-10-09T14:08:37Z](http://paperclip.paperclip.svc.cluster.local/VFL/issues/VFL-653), [merge-request document](http://paperclip.paperclip.svc.cluster.local/VFL/issues/VFL-653#document-merge-request) — hand-back card `5691207f` accepted; PR #37 (`cc69dbc`) held at `BEHIND` until PR #36 (VFL-568) lands first, Cortana still to merge |
 | VFL-662 | Cortana wake: push approvals `06cad62` (VFL-653) and T1a `f3fff75` (VFL-568), ruling card on VFL-408 | Cortana | done | 2026-10-09 | [VFL-662 comment, 2026-10-09T12:46:44Z](http://paperclip.paperclip.svc.cluster.local/VFL/issues/VFL-662) — all three items decided: both pushes approved, and VFL-408's Opus HIGH-1 ruled option A (fixture status change only) |
-| VFL-678 | Cortana wake: VFL-87 push approval f7fc592, VFL-568 merge PR #36, VFL-653 merge-update card | Cortana | in_progress | | [VFL-678 comment, 2026-10-09T14:07:09Z](http://paperclip.paperclip.svc.cluster.local/VFL/issues/VFL-678) — approved VFL-87's push; PR #36/#37 merges blocked by a `github_identity_unavailable` broker outage across two runs, monitor re-armed |
+| VFL-678 | Cortana wake: VFL-87 push approval f7fc592, VFL-568 merge PR #36, VFL-653 merge-update card | Cortana | blocked | | [VFL-678 comment, 2026-10-09T14:59:34Z](http://paperclip.paperclip.svc.cluster.local/VFL/issues/VFL-678) — approved VFL-87's push; PR #36/#37/#39 still unmerged after 4 consecutive runs hit `github_identity_unavailable`; MasterChief opened [VFL-692](http://paperclip.paperclip.svc.cluster.local/VFL/issues/VFL-692) as the escalation path, moved to blocked |
 | VFL-692 | Cortana wake 2: fresh identity for merges #36, #37, #39 (VFL-678 escalation) | Cortana | done | 2026-10-09 | [VFL-692 comment, 2026-10-09T15:25:49Z](http://paperclip.paperclip.svc.cluster.local/VFL/issues/VFL-692) — a fresh task got the same `github_identity_unavailable` result from three independent paths (broker, bare broker call, GitHub MCP); the managed GitHub identity itself is unavailable, not a stale per-task token; nothing merged, closed as instructed, owner-side fix needed on the Cortana GitHub connection |
 | VFL-663 | Board watch (continuation 6): find stuck tasks and nudge owners (child of VFL-544) | MasterChief | in_progress | | [VFL-663 comment, 2026-10-09T15:34:46Z](http://paperclip.paperclip.svc.cluster.local/VFL/issues/VFL-663) — monitor re-armed after being lost again; found the GitHub identity outage is system-wide (every run, not only Cortana's) per VFL-692 and its own 15:31 run, last successful merge was PR #38 at 14:01; evidence added to VFL-471 |
 | VFL-152 | Review 8ec435d: cross compiler in the bootstrapped toolchain (VFL-151) | Arbiter | done | 2026-10-06 | [VFL-152](http://paperclip.paperclip.svc.cluster.local/VFL/issues/VFL-152) |
@@ -2287,6 +2287,10 @@ Opened [PR #53](https://github.com/vulcanflow/docs/pull/53) with `VulcanFlow_Dev
 
 ## Status changes
 
+- 2026-10-09T16:07:07.120Z VFL-534 in_review -> in_progress — "VFL-124 continuation: push approval, PR and webhook evidence for ec00b55", Jorge, project platform-foundation, Unassigned — still waiting on the owner's webhook card 8af5473a
+- 2026-10-09T16:05:00.123Z VFL-688 todo -> blocked — "Test Runner: required runs on C1b r2 pair c9e907e + T1c-r5 2afb232", Test Runner, project core-libraries, Phase 2 Libraries — run's terminal access failed mid-cargo-audit, moved to blocked for intervention
+- 2026-10-09T16:02:15.282Z VFL-690 in_progress -> blocked — "Opus Reviewer: review C1b r2 pair c9e907e + T1c-r5 2afb232", Opus Reviewer, project core-libraries, Phase 2 Libraries — repeated ACP startup handshake timeouts exhausted the bounded retry budget, moved to blocked for intervention
+- 2026-10-09T15:36:03.422Z VFL-678 in_progress -> blocked — "Cortana wake: VFL-87 push approval f7fc592, VFL-568 merge PR #36, VFL-653 merge-update card", Cortana, project core-libraries, Unassigned — PR #36/#37/#39 still unmerged after 4 consecutive runs hit github_identity_unavailable; MasterChief opened VFL-692 as the escalation path
 - 2026-10-09T15:31:24.199Z VFL-663 blocked -> in_progress — "Board watch (continuation 6): find stuck tasks and nudge owners", MasterChief, project core-libraries, Unassigned — monitor re-armed after being lost again; found the GitHub identity outage is system-wide, not only Cortana's
 - 2026-10-09T15:25:48.752Z VFL-692 (new) -> done — "Cortana wake 2: fresh identity for merges #36, #37, #39", Cortana, project core-libraries, Unassigned — see delivery log
 - 2026-10-09T15:23:44.523Z VFL-690 blocked -> in_progress — "Opus Reviewer: review C1b r2 pair c9e907e + T1c-r5 2afb232", Opus Reviewer, project core-libraries, Phase 2 Libraries — auto-resumed from blocked; still no run comment past the repeated ACP startup handshake timeout
@@ -2332,9 +2336,5 @@ Opened [PR #53](https://github.com/vulcanflow/docs/pull/53) with `VulcanFlow_Dev
 - 2026-10-09T13:02:59.986Z VFL-653 in_progress -> in_review — "VFL-122 continuation 2: push approval and PR for rebased 06cad62 (lane-gate pins check)", Jorge, project platform-foundation, not in the phase mapping (held under Unassigned) — pushed 06cad62, opened PR #37; waiting on Cortana's merge-update card
 - 2026-10-09T13:04:28.987Z VFL-665 (new) -> in_progress — "T1c-r3: fix pipeline_outcome.rs Scope/Limit fixtures to Skipped (C1b HIGH-1 ruling)", Halsey, project test-packs, Phase 2 Libraries — branch c48a10c, local only; handed to Fred for precheck
 - 2026-10-09T13:02:59.976Z VFL-653 in_review -> in_progress — "VFL-122 continuation 2: push approval and PR for rebased 06cad62 (lane-gate pins check)", Jorge, project platform-foundation, Unassigned — Cortana approved the push; waiting on the merge-update card
-- 2026-10-09T13:01:39.065Z VFL-495 blocked -> in_progress — "T2 fuzz follow-up: force ≥1 label in canonical_host Descendant arm (residual LOW, PR #26)", Halsey, project core-libraries, Phase 2 Libraries — unblocked now PR #26 is merged
 - 2026-10-09T13:01:34.576Z VFL-87 blocked -> in_progress — "T9: NO_IO_CRATES covers 4 of the 7 crates graph-rules.sh checks, and does not split by target", Halsey, project platform-foundation, Unassigned — woken by VFL-664's blocker resolution, all three gates now PASS
-- 2026-10-09T12:58:19.579Z VFL-566 in_review -> in_progress — "F3b container-runtime acceptance: S3 conformance (rustfs + minio) and 100 MiB multipart, owner-run", Test Runner, project platform-foundation, Phase 1 Foundation — owner confirmation lacked evidence, opened a fresh ask_user_questions interaction
-- 2026-10-09T12:55:12.762Z VFL-664 (new) -> done — "Arbiter review: VFL-87 NO_IO_CRATES test fix (branch halsey/vfl-87-no-io-crates, f7fc592)", Arbiter, project platform-foundation, Unassigned — 0 findings; see delivery log
-- 2026-10-09T12:53:57.612Z VFL-453 blocked -> done — "Push and open test PR: T2 scope pack a0cbdf1 rebased onto main 2f662d2 (VFL-15)", Halsey, project core-libraries, Phase 2 Libraries — woke on VFL-460's blocker resolution; see delivery log
 

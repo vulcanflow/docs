@@ -1,5 +1,5 @@
 {
-  "lastRunAt": "2026-10-09T15:37:24Z",
+  "lastRunAt": "2026-10-09T16:11:33Z",
   "phases": {
     "p1_foundation": {
       "label": "1 Foundation",
@@ -2388,7 +2388,7 @@
       "project": "platform-foundation"
     },
     "VFL-534": {
-      "status": "in_review",
+      "status": "in_progress",
       "completedAt": null,
       "title": "VFL-124 continuation: push approval, PR and webhook evidence for ec00b55",
       "assignee": "912014ba-380a-46cd-baa6-306e9343a2c2",
@@ -4376,7 +4376,7 @@
       "project": "core-libraries"
     },
     "VFL-678": {
-      "status": "in_progress",
+      "status": "blocked",
       "completedAt": null,
       "title": "Cortana wake: VFL-87 push approval f7fc592, VFL-568 merge PR #36, VFL-653 merge-update card",
       "assignee": "Cortana",
@@ -4432,7 +4432,7 @@
       "project": "test-packs"
     },
     "VFL-688": {
-      "status": "todo",
+      "status": "blocked",
       "completedAt": null,
       "title": "Test Runner: required runs on C1b r2 pair c9e907e + T1c-r5 2afb232 (VFL-408)",
       "assignee": "Test Runner",
@@ -4446,7 +4446,7 @@
       "project": "core-libraries"
     },
     "VFL-690": {
-      "status": "in_progress",
+      "status": "blocked",
       "completedAt": null,
       "title": "Opus Reviewer: review C1b r2 pair c9e907e + T1c-r5 2afb232 (VFL-408)",
       "assignee": "Opus Reviewer",
