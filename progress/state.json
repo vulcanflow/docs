@@ -1,5 +1,5 @@
 {
-  "lastRunAt": "2026-10-09T08:10:00Z",
+  "lastRunAt": "2026-10-09T08:32:00Z",
   "phases": {
     "p1_foundation": {
       "label": "1 Foundation",
@@ -573,7 +573,11 @@
         "VFL-608",
         "VFL-609",
         "VFL-610",
-        "VFL-615"
+        "VFL-615",
+        "VFL-628",
+        "VFL-629",
+        "VFL-630",
+        "VFL-631"
       ]
     }
   },
@@ -4030,17 +4034,45 @@
       "project": "platform-foundation"
     },
     "VFL-614": {
-      "status": "in_progress",
-      "completedAt": null,
+      "status": "done",
+      "completedAt": "2026-10-09T08:16:28.648Z",
       "title": "Test Runner round 3: runtime-free set on F3b `e51616f` + T4 VFL-601 r3 (VFL-311)",
       "assignee": "Test Runner",
       "project": "platform-foundation"
     },
     "VFL-615": {
-      "status": "in_progress",
+      "status": "blocked",
       "completedAt": null,
       "title": "Toolchain: zig self-test asserts its case count (O3-LOW-1) and resets the probe name (O3-LOW-3)",
       "assignee": "Jorge",
+      "project": "core-libraries"
+    },
+    "VFL-628": {
+      "status": "in_progress",
+      "completedAt": null,
+      "title": "Run the required tests on c0b7127: cross toolchain bootstrap (VFL-151) \u2014 continuation of VFL-398",
+      "assignee": "Test Runner",
+      "project": "core-libraries"
+    },
+    "VFL-629": {
+      "status": "in_progress",
+      "completedAt": null,
+      "title": "Review (CodeRabbit): VFL-615 c1 zig self-test, selftest 24f87b2",
+      "assignee": "Arbiter",
+      "project": "core-libraries"
+    },
+    "VFL-630": {
+      "status": "in_progress",
+      "completedAt": null,
+      "title": "Review (Opus): VFL-615 c1 zig self-test, selftest 24f87b2",
+      "assignee": "Opus Reviewer",
+      "project": "core-libraries"
+    },
+    "VFL-631": {
+      "status": "done",
+      "completedAt": "2026-10-09T08:19:15.043Z",
+      "title": "Test Runner: VFL-615 c1 zig self-test (selftest 24f87b2)",
+      "assignee": "Test Runner",
       "project": "core-libraries"
     }
   }
