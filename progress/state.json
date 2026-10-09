@@ -1,5 +1,5 @@
 {
-  "lastRunAt": "2026-10-09T02:05:43Z",
+  "lastRunAt": "2026-10-09T08:10:00Z",
   "phases": {
     "p1_foundation": {
       "label": "1 Foundation",
@@ -135,7 +135,10 @@
         "VFL-601",
         "VFL-602",
         "VFL-603",
-        "VFL-604"
+        "VFL-604",
+        "VFL-612",
+        "VFL-613",
+        "VFL-614"
       ]
     },
     "p2_libraries": {
@@ -569,7 +572,8 @@
         "VFL-607",
         "VFL-608",
         "VFL-609",
-        "VFL-610"
+        "VFL-610",
+        "VFL-615"
       ]
     }
   },
@@ -820,7 +824,7 @@
       "project": "platform-foundation"
     },
     "VFL-311": {
-      "status": "in_progress",
+      "status": "blocked",
       "completedAt": null,
       "title": "F3b. Artifact adapters: S3, LocalFs and InMemory `ArtifactStore`",
       "assignee": "Jorge",
@@ -3949,8 +3953,8 @@
       "project": "platform-foundation"
     },
     "VFL-601": {
-      "status": "in_progress",
-      "completedAt": null,
+      "status": "done",
+      "completedAt": "2026-10-09T02:04:33.827Z",
       "title": "T4 slice for F3b, round 2: compile fixes and MEDIUM-1 streaming/multipart cases on `e51616f` (VFL-311)",
       "assignee": "Halsey",
       "project": "platform-foundation"
@@ -3970,8 +3974,8 @@
       "project": "platform-foundation"
     },
     "VFL-604": {
-      "status": "done",
-      "completedAt": "2026-10-09T02:00:34.701Z",
+      "status": "in_progress",
+      "completedAt": null,
       "title": "Test Runner round 2: runtime-free set on F3b `e51616f` + T4 VFL-601 (VFL-311)",
       "assignee": "Test Runner",
       "project": "platform-foundation"
@@ -3984,15 +3988,15 @@
       "project": "core-libraries"
     },
     "VFL-607": {
-      "status": "blocked",
-      "completedAt": null,
+      "status": "done",
+      "completedAt": "2026-10-09T02:26:37.704Z",
       "title": "Toolchain: zig self-test coverage for VFL-592 residual LOWs (-Xlinker -Xlinker, trailing -target, cross-wrapper argv order)",
-      "assignee": "Jorge",
+      "assignee": "Cortana",
       "project": "core-libraries"
     },
     "VFL-608": {
-      "status": "in_progress",
-      "completedAt": null,
+      "status": "done",
+      "completedAt": "2026-10-09T02:19:41.811Z",
       "title": "Review (CodeRabbit): VFL-607 c2 zig self-test, selftest c31f757 / cc 5d0551f",
       "assignee": "Arbiter",
       "project": "core-libraries"
@@ -4009,6 +4013,34 @@
       "completedAt": "2026-10-09T01:49:11.741Z",
       "title": "Test Runner: VFL-607 c2 zig self-test (selftest c31f757 / cc 5d0551f)",
       "assignee": "Test Runner",
+      "project": "core-libraries"
+    },
+    "VFL-612": {
+      "status": "in_progress",
+      "completedAt": null,
+      "title": "CodeRabbit review round 3: F3b `e51616f` + T4 VFL-601 r3 (VFL-311)",
+      "assignee": "Arbiter",
+      "project": "platform-foundation"
+    },
+    "VFL-613": {
+      "status": "done",
+      "completedAt": "2026-10-09T02:10:36.374Z",
+      "title": "Opus Reviewer round 3: F3b `e51616f` + T4 VFL-601 r3 (VFL-311)",
+      "assignee": "Opus Reviewer",
+      "project": "platform-foundation"
+    },
+    "VFL-614": {
+      "status": "in_progress",
+      "completedAt": null,
+      "title": "Test Runner round 3: runtime-free set on F3b `e51616f` + T4 VFL-601 r3 (VFL-311)",
+      "assignee": "Test Runner",
+      "project": "platform-foundation"
+    },
+    "VFL-615": {
+      "status": "in_progress",
+      "completedAt": null,
+      "title": "Toolchain: zig self-test asserts its case count (O3-LOW-1) and resets the probe name (O3-LOW-3)",
+      "assignee": "Jorge",
       "project": "core-libraries"
     }
   }
