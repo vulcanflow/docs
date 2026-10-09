@@ -1,5 +1,5 @@
 {
-  "lastRunAt": "2026-10-09T12:04:13Z",
+  "lastRunAt": "2026-10-09T12:38:21Z",
   "phases": {
     "p1_foundation": {
       "label": "1 Foundation",
@@ -598,7 +598,8 @@
         "VFL-650",
         "VFL-651",
         "VFL-652",
-        "VFL-653"
+        "VFL-653",
+        "VFL-660"
       ]
     }
   },
@@ -2361,10 +2362,10 @@
       "project": "platform-foundation"
     },
     "VFL-534": {
-      "status": "in_progress",
+      "status": "in_review",
       "completedAt": null,
       "title": "VFL-124 continuation: push approval, PR and webhook evidence for ec00b55",
-      "assignee": "Jorge",
+      "assignee": "912014ba-380a-46cd-baa6-306e9343a2c2",
       "project": "platform-foundation"
     },
     "VFL-432": {
@@ -2564,10 +2565,10 @@
       "project": "operator-and-ingest"
     },
     "VFL-151": {
-      "status": "blocked",
+      "status": "in_review",
       "completedAt": null,
       "title": "just check-cross cannot run on the agent runners: the bootstrapped toolchain is host-only",
-      "assignee": "Jorge",
+      "assignee": "912014ba-380a-46cd-baa6-306e9343a2c2",
       "project": "core-libraries"
     },
     "VFL-397": {
@@ -3005,10 +3006,10 @@
       "project": null
     },
     "VFL-361": {
-      "status": "in_progress",
+      "status": "cancelled",
       "completedAt": null,
       "title": "Test Runner: VFL-185 candidate cccd3c1 \u2014 Part A2, workspace build + test (heaviest step)",
-      "assignee": "Test Runner",
+      "assignee": "d0a26468-a577-4f16-a29c-de0b53af3983",
       "project": "core-libraries"
     },
     "VFL-571": {
@@ -3873,10 +3874,10 @@
       "project": "core-libraries"
     },
     "VFL-593": {
-      "status": "todo",
+      "status": "in_progress",
       "completedAt": null,
       "title": "Test Runner: required runs on C1b pair 954eac3 + T1c-r2 6b1495b (VFL-408)",
-      "assignee": "Test Runner",
+      "assignee": "d0a26468-a577-4f16-a29c-de0b53af3983",
       "project": "core-libraries"
     },
     "VFL-595": {
@@ -3887,10 +3888,10 @@
       "project": "core-libraries"
     },
     "VFL-594": {
-      "status": "blocked",
+      "status": "in_progress",
       "completedAt": null,
       "title": "CodeRabbit review: C1b pair 954eac3 + T1c-r2 6b1495b (VFL-408)",
-      "assignee": "Arbiter",
+      "assignee": "13034933-9579-4b3c-add9-b9426144d934",
       "project": "core-libraries"
     },
     "VFL-590": {
@@ -4104,10 +4105,10 @@
       "project": "core-libraries"
     },
     "VFL-634": {
-      "status": "in_progress",
-      "completedAt": null,
+      "status": "done",
+      "completedAt": "2026-10-09T12:06:24.849Z",
       "title": "Run the required tests on d26638e: cross toolchain bootstrap (VFL-151), rebased onto d39ee71",
-      "assignee": "Test Runner",
+      "assignee": "d0a26468-a577-4f16-a29c-de0b53af3983",
       "project": "core-libraries"
     },
     "VFL-635": {
@@ -4125,10 +4126,10 @@
       "project": "core-libraries"
     },
     "VFL-639": {
-      "status": "todo",
+      "status": "in_progress",
       "completedAt": null,
       "title": "Test Runner: `just check` on M 7ae4351 (VFL-587 split 1/4)",
-      "assignee": "Test Runner",
+      "assignee": "d0a26468-a577-4f16-a29c-de0b53af3983",
       "project": "core-libraries"
     },
     "VFL-640": {
@@ -4242,6 +4243,13 @@
       "title": "T4 F3b follow-up: residual LOWs 9/10/11 on the artifact conformance pack (VFL-655)",
       "assignee": "Halsey",
       "project": "platform-foundation"
+    },
+    "VFL-660": {
+      "status": "done",
+      "completedAt": "2026-10-09T12:22:00.643Z",
+      "title": "Push approval: VFL-151 cross compiler in the bootstrapped toolchain at d26638e",
+      "assignee": "a9be75cd-d767-4c44-b49c-2017c61f751f",
+      "project": "core-libraries"
     }
   }
 }
