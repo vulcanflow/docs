@@ -1,5 +1,5 @@
 {
-  "lastRunAt": "2026-10-09T10:42:00Z",
+  "lastRunAt": "2026-10-09T11:10:00Z",
   "phases": {
     "p1_foundation": {
       "label": "1 Foundation",
@@ -594,7 +594,8 @@
         "VFL-644",
         "VFL-650",
         "VFL-651",
-        "VFL-652"
+        "VFL-652",
+        "VFL-653"
       ]
     }
   },
@@ -768,7 +769,7 @@
       "project": "platform-foundation"
     },
     "VFL-574": {
-      "status": "blocked",
+      "status": "todo",
       "completedAt": null,
       "title": "Test Runner: rerun required steps on T1a rebase f3fff75 + main (VFL-568)",
       "assignee": "Test Runner",
@@ -908,7 +909,7 @@
       "project": "platform-foundation"
     },
     "VFL-530": {
-      "status": "blocked",
+      "status": "todo",
       "completedAt": null,
       "title": "F3a-LOW-2. Doc-only `vf-core::ports`: F3d LOW-5 (wake keyspace \"must\") + L3 over-size sentence in item 8",
       "assignee": "Jorge",
@@ -3869,14 +3870,14 @@
       "project": "core-libraries"
     },
     "VFL-593": {
-      "status": "blocked",
+      "status": "todo",
       "completedAt": null,
       "title": "Test Runner: required runs on C1b pair 954eac3 + T1c-r2 6b1495b (VFL-408)",
       "assignee": "Test Runner",
       "project": "core-libraries"
     },
     "VFL-595": {
-      "status": "blocked",
+      "status": "in_progress",
       "completedAt": null,
       "title": "Opus Reviewer: review C1b pair 954eac3 + T1c-r2 6b1495b (VFL-408)",
       "assignee": "Opus Reviewer",
@@ -4121,7 +4122,7 @@
       "project": "core-libraries"
     },
     "VFL-639": {
-      "status": "blocked",
+      "status": "todo",
       "completedAt": null,
       "title": "Test Runner: `just check` on M 7ae4351 (VFL-587 split 1/4)",
       "assignee": "Test Runner",
@@ -4170,15 +4171,15 @@
       "project": "test-packs"
     },
     "VFL-647": {
-      "status": "blocked",
+      "status": "in_progress",
       "completedAt": null,
       "title": "CodeRabbit review round 4: F3b `e51616f` + T4 VFL-601 r4 (VFL-311)",
       "assignee": "Arbiter",
       "project": "platform-foundation"
     },
     "VFL-648": {
-      "status": "in_progress",
-      "completedAt": null,
+      "status": "done",
+      "completedAt": "2026-10-09T10:47:34.677Z",
       "title": "Opus Reviewer round 4: F3b `e51616f` + T4 VFL-601 r4 (VFL-311)",
       "assignee": "Opus Reviewer",
       "project": "platform-foundation"
@@ -4191,25 +4192,32 @@
       "project": "platform-foundation"
     },
     "VFL-650": {
-      "status": "in_progress",
-      "completedAt": null,
+      "status": "done",
+      "completedAt": "2026-10-09T10:51:42.044Z",
       "title": "Review (CodeRabbit): VFL-644 c1 zig self-test, selftest f1f3017",
       "assignee": "Arbiter",
       "project": "core-libraries"
     },
     "VFL-651": {
-      "status": "blocked",
+      "status": "todo",
       "completedAt": null,
       "title": "Review (Opus): VFL-644 c1 zig self-test, selftest f1f3017",
       "assignee": "Opus Reviewer",
       "project": "core-libraries"
     },
     "VFL-652": {
-      "status": "in_progress",
-      "completedAt": null,
+      "status": "done",
+      "completedAt": "2026-10-09T10:43:21.202Z",
       "title": "Test Runner: VFL-644 c1 zig self-test (selftest f1f3017)",
       "assignee": "Test Runner",
       "project": "core-libraries"
+    },
+    "VFL-653": {
+      "status": "in_progress",
+      "completedAt": null,
+      "title": "VFL-122 continuation 2: push approval and PR for rebased `06cad62` (lane-gate pins check)",
+      "assignee": "Jorge",
+      "project": "platform-foundation"
     }
   }
 }
