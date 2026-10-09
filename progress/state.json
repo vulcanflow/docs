@@ -1,5 +1,5 @@
 {
-  "lastRunAt": "2026-10-09T11:10:00Z",
+  "lastRunAt": "2026-10-09T11:40:00Z",
   "phases": {
     "p1_foundation": {
       "label": "1 Foundation",
@@ -141,7 +141,10 @@
         "VFL-614",
         "VFL-647",
         "VFL-648",
-        "VFL-649"
+        "VFL-649",
+        "VFL-655",
+        "VFL-656",
+        "VFL-657"
       ]
     },
     "p2_libraries": {
@@ -769,8 +772,8 @@
       "project": "platform-foundation"
     },
     "VFL-574": {
-      "status": "todo",
-      "completedAt": null,
+      "status": "done",
+      "completedAt": "2026-10-09T11:17:49.620Z",
       "title": "Test Runner: rerun required steps on T1a rebase f3fff75 + main (VFL-568)",
       "assignee": "Test Runner",
       "project": "core-libraries"
@@ -790,7 +793,7 @@
       "project": "core-libraries"
     },
     "VFL-568": {
-      "status": "blocked",
+      "status": "in_review",
       "completedAt": null,
       "title": "T1a rebase: `halsey/t1a-vf-core-tests` (`b59f98f`) onto `main` after C1 PR #33 merges (VFL-14)",
       "assignee": "Halsey",
@@ -3877,14 +3880,14 @@
       "project": "core-libraries"
     },
     "VFL-595": {
-      "status": "in_progress",
-      "completedAt": null,
+      "status": "done",
+      "completedAt": "2026-10-09T11:16:02.138Z",
       "title": "Opus Reviewer: review C1b pair 954eac3 + T1c-r2 6b1495b (VFL-408)",
       "assignee": "Opus Reviewer",
       "project": "core-libraries"
     },
     "VFL-594": {
-      "status": "in_progress",
+      "status": "blocked",
       "completedAt": null,
       "title": "CodeRabbit review: C1b pair 954eac3 + T1c-r2 6b1495b (VFL-408)",
       "assignee": "Arbiter",
@@ -4171,8 +4174,8 @@
       "project": "test-packs"
     },
     "VFL-647": {
-      "status": "in_progress",
-      "completedAt": null,
+      "status": "done",
+      "completedAt": "2026-10-09T11:05:21.279Z",
       "title": "CodeRabbit review round 4: F3b `e51616f` + T4 VFL-601 r4 (VFL-311)",
       "assignee": "Arbiter",
       "project": "platform-foundation"
@@ -4185,8 +4188,8 @@
       "project": "platform-foundation"
     },
     "VFL-649": {
-      "status": "in_progress",
-      "completedAt": null,
+      "status": "done",
+      "completedAt": "2026-10-09T11:07:37.913Z",
       "title": "Test Runner round 4: runtime-free set on F3b `e51616f` + T4 VFL-601 r4 (VFL-311)",
       "assignee": "Test Runner",
       "project": "platform-foundation"
@@ -4213,10 +4216,31 @@
       "project": "core-libraries"
     },
     "VFL-653": {
-      "status": "in_progress",
+      "status": "in_review",
       "completedAt": null,
       "title": "VFL-122 continuation 2: push approval and PR for rebased `06cad62` (lane-gate pins check)",
       "assignee": "Jorge",
+      "project": "platform-foundation"
+    },
+    "VFL-655": {
+      "status": "done",
+      "completedAt": "2026-10-09T11:20:28.089Z",
+      "title": "Push approval: F3b artifact adapters at e51616f (VFL-311)",
+      "assignee": "Cortana",
+      "project": "platform-foundation"
+    },
+    "VFL-657": {
+      "status": "todo",
+      "completedAt": null,
+      "title": "Gate lane for runtime-free crate test packs: test-pack recipe, test-unit depends on it (VFL-655 \u00a73)",
+      "assignee": "Jorge",
+      "project": "platform-foundation"
+    },
+    "VFL-656": {
+      "status": "blocked",
+      "completedAt": null,
+      "title": "T4 F3b follow-up: residual LOWs 9/10/11 on the artifact conformance pack (VFL-655)",
+      "assignee": "Halsey",
       "project": "platform-foundation"
     }
   }
