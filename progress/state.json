@@ -1,5 +1,5 @@
 {
-  "lastRunAt": "2026-10-09T09:05:00Z",
+  "lastRunAt": "2026-10-09T10:42:00Z",
   "phases": {
     "p1_foundation": {
       "label": "1 Foundation",
@@ -138,7 +138,10 @@
         "VFL-604",
         "VFL-612",
         "VFL-613",
-        "VFL-614"
+        "VFL-614",
+        "VFL-647",
+        "VFL-648",
+        "VFL-649"
       ]
     },
     "p2_libraries": {
@@ -235,7 +238,13 @@
         "VFL-593",
         "VFL-595",
         "VFL-594",
-        "VFL-586"
+        "VFL-586",
+        "VFL-639",
+        "VFL-640",
+        "VFL-642",
+        "VFL-643",
+        "VFL-645",
+        "VFL-646"
       ]
     },
     "p3_api": {
@@ -581,7 +590,11 @@
         "VFL-633",
         "VFL-634",
         "VFL-635",
-        "VFL-636"
+        "VFL-636",
+        "VFL-644",
+        "VFL-650",
+        "VFL-651",
+        "VFL-652"
       ]
     }
   },
@@ -2267,7 +2280,7 @@
       "project": "graph-and-execution-contracts"
     },
     "VFL-44": {
-      "status": "in_progress",
+      "status": "blocked",
       "completedAt": null,
       "title": "T4 test pack: data isolation and adapters",
       "assignee": "Halsey",
@@ -2344,7 +2357,7 @@
       "project": "platform-foundation"
     },
     "VFL-534": {
-      "status": "in_review",
+      "status": "in_progress",
       "completedAt": null,
       "title": "VFL-124 continuation: push approval, PR and webhook evidence for ec00b55",
       "assignee": "Jorge",
@@ -2995,8 +3008,8 @@
       "project": "core-libraries"
     },
     "VFL-571": {
-      "status": "blocked",
-      "completedAt": null,
+      "status": "done",
+      "completedAt": "2026-10-09T09:32:48.221Z",
       "title": "Opus Reviewer review round 6: lane-gate `pins` check + README update path (ebd3374, VFL-122)",
       "assignee": "Opus Reviewer",
       "project": "platform-foundation"
@@ -3856,7 +3869,7 @@
       "project": "core-libraries"
     },
     "VFL-593": {
-      "status": "in_progress",
+      "status": "blocked",
       "completedAt": null,
       "title": "Test Runner: required runs on C1b pair 954eac3 + T1c-r2 6b1495b (VFL-408)",
       "assignee": "Test Runner",
@@ -3962,7 +3975,7 @@
     },
     "VFL-601": {
       "status": "done",
-      "completedAt": "2026-10-09T02:04:33.827Z",
+      "completedAt": "2026-10-09T10:28:03.711Z",
       "title": "T4 slice for F3b, round 2: compile fixes and MEDIUM-1 streaming/multipart cases on `e51616f` (VFL-311)",
       "assignee": "Halsey",
       "project": "platform-foundation"
@@ -3982,7 +3995,7 @@
       "project": "platform-foundation"
     },
     "VFL-604": {
-      "status": "in_progress",
+      "status": "cancelled",
       "completedAt": null,
       "title": "Test Runner round 2: runtime-free set on F3b `e51616f` + T4 VFL-601 (VFL-311)",
       "assignee": "Test Runner",
@@ -4024,8 +4037,8 @@
       "project": "core-libraries"
     },
     "VFL-612": {
-      "status": "in_progress",
-      "completedAt": null,
+      "status": "done",
+      "completedAt": "2026-10-09T10:00:55.471Z",
       "title": "CodeRabbit review round 3: F3b `e51616f` + T4 VFL-601 r3 (VFL-311)",
       "assignee": "Arbiter",
       "project": "platform-foundation"
@@ -4045,10 +4058,10 @@
       "project": "platform-foundation"
     },
     "VFL-615": {
-      "status": "blocked",
-      "completedAt": null,
+      "status": "done",
+      "completedAt": "2026-10-09T10:09:36.939Z",
       "title": "Toolchain: zig self-test asserts its case count (O3-LOW-1) and resets the probe name (O3-LOW-3)",
-      "assignee": "Jorge",
+      "assignee": "Cortana",
       "project": "core-libraries"
     },
     "VFL-628": {
@@ -4059,8 +4072,8 @@
       "project": "core-libraries"
     },
     "VFL-629": {
-      "status": "in_progress",
-      "completedAt": null,
+      "status": "done",
+      "completedAt": "2026-10-09T09:16:30.763Z",
       "title": "Review (CodeRabbit): VFL-615 c1 zig self-test, selftest 24f87b2",
       "assignee": "Arbiter",
       "project": "core-libraries"
@@ -4094,17 +4107,108 @@
       "project": "core-libraries"
     },
     "VFL-635": {
-      "status": "in_progress",
-      "completedAt": null,
+      "status": "done",
+      "completedAt": "2026-10-09T09:06:42.687Z",
       "title": "Review d26638e: cross compiler in the bootstrapped toolchain (VFL-151), rebased onto d39ee71",
       "assignee": "Arbiter",
       "project": "core-libraries"
     },
     "VFL-636": {
-      "status": "in_progress",
-      "completedAt": null,
+      "status": "done",
+      "completedAt": "2026-10-09T09:14:48.340Z",
       "title": "Independent review of d26638e: cross compiler in the bootstrapped toolchain (VFL-151), rebased onto d39ee71",
       "assignee": "Opus Reviewer",
+      "project": "core-libraries"
+    },
+    "VFL-639": {
+      "status": "blocked",
+      "completedAt": null,
+      "title": "Test Runner: `just check` on M 7ae4351 (VFL-587 split 1/4)",
+      "assignee": "Test Runner",
+      "project": "core-libraries"
+    },
+    "VFL-640": {
+      "status": "in_progress",
+      "completedAt": null,
+      "title": "Test Runner: `just test-unit` on M 7ae4351 (VFL-587 split 2/4)",
+      "assignee": "Test Runner",
+      "project": "core-libraries"
+    },
+    "VFL-642": {
+      "status": "done",
+      "completedAt": "2026-10-09T10:37:14.952Z",
+      "title": "Test Runner: T2 scope pack on M 7ae4351 (VFL-587 split 3/4)",
+      "assignee": "Test Runner",
+      "project": "core-libraries"
+    },
+    "VFL-643": {
+      "status": "done",
+      "completedAt": "2026-10-09T10:22:14.485Z",
+      "title": "Test Runner: `just fuzz-check` on M 7ae4351 (VFL-587 split 4/4)",
+      "assignee": "Test Runner",
+      "project": "core-libraries"
+    },
+    "VFL-644": {
+      "status": "blocked",
+      "completedAt": null,
+      "title": "Toolchain: zig self-test stops writing t.o into the caller's cwd (O630-OBS-1) and drops the duplicated case count from the header (O630-LOW-1, O630-LOW-3)",
+      "assignee": "Jorge",
+      "project": "core-libraries"
+    },
+    "VFL-645": {
+      "status": "blocked",
+      "completedAt": null,
+      "title": "T4 slice: vf-db isolation suite (C3-gated)",
+      "assignee": "Halsey",
+      "project": "test-packs"
+    },
+    "VFL-646": {
+      "status": "blocked",
+      "completedAt": null,
+      "title": "T4 slice: F3c WakeBus adapter conformance (RedisWakeBus, InProcessWakeBus)",
+      "assignee": "Halsey",
+      "project": "test-packs"
+    },
+    "VFL-647": {
+      "status": "blocked",
+      "completedAt": null,
+      "title": "CodeRabbit review round 4: F3b `e51616f` + T4 VFL-601 r4 (VFL-311)",
+      "assignee": "Arbiter",
+      "project": "platform-foundation"
+    },
+    "VFL-648": {
+      "status": "in_progress",
+      "completedAt": null,
+      "title": "Opus Reviewer round 4: F3b `e51616f` + T4 VFL-601 r4 (VFL-311)",
+      "assignee": "Opus Reviewer",
+      "project": "platform-foundation"
+    },
+    "VFL-649": {
+      "status": "in_progress",
+      "completedAt": null,
+      "title": "Test Runner round 4: runtime-free set on F3b `e51616f` + T4 VFL-601 r4 (VFL-311)",
+      "assignee": "Test Runner",
+      "project": "platform-foundation"
+    },
+    "VFL-650": {
+      "status": "in_progress",
+      "completedAt": null,
+      "title": "Review (CodeRabbit): VFL-644 c1 zig self-test, selftest f1f3017",
+      "assignee": "Arbiter",
+      "project": "core-libraries"
+    },
+    "VFL-651": {
+      "status": "blocked",
+      "completedAt": null,
+      "title": "Review (Opus): VFL-644 c1 zig self-test, selftest f1f3017",
+      "assignee": "Opus Reviewer",
+      "project": "core-libraries"
+    },
+    "VFL-652": {
+      "status": "in_progress",
+      "completedAt": null,
+      "title": "Test Runner: VFL-644 c1 zig self-test (selftest f1f3017)",
+      "assignee": "Test Runner",
       "project": "core-libraries"
     }
   }
