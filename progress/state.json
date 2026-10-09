@@ -1,5 +1,5 @@
 {
-  "lastRunAt": "2026-10-09T13:40:30Z",
+  "lastRunAt": "2026-10-09T14:17:00Z",
   "phases": {
     "p1_foundation": {
       "label": "1 Foundation",
@@ -253,7 +253,11 @@
         "VFL-672",
         "VFL-673",
         "VFL-676",
-        "VFL-677"
+        "VFL-677",
+        "VFL-680",
+        "VFL-683",
+        "VFL-684",
+        "VFL-685"
       ]
     },
     "p3_api": {
@@ -613,7 +617,10 @@
         "VFL-668",
         "VFL-669",
         "VFL-670",
-        "VFL-674"
+        "VFL-674",
+        "VFL-678",
+        "VFL-681",
+        "VFL-682"
       ]
     }
   },
@@ -2306,7 +2313,7 @@
       "project": "test-packs"
     },
     "VFL-408": {
-      "status": "blocked",
+      "status": "in_progress",
       "completedAt": null,
       "title": "C1b. vf-core residuals from the C1 gate: TraceId (LOW-12), UnitSummary invariant (LOW-13), TenantSlug (slug rules)",
       "assignee": "Fred",
@@ -3118,10 +3125,10 @@
       "project": "platform-foundation"
     },
     "VFL-495": {
-      "status": "in_progress",
-      "completedAt": null,
+      "status": "done",
+      "completedAt": "2026-10-09T14:01:51.841Z",
       "title": "T2 fuzz follow-up: force ≥1 label in canonical_host Descendant arm (residual LOW, PR #26)",
-      "assignee": "Halsey",
+      "assignee": "Cortana",
       "project": "core-libraries"
     },
     "VFL-80": {
@@ -4315,7 +4322,7 @@
       "project": "core-libraries"
     },
     "VFL-670": {
-      "status": "in_progress",
+      "status": "blocked",
       "completedAt": null,
       "title": "Run the required tests on ce52e85: PR #35 merged up to main 225615e (VFL-151 cross toolchain)",
       "assignee": "Test Runner",
@@ -4357,11 +4364,60 @@
       "project": "core-libraries"
     },
     "VFL-677": {
-      "status": "backlog",
+      "status": "blocked",
       "completedAt": null,
       "title": "Fuzz follow-up: fix 'documented below' guard comment in canonical_host.rs and scope_match.rs (residual LOW F1, VFL-495)",
-      "assignee": "Halsey",
+      "assignee": "Cortana",
       "project": "core-libraries"
+    },
+    "VFL-678": {
+      "status": "in_progress",
+      "completedAt": null,
+      "title": "Cortana wake: VFL-87 push approval f7fc592, VFL-568 merge PR #36, VFL-653 merge-update card",
+      "assignee": "Cortana",
+      "project": "core-libraries"
+    },
+    "VFL-681": {
+      "status": "in_progress",
+      "completedAt": null,
+      "title": "Watchdog review for VFL-670",
+      "assignee": "Test Runner",
+      "project": "core-libraries"
+    },
+    "VFL-680": {
+      "status": "done",
+      "completedAt": "2026-10-09T14:02:30.012Z",
+      "title": "T1c-r4: fix ids.rs deserialize_str_err compile error (Debug bound) on T1c-r3 c48a10c",
+      "assignee": "Halsey",
+      "project": "test-packs"
+    },
+    "VFL-683": {
+      "status": "in_progress",
+      "completedAt": null,
+      "title": "Opus Reviewer: independent review of 5b1f4d9 — fuzz Descendant guard comment 'documented above' (VFL-677)",
+      "assignee": "Opus Reviewer",
+      "project": "core-libraries"
+    },
+    "VFL-684": {
+      "status": "in_progress",
+      "completedAt": null,
+      "title": "Arbiter (CodeRabbit): review 5b1f4d9 — fuzz Descendant guard comment 'documented above' (VFL-677)",
+      "assignee": "Arbiter",
+      "project": "core-libraries"
+    },
+    "VFL-685": {
+      "status": "todo",
+      "completedAt": null,
+      "title": "Test Runner: fmt-check + just fuzz-check on 5b1f4d9 under the fuzz-cxx env (VFL-677)",
+      "assignee": "Test Runner",
+      "project": "core-libraries"
+    },
+    "VFL-682": {
+      "status": "blocked",
+      "completedAt": null,
+      "title": "VFL-87 continuation: PR #39 checks + Cortana merge hand-off",
+      "assignee": "Halsey",
+      "project": "platform-foundation"
     }
   }
 }
