@@ -1,5 +1,5 @@
 {
-  "lastRunAt": "2026-10-09T08:32:00Z",
+  "lastRunAt": "2026-10-09T09:05:00Z",
   "phases": {
     "p1_foundation": {
       "label": "1 Foundation",
@@ -577,7 +577,11 @@
         "VFL-628",
         "VFL-629",
         "VFL-630",
-        "VFL-631"
+        "VFL-631",
+        "VFL-633",
+        "VFL-634",
+        "VFL-635",
+        "VFL-636"
       ]
     }
   },
@@ -2312,7 +2316,7 @@
       "project": "progress-and-docs"
     },
     "VFL-398": {
-      "status": "blocked",
+      "status": "cancelled",
       "completedAt": null,
       "title": "Run the required tests on c0b7127: cross toolchain bootstrap (VFL-151)",
       "assignee": "Test Runner",
@@ -4048,8 +4052,8 @@
       "project": "core-libraries"
     },
     "VFL-628": {
-      "status": "in_progress",
-      "completedAt": null,
+      "status": "done",
+      "completedAt": "2026-10-09T08:41:52.352Z",
       "title": "Run the required tests on c0b7127: cross toolchain bootstrap (VFL-151) \u2014 continuation of VFL-398",
       "assignee": "Test Runner",
       "project": "core-libraries"
@@ -4062,8 +4066,8 @@
       "project": "core-libraries"
     },
     "VFL-630": {
-      "status": "in_progress",
-      "completedAt": null,
+      "status": "done",
+      "completedAt": "2026-10-09T08:32:52.794Z",
       "title": "Review (Opus): VFL-615 c1 zig self-test, selftest 24f87b2",
       "assignee": "Opus Reviewer",
       "project": "core-libraries"
@@ -4073,6 +4077,34 @@
       "completedAt": "2026-10-09T08:19:15.043Z",
       "title": "Test Runner: VFL-615 c1 zig self-test (selftest 24f87b2)",
       "assignee": "Test Runner",
+      "project": "core-libraries"
+    },
+    "VFL-633": {
+      "status": "done",
+      "completedAt": "2026-10-09T08:54:30.998Z",
+      "title": "Rebase jorge/vfl-151-cross-toolchain-r3 onto current main \u2014 lane-gate fails on stale branch",
+      "assignee": "Jorge",
+      "project": "core-libraries"
+    },
+    "VFL-634": {
+      "status": "in_progress",
+      "completedAt": null,
+      "title": "Run the required tests on d26638e: cross toolchain bootstrap (VFL-151), rebased onto d39ee71",
+      "assignee": "Test Runner",
+      "project": "core-libraries"
+    },
+    "VFL-635": {
+      "status": "in_progress",
+      "completedAt": null,
+      "title": "Review d26638e: cross compiler in the bootstrapped toolchain (VFL-151), rebased onto d39ee71",
+      "assignee": "Arbiter",
+      "project": "core-libraries"
+    },
+    "VFL-636": {
+      "status": "in_progress",
+      "completedAt": null,
+      "title": "Independent review of d26638e: cross compiler in the bootstrapped toolchain (VFL-151), rebased onto d39ee71",
+      "assignee": "Opus Reviewer",
       "project": "core-libraries"
     }
   }
