@@ -1,5 +1,5 @@
 {
-  "lastRunAt": "2026-10-13T11:14:24Z",
+  "lastRunAt": "2026-10-13T11:34:45Z",
   "phases": {
     "p1_foundation": {
       "label": "1 Foundation",
@@ -639,7 +639,8 @@
         "VFL-707",
         "VFL-710",
         "VFL-711",
-        "VFL-713"
+        "VFL-713",
+        "VFL-714"
       ]
     }
   },
@@ -2605,7 +2606,7 @@
       "project": "operator-and-ingest"
     },
     "VFL-151": {
-      "status": "in_progress",
+      "status": "blocked",
       "completedAt": null,
       "title": "just check-cross cannot run on the agent runners: the bootstrapped toolchain is host-only",
       "assignee": "Jorge",
@@ -2724,7 +2725,7 @@
       "project": "platform-foundation"
     },
     "VFL-125": {
-      "status": "in_progress",
+      "status": "in_review",
       "completedAt": null,
       "title": "CI on Tekton (2/4): pipeline definitions equivalent to lane-gate and rust-check",
       "assignee": "Jorge",
@@ -3116,7 +3117,7 @@
       "project": "platform-foundation"
     },
     "VFL-539": {
-      "status": "in_progress",
+      "status": "blocked",
       "completedAt": null,
       "title": "VFL-124 follow-up: README-only fixes for Opus round-4 LOW-6..9, 11..14",
       "assignee": "Jorge",
@@ -4570,6 +4571,13 @@
       "title": "Push approval: VFL-539 triggers README LOW fixes at `750c212`",
       "assignee": "a9be75cd-d767-4c44-b49c-2017c61f751f",
       "project": "91740a68-0dd1-47b4-935f-9ab08f4c5669"
+    },
+    "VFL-714": {
+      "status": "done",
+      "completedAt": "2026-10-13T11:26:48.285Z",
+      "title": "Push approval: VFL-151 cross toolchain at e261739 (PR #35 brought up to main 5b7ec64)",
+      "assignee": "Cortana",
+      "project": "core-libraries"
     }
   }
 }
