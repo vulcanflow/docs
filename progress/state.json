@@ -1,5 +1,5 @@
 {
-  "lastRunAt": "2026-10-13T12:35:40Z",
+  "lastRunAt": "2026-10-13T13:06:32Z",
   "phases": {
     "p1_foundation": {
       "label": "1 Foundation",
@@ -264,7 +264,9 @@
         "VFL-690",
         "VFL-704",
         "VFL-708",
-        "VFL-709"
+        "VFL-709",
+        "VFL-725",
+        "VFL-726"
       ]
     },
     "p3_api": {
@@ -2340,7 +2342,7 @@
       "project": "test-packs"
     },
     "VFL-408": {
-      "status": "in_progress",
+      "status": "blocked",
       "completedAt": null,
       "title": "C1b. vf-core residuals from the C1 gate: TraceId (LOW-12), UnitSummary invariant (LOW-13), TenantSlug (slug rules)",
       "assignee": "Fred",
@@ -2389,7 +2391,7 @@
       "project": "core-libraries"
     },
     "VFL-558": {
-      "status": "in_progress",
+      "status": "todo",
       "completedAt": null,
       "title": "Test Runner: F2h `test-doc` recipe `a3aa436` (VFL-538)",
       "assignee": "Test Runner",
@@ -4629,11 +4631,25 @@
       "project": "core-libraries"
     },
     "VFL-723": {
-      "status": "in_progress",
-      "completedAt": null,
+      "status": "done",
+      "completedAt": "2026-10-13T12:34:10.331Z",
       "title": "Test Runner wake: run VFL-558 (F2h test-doc on a3aa436), then cancel superseded VFL-362",
       "assignee": "Test Runner",
       "project": "platform-foundation"
+    },
+    "VFL-725": {
+      "status": "blocked",
+      "completedAt": null,
+      "title": "C1c. vf-core LOW follow-ups from the C1b gate: problem.rs task id, TraceId from Uuid, const debug_assert doc, macro order",
+      "assignee": "Fred",
+      "project": "core-libraries"
+    },
+    "VFL-726": {
+      "status": "blocked",
+      "completedAt": null,
+      "title": "T1d. vf-core test LOW follow-ups from the C1b gate (Opus LOW-4, LOW-5) plus C1c TraceId::from(Uuid) coverage",
+      "assignee": "Halsey",
+      "project": "core-libraries"
     }
   }
 }
