@@ -1,5 +1,5 @@
 {
-  "lastRunAt": "2026-10-13T15:05:00Z",
+  "lastRunAt": "2026-10-13T15:35:00Z",
   "phases": {
     "p1_foundation": {
       "label": "1 Foundation",
@@ -269,7 +269,8 @@
         "VFL-726",
         "VFL-736",
         "VFL-737",
-        "VFL-738"
+        "VFL-738",
+        "VFL-743"
       ]
     },
     "p3_api": {
@@ -2626,7 +2627,7 @@
       "project": "operator-and-ingest"
     },
     "VFL-151": {
-      "status": "blocked",
+      "status": "in_progress",
       "completedAt": null,
       "title": "just check-cross cannot run on the agent runners: the bootstrapped toolchain is host-only",
       "assignee": "Jorge",
@@ -3137,7 +3138,7 @@
       "project": "platform-foundation"
     },
     "VFL-539": {
-      "status": "blocked",
+      "status": "in_progress",
       "completedAt": null,
       "title": "VFL-124 follow-up: README-only fixes for Opus round-4 LOW-6..9, 11..14",
       "assignee": "Jorge",
@@ -4558,14 +4559,14 @@
       "project": "91740a68-0dd1-47b4-935f-9ab08f4c5669"
     },
     "VFL-708": {
-      "status": "blocked",
-      "completedAt": null,
+      "status": "done",
+      "completedAt": "2026-10-13T15:34:47.462Z",
       "title": "Bump ammonia pin =4.2.1 \u2192 =4.2.3: RUSTSEC-2021-0157/0158 make cargo deny red on main (blocks PR #40 merge)",
       "assignee": "912014ba-380a-46cd-baa6-306e9343a2c2",
       "project": "1e4d751c-3ada-47c7-aabe-e8cb40bc897e"
     },
     "VFL-709": {
-      "status": "blocked",
+      "status": "in_progress",
       "completedAt": null,
       "title": "Halsey: rebase halsey/vfl-677-guard-comment-fix onto main after VFL-708 merges and force-push PR #40 (VFL-677)",
       "assignee": "6029b86f-ff5b-492b-9f97-ed31363be784",
@@ -4698,8 +4699,8 @@
       "project": "platform-foundation"
     },
     "VFL-740": {
-      "status": "in_progress",
-      "completedAt": null,
+      "status": "done",
+      "completedAt": "2026-10-13T15:09:07.883Z",
       "title": "Opus Reviewer: review VFL-125 Tekton checkout fix (585dfa5), round 2",
       "assignee": "Opus Reviewer",
       "project": "platform-foundation"
@@ -4712,8 +4713,8 @@
       "project": "platform-foundation"
     },
     "VFL-741": {
-      "status": "todo",
-      "completedAt": null,
+      "status": "done",
+      "completedAt": "2026-10-13T15:25:56.110Z",
       "title": "Test Runner: lane gate and manifest checks on VFL-125 candidate 585dfa5 (round 2)",
       "assignee": "Test Runner",
       "project": "platform-foundation"
@@ -4733,10 +4734,17 @@
       "project": "core-libraries"
     },
     "VFL-738": {
-      "status": "in_progress",
-      "completedAt": null,
+      "status": "done",
+      "completedAt": "2026-10-13T15:22:19.610Z",
       "title": "Test Runner: just deny/audit/check/gate on VFL-708 candidate 0d4ce915",
       "assignee": "Test Runner",
+      "project": "core-libraries"
+    },
+    "VFL-743": {
+      "status": "blocked",
+      "completedAt": null,
+      "title": "VFL-568 continuation: PR #36 merge-update watch",
+      "assignee": "6029b86f-ff5b-492b-9f97-ed31363be784",
       "project": "core-libraries"
     }
   }
