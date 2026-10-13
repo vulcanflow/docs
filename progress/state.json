@@ -1,5 +1,5 @@
 {
-  "lastRunAt": "2026-10-13T19:33:54Z",
+  "lastRunAt": "2026-10-13T20:35:14Z",
   "phases": {
     "p1_foundation": {
       "label": "1 Foundation",
@@ -676,6 +676,7 @@
         "VFL-757",
         "VFL-760",
         "VFL-761",
+        "VFL-770",
         "VFL-762",
         "VFL-763",
         "VFL-765"
@@ -4842,7 +4843,7 @@
       "project": "core-libraries"
     },
     "VFL-760": {
-      "status": "in_review",
+      "status": "blocked",
       "completedAt": null,
       "title": "VFL-125 continuation: push approval, PR #42 update and acceptance run 2 for 585dfa5",
       "assignee": "Jorge",
@@ -4882,6 +4883,13 @@
       "title": "Cortana wake: retry the PR #36 merge path now (identity returned 18:08 window)",
       "assignee": "Cortana",
       "project": "core-libraries"
+    },
+    "VFL-770": {
+      "status": "in_progress",
+      "completedAt": null,
+      "title": "Push approval: VFL-125 PR #42 brought up to main ef39975 at 11385db (plain merge into 585dfa5)",
+      "assignee": "Cortana",
+      "project": "platform-foundation"
     }
   }
 }
