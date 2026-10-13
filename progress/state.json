@@ -1,5 +1,5 @@
 {
-  "lastRunAt": "2026-10-13T13:06:32Z",
+  "lastRunAt": "2026-10-13T13:36:52Z",
   "phases": {
     "p1_foundation": {
       "label": "1 Foundation",
@@ -649,7 +649,10 @@
         "VFL-719",
         "VFL-720",
         "VFL-722",
-        "VFL-723"
+        "VFL-723",
+        "VFL-728",
+        "VFL-729",
+        "VFL-731"
       ]
     }
   },
@@ -2391,7 +2394,7 @@
       "project": "core-libraries"
     },
     "VFL-558": {
-      "status": "todo",
+      "status": "in_progress",
       "completedAt": null,
       "title": "Test Runner: F2h `test-doc` recipe `a3aa436` (VFL-538)",
       "assignee": "Test Runner",
@@ -2734,7 +2737,7 @@
       "project": "platform-foundation"
     },
     "VFL-125": {
-      "status": "blocked",
+      "status": "in_review",
       "completedAt": null,
       "title": "CI on Tekton (2/4): pipeline definitions equivalent to lane-gate and rust-check",
       "assignee": "Jorge",
@@ -4596,8 +4599,8 @@
       "project": "platform-foundation"
     },
     "VFL-717": {
-      "status": "in_progress",
-      "completedAt": null,
+      "status": "done",
+      "completedAt": "2026-10-13T13:18:49.839Z",
       "title": "CodeRabbit review: VFL-125 Tekton lane-gate and rust-check (arm64) pipelines (bebd761)",
       "assignee": "Arbiter",
       "project": "platform-foundation"
@@ -4650,6 +4653,27 @@
       "title": "T1d. vf-core test LOW follow-ups from the C1b gate (Opus LOW-4, LOW-5) plus C1c TraceId::from(Uuid) coverage",
       "assignee": "Halsey",
       "project": "core-libraries"
+    },
+    "VFL-728": {
+      "status": "done",
+      "completedAt": "2026-10-13T13:24:27.900Z",
+      "title": "Push approval: VFL-125 Tekton lane-gate and rust-check (arm64) at bebd761",
+      "assignee": "Cortana",
+      "project": "platform-foundation"
+    },
+    "VFL-729": {
+      "status": "blocked",
+      "completedAt": null,
+      "title": "VFL-125 follow-up: lane-gate base guard, RUST_TEST_THREADS and README nits (Opus L1, L2, L7, L8)",
+      "assignee": "Jorge",
+      "project": "platform-foundation"
+    },
+    "VFL-731": {
+      "status": "in_progress",
+      "completedAt": null,
+      "title": "Test Runner wake: run VFL-558 (F2h test-doc on a3aa436) in the foreground",
+      "assignee": "Test Runner",
+      "project": "platform-foundation"
     }
   }
 }
