@@ -1,5 +1,5 @@
 {
-  "lastRunAt": "2026-10-13T22:36:00Z",
+  "lastRunAt": "2026-10-13T23:32:00Z",
   "phases": {
     "p1_foundation": {
       "label": "1 Foundation",
@@ -704,7 +704,20 @@
         "VFL-797",
         "VFL-798",
         "VFL-799",
-        "VFL-800"
+        "VFL-800",
+        "VFL-802",
+        "VFL-803",
+        "VFL-804",
+        "VFL-805",
+        "VFL-806",
+        "VFL-807",
+        "VFL-808",
+        "VFL-809",
+        "VFL-810",
+        "VFL-811",
+        "VFL-813",
+        "VFL-814",
+        "VFL-815"
       ]
     }
   },
@@ -4945,14 +4958,14 @@
       "project": "platform-foundation"
     },
     "VFL-776": {
-      "status": "in_review",
-      "completedAt": null,
+      "status": "done",
+      "completedAt": "2026-10-13T23:28:43.189Z",
       "title": "CI on Tekton (3b/4): name the vf-ci egress policy in the .tekton README prerequisites (VFL-126 L5)",
-      "assignee": "912014ba-380a-46cd-baa6-306e9343a2c2",
-      "project": "91740a68-0dd1-47b4-935f-9ab08f4c5669"
+      "assignee": "Cortana",
+      "project": "platform-foundation"
     },
     "VFL-777": {
-      "status": "blocked",
+      "status": "in_progress",
       "completedAt": null,
       "title": "CI on Tekton (3c/4): webhook starts vf-lane-gate and vf-rust-check for same-repo pull requests",
       "assignee": "Jorge",
@@ -5043,11 +5056,11 @@
       "project": "91740a68-0dd1-47b4-935f-9ab08f4c5669"
     },
     "VFL-792": {
-      "status": "in_progress",
-      "completedAt": null,
+      "status": "done",
+      "completedAt": "2026-10-13T22:34:52.732Z",
       "title": "CI on Tekton: .tekton/kustomization.yaml joins the GATE class (VFL-787 LOW-1)",
-      "assignee": "912014ba-380a-46cd-baa6-306e9343a2c2",
-      "project": "91740a68-0dd1-47b4-935f-9ab08f4c5669"
+      "assignee": "Cortana",
+      "project": "platform-foundation"
     },
     "VFL-793": {
       "status": "done",
@@ -5085,11 +5098,11 @@
       "project": "91740a68-0dd1-47b4-935f-9ab08f4c5669"
     },
     "VFL-799": {
-      "status": "blocked",
-      "completedAt": null,
+      "status": "done",
+      "completedAt": "2026-10-13T23:15:00.037Z",
       "title": "Lane gate: kustomize filename aliases .tekton/kustomization.yml and .tekton/Kustomization join GATE (VFL-797 LOW-7)",
-      "assignee": "912014ba-380a-46cd-baa6-306e9343a2c2",
-      "project": "91740a68-0dd1-47b4-935f-9ab08f4c5669"
+      "assignee": "Cortana",
+      "project": "platform-foundation"
     },
     "VFL-800": {
       "status": "in_progress",
@@ -5097,6 +5110,97 @@
       "title": "Board watch (continuation 9): find stuck tasks and nudge owners",
       "assignee": "ae2a6da1-327d-466e-8227-311999bca475",
       "project": "1e4d751c-3ada-47c7-aabe-e8cb40bc897e"
+    },
+    "VFL-802": {
+      "status": "done",
+      "completedAt": "2026-10-13T22:36:47.509Z",
+      "title": "Test Runner: lane-gate checks on VFL-776 candidate 84e0602 (Tekton egress policy README)",
+      "assignee": "Test Runner",
+      "project": "platform-foundation"
+    },
+    "VFL-803": {
+      "status": "done",
+      "completedAt": "2026-10-13T22:40:29.313Z",
+      "title": "CodeRabbit review: VFL-776 vf-ci egress policy in the .tekton README (84e0602)",
+      "assignee": "Arbiter",
+      "project": "platform-foundation"
+    },
+    "VFL-804": {
+      "status": "done",
+      "completedAt": "2026-10-13T22:41:00.191Z",
+      "title": "Opus Reviewer: review VFL-776 vf-ci egress policy in the .tekton README (84e0602)",
+      "assignee": "Opus Reviewer",
+      "project": "platform-foundation"
+    },
+    "VFL-805": {
+      "status": "done",
+      "completedAt": "2026-10-13T22:41:55.740Z",
+      "title": "Test Writer: lane-gate self-test cases for .tekton kustomization aliases in GATE on 2638cb5 (VFL-799)",
+      "assignee": "Halsey",
+      "project": "platform-foundation"
+    },
+    "VFL-806": {
+      "status": "done",
+      "completedAt": "2026-10-13T22:45:55.277Z",
+      "title": "Push approval: VFL-776 vf-ci egress policy in the .tekton README at 84e0602",
+      "assignee": "Cortana",
+      "project": "platform-foundation"
+    },
+    "VFL-807": {
+      "status": "done",
+      "completedAt": "2026-10-13T22:48:03.028Z",
+      "title": "Test Runner: lane-gate checks on VFL-799 candidate 242c90a (.tekton kustomization aliases in GATE)",
+      "assignee": "Test Runner",
+      "project": "platform-foundation"
+    },
+    "VFL-808": {
+      "status": "done",
+      "completedAt": "2026-10-13T22:50:09.049Z",
+      "title": "CodeRabbit review: VFL-799 .tekton kustomization aliases in the GATE class (242c90a)",
+      "assignee": "Arbiter",
+      "project": "platform-foundation"
+    },
+    "VFL-809": {
+      "status": "done",
+      "completedAt": "2026-10-13T22:52:22.778Z",
+      "title": "Opus Reviewer: review VFL-799 .tekton kustomization aliases in the GATE class (242c90a)",
+      "assignee": "Opus Reviewer",
+      "project": "platform-foundation"
+    },
+    "VFL-810": {
+      "status": "todo",
+      "completedAt": null,
+      "title": "Owner action (continuation of VFL-471): GitHub identity grant and the evidence log",
+      "assignee": null,
+      "project": "platform-foundation"
+    },
+    "VFL-811": {
+      "status": "done",
+      "completedAt": "2026-10-13T22:57:04.716Z",
+      "title": "Push approval: VFL-799 .tekton kustomization aliases in GATE at 242c90a",
+      "assignee": "Cortana",
+      "project": "platform-foundation"
+    },
+    "VFL-813": {
+      "status": "blocked",
+      "completedAt": null,
+      "title": "Lane gate: classify deleted paths and rename sources in partition (VFL-787 LOW-3)",
+      "assignee": "Jorge",
+      "project": "platform-foundation"
+    },
+    "VFL-814": {
+      "status": "blocked",
+      "completedAt": null,
+      "title": "Lane gate: the gate-partition refusal lists the GATE files in the diff (VFL-787 LOW-6)",
+      "assignee": "Jorge",
+      "project": "platform-foundation"
+    },
+    "VFL-815": {
+      "status": "in_progress",
+      "completedAt": null,
+      "title": "Test Writer: lane-gate self-test cases for deleted paths and rename sources in partition on 17e15e4 (VFL-813)",
+      "assignee": "Halsey",
+      "project": "platform-foundation"
     }
   }
 }

@@ -1,6 +1,6 @@
 # VulcanFlow progress
 
-Last updated: 2026-10-13T22:36:00Z by Guilty Spark. Source: Paperclip company vFlow.
+Last updated: 2026-10-13T23:32:00Z by Guilty Spark. Source: Paperclip company vFlow.
 
 ## Summary table
 
@@ -14,10 +14,10 @@ Last updated: 2026-10-13T22:36:00Z by Guilty Spark. Source: Paperclip company vF
 | 6 Web | web, test-packs (T8) | 0 | 0 | 5 | 1 | 6 |
 | Later (reporting, infra, ai-gateway) | reporting, infra, ai-gateway | 0 | 0 | 0 | 0 | 0 |
 | Setup and governance | Onboarding | 9 | 0 | 0 | 0 | 9 |
-| Unassigned to a phase[^1] | progress-and-docs (VFL-50, VFL-60, VFL-84, VFL-255, VFL-272, VFL-351, VFL-432, VFL-524, VFL-544), platform-foundation (VFL-52, VFL-58, VFL-61, VFL-70, VFL-73–103, VFL-105–111, VFL-114–116, VFL-119–143, VFL-151, VFL-160, VFL-173, VFL-175–177, except VFL-112–113/117–118 which moved into Phase 2, VFL-122, VFL-124–137, VFL-285, VFL-288, VFL-294–296, VFL-301–303, VFL-305–306, VFL-318–332, VFL-335, VFL-337, VFL-339–345, VFL-350, VFL-352–354, VFL-365, VFL-395, VFL-399, VFL-403, VFL-405, VFL-413–414, VFL-416–417, VFL-419, VFL-433, VFL-437, VFL-450–459, VFL-462–465, VFL-467–469, VFL-471, VFL-472, VFL-474–476, VFL-482, VFL-484–490, VFL-492, VFL-494, VFL-497, VFL-527, VFL-534, VFL-537, VFL-539–542, VFL-552, VFL-559, VFL-570–572, VFL-653, VFL-664, VFL-668–670, VFL-682, VFL-695–698, VFL-703, VFL-705–707, VFL-710–711, VFL-713, VFL-716–719, VFL-723, VFL-728–729, VFL-731, VFL-733–734, VFL-739–741, VFL-745, VFL-760–762, VFL-770, VFL-772, VFL-774–783, VFL-785–793, VFL-795–799), core-libraries (VFL-140, VFL-142, VFL-145–159, VFL-185–187, VFL-190–191, VFL-198–209, VFL-228, VFL-230, VFL-238, VFL-249, VFL-254, VFL-256–258, VFL-261–262, VFL-266, VFL-268–269, VFL-273, VFL-277, VFL-334, VFL-336, VFL-360–364, VFL-385, VFL-390–392, VFL-396–398, VFL-573–578, VFL-582–585, VFL-588–590, VFL-592, VFL-597–599, VFL-606–610, VFL-615, VFL-628–636, VFL-644, VFL-650–652, VFL-660, VFL-662–663, VFL-667–670, VFL-674, VFL-678, VFL-681, VFL-692, VFL-714, VFL-720, VFL-722, VFL-746, VFL-748–751, VFL-756–758, VFL-763, VFL-765, VFL-773, VFL-800), api (VFL-165), none (VFL-51, VFL-278) | 286 | 7 | 30 | 9 | 340 |
-| **Total**[^1] | | **509** | **8** | **86** | **13** | **627** |
+| Unassigned to a phase[^1] | progress-and-docs (VFL-50, VFL-60, VFL-84, VFL-255, VFL-272, VFL-351, VFL-432, VFL-524, VFL-544), platform-foundation (VFL-52, VFL-58, VFL-61, VFL-70, VFL-73–103, VFL-105–111, VFL-114–116, VFL-119–143, VFL-151, VFL-160, VFL-173, VFL-175–177, except VFL-112–113/117–118 which moved into Phase 2, VFL-122, VFL-124–137, VFL-285, VFL-288, VFL-294–296, VFL-301–303, VFL-305–306, VFL-318–332, VFL-335, VFL-337, VFL-339–345, VFL-350, VFL-352–354, VFL-365, VFL-395, VFL-399, VFL-403, VFL-405, VFL-413–414, VFL-416–417, VFL-419, VFL-433, VFL-437, VFL-450–459, VFL-462–465, VFL-467–469, VFL-471, VFL-472, VFL-474–476, VFL-482, VFL-484–490, VFL-492, VFL-494, VFL-497, VFL-527, VFL-534, VFL-537, VFL-539–542, VFL-552, VFL-559, VFL-570–572, VFL-653, VFL-664, VFL-668–670, VFL-682, VFL-695–698, VFL-703, VFL-705–707, VFL-710–711, VFL-713, VFL-716–719, VFL-723, VFL-728–729, VFL-731, VFL-733–734, VFL-739–741, VFL-745, VFL-760–762, VFL-770, VFL-772, VFL-774–783, VFL-785–793, VFL-795–815), core-libraries (VFL-140, VFL-142, VFL-145–159, VFL-185–187, VFL-190–191, VFL-198–209, VFL-228, VFL-230, VFL-238, VFL-249, VFL-254, VFL-256–258, VFL-261–262, VFL-266, VFL-268–269, VFL-273, VFL-277, VFL-334, VFL-336, VFL-360–364, VFL-385, VFL-390–392, VFL-396–398, VFL-573–578, VFL-582–585, VFL-588–590, VFL-592, VFL-597–599, VFL-606–610, VFL-615, VFL-628–636, VFL-644, VFL-650–652, VFL-660, VFL-662–663, VFL-667–670, VFL-674, VFL-678, VFL-681, VFL-692, VFL-714, VFL-720, VFL-722, VFL-746, VFL-748–751, VFL-756–758, VFL-763, VFL-765, VFL-773, VFL-800), api (VFL-165), none (VFL-51, VFL-278) | 298 | 7 | 30 | 10 | 353 |
+| **Total**[^1] | | **521** | **8** | **86** | **14** | **640** |
 
-[^1]: 11 cancelled tasks (VFL-51, VFL-134, VFL-136, VFL-154, VFL-205, VFL-361, VFL-362, VFL-398, VFL-550, VFL-593, VFL-604) are counted in Total only; they have no Done/In progress/Blocked/Planned bucket (VFL-550 and VFL-604 are the two cancellations in Phase 1 — its row's four buckets sum to 135, two short of the 137 total; VFL-593 is the one cancellation in Phase 2 — its row's four buckets sum to 120, one short of the 121 total; the other eight are in the Unassigned row, whose four buckets sum to 332, eight short of the 340 total). Guilty Spark's own recurring "Progress tracker update" tasks (VFL-53, VFL-54, VFL-55, ...) are excluded entirely from this document per the skip-own-routine-tasks rule. The "In progress" column folds `in_progress` and `in_review` together (no separate in-review bucket in this table); the "Planned" column folds `todo` and `backlog` tasks together — both are queued/not-yet-started, just at different readiness states; see the Status mix pie for the literal per-status counts.
+[^1]: 11 cancelled tasks (VFL-51, VFL-134, VFL-136, VFL-154, VFL-205, VFL-361, VFL-362, VFL-398, VFL-550, VFL-593, VFL-604) are counted in Total only; they have no Done/In progress/Blocked/Planned bucket (VFL-550 and VFL-604 are the two cancellations in Phase 1 — its row's four buckets sum to 135, two short of the 137 total; VFL-593 is the one cancellation in Phase 2 — its row's four buckets sum to 120, one short of the 121 total; the other eight are in the Unassigned row, whose four buckets sum to 345, eight short of the 353 total). Guilty Spark's own recurring "Progress tracker update" tasks (VFL-53, VFL-54, VFL-55, ...) are excluded entirely from this document per the skip-own-routine-tasks rule. The "In progress" column folds `in_progress` and `in_review` together (no separate in-review bucket in this table); the "Planned" column folds `todo` and `backlog` tasks together — both are queued/not-yet-started, just at different readiness states; see the Status mix pie for the literal per-status counts.
 
 ## Phase tracker
 
@@ -57,13 +57,13 @@ flowchart LR
 
 ```mermaid
 pie title Tasks by status
-  "done" : 509
+  "done" : 521
   "blocked" : 86
-  "in_progress" : 4
+  "in_progress" : 5
   "backlog" : 10
   "cancelled" : 11
-  "todo" : 3
-  "in_review" : 4
+  "todo" : 4
+  "in_review" : 3
 ```
 
 ## Phase 1: Foundation
@@ -799,7 +799,57 @@ Update 2026-10-07 20:34 UTC: seven deliveries, eleven status changes, seven new 
 
 Update 2026-10-07 21:40 UTC: thirteen deliveries, eight status changes, twelve new tasks. The wasm-pack toolchain pin (VFL-305) cleared its gate cycle on re-candidate `6e9a76d`: CodeRabbit (VFL-329, done — PASS, 1 LOW), Opus Reviewer (VFL-330, done — PASS, both prior MEDIUMs confirmed fixed, 2 new LOWs) and Test Runner (VFL-331/VFL-335, done — steps 1–3 and the `wasm-test` node step all green) all passed, so Cortana approved the push as-is (VFL-337, done) and filed three residual-LOW follow-ups (VFL-342/343/344, all new, blocked). Jorge's push itself (VFL-340, new, in_progress) is waiting on a concurrent run holding this workspace's GitHub identity; the merge (VFL-341, new, blocked) waits on that push landing. On C1, the long-stuck Arbiter reviews finally ran: after a multi-cycle watchdog/reassignment saga (VFL-332, done; VFL-306, done), CodeRabbit passed both queued reviews — VFL-264 (C1 pair `2444217`+`b59f98f`, todo → done, 1 LOW) and VFL-198 (C2 scope fuzz, net unchanged — flickered done → todo again once Kelly moved the candidate to `12801bf` mid-run) — clearing VFL-240's gate cycle (`blocked` → `in_progress`) for Fred to request push approval next. Opus Reviewer separately re-verdicted VFL-209 PASS on that same new fuzz candidate `12801bf` (LOW 1 and 2 resolved). On VFL-82, Test Runner's full `just gate` passed (VFL-116, done) and Cortana approved the push (VFL-345, done). On VFL-149, Cortana declined the push as-is — code accepted but the PR needs a pure rebase onto current main before it can merge under branch protection (VFL-334, done) — and filed a LOW follow-up (VFL-336, new, blocked). On F3, Cortana's ruling on VFL-310's three open questions (VFL-339, done) resolved delete-is-silent and a new `get_stream` read, with the tenant-scope guard split out as a new F3d task (VFL-346, new, todo, joins the Phase 1 table).
 
+Update 2026-10-13 23:32 UTC: twelve deliveries, four status changes, thirteen new tasks. VFL-792's Tekton GATE-class slice (`.tekton/kustomization.yaml`) cleared all three gates (VFL-795 Test Runner, VFL-796 CodeRabbit, VFL-797 Opus Reviewer) and Cortana merged [PR #46](https://github.com/vulcanflow/platform/pull/46) to `main` as `8ce9429` (VFL-792, `in_progress` → `done`); the two residual LOWs split out as the follow-on slice VFL-799. VFL-799's own gate cycle then cleared the same way — Test Runner (VFL-807), CodeRabbit (VFL-808), Opus Reviewer (VFL-809) — and Cortana approved the push (VFL-811, done) and merged [PR #48](https://github.com/vulcanflow/platform/pull/48) as `cd0a4a5` (VFL-799, `blocked` → `done`), splitting two more residual LOWs into VFL-813 (new, blocked — deleted-path classification) and VFL-814 (new, blocked on VFL-813 — gate-refusal file listing). In parallel, the egress-policy slice VFL-776 cleared Test Runner (VFL-802), CodeRabbit (VFL-803) and Opus Reviewer (VFL-804, 5 LOW), and Cortana approved the push (VFL-806, done) and, after a content-neutral branch update to keep pace with `main`, merged [PR #47](https://github.com/vulcanflow/platform/pull/47) as `a393372` (VFL-776, `in_review` → `done`); its residual LOWs fold into VFL-777, which itself moved `blocked` → `in_progress` as Jorge started the webhook slice (3c/4). VFL-805 (Halsey, Test Writer self-test cases for VFL-799's candidate) also delivered this run. VFL-810 (new, todo — owner action, continuation of VFL-471's GitHub identity grant) and VFL-815 (new, in_progress — Halsey's Test Writer self-test cases for VFL-813) are new and still open. All tasks in this batch are held under Unassigned alongside their VFL-126/VFL-787 Tekton-pipeline siblings, same placement convention as before.
+
 ## Delivery log
+
+### 2026-10-13 — VFL-776 CI on Tekton (3b/4): name the vf-ci egress policy in the .tekton README prerequisites (VFL-126 L5)
+
+Jorge's candidate `84e0602` (the CiliumNetworkPolicy egress allowlist and DNS rule for `.tekton/README.md`, +25/-4) cleared Test Runner ([VFL-802](/VFL/issues/VFL-802), self-test 31/0, scope confirmed `.tekton/README.md` only), CodeRabbit ([VFL-803](/VFL/issues/VFL-803), 0 findings) and Opus Reviewer ([VFL-804](/VFL/issues/VFL-804#document-review), PASS, 5 non-blocking LOW). Cortana approved the push ([VFL-806](/VFL/issues/VFL-806)) and, after a content-neutral branch update to keep pace with `main`, squash-merged [PR #47](https://github.com/vulcanflow/platform/pull/47) to `main` as commit `a393372`; the five residual LOWs fold into the follow-on slice [VFL-777](/VFL/issues/VFL-777). Evidence: [VFL-776 comment, 2026-10-13T23:28:43Z](http://paperclip.paperclip.svc.cluster.local/VFL/issues/VFL-776).
+
+### 2026-10-13 — VFL-799 Lane gate: kustomize filename aliases .tekton/kustomization.yml and .tekton/Kustomization join GATE (VFL-797 LOW-7)
+
+Jorge's candidate `242c90a` (two more literal GATE-class aliases in `ci/lane-gate.sh`, plus Halsey's self-test cases) passed Test Runner ([VFL-807](/VFL/issues/VFL-807), 44/0), CodeRabbit ([VFL-808](/VFL/issues/VFL-808), 0 findings) and Opus Reviewer ([VFL-809](/VFL/issues/VFL-809#document-review), PASS, nothing above LOW). Cortana approved the push ([VFL-811](/VFL/issues/VFL-811)) and squash-merged [PR #48](https://github.com/vulcanflow/platform/pull/48) to `main` as commit `cd0a4a5`; two residual LOWs were split into the follow-on tasks [VFL-813](/VFL/issues/VFL-813) and [VFL-814](/VFL/issues/VFL-814). Evidence: [VFL-799 comment, 2026-10-13T23:15:00Z](http://paperclip.paperclip.svc.cluster.local/VFL/issues/VFL-799).
+
+### 2026-10-13 — VFL-811 Push approval: VFL-799 .tekton kustomization aliases in GATE at 242c90a
+
+Cortana approved pushing candidate `242c90a` unchanged, having verified Test Runner ([VFL-807](/VFL/issues/VFL-807)), CodeRabbit ([VFL-808](/VFL/issues/VFL-808)) and Opus Reviewer ([VFL-809](/VFL/issues/VFL-809)) all passed on that exact revision. Evidence: [VFL-811 comment, 2026-10-13T22:57:04Z](http://paperclip.paperclip.svc.cluster.local/VFL/issues/VFL-811), document `approval-242c90a`.
+
+### 2026-10-13 — VFL-809 Opus Reviewer: review VFL-799 .tekton kustomization aliases in the GATE class (242c90a)
+
+Independent review of candidate `242c90a` against base `8ce9429` returned PASS with nothing above LOW; LOW-7 and LOW-8 carried from the prior [VFL-797](/VFL/issues/VFL-797#document-review) review were confirmed resolved. Evidence: [VFL-809 comment, 2026-10-13T22:52:23Z](http://paperclip.paperclip.svc.cluster.local/VFL/issues/VFL-809), document `review`.
+
+### 2026-10-13 — VFL-808 CodeRabbit review: VFL-799 .tekton kustomization aliases in the GATE class (242c90a)
+
+Arbiter's CodeRabbit run against base `8ce9429` returned 0 findings across the three changed files, confirming the GATE `case` arm adds only the two intended literal aliases with no glob or case-folding. Evidence: [VFL-808 comment, 2026-10-13T22:50:09Z](http://paperclip.paperclip.svc.cluster.local/VFL/issues/VFL-808).
+
+### 2026-10-13 — VFL-807 Test Runner: lane-gate checks on VFL-799 candidate 242c90a (.tekton kustomization aliases in GATE)
+
+Test Runner ran the lane-gate self-test suite on candidate `242c90a` against base `8ce9429`: 44 passed, 0 failed, with erosion checks unchanged at 174. Evidence: [VFL-807 comment, 2026-10-13T22:48:03Z](http://paperclip.paperclip.svc.cluster.local/VFL/issues/VFL-807).
+
+### 2026-10-13 — VFL-806 Push approval: VFL-776 vf-ci egress policy in the .tekton README at 84e0602
+
+Cortana approved pushing candidate `84e0602` unchanged, having verified Test Runner ([VFL-802](/VFL/issues/VFL-802)), CodeRabbit ([VFL-803](/VFL/issues/VFL-803)) and Opus Reviewer ([VFL-804](/VFL/issues/VFL-804)) all passed; the five residual LOWs were routed to the VFL-777 follow-on slice rather than fixed in place. Evidence: [VFL-806 comment, 2026-10-13T22:45:55Z](http://paperclip.paperclip.svc.cluster.local/VFL/issues/VFL-806).
+
+### 2026-10-13 — VFL-805 Test Writer: lane-gate self-test cases for .tekton kustomization aliases in GATE on 2638cb5 (VFL-799)
+
+Halsey added self-test cases 30–34 to `ci/lane-gate-test.sh` (+72/-0) covering the two new kustomization aliases, exercised only through `partition`, on top of Jorge's `2638cb5`; none of the existing 29 cases changed. Evidence: [VFL-805 comment, 2026-10-13T22:41:55Z](http://paperclip.paperclip.svc.cluster.local/VFL/issues/VFL-805).
+
+### 2026-10-13 — VFL-804 Opus Reviewer: review VFL-776 vf-ci egress policy in the .tekton README (84e0602)
+
+Independent review of candidate `84e0602` against base `bb89392` returned PASS with 5 LOW findings, none blocking; the diff was confirmed `.tekton/README.md` only (+25/-4) with a complete egress allowlist. Evidence: [VFL-804 comment, 2026-10-13T22:41:00Z](http://paperclip.paperclip.svc.cluster.local/VFL/issues/VFL-804), document `review`.
+
+### 2026-10-13 — VFL-803 CodeRabbit review: VFL-776 vf-ci egress policy in the .tekton README (84e0602)
+
+Arbiter's CodeRabbit run against base `bb89392` returned 0 findings; scope was confirmed as `.tekton/README.md` only, docs-only, matching the task's stated scope. Evidence: [VFL-803 comment, 2026-10-13T22:40:29Z](http://paperclip.paperclip.svc.cluster.local/VFL/issues/VFL-803).
+
+### 2026-10-13 — VFL-802 Test Runner: lane-gate checks on VFL-776 candidate 84e0602 (Tekton egress policy README)
+
+Test Runner ran the lane-gate self-test suite on candidate `84e0602` against base `bb89392`: 31 passed, 0 failed, scope confirmed as `.tekton/README.md` only. Evidence: [VFL-802 comment, 2026-10-13T22:36:47Z](http://paperclip.paperclip.svc.cluster.local/VFL/issues/VFL-802).
+
+### 2026-10-13 — VFL-792 CI on Tekton: .tekton/kustomization.yaml joins the GATE class (VFL-787 LOW-1)
+
+Jorge's candidate `135580b` (adding `.tekton/kustomization.yaml` as a GATE-class alternative, plus Halsey's self-test cases) passed Test Runner ([VFL-795](/VFL/issues/VFL-795)), CodeRabbit ([VFL-796](/VFL/issues/VFL-796), 0 findings) and Opus Reviewer ([VFL-797](/VFL/issues/VFL-797), PASS). Cortana approved the push ([VFL-798](/VFL/issues/VFL-798)) and squash-merged [PR #46](https://github.com/vulcanflow/platform/pull/46) to `main` as commit `8ce9429`; two residual LOWs (kustomize-alias discrimination, filename-alias NEUTRAL handling) were routed to the follow-on slice [VFL-799](/VFL/issues/VFL-799). Evidence: [VFL-792 comment, 2026-10-13T22:34:53Z](http://paperclip.paperclip.svc.cluster.local/VFL/issues/VFL-792).
 
 ### 2026-10-13 — VFL-757 Board watch (continuation 8): find stuck tasks and nudge owners (child of VFL-720)
 
@@ -2687,6 +2737,23 @@ Opened [PR #53](https://github.com/vulcanflow/docs/pull/53) with `VulcanFlow_Dev
 
 ## Status changes
 
+- 2026-10-13T23:28:49.876Z VFL-777 blocked -> in_progress — "CI on Tekton (3c/4): webhook starts vf-lane-gate and vf-rust-check for same-repo pull requests", Jorge, project platform-foundation, Unassigned — started once VFL-776 merged; its residual LOWs fold in here
+- 2026-10-13T23:28:43.978Z VFL-776 in_review -> done — "CI on Tekton (3b/4): name the vf-ci egress policy in the .tekton README prerequisites (VFL-126 L5)", Cortana, project platform-foundation, Unassigned — see delivery log
+- 2026-10-13T23:28:08.577Z VFL-813 (new) -> blocked — "Lane gate: classify deleted paths and rename sources in partition (VFL-787 LOW-3)", Jorge, project platform-foundation, Unassigned — split from VFL-799's residual LOW-3; blocked on Halsey's test slice (VFL-815)
+- 2026-10-13T23:28:06.127Z VFL-815 (new) -> in_progress — "Test Writer: lane-gate self-test cases for deleted paths and rename sources in partition on 17e15e4 (VFL-813)", Halsey, project platform-foundation, Unassigned — self-test cases for VFL-813's candidate `17e15e4`, not yet run
+- 2026-10-13T23:19:04.950Z VFL-799 blocked -> done — "Lane gate: kustomize filename aliases .tekton/kustomization.yml and .tekton/Kustomization join GATE (VFL-797 LOW-7)", Cortana, project platform-foundation, Unassigned — see delivery log
+- 2026-10-13T23:18:55.585Z VFL-814 (new) -> blocked — "Lane gate: the gate-partition refusal lists the GATE files in the diff (VFL-787 LOW-6)", Jorge, project platform-foundation, Unassigned — split from VFL-799's residual LOW-6; blocked on VFL-813 (same function)
+- 2026-10-13T22:57:04.908Z VFL-811 (new) -> done — "Push approval: VFL-799 .tekton kustomization aliases in GATE at 242c90a", Cortana, project platform-foundation, Unassigned — see delivery log
+- 2026-10-13T22:53:55.820Z VFL-810 (new) -> todo — "Owner action (continuation of VFL-471): GitHub identity grant and the evidence log", unassigned, project platform-foundation, Unassigned — continuation of VFL-471's GitHub identity grant request
+- 2026-10-13T22:52:23.417Z VFL-809 (new) -> done — "Opus Reviewer: review VFL-799 .tekton kustomization aliases in the GATE class (242c90a)", Opus Reviewer, project platform-foundation, Unassigned — see delivery log
+- 2026-10-13T22:50:09.169Z VFL-808 (new) -> done — "CodeRabbit review: VFL-799 .tekton kustomization aliases in the GATE class (242c90a)", Arbiter, project platform-foundation, Unassigned — see delivery log
+- 2026-10-13T22:48:03.200Z VFL-807 (new) -> done — "Test Runner: lane-gate checks on VFL-799 candidate 242c90a (.tekton kustomization aliases in GATE)", Test Runner, project platform-foundation, Unassigned — see delivery log
+- 2026-10-13T22:45:55.275Z VFL-806 (new) -> done — "Push approval: VFL-776 vf-ci egress policy in the .tekton README at 84e0602", Cortana, project platform-foundation, Unassigned — see delivery log
+- 2026-10-13T22:41:55.829Z VFL-805 (new) -> done — "Test Writer: lane-gate self-test cases for .tekton kustomization aliases in GATE on 2638cb5 (VFL-799)", Halsey, project platform-foundation, Unassigned — see delivery log
+- 2026-10-13T22:41:00.329Z VFL-804 (new) -> done — "Opus Reviewer: review VFL-776 vf-ci egress policy in the .tekton README (84e0602)", Opus Reviewer, project platform-foundation, Unassigned — see delivery log
+- 2026-10-13T22:40:29.418Z VFL-803 (new) -> done — "CodeRabbit review: VFL-776 vf-ci egress policy in the .tekton README (84e0602)", Arbiter, project platform-foundation, Unassigned — see delivery log
+- 2026-10-13T22:36:47.869Z VFL-802 (new) -> done — "Test Runner: lane-gate checks on VFL-776 candidate 84e0602 (Tekton egress policy README)", Test Runner, project platform-foundation, Unassigned — see delivery log
+- 2026-10-13T22:34:53.674Z VFL-792 in_progress -> done — "CI on Tekton: .tekton/kustomization.yaml joins the GATE class (VFL-787 LOW-1)", Cortana, project platform-foundation, Unassigned — see delivery log
 - 2026-10-13T22:27:36.513Z VFL-800 (new) -> in_progress — "Board watch (continuation 9): find stuck tasks and nudge owners (child of VFL-757)", MasterChief, project core-libraries, Unassigned — continuation of VFL-757 after its thread hit the 20-comment limit
 - 2026-10-13T22:27:17.948Z VFL-757 in_progress -> done — "Board watch (continuation 8): find stuck tasks and nudge owners (child of VFL-720)", MasterChief, project core-libraries, Unassigned — see delivery log
 - 2026-10-13T22:18:41.620Z VFL-798 (new) -> done — "Push approval: VFL-792 .tekton/kustomization.yaml in GATE at 135580b", Cortana, project platform-foundation, Unassigned — see delivery log
