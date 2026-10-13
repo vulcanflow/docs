@@ -1,5 +1,5 @@
 {
-  "lastRunAt": "2026-10-13T12:02:03Z",
+  "lastRunAt": "2026-10-13T12:35:40Z",
   "phases": {
     "p1_foundation": {
       "label": "1 Foundation",
@@ -645,7 +645,9 @@
         "VFL-717",
         "VFL-718",
         "VFL-719",
-        "VFL-720"
+        "VFL-720",
+        "VFL-722",
+        "VFL-723"
       ]
     }
   },
@@ -2338,7 +2340,7 @@
       "project": "test-packs"
     },
     "VFL-408": {
-      "status": "in_review",
+      "status": "in_progress",
       "completedAt": null,
       "title": "C1b. vf-core residuals from the C1 gate: TraceId (LOW-12), UnitSummary invariant (LOW-13), TenantSlug (slug rules)",
       "assignee": "Fred",
@@ -2387,7 +2389,7 @@
       "project": "core-libraries"
     },
     "VFL-558": {
-      "status": "todo",
+      "status": "in_progress",
       "completedAt": null,
       "title": "Test Runner: F2h `test-doc` recipe `a3aa436` (VFL-538)",
       "assignee": "Test Runner",
@@ -3458,7 +3460,7 @@
       "project": "platform-foundation"
     },
     "VFL-362": {
-      "status": "blocked",
+      "status": "cancelled",
       "completedAt": null,
       "title": "Test Runner: VFL-185 candidate cccd3c1 \u2014 Part A3, wasm build + just checks",
       "assignee": "Test Runner",
@@ -4618,6 +4620,20 @@
       "title": "Board watch (continuation 7): find stuck tasks and nudge owners",
       "assignee": "MasterChief",
       "project": "core-libraries"
+    },
+    "VFL-722": {
+      "status": "done",
+      "completedAt": "2026-10-13T12:28:12.040Z",
+      "title": "Cortana wake: decide push-approval card 7e16aeb2 on VFL-408 (c9e907e + 2afb232)",
+      "assignee": "Cortana",
+      "project": "core-libraries"
+    },
+    "VFL-723": {
+      "status": "in_progress",
+      "completedAt": null,
+      "title": "Test Runner wake: run VFL-558 (F2h test-doc on a3aa436), then cancel superseded VFL-362",
+      "assignee": "Test Runner",
+      "project": "platform-foundation"
     }
   }
 }
