@@ -1,5 +1,5 @@
 {
-  "lastRunAt": "2026-10-13T13:36:52Z",
+  "lastRunAt": "2026-10-13T14:01:00Z",
   "phases": {
     "p1_foundation": {
       "label": "1 Foundation",
@@ -2394,8 +2394,8 @@
       "project": "core-libraries"
     },
     "VFL-558": {
-      "status": "in_progress",
-      "completedAt": null,
+      "status": "done",
+      "completedAt": "2026-10-13T14:00:26.572Z",
       "title": "Test Runner: F2h `test-doc` recipe `a3aa436` (VFL-538)",
       "assignee": "Test Runner",
       "project": "platform-foundation"
@@ -3108,7 +3108,7 @@
       "project": "platform-foundation"
     },
     "VFL-538": {
-      "status": "blocked",
+      "status": "in_progress",
       "completedAt": null,
       "title": "F2h: compile doctests in the gate \u2014 `test-doc` recipe, `test-unit` depends on it (VFL-536)",
       "assignee": "Jorge",
@@ -4669,8 +4669,8 @@
       "project": "platform-foundation"
     },
     "VFL-731": {
-      "status": "in_progress",
-      "completedAt": null,
+      "status": "done",
+      "completedAt": "2026-10-13T14:00:37.077Z",
       "title": "Test Runner wake: run VFL-558 (F2h test-doc on a3aa436) in the foreground",
       "assignee": "Test Runner",
       "project": "platform-foundation"
