@@ -1,5 +1,5 @@
 {
-  "lastRunAt": "2026-10-13T17:33:00Z",
+  "lastRunAt": "2026-10-13T18:04:16Z",
   "phases": {
     "p1_foundation": {
       "label": "1 Foundation",
@@ -674,7 +674,9 @@
         "VFL-751",
         "VFL-757",
         "VFL-760",
-        "VFL-761"
+        "VFL-761",
+        "VFL-762",
+        "VFL-763"
       ]
     }
   },
@@ -2759,7 +2761,7 @@
       "project": "platform-foundation"
     },
     "VFL-125": {
-      "status": "in_progress",
+      "status": "blocked",
       "completedAt": null,
       "title": "CI on Tekton (2/4): pipeline definitions equivalent to lane-gate and rust-check",
       "assignee": "Jorge",
@@ -4537,7 +4539,7 @@
       "project": "platform-foundation"
     },
     "VFL-703": {
-      "status": "in_progress",
+      "status": "in_review",
       "completedAt": null,
       "title": "VFL-122 continuation 3: land PR #37 (merge-update after #36, then close)",
       "assignee": "Jorge",
@@ -4789,15 +4791,15 @@
       "project": "core-libraries"
     },
     "VFL-751": {
-      "status": "blocked",
+      "status": "in_progress",
       "completedAt": null,
       "title": "VFL-151 continuation: re-gate 3617b68 and land PR #35",
       "assignee": "Jorge",
       "project": "core-libraries"
     },
     "VFL-750": {
-      "status": "in_progress",
-      "completedAt": null,
+      "status": "done",
+      "completedAt": "2026-10-13T17:49:17.248Z",
       "title": "Run the required tests on 3617b68: PR #35 merged up to main 96b9649 (VFL-151 cross toolchain)",
       "assignee": "Test Runner",
       "project": "core-libraries"
@@ -4838,18 +4840,32 @@
       "project": "core-libraries"
     },
     "VFL-760": {
-      "status": "in_progress",
+      "status": "in_review",
       "completedAt": null,
       "title": "VFL-125 continuation: push approval, PR #42 update and acceptance run 2 for 585dfa5",
       "assignee": "Jorge",
       "project": "platform-foundation"
     },
     "VFL-761": {
-      "status": "in_progress",
-      "completedAt": null,
+      "status": "done",
+      "completedAt": "2026-10-13T17:34:40.977Z",
       "title": "Push approval: VFL-125 Tekton checkout fix at 585dfa5 (fast-forward of PR #42)",
       "assignee": "Cortana",
       "project": "platform-foundation"
+    },
+    "VFL-762": {
+      "status": "done",
+      "completedAt": "2026-10-13T17:50:50.331Z",
+      "title": "Jorge wake: retry the approved pushes (VFL-538 a3aa436, VFL-410 60266ab, VFL-340 6e9a76d) while your runs carry the GitHub identity",
+      "assignee": "Jorge",
+      "project": "platform-foundation"
+    },
+    "VFL-763": {
+      "status": "done",
+      "completedAt": "2026-10-13T17:54:31.806Z",
+      "title": "Push approval: VFL-151 cross toolchain at 3617b68 (PR #35 brought up to main 96b9649)",
+      "assignee": "Cortana",
+      "project": "core-libraries"
     }
   }
 }
