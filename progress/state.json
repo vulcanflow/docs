@@ -1,5 +1,5 @@
 {
-  "lastRunAt": "2026-10-09T16:37:04Z",
+  "lastRunAt": "2026-10-13T10:39:44Z",
   "phases": {
     "p1_foundation": {
       "label": "1 Foundation",
@@ -943,7 +943,7 @@
       "project": "platform-foundation"
     },
     "VFL-530": {
-      "status": "blocked",
+      "status": "todo",
       "completedAt": null,
       "title": "F3a-LOW-2. Doc-only `vf-core::ports`: F3d LOW-5 (wake keyspace \"must\") + L3 over-size sentence in item 8",
       "assignee": "Jorge",
@@ -999,7 +999,7 @@
       "project": "core-libraries"
     },
     "VFL-149": {
-      "status": "blocked",
+      "status": "todo",
       "completedAt": null,
       "title": "Bootstrap just, cargo-deny and cargo-audit so just check runs on the runners",
       "assignee": "Jorge",
@@ -2371,7 +2371,7 @@
       "project": "core-libraries"
     },
     "VFL-558": {
-      "status": "blocked",
+      "status": "todo",
       "completedAt": null,
       "title": "Test Runner: F2h `test-doc` recipe `a3aa436` (VFL-538)",
       "assignee": "Test Runner",
@@ -2392,8 +2392,8 @@
       "project": "platform-foundation"
     },
     "VFL-534": {
-      "status": "blocked",
-      "completedAt": null,
+      "status": "done",
+      "completedAt": "2026-10-13T10:27:36.198Z",
       "title": "VFL-124 continuation: push approval, PR and webhook evidence for ec00b55",
       "assignee": "Jorge",
       "project": "platform-foundation"
@@ -2413,8 +2413,8 @@
       "project": "platform-foundation"
     },
     "VFL-124": {
-      "status": "blocked",
-      "completedAt": null,
+      "status": "done",
+      "completedAt": "2026-10-13T10:27:50.049Z",
       "title": "CI on Tekton (1/4): GitHub webhook to a Tekton EventListener at zozotk.go.ro",
       "assignee": "Jorge",
       "project": "platform-foundation"
@@ -2714,7 +2714,7 @@
       "project": "platform-foundation"
     },
     "VFL-125": {
-      "status": "blocked",
+      "status": "in_progress",
       "completedAt": null,
       "title": "CI on Tekton (2/4): pipeline definitions equivalent to lane-gate and rust-check",
       "assignee": "Jorge",
@@ -3050,7 +3050,7 @@
       "project": "platform-foundation"
     },
     "VFL-484": {
-      "status": "blocked",
+      "status": "in_progress",
       "completedAt": null,
       "title": "VFL-122 continuation: round-4 gate, push approval and PR for `648cc0f` (lane-gate pins check)",
       "assignee": "Jorge",
@@ -3106,7 +3106,7 @@
       "project": "platform-foundation"
     },
     "VFL-539": {
-      "status": "blocked",
+      "status": "in_progress",
       "completedAt": null,
       "title": "VFL-124 follow-up: README-only fixes for Opus round-4 LOW-6..9, 11..14",
       "assignee": "Jorge",
@@ -4247,8 +4247,8 @@
       "project": "core-libraries"
     },
     "VFL-653": {
-      "status": "in_review",
-      "completedAt": null,
+      "status": "done",
+      "completedAt": "2026-10-09T18:29:09.434Z",
       "title": "VFL-122 continuation 2: push approval and PR for rebased `06cad62` (lane-gate pins check)",
       "assignee": "Jorge",
       "project": "platform-foundation"
@@ -4359,8 +4359,8 @@
       "project": "core-libraries"
     },
     "VFL-674": {
-      "status": "in_progress",
-      "completedAt": null,
+      "status": "done",
+      "completedAt": "2026-10-13T10:26:41.429Z",
       "title": "Toolchain: remove the four stray .o files left by self-test and review probes (VFL-644 follow-up)",
       "assignee": "Jorge",
       "project": "core-libraries"
@@ -4373,7 +4373,7 @@
       "project": "core-libraries"
     },
     "VFL-677": {
-      "status": "blocked",
+      "status": "in_progress",
       "completedAt": null,
       "title": "Fuzz follow-up: fix 'documented below' guard comment in canonical_host.rs and scope_match.rs (residual LOW F1, VFL-495)",
       "assignee": "Cortana",
@@ -4415,8 +4415,8 @@
       "project": "core-libraries"
     },
     "VFL-685": {
-      "status": "blocked",
-      "completedAt": null,
+      "status": "done",
+      "completedAt": "2026-10-13T10:30:07.227Z",
       "title": "Test Runner: fmt-check + just fuzz-check on 5b1f4d9 under the fuzz-cxx env (VFL-677)",
       "assignee": "Test Runner",
       "project": "core-libraries"
@@ -4450,7 +4450,7 @@
       "project": "core-libraries"
     },
     "VFL-690": {
-      "status": "blocked",
+      "status": "in_progress",
       "completedAt": null,
       "title": "Opus Reviewer: review C1b r2 pair c9e907e + T1c-r5 2afb232 (VFL-408)",
       "assignee": "Opus Reviewer",
@@ -4464,8 +4464,8 @@
       "project": "core-libraries"
     },
     "VFL-697": {
-      "status": "blocked",
-      "completedAt": null,
+      "status": "done",
+      "completedAt": "2026-10-09T16:33:43.143Z",
       "title": "Merge PR #30: VFL-124 Tekton EventListener at `2802d4d`",
       "assignee": "Cortana",
       "project": "platform-foundation"
