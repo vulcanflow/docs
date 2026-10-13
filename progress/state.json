@@ -1,5 +1,5 @@
 {
-  "lastRunAt": "2026-10-13T21:22:03Z",
+  "lastRunAt": "2026-10-13T21:38:41Z",
   "phases": {
     "p1_foundation": {
       "label": "1 Foundation",
@@ -2900,15 +2900,15 @@
       "project": "platform-foundation"
     },
     "VFL-127": {
-      "status": "blocked",
+      "status": "in_progress",
       "completedAt": null,
       "title": "CI on Tekton (4/4): retire the GitHub Actions workflows; keep Dependabot only",
       "assignee": "Jorge",
       "project": "platform-foundation"
     },
     "VFL-126": {
-      "status": "in_review",
-      "completedAt": null,
+      "status": "done",
+      "completedAt": "2026-10-13T21:28:03.756Z",
       "title": "CI on Tekton (3/4): status reporting to the PR commit and required contexts on main",
       "assignee": "Jorge",
       "project": "platform-foundation"
@@ -4706,8 +4706,8 @@
       "project": "platform-foundation"
     },
     "VFL-729": {
-      "status": "in_progress",
-      "completedAt": null,
+      "status": "done",
+      "completedAt": "2026-10-13T21:23:54.295Z",
       "title": "VFL-125 follow-up: lane-gate base guard, RUST_TEST_THREADS and README nits (Opus L1, L2, L7, L8)",
       "assignee": "Jorge",
       "project": "platform-foundation"
@@ -5007,8 +5007,8 @@
       "project": "platform-foundation"
     },
     "VFL-787": {
-      "status": "in_progress",
-      "completedAt": null,
+      "status": "done",
+      "completedAt": "2026-10-13T21:24:56.051Z",
       "title": "Opus Reviewer: review VFL-774 Tekton lane-gate definitions in the GATE class (14b708a)",
       "assignee": "Opus Reviewer",
       "project": "platform-foundation"
@@ -5025,6 +5025,13 @@
       "completedAt": null,
       "title": "CI: ci/lane-gate.sh verifies BASE_REF resolves (VFL-729 R1 follow-up)",
       "assignee": "Jorge",
+      "project": "platform-foundation"
+    },
+    "VFL-790": {
+      "status": "in_progress",
+      "completedAt": null,
+      "title": "Push approval: VFL-774 Tekton lane-gate GATE class at 14b708a",
+      "assignee": "Cortana",
       "project": "platform-foundation"
     }
   }
