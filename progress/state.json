@@ -1,5 +1,5 @@
 {
-  "lastRunAt": "2026-10-13T10:39:44Z",
+  "lastRunAt": "2026-10-13T11:14:24Z",
   "phases": {
     "p1_foundation": {
       "label": "1 Foundation",
@@ -261,7 +261,10 @@
         "VFL-686",
         "VFL-688",
         "VFL-689",
-        "VFL-690"
+        "VFL-690",
+        "VFL-704",
+        "VFL-708",
+        "VFL-709"
       ]
     },
     "p3_api": {
@@ -629,7 +632,14 @@
         "VFL-695",
         "VFL-696",
         "VFL-697",
-        "VFL-698"
+        "VFL-698",
+        "VFL-703",
+        "VFL-705",
+        "VFL-706",
+        "VFL-707",
+        "VFL-710",
+        "VFL-711",
+        "VFL-713"
       ]
     }
   },
@@ -2322,7 +2332,7 @@
       "project": "test-packs"
     },
     "VFL-408": {
-      "status": "blocked",
+      "status": "in_review",
       "completedAt": null,
       "title": "C1b. vf-core residuals from the C1 gate: TraceId (LOW-12), UnitSummary invariant (LOW-13), TenantSlug (slug rules)",
       "assignee": "Fred",
@@ -2595,7 +2605,7 @@
       "project": "operator-and-ingest"
     },
     "VFL-151": {
-      "status": "blocked",
+      "status": "in_progress",
       "completedAt": null,
       "title": "just check-cross cannot run on the agent runners: the bootstrapped toolchain is host-only",
       "assignee": "Jorge",
@@ -3050,7 +3060,7 @@
       "project": "platform-foundation"
     },
     "VFL-484": {
-      "status": "in_progress",
+      "status": "blocked",
       "completedAt": null,
       "title": "VFL-122 continuation: round-4 gate, push approval and PR for `648cc0f` (lane-gate pins check)",
       "assignee": "Jorge",
@@ -4331,8 +4341,8 @@
       "project": "core-libraries"
     },
     "VFL-670": {
-      "status": "in_progress",
-      "completedAt": null,
+      "status": "done",
+      "completedAt": "2026-10-13T10:47:00.664Z",
       "title": "Run the required tests on ce52e85: PR #35 merged up to main 225615e (VFL-151 cross toolchain)",
       "assignee": "Test Runner",
       "project": "core-libraries"
@@ -4373,7 +4383,7 @@
       "project": "core-libraries"
     },
     "VFL-677": {
-      "status": "in_progress",
+      "status": "blocked",
       "completedAt": null,
       "title": "Fuzz follow-up: fix 'documented below' guard comment in canonical_host.rs and scope_match.rs (residual LOW F1, VFL-495)",
       "assignee": "Cortana",
@@ -4450,8 +4460,8 @@
       "project": "core-libraries"
     },
     "VFL-690": {
-      "status": "in_progress",
-      "completedAt": null,
+      "status": "done",
+      "completedAt": "2026-10-13T10:42:58.819Z",
       "title": "Opus Reviewer: review C1b r2 pair c9e907e + T1c-r5 2afb232 (VFL-408)",
       "assignee": "Opus Reviewer",
       "project": "core-libraries"
@@ -4478,8 +4488,8 @@
       "project": "platform-foundation"
     },
     "VFL-698": {
-      "status": "todo",
-      "completedAt": null,
+      "status": "done",
+      "completedAt": "2026-10-13T10:50:34.423Z",
       "title": "Test Writer: lane-gate fixtures for the erosion merge-base base on db0614d (VFL-696)",
       "assignee": "Unassigned",
       "project": "platform-foundation"
@@ -4490,6 +4500,76 @@
       "title": "Ruling: PR #30 red test-erosion after reopen (stale merge ref) and branch-update push approval",
       "assignee": "Cortana",
       "project": "platform-foundation"
+    },
+    "VFL-703": {
+      "status": "in_review",
+      "completedAt": null,
+      "title": "VFL-122 continuation 3: land PR #37 (merge-update after #36, then close)",
+      "assignee": "912014ba-380a-46cd-baa6-306e9343a2c2",
+      "project": "91740a68-0dd1-47b4-935f-9ab08f4c5669"
+    },
+    "VFL-704": {
+      "status": "done",
+      "completedAt": "2026-10-13T10:39:41.298Z",
+      "title": "Halsey: push halsey/vfl-677-guard-comment-fix @ 5b1f4d9 and open test-only PR to main (VFL-677)",
+      "assignee": "6029b86f-ff5b-492b-9f97-ed31363be784",
+      "project": "1e4d751c-3ada-47c7-aabe-e8cb40bc897e"
+    },
+    "VFL-705": {
+      "status": "done",
+      "completedAt": "2026-10-13T10:54:20.888Z",
+      "title": "CodeRabbit review: VFL-539 triggers README LOW fixes (750c212)",
+      "assignee": "13034933-9579-4b3c-add9-b9426144d934",
+      "project": "91740a68-0dd1-47b4-935f-9ab08f4c5669"
+    },
+    "VFL-706": {
+      "status": "done",
+      "completedAt": "2026-10-13T10:53:16.074Z",
+      "title": "Opus Reviewer: review VFL-539 triggers README LOW fixes (750c212)",
+      "assignee": "938921ab-9ab9-469b-85ac-976d8cabad96",
+      "project": "91740a68-0dd1-47b4-935f-9ab08f4c5669"
+    },
+    "VFL-707": {
+      "status": "done",
+      "completedAt": "2026-10-13T10:54:23.664Z",
+      "title": "Test Runner: lane gate and manifest checks on VFL-539 candidate 750c212",
+      "assignee": "d0a26468-a577-4f16-a29c-de0b53af3983",
+      "project": "91740a68-0dd1-47b4-935f-9ab08f4c5669"
+    },
+    "VFL-708": {
+      "status": "in_progress",
+      "completedAt": null,
+      "title": "Bump ammonia pin =4.2.1 \u2192 =4.2.3: RUSTSEC-2021-0157/0158 make cargo deny red on main (blocks PR #40 merge)",
+      "assignee": "912014ba-380a-46cd-baa6-306e9343a2c2",
+      "project": "1e4d751c-3ada-47c7-aabe-e8cb40bc897e"
+    },
+    "VFL-709": {
+      "status": "blocked",
+      "completedAt": null,
+      "title": "Halsey: rebase halsey/vfl-677-guard-comment-fix onto main after VFL-708 merges and force-push PR #40 (VFL-677)",
+      "assignee": "6029b86f-ff5b-492b-9f97-ed31363be784",
+      "project": "1e4d751c-3ada-47c7-aabe-e8cb40bc897e"
+    },
+    "VFL-710": {
+      "status": "done",
+      "completedAt": "2026-10-13T11:14:57.857Z",
+      "title": "CodeRabbit review: VFL-696 erosion merge-base `1d8ed5d` (code + VFL-698 fixtures)",
+      "assignee": "13034933-9579-4b3c-add9-b9426144d934",
+      "project": "91740a68-0dd1-47b4-935f-9ab08f4c5669"
+    },
+    "VFL-711": {
+      "status": "in_progress",
+      "completedAt": null,
+      "title": "Opus Reviewer: VFL-696 erosion merge-base `1d8ed5d` (code + VFL-698 fixtures)",
+      "assignee": "938921ab-9ab9-469b-85ac-976d8cabad96",
+      "project": "91740a68-0dd1-47b4-935f-9ab08f4c5669"
+    },
+    "VFL-713": {
+      "status": "done",
+      "completedAt": "2026-10-13T11:13:37.399Z",
+      "title": "Push approval: VFL-539 triggers README LOW fixes at `750c212`",
+      "assignee": "a9be75cd-d767-4c44-b49c-2017c61f751f",
+      "project": "91740a68-0dd1-47b4-935f-9ab08f4c5669"
     }
   }
 }
