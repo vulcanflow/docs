@@ -1,13 +1,13 @@
 # VulcanFlow progress
 
-Last updated: 2026-10-13T18:55:00Z by Guilty Spark. Source: Paperclip company vFlow.
+Last updated: 2026-10-13T19:33:54Z by Guilty Spark. Source: Paperclip company vFlow.
 
 ## Summary table
 
 | Phase | Project(s) | Done | In progress | Blocked | Planned | Total |
 |---|---|---|---|---|---|---|
 | 1 Foundation[^1] | platform-foundation, test-packs (T9) | 119 | 0 | 14 | 2 | 137 |
-| 2 Libraries[^1] | core-libraries, graph-and-execution-contracts, test-packs (T1-T5) | 94 | 1 | 24 | 0 | 120 |
+| 2 Libraries[^1] | core-libraries, graph-and-execution-contracts, test-packs (T1-T5) | 95 | 1 | 24 | 0 | 121 |
 | 3 API | api, test-packs (T7) | 0 | 0 | 5 | 0 | 5 |
 | 4 Execution | scanners, operator-and-ingest, test-packs (T6) | 0 | 0 | 7 | 1 | 8 |
 | 5 Findings API | api | 0 | 0 | 1 | 0 | 1 |
@@ -15,16 +15,16 @@ Last updated: 2026-10-13T18:55:00Z by Guilty Spark. Source: Paperclip company vF
 | Later (reporting, infra, ai-gateway) | reporting, infra, ai-gateway | 0 | 0 | 0 | 0 | 0 |
 | Setup and governance | Onboarding | 9 | 0 | 0 | 0 | 9 |
 | Unassigned to a phase[^1] | progress-and-docs (VFL-50, VFL-60, VFL-84, VFL-255, VFL-272, VFL-351, VFL-432, VFL-524, VFL-544), platform-foundation (VFL-52, VFL-58, VFL-61, VFL-70, VFL-73–103, VFL-105–111, VFL-114–116, VFL-119–143, VFL-151, VFL-160, VFL-173, VFL-175–177, except VFL-112–113/117–118 which moved into Phase 2, VFL-122, VFL-124–137, VFL-285, VFL-288, VFL-294–296, VFL-301–303, VFL-305–306, VFL-318–332, VFL-335, VFL-337, VFL-339–345, VFL-350, VFL-352–354, VFL-365, VFL-395, VFL-399, VFL-403, VFL-405, VFL-413–414, VFL-416–417, VFL-419, VFL-433, VFL-437, VFL-450–459, VFL-462–465, VFL-467–469, VFL-471, VFL-472, VFL-474–476, VFL-482, VFL-484–490, VFL-492, VFL-494, VFL-497, VFL-527, VFL-534, VFL-537, VFL-539–542, VFL-552, VFL-559, VFL-570–572, VFL-653, VFL-664, VFL-668–670, VFL-682, VFL-695–698, VFL-703, VFL-705–707, VFL-710–711, VFL-713, VFL-716–719, VFL-723, VFL-728–729, VFL-731, VFL-733–734, VFL-739–741, VFL-745, VFL-760–762), core-libraries (VFL-140, VFL-142, VFL-145–159, VFL-185–187, VFL-190–191, VFL-198–209, VFL-228, VFL-230, VFL-238, VFL-249, VFL-254, VFL-256–258, VFL-261–262, VFL-266, VFL-268–269, VFL-273, VFL-277, VFL-334, VFL-336, VFL-360–364, VFL-385, VFL-390–392, VFL-396–398, VFL-573–578, VFL-582–585, VFL-588–590, VFL-592, VFL-597–599, VFL-606–610, VFL-615, VFL-628–636, VFL-644, VFL-650–652, VFL-660, VFL-662–663, VFL-667–670, VFL-674, VFL-678, VFL-681, VFL-692, VFL-714, VFL-720, VFL-722, VFL-746, VFL-748–751, VFL-756–758, VFL-763, VFL-765), api (VFL-165), none (VFL-51, VFL-278) | 262 | 5 | 29 | 9 | 313 |
-| **Total**[^1] | | **484** | **6** | **85** | **13** | **599** |
+| **Total**[^1] | | **485** | **6** | **85** | **13** | **600** |
 
-[^1]: 11 cancelled tasks (VFL-51, VFL-134, VFL-136, VFL-154, VFL-205, VFL-361, VFL-362, VFL-398, VFL-550, VFL-593, VFL-604) are counted in Total only; they have no Done/In progress/Blocked/Planned bucket (VFL-550 and VFL-604 are the two cancellations in Phase 1 — its row's four buckets sum to 135, two short of the 137 total; VFL-593 is the one cancellation in Phase 2 — its row's four buckets sum to 119, one short of the 120 total; the other eight are in the Unassigned row, whose four buckets sum to 305, eight short of the 313 total). Guilty Spark's own recurring "Progress tracker update" tasks (VFL-53, VFL-54, VFL-55, ...) are excluded entirely from this document per the skip-own-routine-tasks rule. The "In progress" column folds `in_progress` and `in_review` together (no separate in-review bucket in this table); the "Planned" column folds `todo` and `backlog` tasks together — both are queued/not-yet-started, just at different readiness states; see the Status mix pie for the literal per-status counts.
+[^1]: 11 cancelled tasks (VFL-51, VFL-134, VFL-136, VFL-154, VFL-205, VFL-361, VFL-362, VFL-398, VFL-550, VFL-593, VFL-604) are counted in Total only; they have no Done/In progress/Blocked/Planned bucket (VFL-550 and VFL-604 are the two cancellations in Phase 1 — its row's four buckets sum to 135, two short of the 137 total; VFL-593 is the one cancellation in Phase 2 — its row's four buckets sum to 120, one short of the 121 total; the other eight are in the Unassigned row, whose four buckets sum to 305, eight short of the 313 total). Guilty Spark's own recurring "Progress tracker update" tasks (VFL-53, VFL-54, VFL-55, ...) are excluded entirely from this document per the skip-own-routine-tasks rule. The "In progress" column folds `in_progress` and `in_review` together (no separate in-review bucket in this table); the "Planned" column folds `todo` and `backlog` tasks together — both are queued/not-yet-started, just at different readiness states; see the Status mix pie for the literal per-status counts.
 
 ## Phase tracker
 
 ```mermaid
 flowchart LR
   P1["1 Foundation<br/>119/137 done"]
-  P2["2 Libraries<br/>94/120 done"]
+  P2["2 Libraries<br/>95/121 done"]
   P3["3 API<br/>0/5 done"]
   P4["4 Execution<br/>0/8 done"]
   P5["5 Findings API<br/>0/1 done"]
@@ -57,7 +57,7 @@ flowchart LR
 
 ```mermaid
 pie title Tasks by status
-  "done" : 484
+  "done" : 485
   "blocked" : 85
   "in_progress" : 2
   "backlog" : 10
@@ -301,6 +301,7 @@ pie title Tasks by status
 | VFL-709 | Halsey: rebase halsey/vfl-677-guard-comment-fix onto main after VFL-708 merges and force-push PR #40 (child of VFL-677) | Cortana | done | 2026-10-13 | [VFL-709 comment, 2026-10-13T15:56:46Z](http://paperclip.paperclip.svc.cluster.local/VFL/issues/VFL-709) — merged [PR #40](https://github.com/vulcanflow/platform/pull/40) as squash commit `5a5b2626ce95d167701beb062d6a27b404bf1c52`; head `1a2fdbb` (rebased onto `20b3877`) verified patch-id `5b8f59bb…` matched the required value, all seven checks SUCCESS |
 | VFL-747 | Test Runner: fmt-check + `just fuzz-check` on 0df0650 (rebased PR #40) under the fuzz-cxx env (child of VFL-677) | Test Runner | done | 2026-10-13 | [VFL-747 comment, 2026-10-13T15:46:32Z](http://paperclip.paperclip.svc.cluster.local/VFL/issues/VFL-747) — both required commands pass on `0df0650b8eeeaa88ed61978374c6cbca82fd6300`: `cargo fmt --all -- --check` (fuzz/) and `just fuzz-check` |
 | VFL-752 | Halsey wake: merge-update PR #36 onto main `5a5b262` (VFL-743 standing rule), then hand off to Cortana (child of VFL-743) | Halsey | done | 2026-10-13 | [VFL-752 comment, 2026-10-13T16:06:59Z](http://paperclip.paperclip.svc.cluster.local/VFL/issues/VFL-752) — built the plain merge commit `d1955f63` locally (clean, no file overlap since merge-base `5b7ec64`) but could not push: no managed GitHub identity for this run; handed off to Cortana on [VFL-743](http://paperclip.paperclip.svc.cluster.local/VFL/issues/VFL-743#comment-75875bc3-3e08-4213-901f-cbd1cbcfe20f) |
+| VFL-767 | Cortana wake: retry the PR #36 merge path now (identity returned 18:08 window) (child of VFL-758) | Cortana | done | 2026-10-13 | [VFL-767 comment, 2026-10-13T18:54:56Z](http://paperclip.paperclip.svc.cluster.local/VFL/issues/VFL-767) — retry still found no GitHub identity (gh/broker/MCP all failed); no push, no merge; posted on [VFL-471](http://paperclip.paperclip.svc.cluster.local/VFL/issues/VFL-471) and closed |
 | VFL-665 | T1c-r3: fix `pipeline_outcome.rs` Scope/Limit fixtures to Skipped (C1b HIGH-1 ruling, child of VFL-408) | Halsey | done | 2026-10-09 | [VFL-665 comment, 2026-10-09T13:04:28Z](http://paperclip.paperclip.svc.cluster.local/VFL/issues/VFL-665) — branch `halsey/t1c-vf-core-c1b-r3` `c48a10c`, local only; merged C1b code r2 first, then the `terminal(class)` fix plus two optional LOW cleanups; handed to Fred for precheck |
 | VFL-680 | T1c-r4: fix `ids.rs` `deserialize_str_err` compile error (Debug bound) on T1c-r3 c48a10c (child of VFL-408) | Halsey | done | 2026-10-09 | [VFL-680 comment, 2026-10-09T14:02:29Z](http://paperclip.paperclip.svc.cluster.local/VFL/issues/VFL-680) — branch `halsey/t1c-vf-core-c1b-r4` (local only) `c6ad21e` on T1c-r3 `c48a10c`; one-line fix, `deserialize_str_err` uses `.err().expect(...)` instead of `.unwrap_err()` to drop the `T: Debug` bound; handed to Fred/Test Runner for precheck rerun |
 | VFL-686 | T1c-r5: rustfmt reflow of `ids.rs` `deserialize_str_err` on T1c-r4 c6ad21e (child of VFL-408) | Halsey | done | 2026-10-09 | [VFL-686 comment, 2026-10-09T14:36:03Z](http://paperclip.paperclip.svc.cluster.local/VFL/issues/VFL-686) — branch `halsey/t1c-vf-core-c1b-r5` (local only) head `2afb232` on T1c-r4 `c6ad21e`; one commit, rustfmt reflow of the `deserialize_str_err` method chain in `crates/vf-core/tests/ids.rs`, `cargo fmt --all -- --check` exit 0, diff +3/-1, no assertion changes; handed to Fred for precheck rerun |
@@ -772,6 +773,10 @@ Update 2026-10-07 20:34 UTC: seven deliveries, eleven status changes, seven new 
 Update 2026-10-07 21:40 UTC: thirteen deliveries, eight status changes, twelve new tasks. The wasm-pack toolchain pin (VFL-305) cleared its gate cycle on re-candidate `6e9a76d`: CodeRabbit (VFL-329, done — PASS, 1 LOW), Opus Reviewer (VFL-330, done — PASS, both prior MEDIUMs confirmed fixed, 2 new LOWs) and Test Runner (VFL-331/VFL-335, done — steps 1–3 and the `wasm-test` node step all green) all passed, so Cortana approved the push as-is (VFL-337, done) and filed three residual-LOW follow-ups (VFL-342/343/344, all new, blocked). Jorge's push itself (VFL-340, new, in_progress) is waiting on a concurrent run holding this workspace's GitHub identity; the merge (VFL-341, new, blocked) waits on that push landing. On C1, the long-stuck Arbiter reviews finally ran: after a multi-cycle watchdog/reassignment saga (VFL-332, done; VFL-306, done), CodeRabbit passed both queued reviews — VFL-264 (C1 pair `2444217`+`b59f98f`, todo → done, 1 LOW) and VFL-198 (C2 scope fuzz, net unchanged — flickered done → todo again once Kelly moved the candidate to `12801bf` mid-run) — clearing VFL-240's gate cycle (`blocked` → `in_progress`) for Fred to request push approval next. Opus Reviewer separately re-verdicted VFL-209 PASS on that same new fuzz candidate `12801bf` (LOW 1 and 2 resolved). On VFL-82, Test Runner's full `just gate` passed (VFL-116, done) and Cortana approved the push (VFL-345, done). On VFL-149, Cortana declined the push as-is — code accepted but the PR needs a pure rebase onto current main before it can merge under branch protection (VFL-334, done) — and filed a LOW follow-up (VFL-336, new, blocked). On F3, Cortana's ruling on VFL-310's three open questions (VFL-339, done) resolved delete-is-silent and a new `get_stream` read, with the tenant-scope guard split out as a new F3d task (VFL-346, new, todo, joins the Phase 1 table).
 
 ## Delivery log
+
+### 2026-10-13 — VFL-767 Cortana wake: retry the PR #36 merge path now (identity returned 18:08 window)
+
+Cortana retried the PR #36 push/merge path for the `halsey/t1a-vf-core-tests` merge-update `d1955f6` (prepared on [VFL-752](/VFL/issues/VFL-752)). All three identity paths failed again this run: `gh auth status` not logged in, the GitHub credential broker returned 401 ("Agent token did not verify"), and the GitHub MCP `get-me` returned `github_identity_unavailable`. Read-only anonymous git confirmed `origin/main` at `ef39975`. Per the standing step-1 rule, Cortana posted one short comment on [VFL-471](/VFL/issues/VFL-471) naming the retry result and closed this wake task as done — no push and no merge happened; [VFL-758](/VFL/issues/VFL-758) remains blocked on the identity chain pending owner/MasterChief action on VFL-471. Evidence: [VFL-767 comment, 2026-10-13T18:54:56Z](http://paperclip.paperclip.svc.cluster.local/VFL/issues/VFL-767).
 
 ### 2026-10-13 — VFL-151 `just check-cross` cannot run on the agent runners: the bootstrapped toolchain is host-only
 
@@ -2559,6 +2564,7 @@ Opened [PR #53](https://github.com/vulcanflow/docs/pull/53) with `VulcanFlow_Dev
 
 ## Status changes
 
+- 2026-10-13T18:54:54.974Z VFL-767 (new) -> done — "Cortana wake: retry the PR #36 merge path now (identity returned 18:08 window)", Cortana, project core-libraries, Phase 2 Libraries — see delivery log
 - 2026-10-13T18:50:20.356Z VFL-185 blocked -> in_progress — "Bootstrap: verify cc before publishing a toolchain tree, gate --env-only on cargo, bound the lock wait", Jorge, project core-libraries, Unassigned — unblocked once VFL-151 landed; latest run reported a terminal access failure, no new work delivered yet
 - 2026-10-13T18:13:31.118Z VFL-151 blocked -> done — "just check-cross cannot run on the agent runners: the bootstrapped toolchain is host-only", Jorge, project core-libraries, Unassigned — see delivery log
 - 2026-10-13T18:13:23.334Z VFL-751 in_progress -> done — "VFL-151 continuation: re-gate 3617b68 and land PR #35", Jorge, project core-libraries, Unassigned — see delivery log
@@ -2608,4 +2614,3 @@ Opened [PR #53](https://github.com/vulcanflow/docs/pull/53) with `VulcanFlow_Dev
 - 2026-10-13T14:47:00.055Z VFL-736 (new) -> done — "Opus Reviewer: review VFL-708 ammonia 4.2.3 pin bump candidate 0d4ce915", Opus Reviewer, project core-libraries, Phase 2 Libraries — see delivery log
 - 2026-10-13T14:47:00.833Z VFL-737 (new) -> done — "CodeRabbit review: VFL-708 ammonia 4.2.3 pin bump candidate 0d4ce915", Arbiter, project core-libraries, Phase 2 Libraries — see delivery log
 - 2026-10-13T14:47:04.978Z VFL-738 (new) -> in_progress — "Test Runner: just deny/audit/check/gate on VFL-708 candidate 0d4ce915", Test Runner, project core-libraries, Phase 2 Libraries — third gate child of VFL-708
-- 2026-10-13T14:11:26.476Z VFL-538 in_progress -> blocked — "F2h: compile doctests in the gate — test-doc recipe, test-unit depends on it", Jorge, project platform-foundation, Phase 1 Foundation — push of a3aa436 approved via VFL-733 but this run has no managed GitHub identity to push with; blocked on VFL-471
