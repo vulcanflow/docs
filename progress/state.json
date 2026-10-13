@@ -1,5 +1,5 @@
 {
-  "lastRunAt": "2026-10-13T20:35:14Z",
+  "lastRunAt": "2026-10-13T21:22:03Z",
   "phases": {
     "p1_foundation": {
       "label": "1 Foundation",
@@ -679,7 +679,24 @@
         "VFL-770",
         "VFL-762",
         "VFL-763",
-        "VFL-765"
+        "VFL-765",
+        "VFL-772",
+        "VFL-773",
+        "VFL-774",
+        "VFL-775",
+        "VFL-776",
+        "VFL-777",
+        "VFL-778",
+        "VFL-779",
+        "VFL-780",
+        "VFL-781",
+        "VFL-782",
+        "VFL-783",
+        "VFL-785",
+        "VFL-786",
+        "VFL-787",
+        "VFL-788",
+        "VFL-789"
       ]
     }
   },
@@ -2764,8 +2781,8 @@
       "project": "platform-foundation"
     },
     "VFL-125": {
-      "status": "blocked",
-      "completedAt": null,
+      "status": "done",
+      "completedAt": "2026-10-13T20:44:30.369Z",
       "title": "CI on Tekton (2/4): pipeline definitions equivalent to lane-gate and rust-check",
       "assignee": "Jorge",
       "project": "platform-foundation"
@@ -2890,7 +2907,7 @@
       "project": "platform-foundation"
     },
     "VFL-126": {
-      "status": "blocked",
+      "status": "in_review",
       "completedAt": null,
       "title": "CI on Tekton (3/4): status reporting to the PR commit and required contexts on main",
       "assignee": "Jorge",
@@ -4619,7 +4636,7 @@
       "project": "core-libraries"
     },
     "VFL-716": {
-      "status": "blocked",
+      "status": "in_progress",
       "completedAt": null,
       "title": "CI on Tekton (2b/4): check (amd64) by cross-build on arm64, unit tests under user-mode QEMU",
       "assignee": "Jorge",
@@ -4689,7 +4706,7 @@
       "project": "platform-foundation"
     },
     "VFL-729": {
-      "status": "blocked",
+      "status": "in_progress",
       "completedAt": null,
       "title": "VFL-125 follow-up: lane-gate base guard, RUST_TEST_THREADS and README nits (Opus L1, L2, L7, L8)",
       "assignee": "Jorge",
@@ -4843,8 +4860,8 @@
       "project": "core-libraries"
     },
     "VFL-760": {
-      "status": "blocked",
-      "completedAt": null,
+      "status": "done",
+      "completedAt": "2026-10-13T20:44:13.911Z",
       "title": "VFL-125 continuation: push approval, PR #42 update and acceptance run 2 for 585dfa5",
       "assignee": "Jorge",
       "project": "platform-foundation"
@@ -4885,10 +4902,129 @@
       "project": "core-libraries"
     },
     "VFL-770": {
-      "status": "in_progress",
-      "completedAt": null,
+      "status": "done",
+      "completedAt": "2026-10-13T20:35:29.362Z",
       "title": "Push approval: VFL-125 PR #42 brought up to main ef39975 at 11385db (plain merge into 585dfa5)",
       "assignee": "Cortana",
+      "project": "platform-foundation"
+    },
+    "VFL-772": {
+      "status": "done",
+      "completedAt": "2026-10-13T20:42:50.761Z",
+      "title": "Merge PR #42: VFL-125 Tekton lane-gate and rust-check pipelines at `11385db`",
+      "assignee": "Cortana",
+      "project": "platform-foundation"
+    },
+    "VFL-773": {
+      "status": "done",
+      "completedAt": "2026-10-13T20:45:14.227Z",
+      "title": "Cortana wake: retry PR #36 merge path (VFL-758) while the GitHub identity is live",
+      "assignee": "Cortana",
+      "project": "core-libraries"
+    },
+    "VFL-774": {
+      "status": "blocked",
+      "completedAt": null,
+      "title": "CI on Tekton (3a/4): Tekton lane-gate definitions in the GATE class (VFL-126 L4)",
+      "assignee": "Jorge",
+      "project": "platform-foundation"
+    },
+    "VFL-775": {
+      "status": "done",
+      "completedAt": "2026-10-13T20:52:32.038Z",
+      "title": "Test Writer: lane-gate-test.sh cases for the Tekton GATE paths on 6c0d995 (VFL-774)",
+      "assignee": "Halsey",
+      "project": "platform-foundation"
+    },
+    "VFL-776": {
+      "status": "blocked",
+      "completedAt": null,
+      "title": "CI on Tekton (3b/4): name the vf-ci egress policy in the .tekton README prerequisites (VFL-126 L5)",
+      "assignee": "Jorge",
+      "project": "platform-foundation"
+    },
+    "VFL-777": {
+      "status": "blocked",
+      "completedAt": null,
+      "title": "CI on Tekton (3c/4): webhook starts vf-lane-gate and vf-rust-check for same-repo pull requests",
+      "assignee": "Jorge",
+      "project": "platform-foundation"
+    },
+    "VFL-778": {
+      "status": "blocked",
+      "completedAt": null,
+      "title": "CI on Tekton (3d/4): report the check results as commit statuses on the PR head",
+      "assignee": "Jorge",
+      "project": "platform-foundation"
+    },
+    "VFL-779": {
+      "status": "blocked",
+      "completedAt": null,
+      "title": "CI on Tekton (3e/4): six-status acceptance run and required contexts on main bound to Tekton",
+      "assignee": "Jorge",
+      "project": "platform-foundation"
+    },
+    "VFL-780": {
+      "status": "done",
+      "completedAt": "2026-10-13T20:58:25.606Z",
+      "title": "Test Writer: lane-gate self-test cases for the Tekton GATE paths on 6c0d995 (VFL-774)",
+      "assignee": "Halsey",
+      "project": "platform-foundation"
+    },
+    "VFL-781": {
+      "status": "done",
+      "completedAt": "2026-10-13T21:00:25.969Z",
+      "title": "CodeRabbit review: VFL-729 Tekton residual LOWs (ee44fec)",
+      "assignee": "Arbiter",
+      "project": "platform-foundation"
+    },
+    "VFL-782": {
+      "status": "done",
+      "completedAt": "2026-10-13T21:02:00.033Z",
+      "title": "Opus Reviewer: review VFL-729 Tekton residual LOWs (ee44fec)",
+      "assignee": "Opus Reviewer",
+      "project": "platform-foundation"
+    },
+    "VFL-783": {
+      "status": "done",
+      "completedAt": "2026-10-13T20:57:44.518Z",
+      "title": "Test Runner: lane gate and manifest checks on VFL-729 candidate ee44fec",
+      "assignee": "Test Runner",
+      "project": "platform-foundation"
+    },
+    "VFL-785": {
+      "status": "done",
+      "completedAt": "2026-10-13T21:02:44.095Z",
+      "title": "Test Runner: lane-gate checks on VFL-774 candidate 14b708a (Tekton GATE class)",
+      "assignee": "Test Runner",
+      "project": "platform-foundation"
+    },
+    "VFL-786": {
+      "status": "done",
+      "completedAt": "2026-10-13T21:04:10.395Z",
+      "title": "CodeRabbit review: VFL-774 Tekton lane-gate definitions in the GATE class (14b708a)",
+      "assignee": "Arbiter",
+      "project": "platform-foundation"
+    },
+    "VFL-787": {
+      "status": "in_progress",
+      "completedAt": null,
+      "title": "Opus Reviewer: review VFL-774 Tekton lane-gate definitions in the GATE class (14b708a)",
+      "assignee": "Opus Reviewer",
+      "project": "platform-foundation"
+    },
+    "VFL-788": {
+      "status": "done",
+      "completedAt": "2026-10-13T21:05:53.401Z",
+      "title": "Push approval: VFL-729 Tekton residual LOWs at ee44fec",
+      "assignee": "Cortana",
+      "project": "platform-foundation"
+    },
+    "VFL-789": {
+      "status": "blocked",
+      "completedAt": null,
+      "title": "CI: ci/lane-gate.sh verifies BASE_REF resolves (VFL-729 R1 follow-up)",
+      "assignee": "Jorge",
       "project": "platform-foundation"
     }
   }
