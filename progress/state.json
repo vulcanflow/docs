@@ -1,5 +1,5 @@
 {
-  "lastRunAt": "2026-10-13T16:18:59Z",
+  "lastRunAt": "2026-10-13T17:33:00Z",
   "phases": {
     "p1_foundation": {
       "label": "1 Foundation",
@@ -272,7 +272,9 @@
         "VFL-738",
         "VFL-743",
         "VFL-747",
-        "VFL-752"
+        "VFL-752",
+        "VFL-756",
+        "VFL-758"
       ]
     },
     "p3_api": {
@@ -669,7 +671,10 @@
         "VFL-748",
         "VFL-749",
         "VFL-750",
-        "VFL-751"
+        "VFL-751",
+        "VFL-757",
+        "VFL-760",
+        "VFL-761"
       ]
     }
   },
@@ -2754,7 +2759,7 @@
       "project": "platform-foundation"
     },
     "VFL-125": {
-      "status": "blocked",
+      "status": "in_progress",
       "completedAt": null,
       "title": "CI on Tekton (2/4): pipeline definitions equivalent to lane-gate and rust-check",
       "assignee": "Jorge",
@@ -4532,7 +4537,7 @@
       "project": "platform-foundation"
     },
     "VFL-703": {
-      "status": "in_review",
+      "status": "in_progress",
       "completedAt": null,
       "title": "VFL-122 continuation 3: land PR #37 (merge-update after #36, then close)",
       "assignee": "Jorge",
@@ -4637,8 +4642,8 @@
       "project": "platform-foundation"
     },
     "VFL-720": {
-      "status": "in_progress",
-      "completedAt": null,
+      "status": "done",
+      "completedAt": "2026-10-13T17:11:49.401Z",
       "title": "Board watch (continuation 7): find stuck tasks and nudge owners",
       "assignee": "MasterChief",
       "project": "core-libraries"
@@ -4714,8 +4719,8 @@
       "project": "platform-foundation"
     },
     "VFL-739": {
-      "status": "in_progress",
-      "completedAt": null,
+      "status": "done",
+      "completedAt": "2026-10-13T17:23:20.395Z",
       "title": "CodeRabbit review: VFL-125 Tekton checkout fix (585dfa5), round 2",
       "assignee": "Arbiter",
       "project": "platform-foundation"
@@ -4808,6 +4813,41 @@
       "status": "done",
       "completedAt": "2026-10-13T15:40:57.567Z",
       "title": "Ruling: rebase PR #41 (VFL-539, `750c212`) onto main `96b9649` and force-push",
+      "assignee": "Cortana",
+      "project": "platform-foundation"
+    },
+    "VFL-756": {
+      "status": "done",
+      "completedAt": "2026-10-13T17:12:49.853Z",
+      "title": "Halsey wake: hand the PR #36 merge-update d1955f6 to Cortana by task assignment (VFL-743)",
+      "assignee": "Halsey",
+      "project": "core-libraries"
+    },
+    "VFL-757": {
+      "status": "in_progress",
+      "completedAt": null,
+      "title": "Board watch (continuation 8): find stuck tasks and nudge owners",
+      "assignee": "MasterChief",
+      "project": "core-libraries"
+    },
+    "VFL-758": {
+      "status": "blocked",
+      "completedAt": null,
+      "title": "Cortana: push PR #36 merge-update d1955f6 and merge #36 (VFL-568)",
+      "assignee": "Cortana",
+      "project": "core-libraries"
+    },
+    "VFL-760": {
+      "status": "in_progress",
+      "completedAt": null,
+      "title": "VFL-125 continuation: push approval, PR #42 update and acceptance run 2 for 585dfa5",
+      "assignee": "Jorge",
+      "project": "platform-foundation"
+    },
+    "VFL-761": {
+      "status": "in_progress",
+      "completedAt": null,
+      "title": "Push approval: VFL-125 Tekton checkout fix at 585dfa5 (fast-forward of PR #42)",
       "assignee": "Cortana",
       "project": "platform-foundation"
     }
