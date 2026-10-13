@@ -1,5 +1,5 @@
 {
-  "lastRunAt": "2026-10-13T15:35:00Z",
+  "lastRunAt": "2026-10-13T16:18:59Z",
   "phases": {
     "p1_foundation": {
       "label": "1 Foundation",
@@ -270,7 +270,9 @@
         "VFL-736",
         "VFL-737",
         "VFL-738",
-        "VFL-743"
+        "VFL-743",
+        "VFL-747",
+        "VFL-752"
       ]
     },
     "p3_api": {
@@ -661,7 +663,13 @@
         "VFL-734",
         "VFL-739",
         "VFL-740",
-        "VFL-741"
+        "VFL-741",
+        "VFL-745",
+        "VFL-746",
+        "VFL-748",
+        "VFL-749",
+        "VFL-750",
+        "VFL-751"
       ]
     }
   },
@@ -1237,7 +1245,7 @@
       "status": "todo",
       "completedAt": null,
       "title": "Owner action: restart the GitHub identity chain so Cortana can merge PR #18",
-      "assignee": "Unassigned",
+      "assignee": "6V7ZcYxpm1GXkJVicEAGVKgfJLRYoQY5",
       "project": "platform-foundation"
     },
     "VFL-453": {
@@ -1399,7 +1407,7 @@
       "completedAt": "2026-10-05T19:49:29.166Z",
       "title": "Architecture documentation and first coding task list (from approved plan)",
       "assignee": "Cortana",
-      "project": null
+      "project": "none"
     },
     "VFL-406": {
       "status": "done",
@@ -1805,7 +1813,7 @@
       "completedAt": "2026-10-07T17:00:10.153Z",
       "title": "Board watch pass 16:46 UTC: post nudges and re-arm the VFL-272 monitor (task-bound run)",
       "assignee": "MasterChief",
-      "project": null
+      "project": "none"
     },
     "VFL-183": {
       "status": "done",
@@ -2627,7 +2635,7 @@
       "project": "operator-and-ingest"
     },
     "VFL-151": {
-      "status": "in_progress",
+      "status": "blocked",
       "completedAt": null,
       "title": "just check-cross cannot run on the agent runners: the bootstrapped toolchain is host-only",
       "assignee": "Jorge",
@@ -2897,7 +2905,7 @@
       "completedAt": null,
       "title": "PROBE",
       "assignee": "Unassigned",
-      "project": null
+      "project": "none"
     },
     "VFL-50": {
       "status": "done",
@@ -2918,7 +2926,7 @@
       "completedAt": "2026-10-05T20:01:04.840Z",
       "title": "create technical workflow",
       "assignee": "MasterChief",
-      "project": null
+      "project": "none"
     },
     "VFL-47": {
       "status": "blocked",
@@ -3030,42 +3038,42 @@
       "completedAt": "2026-10-05T18:36:41.929Z",
       "title": "check GitHub org repositories",
       "assignee": "MasterChief",
-      "project": null
+      "project": "none"
     },
     "VFL-6": {
       "status": "done",
       "completedAt": "2026-10-05T18:31:15.362Z",
       "title": "Architect audit: vulcanflow GitHub repositories (keep / create / remove)",
       "assignee": "Cortana",
-      "project": null
+      "project": "none"
     },
     "VFL-3": {
       "status": "done",
       "completedAt": "2026-10-05T18:03:17.375Z",
       "title": "Hire the agents to work on this project.",
       "assignee": "MasterChief",
-      "project": null
+      "project": "none"
     },
     "VFL-4": {
       "status": "done",
       "completedAt": "2026-10-05T16:31:18.914Z",
       "title": "Install coderabbit skill",
       "assignee": "MasterChief",
-      "project": null
+      "project": "none"
     },
     "VFL-1": {
       "status": "done",
       "completedAt": "2026-10-05T15:39:11.139Z",
       "title": "Paperclip onboarding",
       "assignee": "MasterChief",
-      "project": "Onboarding"
+      "project": "onboarding"
     },
     "VFL-2": {
       "status": "done",
       "completedAt": "2026-10-05T14:04:56.921Z",
       "title": "push the plan to GitHub using the existing connection",
       "assignee": "MasterChief",
-      "project": null
+      "project": "none"
     },
     "VFL-361": {
       "status": "cancelled",
@@ -3138,10 +3146,10 @@
       "project": "platform-foundation"
     },
     "VFL-539": {
-      "status": "in_progress",
-      "completedAt": null,
+      "status": "done",
+      "completedAt": "2026-10-13T15:48:59.324Z",
       "title": "VFL-124 follow-up: README-only fixes for Opus round-4 LOW-6..9, 11..14",
-      "assignee": "Jorge",
+      "assignee": "Cortana",
       "project": "platform-foundation"
     },
     "VFL-540": {
@@ -3905,7 +3913,7 @@
       "completedAt": "2026-10-05T19:55:39.476Z",
       "title": "Append related-task links to the remaining 19 VulcanFlow tasks",
       "assignee": "MasterChief",
-      "project": null
+      "project": "none"
     },
     "VFL-38": {
       "status": "blocked",
@@ -4405,8 +4413,8 @@
       "project": "core-libraries"
     },
     "VFL-677": {
-      "status": "blocked",
-      "completedAt": null,
+      "status": "done",
+      "completedAt": "2026-10-13T15:57:01.011Z",
       "title": "Fuzz follow-up: fix 'documented below' guard comment in canonical_host.rs and scope_match.rs (residual LOW F1, VFL-495)",
       "assignee": "Cortana",
       "project": "core-libraries"
@@ -4513,7 +4521,7 @@
       "status": "done",
       "completedAt": "2026-10-13T10:50:34.423Z",
       "title": "Test Writer: lane-gate fixtures for the erosion merge-base base on db0614d (VFL-696)",
-      "assignee": "Unassigned",
+      "assignee": "Test Runner",
       "project": "platform-foundation"
     },
     "VFL-695": {
@@ -4527,57 +4535,57 @@
       "status": "in_review",
       "completedAt": null,
       "title": "VFL-122 continuation 3: land PR #37 (merge-update after #36, then close)",
-      "assignee": "912014ba-380a-46cd-baa6-306e9343a2c2",
-      "project": "91740a68-0dd1-47b4-935f-9ab08f4c5669"
+      "assignee": "Jorge",
+      "project": "platform-foundation"
     },
     "VFL-704": {
       "status": "done",
       "completedAt": "2026-10-13T10:39:41.298Z",
       "title": "Halsey: push halsey/vfl-677-guard-comment-fix @ 5b1f4d9 and open test-only PR to main (VFL-677)",
-      "assignee": "6029b86f-ff5b-492b-9f97-ed31363be784",
-      "project": "1e4d751c-3ada-47c7-aabe-e8cb40bc897e"
+      "assignee": "Halsey",
+      "project": "core-libraries"
     },
     "VFL-705": {
       "status": "done",
       "completedAt": "2026-10-13T10:54:20.888Z",
       "title": "CodeRabbit review: VFL-539 triggers README LOW fixes (750c212)",
-      "assignee": "13034933-9579-4b3c-add9-b9426144d934",
-      "project": "91740a68-0dd1-47b4-935f-9ab08f4c5669"
+      "assignee": "Arbiter",
+      "project": "platform-foundation"
     },
     "VFL-706": {
       "status": "done",
       "completedAt": "2026-10-13T10:53:16.074Z",
       "title": "Opus Reviewer: review VFL-539 triggers README LOW fixes (750c212)",
-      "assignee": "938921ab-9ab9-469b-85ac-976d8cabad96",
-      "project": "91740a68-0dd1-47b4-935f-9ab08f4c5669"
+      "assignee": "Opus Reviewer",
+      "project": "platform-foundation"
     },
     "VFL-707": {
       "status": "done",
       "completedAt": "2026-10-13T10:54:23.664Z",
       "title": "Test Runner: lane gate and manifest checks on VFL-539 candidate 750c212",
-      "assignee": "d0a26468-a577-4f16-a29c-de0b53af3983",
-      "project": "91740a68-0dd1-47b4-935f-9ab08f4c5669"
+      "assignee": "Test Runner",
+      "project": "platform-foundation"
     },
     "VFL-708": {
       "status": "done",
       "completedAt": "2026-10-13T15:34:47.462Z",
       "title": "Bump ammonia pin =4.2.1 \u2192 =4.2.3: RUSTSEC-2021-0157/0158 make cargo deny red on main (blocks PR #40 merge)",
-      "assignee": "912014ba-380a-46cd-baa6-306e9343a2c2",
-      "project": "1e4d751c-3ada-47c7-aabe-e8cb40bc897e"
+      "assignee": "Cortana",
+      "project": "core-libraries"
     },
     "VFL-709": {
-      "status": "in_progress",
-      "completedAt": null,
+      "status": "done",
+      "completedAt": "2026-10-13T15:56:52.794Z",
       "title": "Halsey: rebase halsey/vfl-677-guard-comment-fix onto main after VFL-708 merges and force-push PR #40 (VFL-677)",
-      "assignee": "6029b86f-ff5b-492b-9f97-ed31363be784",
-      "project": "1e4d751c-3ada-47c7-aabe-e8cb40bc897e"
+      "assignee": "Cortana",
+      "project": "core-libraries"
     },
     "VFL-710": {
       "status": "done",
       "completedAt": "2026-10-13T11:14:57.857Z",
       "title": "CodeRabbit review: VFL-696 erosion merge-base `1d8ed5d` (code + VFL-698 fixtures)",
-      "assignee": "13034933-9579-4b3c-add9-b9426144d934",
-      "project": "91740a68-0dd1-47b4-935f-9ab08f4c5669"
+      "assignee": "Arbiter",
+      "project": "platform-foundation"
     },
     "VFL-711": {
       "status": "done",
@@ -4590,8 +4598,8 @@
       "status": "done",
       "completedAt": "2026-10-13T11:13:37.399Z",
       "title": "Push approval: VFL-539 triggers README LOW fixes at `750c212`",
-      "assignee": "a9be75cd-d767-4c44-b49c-2017c61f751f",
-      "project": "91740a68-0dd1-47b4-935f-9ab08f4c5669"
+      "assignee": "Cortana",
+      "project": "platform-foundation"
     },
     "VFL-714": {
       "status": "done",
@@ -4744,8 +4752,64 @@
       "status": "blocked",
       "completedAt": null,
       "title": "VFL-568 continuation: PR #36 merge-update watch",
-      "assignee": "6029b86f-ff5b-492b-9f97-ed31363be784",
+      "assignee": "Halsey",
       "project": "core-libraries"
+    },
+    "VFL-752": {
+      "status": "done",
+      "completedAt": "2026-10-13T16:06:59.190Z",
+      "title": "Halsey wake: merge-update PR #36 onto main 5a5b262 (VFL-743 standing rule), then hand off to Cortana",
+      "assignee": "Halsey",
+      "project": "core-libraries"
+    },
+    "VFL-746": {
+      "status": "done",
+      "completedAt": "2026-10-13T15:41:19.477Z",
+      "title": "Cortana wake: re-check GitHub identity after the VFL-708 merge; merge #36, #37, #39 if present",
+      "assignee": "Cortana",
+      "project": "core-libraries"
+    },
+    "VFL-749": {
+      "status": "done",
+      "completedAt": "2026-10-13T15:54:34.583Z",
+      "title": "Independent review of 3617b68: PR #35 merged up to main 96b9649 (VFL-151 cross toolchain)",
+      "assignee": "Opus Reviewer",
+      "project": "core-libraries"
+    },
+    "VFL-748": {
+      "status": "done",
+      "completedAt": "2026-10-13T15:52:04.961Z",
+      "title": "Review 3617b68: PR #35 merged up to main 96b9649 (VFL-151 cross toolchain)",
+      "assignee": "Arbiter",
+      "project": "core-libraries"
+    },
+    "VFL-751": {
+      "status": "blocked",
+      "completedAt": null,
+      "title": "VFL-151 continuation: re-gate 3617b68 and land PR #35",
+      "assignee": "Jorge",
+      "project": "core-libraries"
+    },
+    "VFL-750": {
+      "status": "in_progress",
+      "completedAt": null,
+      "title": "Run the required tests on 3617b68: PR #35 merged up to main 96b9649 (VFL-151 cross toolchain)",
+      "assignee": "Test Runner",
+      "project": "core-libraries"
+    },
+    "VFL-747": {
+      "status": "done",
+      "completedAt": "2026-10-13T15:46:31.624Z",
+      "title": "Test Runner: fmt-check + just fuzz-check on 0df0650 (rebased PR #40) under the fuzz-cxx env (VFL-677)",
+      "assignee": "Test Runner",
+      "project": "core-libraries"
+    },
+    "VFL-745": {
+      "status": "done",
+      "completedAt": "2026-10-13T15:40:57.567Z",
+      "title": "Ruling: rebase PR #41 (VFL-539, `750c212`) onto main `96b9649` and force-push",
+      "assignee": "Cortana",
+      "project": "platform-foundation"
     }
   }
 }
