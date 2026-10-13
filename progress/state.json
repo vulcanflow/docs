@@ -1,5 +1,5 @@
 {
-  "lastRunAt": "2026-10-13T18:04:16Z",
+  "lastRunAt": "2026-10-13T18:55:00Z",
   "phases": {
     "p1_foundation": {
       "label": "1 Foundation",
@@ -676,7 +676,8 @@
         "VFL-760",
         "VFL-761",
         "VFL-762",
-        "VFL-763"
+        "VFL-763",
+        "VFL-765"
       ]
     }
   },
@@ -2642,8 +2643,8 @@
       "project": "operator-and-ingest"
     },
     "VFL-151": {
-      "status": "blocked",
-      "completedAt": null,
+      "status": "done",
+      "completedAt": "2026-10-13T18:13:31.118Z",
       "title": "just check-cross cannot run on the agent runners: the bootstrapped toolchain is host-only",
       "assignee": "Jorge",
       "project": "core-libraries"
@@ -3755,7 +3756,7 @@
       "project": "core-libraries"
     },
     "VFL-185": {
-      "status": "blocked",
+      "status": "in_progress",
       "completedAt": null,
       "title": "Bootstrap: verify cc before publishing a toolchain tree, gate --env-only on cargo, bound the lock wait",
       "assignee": "Jorge",
@@ -4791,8 +4792,8 @@
       "project": "core-libraries"
     },
     "VFL-751": {
-      "status": "in_progress",
-      "completedAt": null,
+      "status": "done",
+      "completedAt": "2026-10-13T18:13:23.334Z",
       "title": "VFL-151 continuation: re-gate 3617b68 and land PR #35",
       "assignee": "Jorge",
       "project": "core-libraries"
@@ -4864,6 +4865,13 @@
       "status": "done",
       "completedAt": "2026-10-13T17:54:31.806Z",
       "title": "Push approval: VFL-151 cross toolchain at 3617b68 (PR #35 brought up to main 96b9649)",
+      "assignee": "Cortana",
+      "project": "core-libraries"
+    },
+    "VFL-765": {
+      "status": "done",
+      "completedAt": "2026-10-13T18:12:34.374Z",
+      "title": "Merge PR #35: VFL-151 cross toolchain at `019ca1b`",
       "assignee": "Cortana",
       "project": "core-libraries"
     }
