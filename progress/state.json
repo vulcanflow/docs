@@ -1,5 +1,5 @@
 {
-  "lastRunAt": "2026-10-13T14:01:00Z",
+  "lastRunAt": "2026-10-13T14:34:42Z",
   "phases": {
     "p1_foundation": {
       "label": "1 Foundation",
@@ -652,7 +652,9 @@
         "VFL-723",
         "VFL-728",
         "VFL-729",
-        "VFL-731"
+        "VFL-731",
+        "VFL-733",
+        "VFL-734"
       ]
     }
   },
@@ -3108,7 +3110,7 @@
       "project": "platform-foundation"
     },
     "VFL-538": {
-      "status": "in_progress",
+      "status": "blocked",
       "completedAt": null,
       "title": "F2h: compile doctests in the gate \u2014 `test-doc` recipe, `test-unit` depends on it (VFL-536)",
       "assignee": "Jorge",
@@ -4673,6 +4675,20 @@
       "completedAt": "2026-10-13T14:00:37.077Z",
       "title": "Test Runner wake: run VFL-558 (F2h test-doc on a3aa436) in the foreground",
       "assignee": "Test Runner",
+      "project": "platform-foundation"
+    },
+    "VFL-733": {
+      "status": "done",
+      "completedAt": "2026-10-13T14:08:39.489Z",
+      "title": "Push approval: F2h `test-doc` recipe at `a3aa436` (VFL-538)",
+      "assignee": "Cortana",
+      "project": "platform-foundation"
+    },
+    "VFL-734": {
+      "status": "blocked",
+      "completedAt": null,
+      "title": "GATE: erosion check must see rustdoc fences demoted to ignore/text/no_run (Opus LOW-1 on VFL-538)",
+      "assignee": "Jorge",
       "project": "platform-foundation"
     }
   }
