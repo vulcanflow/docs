@@ -1,5 +1,5 @@
 {
-  "lastRunAt": "2026-10-14T00:35:16Z",
+  "lastRunAt": "2026-10-14T01:36:37Z",
   "phases": {
     "p1_foundation": {
       "label": "1 Foundation",
@@ -745,7 +745,11 @@
         "VFL-841",
         "VFL-842",
         "VFL-843",
-        "VFL-844"
+        "VFL-844",
+        "VFL-846",
+        "VFL-848",
+        "VFL-849",
+        "VFL-850"
       ]
     }
   },
@@ -2606,7 +2610,7 @@
       "project": "platform-foundation"
     },
     "VFL-489": {
-      "status": "blocked",
+      "status": "cancelled",
       "completedAt": null,
       "title": "Wire `ci/lane-gate.sh pins` into lane-gate.yml and the Tekton pipeline as a fifth job (VFL-485 Q1)",
       "assignee": "Jorge",
@@ -5217,7 +5221,7 @@
       "project": "platform-foundation"
     },
     "VFL-814": {
-      "status": "blocked",
+      "status": "in_progress",
       "completedAt": null,
       "title": "Lane gate: the gate-partition refusal lists the GATE files in the diff (VFL-787 LOW-6)",
       "assignee": "Jorge",
@@ -5350,8 +5354,8 @@
       "project": "core-libraries"
     },
     "VFL-835": {
-      "status": "todo",
-      "completedAt": null,
+      "status": "done",
+      "completedAt": "2026-10-14T01:09:59.841Z",
       "title": "Test Runner 4/4: VFL-185 r2 1fe613c, fault injection",
       "assignee": "Test Runner",
       "project": "core-libraries"
@@ -5385,8 +5389,8 @@
       "project": "platform-foundation"
     },
     "VFL-840": {
-      "status": "todo",
-      "completedAt": null,
+      "status": "done",
+      "completedAt": "2026-10-14T01:13:20.688Z",
       "title": "Test Runner: lane gate and lane-gate self-test on the PR #37 merge of main (c1c5abe, VFL-122)",
       "assignee": "Test Runner",
       "project": "platform-foundation"
@@ -5399,25 +5403,53 @@
       "project": "platform-foundation"
     },
     "VFL-842": {
-      "status": "todo",
-      "completedAt": null,
+      "status": "done",
+      "completedAt": "2026-10-14T00:48:17.891Z",
       "title": "Test Runner: lane-gate checks on VFL-814 candidate 19418b6 (GATE paths in the partition gate refusal)",
       "assignee": "Test Runner",
       "project": "platform-foundation"
     },
     "VFL-843": {
-      "status": "in_progress",
-      "completedAt": null,
+      "status": "done",
+      "completedAt": "2026-10-14T00:33:51.151Z",
       "title": "CodeRabbit review: VFL-814 GATE paths in the partition gate refusal (19418b6)",
       "assignee": "Arbiter",
       "project": "platform-foundation"
     },
     "VFL-844": {
-      "status": "todo",
-      "completedAt": null,
+      "status": "done",
+      "completedAt": "2026-10-14T00:51:26.036Z",
       "title": "Opus Reviewer: review VFL-814 GATE paths in the partition gate refusal (19418b6)",
       "assignee": "Opus Reviewer",
       "project": "platform-foundation"
+    },
+    "VFL-846": {
+      "status": "done",
+      "completedAt": "2026-10-14T00:57:05.060Z",
+      "title": "Push approval: VFL-814 GATE paths in the partition gate refusal at 19418b6",
+      "assignee": "Cortana",
+      "project": "platform-foundation"
+    },
+    "VFL-848": {
+      "status": "in_progress",
+      "completedAt": null,
+      "title": "Test Runner wake: finish VFL-834 (part 3 of the VFL-185 gate on 1fe613c)",
+      "assignee": "Test Runner",
+      "project": "core-libraries"
+    },
+    "VFL-849": {
+      "status": "in_progress",
+      "completedAt": null,
+      "title": "Opus Reviewer wake: finish VFL-839 (round 7 of PR #37, merge head c1c5abe)",
+      "assignee": "Opus Reviewer",
+      "project": "platform-foundation"
+    },
+    "VFL-850": {
+      "status": "done",
+      "completedAt": "2026-10-14T01:23:22.021Z",
+      "title": "Cortana wake: retry the PR #36 merge path (VFL-758) and pick VFL-837 or VFL-489",
+      "assignee": "Cortana",
+      "project": "core-libraries"
     }
   }
 }
