@@ -1,5 +1,5 @@
 {
-  "lastRunAt": "2026-10-14T11:37:32Z",
+  "lastRunAt": "2026-10-14T12:26:16Z",
   "phases": {
     "p1_foundation": {
       "label": "1 Foundation",
@@ -493,12 +493,12 @@
         "VFL-303",
         "VFL-305",
         "VFL-306",
-        "VFL-321",
-        "VFL-322",
-        "VFL-323",
         "VFL-318",
         "VFL-319",
         "VFL-320",
+        "VFL-321",
+        "VFL-322",
+        "VFL-323",
         "VFL-325",
         "VFL-326",
         "VFL-327",
@@ -507,28 +507,28 @@
         "VFL-330",
         "VFL-331",
         "VFL-332",
-        "VFL-339",
-        "VFL-340",
-        "VFL-337",
-        "VFL-341",
         "VFL-334",
         "VFL-335",
-        "VFL-345",
-        "VFL-344",
-        "VFL-343",
-        "VFL-342",
         "VFL-336",
+        "VFL-337",
+        "VFL-339",
+        "VFL-340",
+        "VFL-341",
+        "VFL-342",
+        "VFL-343",
+        "VFL-344",
+        "VFL-345",
+        "VFL-350",
         "VFL-351",
         "VFL-352",
-        "VFL-364",
         "VFL-353",
         "VFL-354",
-        "VFL-365",
-        "VFL-362",
-        "VFL-361",
-        "VFL-363",
         "VFL-360",
-        "VFL-350",
+        "VFL-361",
+        "VFL-362",
+        "VFL-363",
+        "VFL-364",
+        "VFL-365",
         "VFL-385",
         "VFL-390",
         "VFL-391",
@@ -540,11 +540,11 @@
         "VFL-399",
         "VFL-403",
         "VFL-405",
-        "VFL-419",
+        "VFL-413",
         "VFL-414",
         "VFL-416",
         "VFL-417",
-        "VFL-413",
+        "VFL-419",
         "VFL-432",
         "VFL-433",
         "VFL-437",
@@ -553,8 +553,8 @@
         "VFL-452",
         "VFL-454",
         "VFL-455",
-        "VFL-457",
         "VFL-456",
+        "VFL-457",
         "VFL-458",
         "VFL-459",
         "VFL-462",
@@ -578,16 +578,16 @@
         "VFL-489",
         "VFL-490",
         "VFL-492",
-        "VFL-497",
         "VFL-494",
+        "VFL-497",
         "VFL-524",
+        "VFL-527",
         "VFL-534",
         "VFL-537",
         "VFL-539",
         "VFL-540",
         "VFL-541",
         "VFL-542",
-        "VFL-527",
         "VFL-544",
         "VFL-552",
         "VFL-559",
@@ -597,14 +597,14 @@
         "VFL-573",
         "VFL-577",
         "VFL-578",
-        "VFL-588",
-        "VFL-590",
-        "VFL-583",
         "VFL-582",
-        "VFL-585",
+        "VFL-583",
         "VFL-584",
-        "VFL-592",
+        "VFL-585",
+        "VFL-588",
         "VFL-589",
+        "VFL-590",
+        "VFL-592",
         "VFL-597",
         "VFL-598",
         "VFL-599",
@@ -637,9 +637,9 @@
         "VFL-670",
         "VFL-674",
         "VFL-678",
-        "VFL-692",
         "VFL-681",
         "VFL-682",
+        "VFL-692",
         "VFL-695",
         "VFL-696",
         "VFL-697",
@@ -676,10 +676,10 @@
         "VFL-757",
         "VFL-760",
         "VFL-761",
-        "VFL-770",
         "VFL-762",
         "VFL-763",
         "VFL-765",
+        "VFL-770",
         "VFL-772",
         "VFL-773",
         "VFL-774",
@@ -697,6 +697,7 @@
         "VFL-787",
         "VFL-788",
         "VFL-789",
+        "VFL-790",
         "VFL-792",
         "VFL-793",
         "VFL-795",
@@ -738,7 +739,6 @@
         "VFL-835",
         "VFL-836",
         "VFL-837",
-        "VFL-790",
         "VFL-838",
         "VFL-839",
         "VFL-840",
@@ -792,12 +792,12 @@
         "VFL-903",
         "VFL-904",
         "VFL-905",
-        "VFL-908",
-        "VFL-911",
-        "VFL-912",
         "VFL-907",
+        "VFL-908",
         "VFL-909",
         "VFL-910",
+        "VFL-911",
+        "VFL-912",
         "VFL-914",
         "VFL-915",
         "VFL-916",
@@ -849,7 +849,12 @@
         "VFL-965",
         "VFL-966",
         "VFL-967",
-        "VFL-969"
+        "VFL-969",
+        "VFL-970",
+        "VFL-972",
+        "VFL-973",
+        "VFL-974",
+        "VFL-975"
       ]
     }
   },
@@ -4691,7 +4696,7 @@
       "project": "platform-foundation"
     },
     "VFL-696": {
-      "status": "blocked",
+      "status": "in_progress",
       "completedAt": null,
       "title": "CI: lane-gate erosion counts the base at the merge-base, not the fetched main tip (false red on stale merge ref)",
       "assignee": "Jorge",
@@ -5097,7 +5102,7 @@
       "project": "platform-foundation"
     },
     "VFL-777": {
-      "status": "blocked",
+      "status": "in_progress",
       "completedAt": null,
       "title": "CI on Tekton (3c/4): webhook starts vf-lane-gate and vf-rust-check for same-repo pull requests",
       "assignee": "Jorge",
@@ -5468,7 +5473,7 @@
       "project": "platform-foundation"
     },
     "VFL-837": {
-      "status": "blocked",
+      "status": "in_review",
       "completedAt": null,
       "title": "CI: wire ci/lane-gate.sh pins as the uses-pins check in lane-gate.yml and the Tekton lane-gate pipeline (VFL-827)",
       "assignee": "Jorge",
@@ -5800,8 +5805,8 @@
       "status": "blocked",
       "completedAt": null,
       "title": "Bootstrap text residuals: --env-only shim advice, header/README failure mode, wait-message value, usage header (VFL-858 F1)",
-      "assignee": "912014ba-380a-46cd-baa6-306e9343a2c2",
-      "project": "1e4d751c-3ada-47c7-aabe-e8cb40bc897e"
+      "assignee": "Jorge",
+      "project": "core-libraries"
     },
     "VFL-900": {
       "status": "done",
@@ -5839,8 +5844,8 @@
       "project": "platform-foundation"
     },
     "VFL-905": {
-      "status": "blocked",
-      "completedAt": null,
+      "status": "done",
+      "completedAt": "2026-10-14T11:43:23.488Z",
       "title": "Lane gate self-tests: fix residual LOW-1..LOW-3 from VFL-888 (install_git_stub printf, exact lane counts, stub guard)",
       "assignee": "Halsey",
       "project": "platform-foundation"
@@ -5867,11 +5872,11 @@
       "project": "platform-foundation"
     },
     "VFL-909": {
-      "status": "blocked",
+      "status": "in_review",
       "completedAt": null,
       "title": "Toolchain provenance guard: cargo recipes refuse a cargo that is not the pinned toolchain",
-      "assignee": "912014ba-380a-46cd-baa6-306e9343a2c2",
-      "project": "1e4d751c-3ada-47c7-aabe-e8cb40bc897e"
+      "assignee": "Jorge",
+      "project": "core-libraries"
     },
     "VFL-910": {
       "status": "done",
@@ -6112,8 +6117,8 @@
       "project": "platform-foundation"
     },
     "VFL-948": {
-      "status": "in_progress",
-      "completedAt": null,
+      "status": "done",
+      "completedAt": "2026-10-14T11:42:01.676Z",
       "title": "CodeRabbit review: VFL-777 Tekton PR trigger and egress policy (434f4fa)",
       "assignee": "Arbiter",
       "project": "platform-foundation"
@@ -6161,11 +6166,11 @@
       "project": "platform-foundation"
     },
     "VFL-955": {
-      "status": "in_progress",
-      "completedAt": null,
+      "status": "done",
+      "completedAt": "2026-10-14T11:46:47.567Z",
       "title": "Opus Reviewer review: uses-pins check on both executors (5d684ce, VFL-837)",
-      "assignee": "938921ab-9ab9-469b-85ac-976d8cabad96",
-      "project": "91740a68-0dd1-47b4-935f-9ab08f4c5669"
+      "assignee": "Opus Reviewer",
+      "project": "platform-foundation"
     },
     "VFL-956": {
       "status": "done",
@@ -6182,11 +6187,11 @@
       "project": "91740a68-0dd1-47b4-935f-9ab08f4c5669"
     },
     "VFL-958": {
-      "status": "in_progress",
-      "completedAt": null,
+      "status": "done",
+      "completedAt": "2026-10-14T12:24:59.394Z",
       "title": "Opus Reviewer: VFL-696 erosion merge-base round 2 `8039e35` (rebased on main)",
-      "assignee": "938921ab-9ab9-469b-85ac-976d8cabad96",
-      "project": "91740a68-0dd1-47b4-935f-9ab08f4c5669"
+      "assignee": "Opus Reviewer",
+      "project": "platform-foundation"
     },
     "VFL-959": {
       "status": "done",
@@ -6203,11 +6208,11 @@
       "project": "1e4d751c-3ada-47c7-aabe-e8cb40bc897e"
     },
     "VFL-962": {
-      "status": "in_progress",
-      "completedAt": null,
+      "status": "done",
+      "completedAt": "2026-10-14T12:13:48.901Z",
       "title": "Push approval: VFL-899 bootstrap text residuals at 74f19d9 (merge 392e8cb with main 2d8cf74)",
-      "assignee": "a9be75cd-d767-4c44-b49c-2017c61f751f",
-      "project": "1e4d751c-3ada-47c7-aabe-e8cb40bc897e"
+      "assignee": "Cortana",
+      "project": "core-libraries"
     },
     "VFL-963": {
       "status": "blocked",
@@ -6217,11 +6222,11 @@
       "project": "1e4d751c-3ada-47c7-aabe-e8cb40bc897e"
     },
     "VFL-964": {
-      "status": "in_progress",
-      "completedAt": null,
+      "status": "done",
+      "completedAt": "2026-10-14T12:12:16.451Z",
       "title": "Test Writer: lane-gate fixtures for the bounded pins check on 24662ad (VFL-490 AC3)",
-      "assignee": "6029b86f-ff5b-492b-9f97-ed31363be784",
-      "project": "91740a68-0dd1-47b4-935f-9ab08f4c5669"
+      "assignee": "Halsey",
+      "project": "platform-foundation"
     },
     "VFL-965": {
       "status": "done",
@@ -6231,11 +6236,11 @@
       "project": "91740a68-0dd1-47b4-935f-9ab08f4c5669"
     },
     "VFL-966": {
-      "status": "todo",
+      "status": "in_progress",
       "completedAt": null,
       "title": "Opus Reviewer: review VFL-902 qemu check covers every x86_64 test binary (0a303f1)",
-      "assignee": "938921ab-9ab9-469b-85ac-976d8cabad96",
-      "project": "91740a68-0dd1-47b4-935f-9ab08f4c5669"
+      "assignee": "Opus Reviewer",
+      "project": "platform-foundation"
     },
     "VFL-967": {
       "status": "done",
@@ -6245,11 +6250,46 @@
       "project": "91740a68-0dd1-47b4-935f-9ab08f4c5669"
     },
     "VFL-969": {
+      "status": "done",
+      "completedAt": "2026-10-14T11:41:43.204Z",
+      "title": "Push approval: VFL-905 LOW fixes, merge-updated head (001628d)",
+      "assignee": "Cortana",
+      "project": "platform-foundation"
+    },
+    "VFL-972": {
+      "status": "done",
+      "completedAt": "2026-10-14T12:16:38.541Z",
+      "title": "Cortana wake: answer push card 0d78e931 on VFL-837 (push 5d684ce, open PR)",
+      "assignee": "Cortana",
+      "project": "platform-foundation"
+    },
+    "VFL-973": {
+      "status": "done",
+      "completedAt": "2026-10-14T12:23:49.628Z",
+      "title": "VFL-777 (3c) ruling: CodeRabbit VFL-948 finding 2, cancelling a pull request's superseded runs",
+      "assignee": "Cortana",
+      "project": "platform-foundation"
+    },
+    "VFL-974": {
+      "status": "blocked",
+      "completedAt": null,
+      "title": "CI on Tekton (3c.1/4): cancel a pull request's superseded runs on synchronize (VFL-948 finding 2)",
+      "assignee": "Jorge",
+      "project": "platform-foundation"
+    },
+    "VFL-975": {
       "status": "in_progress",
       "completedAt": null,
-      "title": "Push approval: VFL-905 LOW fixes, merge-updated head (001628d)",
-      "assignee": "a9be75cd-d767-4c44-b49c-2017c61f751f",
-      "project": "91740a68-0dd1-47b4-935f-9ab08f4c5669"
+      "title": "Merge PR #59: VFL-899 bootstrap text residuals at `64035e8`",
+      "assignee": "Cortana",
+      "project": "core-libraries"
+    },
+    "VFL-970": {
+      "status": "backlog",
+      "completedAt": null,
+      "title": "Bootstrap text residuals F2: ready-line probe wording, zero-wait message (VFL-899 R1-R4)",
+      "assignee": "Jorge",
+      "project": "core-libraries"
     }
   }
 }
