@@ -1,5 +1,5 @@
 {
-  "lastRunAt": "2026-10-14T17:15:00Z",
+  "lastRunAt": "2026-10-14T17:39:16Z",
   "phases": {
     "p1_foundation": {
       "label": "1 Foundation",
@@ -898,7 +898,14 @@
         "VFL-1022",
         "VFL-1023",
         "VFL-1025",
-        "VFL-1026"
+        "VFL-1026",
+        "VFL-1027",
+        "VFL-1028",
+        "VFL-1029",
+        "VFL-1030",
+        "VFL-1031",
+        "VFL-1032",
+        "VFL-1034"
       ]
     }
   },
@@ -3459,7 +3466,7 @@
       "project": "platform-foundation"
     },
     "VFL-490": {
-      "status": "blocked",
+      "status": "in_progress",
       "completedAt": null,
       "title": "Bound the `pins` refusal list: accept the canonical `uses:` form only (VFL-485 Q3)",
       "assignee": "Jorge",
@@ -5146,14 +5153,14 @@
       "project": "platform-foundation"
     },
     "VFL-777": {
-      "status": "in_progress",
-      "completedAt": null,
+      "status": "done",
+      "completedAt": "2026-10-14T17:26:28.373Z",
       "title": "CI on Tekton (3c/4): webhook starts vf-lane-gate and vf-rust-check for same-repo pull requests",
       "assignee": "Jorge",
       "project": "platform-foundation"
     },
     "VFL-778": {
-      "status": "blocked",
+      "status": "in_progress",
       "completedAt": null,
       "title": "CI on Tekton (3d/4): report the check results as commit statuses on the PR head",
       "assignee": "Jorge",
@@ -5517,7 +5524,7 @@
       "project": "platform-foundation"
     },
     "VFL-837": {
-      "status": "in_review",
+      "status": "in_progress",
       "completedAt": null,
       "title": "CI: wire ci/lane-gate.sh pins as the uses-pins check in lane-gate.yml and the Tekton lane-gate pipeline (VFL-827)",
       "assignee": "Jorge",
@@ -6315,7 +6322,7 @@
       "project": "platform-foundation"
     },
     "VFL-974": {
-      "status": "blocked",
+      "status": "in_progress",
       "completedAt": null,
       "title": "CI on Tekton (3c.1/4): cancel a pull request's superseded runs on synchronize (VFL-948 finding 2)",
       "assignee": "Jorge",
@@ -6447,8 +6454,9 @@
       "project": "core-libraries"
     },
     "VFL-992": {
-      "status": "blocked",
-      "title": "VFL-902 follow-up: skip proc-macro test artifacts (LOW-C) and non-JSON stdout (LOW-D)",
+      "status": "in_progress",
+      "completedAt": null,
+      "title": "VFL-902 follow-up: skip proc-macro test artifacts (LOW-C) and non-JSON stdout lines (LOW-D) in the qemu coverage filter",
       "assignee": "Jorge",
       "project": "platform-foundation"
     },
@@ -6530,8 +6538,8 @@
       "project": "platform-foundation"
     },
     "VFL-1002": {
-      "status": "blocked",
-      "completedAt": null,
+      "status": "done",
+      "completedAt": "2026-10-14T17:18:51.010Z",
       "title": "Ruling: rust-check red on every PR from RUSTSEC-2026-0346..0349 (rustls 0.23.45): authorize Cargo.lock bump; PR #62 merge path",
       "assignee": "Cortana",
       "project": "platform-foundation"
@@ -6551,8 +6559,8 @@
       "project": "platform-foundation"
     },
     "VFL-1009": {
-      "status": "in_progress",
-      "completedAt": null,
+      "status": "done",
+      "completedAt": "2026-10-14T17:16:24.606Z",
       "title": "deps: bump rustls 0.23.45 -> 0.23.46 in Cargo.lock (RUSTSEC-2026-0346..0349)",
       "assignee": "Jorge",
       "project": "platform-foundation"
@@ -6600,22 +6608,22 @@
       "project": "platform-foundation"
     },
     "VFL-1026": {
-      "status": "in_progress",
-      "completedAt": null,
+      "status": "done",
+      "completedAt": "2026-10-14T17:14:05.072Z",
       "title": "Merge PR #64 (VFL-1009) at `0657f78`",
       "assignee": "Cortana",
       "project": "platform-foundation"
     },
     "VFL-1023": {
-      "status": "in_progress",
-      "completedAt": null,
+      "status": "done",
+      "completedAt": "2026-10-14T17:14:16.302Z",
       "title": "Cortana wake: answer ruling card e0d5b2f7 on VFL-837 (round 3 merge-update)",
       "assignee": "Cortana",
       "project": "platform-foundation"
     },
     "VFL-1025": {
-      "status": "in_progress",
-      "completedAt": null,
+      "status": "done",
+      "completedAt": "2026-10-14T17:13:25.369Z",
       "title": "Push approval: VFL-992 qemu filter LOW-C/LOW-D and dry-run --no-deps at 605d90c",
       "assignee": "Cortana",
       "project": "platform-foundation"
@@ -6638,6 +6646,55 @@
       "status": "done",
       "completedAt": "2026-10-14T15:45:56.804Z",
       "title": "Push approval: VFL-777 Tekton PR trigger and egress policy at 550940f",
+      "assignee": "Cortana",
+      "project": "platform-foundation"
+    },
+    "VFL-1027": {
+      "status": "done",
+      "completedAt": "2026-10-14T17:31:49.910Z",
+      "title": "CodeRabbit review: uses-pins check, round 3 merge candidate (5853434, VFL-837)",
+      "assignee": "Arbiter",
+      "project": "platform-foundation"
+    },
+    "VFL-1028": {
+      "status": "done",
+      "completedAt": "2026-10-14T17:24:49.675Z",
+      "title": "Opus Reviewer review: uses-pins check, round 3 merge candidate (5853434, VFL-837)",
+      "assignee": "Opus Reviewer",
+      "project": "platform-foundation"
+    },
+    "VFL-1029": {
+      "status": "done",
+      "completedAt": "2026-10-14T17:30:14.936Z",
+      "title": "Test Runner: lane gate, self-test and YAML parse, uses-pins round 3 merge candidate (5853434, VFL-837)",
+      "assignee": "Test Runner",
+      "project": "platform-foundation"
+    },
+    "VFL-1030": {
+      "status": "done",
+      "completedAt": "2026-10-14T17:24:46.950Z",
+      "title": "Merge PR #65 (VFL-777) at `d93059e`",
+      "assignee": "Cortana",
+      "project": "platform-foundation"
+    },
+    "VFL-1031": {
+      "status": "done",
+      "completedAt": "2026-10-14T17:29:40.756Z",
+      "title": "Decision: PR #62 (VFL-696) is BEHIND; base move #65 touches guarded lane-gate paths",
+      "assignee": "Cortana",
+      "project": "platform-foundation"
+    },
+    "VFL-1032": {
+      "status": "done",
+      "completedAt": "2026-10-14T17:33:32.532Z",
+      "title": "Cortana wake: answer merge card 721c8967 on VFL-490 and merge PR #63 at 54ca9fc",
+      "assignee": "Cortana",
+      "project": "platform-foundation"
+    },
+    "VFL-1034": {
+      "status": "in_progress",
+      "completedAt": null,
+      "title": "Merge PR #62 (VFL-696) at `aae8da7`",
       "assignee": "Cortana",
       "project": "platform-foundation"
     }
