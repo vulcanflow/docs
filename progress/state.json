@@ -1,5 +1,5 @@
 {
-  "lastRunAt": "2026-10-14T13:40:16Z",
+  "lastRunAt": "2026-10-14T14:07:28Z",
   "phases": {
     "p1_foundation": {
       "label": "1 Foundation",
@@ -886,7 +886,12 @@
         "VFL-1002",
         "VFL-1001",
         "VFL-1008",
-        "VFL-1009"
+        "VFL-1009",
+        "VFL-1010",
+        "VFL-1011",
+        "VFL-1012",
+        "VFL-1013",
+        "VFL-1014"
       ]
     }
   },
@@ -5827,8 +5832,8 @@
       "project": "platform-foundation"
     },
     "VFL-898": {
-      "status": "in_progress",
-      "completedAt": null,
+      "status": "done",
+      "completedAt": "2026-10-14T13:52:48.806Z",
       "title": "Board watch (continuation 10): find stuck tasks and nudge owners",
       "assignee": "MasterChief",
       "project": "core-libraries"
@@ -6503,8 +6508,8 @@
       "project": "platform-foundation"
     },
     "VFL-1007": {
-      "status": "in_progress",
-      "completedAt": null,
+      "status": "done",
+      "completedAt": "2026-10-14T13:36:25.494Z",
       "title": "CodeRabbit review: VFL-992 qemu filter LOW-C/LOW-D and dry-run --no-deps (605d90c)",
       "assignee": "Arbiter",
       "project": "platform-foundation"
@@ -6531,17 +6536,52 @@
       "project": "platform-foundation"
     },
     "VFL-1008": {
-      "status": "in_progress",
-      "completedAt": null,
+      "status": "done",
+      "completedAt": "2026-10-14T13:36:34.485Z",
       "title": "Test Runner: lane gate, manifest, LOCK and just dry-run checks on VFL-992 candidate 605d90c",
       "assignee": "Test Runner",
       "project": "platform-foundation"
     },
     "VFL-1009": {
-      "status": "in_review",
+      "status": "blocked",
       "completedAt": null,
       "title": "deps: bump rustls 0.23.45 -> 0.23.46 in Cargo.lock (RUSTSEC-2026-0346..0349)",
       "assignee": "Jorge",
+      "project": "platform-foundation"
+    },
+    "VFL-1010": {
+      "status": "done",
+      "completedAt": "2026-10-14T13:53:11.063Z",
+      "title": "Cortana wake: answer confirmation card 0e5211a0 on VFL-1009 (widen scope to the Cargo.toml rustls pin)",
+      "assignee": "Cortana",
+      "project": "platform-foundation"
+    },
+    "VFL-1011": {
+      "status": "in_progress",
+      "completedAt": null,
+      "title": "Board watch (continuation 11): find stuck tasks and nudge owners",
+      "assignee": "MasterChief",
+      "project": "platform-foundation"
+    },
+    "VFL-1012": {
+      "status": "in_progress",
+      "completedAt": null,
+      "title": "CodeRabbit review: VFL-1009 rustls 0.23.46 pin bump candidate 0657f78",
+      "assignee": "Arbiter",
+      "project": "platform-foundation"
+    },
+    "VFL-1013": {
+      "status": "todo",
+      "completedAt": null,
+      "title": "Opus Reviewer: review VFL-1009 rustls 0.23.46 pin bump candidate 0657f78",
+      "assignee": "Opus Reviewer",
+      "project": "platform-foundation"
+    },
+    "VFL-1014": {
+      "status": "in_progress",
+      "completedAt": null,
+      "title": "Test Runner: just check + just test-unit on VFL-1009 candidate 0657f78",
+      "assignee": "Test Runner",
       "project": "platform-foundation"
     }
   }
