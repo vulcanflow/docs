@@ -1,5 +1,5 @@
 {
-  "lastRunAt": "2026-10-14T11:11:04Z",
+  "lastRunAt": "2026-10-14T11:37:32Z",
   "phases": {
     "p1_foundation": {
       "label": "1 Foundation",
@@ -841,7 +841,15 @@
         "VFL-956",
         "VFL-957",
         "VFL-958",
-        "VFL-959"
+        "VFL-959",
+        "VFL-961",
+        "VFL-962",
+        "VFL-963",
+        "VFL-964",
+        "VFL-965",
+        "VFL-966",
+        "VFL-967",
+        "VFL-969"
       ]
     }
   },
@@ -5789,11 +5797,11 @@
       "project": "core-libraries"
     },
     "VFL-899": {
-      "status": "in_progress",
+      "status": "blocked",
       "completedAt": null,
       "title": "Bootstrap text residuals: --env-only shim advice, header/README failure mode, wait-message value, usage header (VFL-858 F1)",
-      "assignee": "Jorge",
-      "project": "core-libraries"
+      "assignee": "912014ba-380a-46cd-baa6-306e9343a2c2",
+      "project": "1e4d751c-3ada-47c7-aabe-e8cb40bc897e"
     },
     "VFL-900": {
       "status": "done",
@@ -5810,11 +5818,11 @@
       "project": "core-libraries"
     },
     "VFL-902": {
-      "status": "in_progress",
+      "status": "blocked",
       "completedAt": null,
       "title": "VFL-716 follow-up: qemu check covers every x86_64 test binary (LOW-A), reflow 101-col header line (LOW-B)",
-      "assignee": "Jorge",
-      "project": "platform-foundation"
+      "assignee": "912014ba-380a-46cd-baa6-306e9343a2c2",
+      "project": "91740a68-0dd1-47b4-935f-9ab08f4c5669"
     },
     "VFL-903": {
       "status": "done",
@@ -5859,11 +5867,11 @@
       "project": "platform-foundation"
     },
     "VFL-909": {
-      "status": "in_progress",
+      "status": "blocked",
       "completedAt": null,
       "title": "Toolchain provenance guard: cargo recipes refuse a cargo that is not the pinned toolchain",
-      "assignee": "Jorge",
-      "project": "core-libraries"
+      "assignee": "912014ba-380a-46cd-baa6-306e9343a2c2",
+      "project": "1e4d751c-3ada-47c7-aabe-e8cb40bc897e"
     },
     "VFL-910": {
       "status": "done",
@@ -6125,18 +6133,18 @@
       "project": "platform-foundation"
     },
     "VFL-951": {
-      "status": "in_progress",
-      "completedAt": null,
+      "status": "done",
+      "completedAt": "2026-10-14T11:16:56.986Z",
       "title": "Opus Reviewer: review VFL-905 lane-gate self-test LOW fixes, merge-updated (001628d)",
-      "assignee": "Opus Reviewer",
-      "project": "platform-foundation"
+      "assignee": "938921ab-9ab9-469b-85ac-976d8cabad96",
+      "project": "91740a68-0dd1-47b4-935f-9ab08f4c5669"
     },
     "VFL-952": {
-      "status": "blocked",
-      "completedAt": null,
+      "status": "done",
+      "completedAt": "2026-10-14T11:29:42.568Z",
       "title": "Test Runner: lane-gate self-test run + mutation check, merge-updated (001628d)",
-      "assignee": "Test Runner",
-      "project": "platform-foundation"
+      "assignee": "d0a26468-a577-4f16-a29c-de0b53af3983",
+      "project": "91740a68-0dd1-47b4-935f-9ab08f4c5669"
     },
     "VFL-953": {
       "status": "done",
@@ -6153,11 +6161,11 @@
       "project": "platform-foundation"
     },
     "VFL-955": {
-      "status": "todo",
+      "status": "in_progress",
       "completedAt": null,
       "title": "Opus Reviewer review: uses-pins check on both executors (5d684ce, VFL-837)",
-      "assignee": "Opus Reviewer",
-      "project": "platform-foundation"
+      "assignee": "938921ab-9ab9-469b-85ac-976d8cabad96",
+      "project": "91740a68-0dd1-47b4-935f-9ab08f4c5669"
     },
     "VFL-956": {
       "status": "done",
@@ -6167,25 +6175,81 @@
       "project": "platform-foundation"
     },
     "VFL-957": {
-      "status": "in_progress",
-      "completedAt": null,
+      "status": "done",
+      "completedAt": "2026-10-14T11:05:15.391Z",
       "title": "CodeRabbit review: VFL-696 erosion merge-base round 2 `8039e35` (rebased on main)",
-      "assignee": "Arbiter",
-      "project": "platform-foundation"
+      "assignee": "13034933-9579-4b3c-add9-b9426144d934",
+      "project": "91740a68-0dd1-47b4-935f-9ab08f4c5669"
     },
     "VFL-958": {
-      "status": "todo",
-      "completedAt": null,
-      "title": "Opus Reviewer: VFL-696 erosion merge-base round 2 `8039e35` (rebased on main)",
-      "assignee": "Opus Reviewer",
-      "project": "platform-foundation"
-    },
-    "VFL-959": {
       "status": "in_progress",
       "completedAt": null,
+      "title": "Opus Reviewer: VFL-696 erosion merge-base round 2 `8039e35` (rebased on main)",
+      "assignee": "938921ab-9ab9-469b-85ac-976d8cabad96",
+      "project": "91740a68-0dd1-47b4-935f-9ab08f4c5669"
+    },
+    "VFL-959": {
+      "status": "done",
+      "completedAt": "2026-10-14T11:04:17.123Z",
       "title": "Test Runner: VFL-696 erosion merge-base round 2 `8039e35`",
-      "assignee": "Test Runner",
-      "project": "platform-foundation"
+      "assignee": "d0a26468-a577-4f16-a29c-de0b53af3983",
+      "project": "91740a68-0dd1-47b4-935f-9ab08f4c5669"
+    },
+    "VFL-961": {
+      "status": "done",
+      "completedAt": "2026-10-14T11:29:20.673Z",
+      "title": "Push approval: VFL-909 toolchain provenance guard at 6799f7f (merge 628a5e1 with main 2d8cf74)",
+      "assignee": "a9be75cd-d767-4c44-b49c-2017c61f751f",
+      "project": "1e4d751c-3ada-47c7-aabe-e8cb40bc897e"
+    },
+    "VFL-962": {
+      "status": "in_progress",
+      "completedAt": null,
+      "title": "Push approval: VFL-899 bootstrap text residuals at 74f19d9 (merge 392e8cb with main 2d8cf74)",
+      "assignee": "a9be75cd-d767-4c44-b49c-2017c61f751f",
+      "project": "1e4d751c-3ada-47c7-aabe-e8cb40bc897e"
+    },
+    "VFL-963": {
+      "status": "blocked",
+      "completedAt": null,
+      "title": "test: committed self-test harness for ci/toolchain-provenance.sh (VFL-909 R4)",
+      "assignee": "6029b86f-ff5b-492b-9f97-ed31363be784",
+      "project": "1e4d751c-3ada-47c7-aabe-e8cb40bc897e"
+    },
+    "VFL-964": {
+      "status": "in_progress",
+      "completedAt": null,
+      "title": "Test Writer: lane-gate fixtures for the bounded pins check on 24662ad (VFL-490 AC3)",
+      "assignee": "6029b86f-ff5b-492b-9f97-ed31363be784",
+      "project": "91740a68-0dd1-47b4-935f-9ab08f4c5669"
+    },
+    "VFL-965": {
+      "status": "done",
+      "completedAt": "2026-10-14T11:34:06.171Z",
+      "title": "CodeRabbit review: VFL-902 qemu check covers every x86_64 test binary (0a303f1)",
+      "assignee": "13034933-9579-4b3c-add9-b9426144d934",
+      "project": "91740a68-0dd1-47b4-935f-9ab08f4c5669"
+    },
+    "VFL-966": {
+      "status": "todo",
+      "completedAt": null,
+      "title": "Opus Reviewer: review VFL-902 qemu check covers every x86_64 test binary (0a303f1)",
+      "assignee": "938921ab-9ab9-469b-85ac-976d8cabad96",
+      "project": "91740a68-0dd1-47b4-935f-9ab08f4c5669"
+    },
+    "VFL-967": {
+      "status": "done",
+      "completedAt": "2026-10-14T11:33:42.604Z",
+      "title": "Test Runner: lane gate, manifest and LOCK checks on VFL-902 candidate 0a303f1",
+      "assignee": "d0a26468-a577-4f16-a29c-de0b53af3983",
+      "project": "91740a68-0dd1-47b4-935f-9ab08f4c5669"
+    },
+    "VFL-969": {
+      "status": "in_progress",
+      "completedAt": null,
+      "title": "Push approval: VFL-905 LOW fixes, merge-updated head (001628d)",
+      "assignee": "a9be75cd-d767-4c44-b49c-2017c61f751f",
+      "project": "91740a68-0dd1-47b4-935f-9ab08f4c5669"
     }
   }
 }
