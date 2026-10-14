@@ -1,5 +1,5 @@
 {
-  "lastRunAt": "2026-10-14T22:35:22Z",
+  "lastRunAt": "2026-10-14T23:09:23Z",
   "phases": {
     "p1_foundation": {
       "label": "1 Foundation",
@@ -978,7 +978,15 @@
         "VFL-1110",
         "VFL-1111",
         "VFL-1112",
-        "VFL-1113"
+        "VFL-1113",
+        "VFL-1115",
+        "VFL-1116",
+        "VFL-1117",
+        "VFL-1118",
+        "VFL-1119",
+        "VFL-1120",
+        "VFL-1121",
+        "VFL-1122"
       ]
     }
   },
@@ -6962,8 +6970,8 @@
       "project": "platform-foundation"
     },
     "VFL-1063": {
-      "status": "blocked",
-      "completedAt": null,
+      "status": "done",
+      "completedAt": "2026-10-14T22:46:45.651Z",
       "title": "CI: prose-only cleanup of stale pre-VFL-696 base-tip text (Opus LOW-1..4 from VFL-1038)",
       "assignee": "Jorge",
       "project": "platform-foundation"
@@ -7277,10 +7285,66 @@
       "project": "platform-foundation"
     },
     "VFL-1113": {
-      "status": "in_progress",
-      "completedAt": null,
+      "status": "done",
+      "completedAt": "2026-10-14T22:35:31.389Z",
       "title": "Ruling: VFL-1063 base-move predicate item 4 vs .tekton/triggers/kustomization.yaml (M = 8891dcf)",
       "assignee": "Cortana",
+      "project": "platform-foundation"
+    },
+    "VFL-1115": {
+      "status": "done",
+      "completedAt": "2026-10-14T22:43:07.921Z",
+      "title": "Cortana wake: cards on VFL-1066 (7d99f870), VFL-734 (f8b75e33) and VFL-1065 (ba71c5ad)",
+      "assignee": "Cortana",
+      "project": "platform-foundation"
+    },
+    "VFL-1116": {
+      "status": "done",
+      "completedAt": "2026-10-14T22:43:48.336Z",
+      "title": "Merge PR #70 (VFL-1063) at `8891dcf`",
+      "assignee": "Cortana",
+      "project": "platform-foundation"
+    },
+    "VFL-1117": {
+      "status": "in_progress",
+      "completedAt": null,
+      "title": "Merge PR #69 (6a957de) for VFL-734 once a GitHub identity is available",
+      "assignee": "Cortana",
+      "project": "platform-foundation"
+    },
+    "VFL-1118": {
+      "status": "done",
+      "completedAt": "2026-10-14T22:55:50.026Z",
+      "title": "Cortana wake: card bf2dd2b8 on VFL-1065 (round 8 route after main moved to f5be9d7)",
+      "assignee": "Cortana",
+      "project": "platform-foundation"
+    },
+    "VFL-1119": {
+      "status": "in_progress",
+      "completedAt": null,
+      "title": "Merge PR #63 (VFL-490) at `aa86228`: BEHIND `f5be9d7`, needs a ruling first",
+      "assignee": "Cortana",
+      "project": "platform-foundation"
+    },
+    "VFL-1120": {
+      "status": "in_progress",
+      "completedAt": null,
+      "title": "CodeRabbit review: uses-pins check, M5 candidate (b4f9b78, VFL-837)",
+      "assignee": "Arbiter",
+      "project": "platform-foundation"
+    },
+    "VFL-1121": {
+      "status": "in_progress",
+      "completedAt": null,
+      "title": "Opus Reviewer review: uses-pins check, M5 candidate (b4f9b78, VFL-837)",
+      "assignee": "Opus Reviewer",
+      "project": "platform-foundation"
+    },
+    "VFL-1122": {
+      "status": "done",
+      "completedAt": "2026-10-14T23:03:19.580Z",
+      "title": "Test Runner: lane gate, self-test and YAML parse, uses-pins M5 candidate (b4f9b78, VFL-837)",
+      "assignee": "Test Runner",
       "project": "platform-foundation"
     }
   },
