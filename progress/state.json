@@ -1,5 +1,5 @@
 {
-  "lastRunAt": "2026-10-14T01:36:37Z",
+  "lastRunAt": "2026-10-14T02:04:19Z",
   "phases": {
     "p1_foundation": {
       "label": "1 Foundation",
@@ -749,7 +749,9 @@
         "VFL-846",
         "VFL-848",
         "VFL-849",
-        "VFL-850"
+        "VFL-850",
+        "VFL-852",
+        "VFL-853"
       ]
     }
   },
@@ -5221,10 +5223,10 @@
       "project": "platform-foundation"
     },
     "VFL-814": {
-      "status": "in_progress",
-      "completedAt": null,
+      "status": "done",
+      "completedAt": "2026-10-14T01:45:50.168Z",
       "title": "Lane gate: the gate-partition refusal lists the GATE files in the diff (VFL-787 LOW-6)",
-      "assignee": "Jorge",
+      "assignee": "Cortana",
       "project": "platform-foundation"
     },
     "VFL-815": {
@@ -5347,8 +5349,8 @@
       "project": "core-libraries"
     },
     "VFL-834": {
-      "status": "in_progress",
-      "completedAt": null,
+      "status": "done",
+      "completedAt": "2026-10-14T01:51:11.690Z",
       "title": "Test Runner 3/4: VFL-185 r2 1fe613c, just check, wasm and check-cross",
       "assignee": "Test Runner",
       "project": "core-libraries"
@@ -5361,7 +5363,7 @@
       "project": "core-libraries"
     },
     "VFL-836": {
-      "status": "blocked",
+      "status": "in_progress",
       "completedAt": null,
       "title": "Lane gate: changed_files parses -z NUL-delimited paths so quoted paths keep their lane (VFL-819 LOW-1, LOW-2)",
       "assignee": "Jorge",
@@ -5431,8 +5433,8 @@
       "project": "platform-foundation"
     },
     "VFL-848": {
-      "status": "in_progress",
-      "completedAt": null,
+      "status": "done",
+      "completedAt": "2026-10-14T01:51:27.248Z",
       "title": "Test Runner wake: finish VFL-834 (part 3 of the VFL-185 gate on 1fe613c)",
       "assignee": "Test Runner",
       "project": "core-libraries"
@@ -5448,6 +5450,20 @@
       "status": "done",
       "completedAt": "2026-10-14T01:23:22.021Z",
       "title": "Cortana wake: retry the PR #36 merge path (VFL-758) and pick VFL-837 or VFL-489",
+      "assignee": "Cortana",
+      "project": "core-libraries"
+    },
+    "VFL-852": {
+      "status": "done",
+      "completedAt": "2026-10-14T01:58:21.696Z",
+      "title": "Test Writer: lane-gate self-test cases for NUL-delimited paths in partition on a86d056 (VFL-836)",
+      "assignee": "Halsey",
+      "project": "platform-foundation"
+    },
+    "VFL-853": {
+      "status": "in_progress",
+      "completedAt": null,
+      "title": "Push approval: VFL-185 r2 bootstrap hardening at 1fe613c (merge de9b7d2 with main bbe8179)",
       "assignee": "Cortana",
       "project": "core-libraries"
     }
