@@ -1,5 +1,5 @@
 {
-  "lastRunAt": "2026-10-14T12:26:16Z",
+  "lastRunAt": "2026-10-14T13:11:43Z",
   "phases": {
     "p1_foundation": {
       "label": "1 Foundation",
@@ -854,7 +854,25 @@
         "VFL-972",
         "VFL-973",
         "VFL-974",
-        "VFL-975"
+        "VFL-975",
+        "VFL-976",
+        "VFL-977",
+        "VFL-978",
+        "VFL-979",
+        "VFL-980",
+        "VFL-981",
+        "VFL-982",
+        "VFL-983",
+        "VFL-984",
+        "VFL-985",
+        "VFL-986",
+        "VFL-987",
+        "VFL-988",
+        "VFL-989",
+        "VFL-990",
+        "VFL-991",
+        "VFL-992",
+        "VFL-994"
       ]
     }
   },
@@ -3415,7 +3433,7 @@
       "project": "platform-foundation"
     },
     "VFL-490": {
-      "status": "in_progress",
+      "status": "blocked",
       "completedAt": null,
       "title": "Bound the `pins` refusal list: accept the canonical `uses:` form only (VFL-485 Q3)",
       "assignee": "Jorge",
@@ -5102,7 +5120,7 @@
       "project": "platform-foundation"
     },
     "VFL-777": {
-      "status": "in_progress",
+      "status": "blocked",
       "completedAt": null,
       "title": "CI on Tekton (3c/4): webhook starts vf-lane-gate and vf-rust-check for same-repo pull requests",
       "assignee": "Jorge",
@@ -5473,7 +5491,7 @@
       "project": "platform-foundation"
     },
     "VFL-837": {
-      "status": "in_review",
+      "status": "blocked",
       "completedAt": null,
       "title": "CI: wire ci/lane-gate.sh pins as the uses-pins check in lane-gate.yml and the Tekton lane-gate pipeline (VFL-827)",
       "assignee": "Jorge",
@@ -5802,8 +5820,8 @@
       "project": "core-libraries"
     },
     "VFL-899": {
-      "status": "blocked",
-      "completedAt": null,
+      "status": "done",
+      "completedAt": "2026-10-14T12:30:53.851Z",
       "title": "Bootstrap text residuals: --env-only shim advice, header/README failure mode, wait-message value, usage header (VFL-858 F1)",
       "assignee": "Jorge",
       "project": "core-libraries"
@@ -5823,7 +5841,7 @@
       "project": "core-libraries"
     },
     "VFL-902": {
-      "status": "blocked",
+      "status": "in_progress",
       "completedAt": null,
       "title": "VFL-716 follow-up: qemu check covers every x86_64 test binary (LOW-A), reflow 101-col header line (LOW-B)",
       "assignee": "912014ba-380a-46cd-baa6-306e9343a2c2",
@@ -6236,8 +6254,8 @@
       "project": "91740a68-0dd1-47b4-935f-9ab08f4c5669"
     },
     "VFL-966": {
-      "status": "in_progress",
-      "completedAt": null,
+      "status": "done",
+      "completedAt": "2026-10-14T12:34:49.054Z",
       "title": "Opus Reviewer: review VFL-902 qemu check covers every x86_64 test binary (0a303f1)",
       "assignee": "Opus Reviewer",
       "project": "platform-foundation"
@@ -6278,8 +6296,8 @@
       "project": "platform-foundation"
     },
     "VFL-975": {
-      "status": "in_progress",
-      "completedAt": null,
+      "status": "done",
+      "completedAt": "2026-10-14T12:28:48.008Z",
       "title": "Merge PR #59: VFL-899 bootstrap text residuals at `64035e8`",
       "assignee": "Cortana",
       "project": "core-libraries"
@@ -6290,6 +6308,122 @@
       "title": "Bootstrap text residuals F2: ready-line probe wording, zero-wait message (VFL-899 R1-R4)",
       "assignee": "Jorge",
       "project": "core-libraries"
+    },
+    "VFL-976": {
+      "status": "done",
+      "completedAt": "2026-10-14T12:38:02.620Z",
+      "title": "CodeRabbit review: VFL-696 erosion merge-base round 3 1c9f6e3 (rebased on main)",
+      "assignee": "Arbiter",
+      "project": "platform-foundation"
+    },
+    "VFL-977": {
+      "status": "done",
+      "completedAt": "2026-10-14T13:06:50.594Z",
+      "title": "Opus Reviewer: VFL-696 erosion merge-base round 3 1c9f6e3 (rebased on main)",
+      "assignee": "Opus Reviewer",
+      "project": "platform-foundation"
+    },
+    "VFL-978": {
+      "status": "done",
+      "completedAt": "2026-10-14T12:31:30.140Z",
+      "title": "Test Runner: VFL-696 erosion merge-base round 3 1c9f6e3",
+      "assignee": "Test Runner",
+      "project": "platform-foundation"
+    },
+    "VFL-979": {
+      "status": "done",
+      "completedAt": "2026-10-14T12:36:10.801Z",
+      "title": "Cortana wake: answer card 4167d201 on VFL-837 (merge main b6c01ec into branch, new round)",
+      "assignee": "Cortana",
+      "project": "platform-foundation"
+    },
+    "VFL-980": {
+      "status": "in_progress",
+      "title": "Test Runner: lane-gate checks on VFL-777 candidate 9e83b51 (Tekton PR trigger, round 4)",
+      "assignee": "Test Runner",
+      "project": "platform-foundation"
+    },
+    "VFL-981": {
+      "status": "in_progress",
+      "title": "CodeRabbit review: VFL-777 Tekton PR trigger and egress policy (9e83b51)",
+      "assignee": "Arbiter",
+      "project": "platform-foundation"
+    },
+    "VFL-982": {
+      "status": "in_progress",
+      "title": "Opus Reviewer: review VFL-777 Tekton PR trigger and egress policy (9e83b51)",
+      "assignee": "Opus Reviewer",
+      "project": "platform-foundation"
+    },
+    "VFL-983": {
+      "status": "in_progress",
+      "title": "CodeRabbit review: VFL-490 bounded pins check (d2dc301)",
+      "assignee": "Arbiter",
+      "project": "platform-foundation"
+    },
+    "VFL-984": {
+      "status": "todo",
+      "title": "Opus Reviewer: review VFL-490 bounded pins check (d2dc301)",
+      "assignee": "Opus Reviewer",
+      "project": "platform-foundation"
+    },
+    "VFL-985": {
+      "status": "done",
+      "completedAt": "2026-10-14T12:49:09.235Z",
+      "title": "Test Runner: lane-gate self-test, discrimination and mutants for VFL-490 (d2dc301)",
+      "assignee": "Test Runner",
+      "project": "platform-foundation"
+    },
+    "VFL-986": {
+      "status": "in_progress",
+      "title": "CodeRabbit review: uses-pins check, round 2 merge candidate (3d9afbf, VFL-837)",
+      "assignee": "Arbiter",
+      "project": "platform-foundation"
+    },
+    "VFL-987": {
+      "status": "todo",
+      "title": "Opus Reviewer review: uses-pins check, round 2 merge candidate (3d9afbf, VFL-837)",
+      "assignee": "Opus Reviewer",
+      "project": "platform-foundation"
+    },
+    "VFL-988": {
+      "status": "done",
+      "completedAt": "2026-10-14T12:56:34.504Z",
+      "title": "Decision: VFL-909 PR #58 base move to 16dd6ff (protected path) and two CodeRabbit LOWs",
+      "assignee": "Cortana",
+      "project": "core-libraries"
+    },
+    "VFL-989": {
+      "status": "done",
+      "completedAt": "2026-10-14T12:56:42.396Z",
+      "title": "Test Runner: lane gate, self-test and YAML parse, uses-pins round 2 merge candidate (3d9afbf)",
+      "assignee": "Test Runner",
+      "project": "platform-foundation"
+    },
+    "VFL-990": {
+      "status": "done",
+      "completedAt": "2026-10-14T12:58:31.710Z",
+      "title": "Cortana wake: answer push card 280412a3 on VFL-902 (push 0a303f1, PR then one pre-authorised merge-update)",
+      "assignee": "Cortana",
+      "project": "platform-foundation"
+    },
+    "VFL-991": {
+      "status": "blocked",
+      "title": "Toolchain guard: scope channel to [toolchain] and canonicalise the executable path (VFL-988 CR-1/CR-2)",
+      "assignee": "Jorge",
+      "project": "core-libraries"
+    },
+    "VFL-992": {
+      "status": "blocked",
+      "title": "VFL-902 follow-up: skip proc-macro test artifacts (LOW-C) and non-JSON stdout (LOW-D)",
+      "assignee": "Jorge",
+      "project": "platform-foundation"
+    },
+    "VFL-994": {
+      "status": "in_progress",
+      "title": "Merge PR #61 (VFL-902) at aaffeca",
+      "assignee": "Cortana",
+      "project": "platform-foundation"
     }
   }
 }
