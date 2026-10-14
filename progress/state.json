@@ -1,5 +1,5 @@
 {
-  "lastRunAt": "2026-10-14T22:18:29Z",
+  "lastRunAt": "2026-10-14T22:35:22Z",
   "phases": {
     "p1_foundation": {
       "label": "1 Foundation",
@@ -973,7 +973,12 @@
         "VFL-1084",
         "VFL-1085",
         "VFL-1086",
-        "VFL-1088"
+        "VFL-1088",
+        "VFL-1109",
+        "VFL-1110",
+        "VFL-1111",
+        "VFL-1112",
+        "VFL-1113"
       ]
     }
   },
@@ -5004,7 +5009,7 @@
       "project": "platform-foundation"
     },
     "VFL-734": {
-      "status": "blocked",
+      "status": "in_progress",
       "completedAt": null,
       "title": "GATE: erosion check must see rustdoc fences demoted to ignore/text/no_run (Opus LOW-1 on VFL-538)",
       "assignee": "Jorge",
@@ -6642,8 +6647,8 @@
       "project": "platform-foundation"
     },
     "VFL-1011": {
-      "status": "in_progress",
-      "completedAt": null,
+      "status": "done",
+      "completedAt": "2026-10-14T22:17:21.481Z",
       "title": "Board watch (continuation 11): find stuck tasks and nudge owners",
       "assignee": "MasterChief",
       "project": "platform-foundation"
@@ -6971,14 +6976,14 @@
       "project": "platform-foundation"
     },
     "VFL-1065": {
-      "status": "blocked",
+      "status": "in_review",
       "completedAt": null,
       "title": "VFL-837 (continued): push request and PR #60 for round 4 candidate 72d6caa (uses-pins check)",
-      "assignee": "912014ba-380a-46cd-baa6-306e9343a2c2",
+      "assignee": "Jorge",
       "project": "platform-foundation"
     },
     "VFL-1066": {
-      "status": "in_progress",
+      "status": "in_review",
       "completedAt": null,
       "title": "VFL-490 continuation: re-gate, push and merge of PR #63 head 2198fd5",
       "assignee": "Jorge",
@@ -7146,8 +7151,8 @@
       "project": "platform-foundation"
     },
     "VFL-1087": {
-      "status": "in_progress",
-      "completedAt": null,
+      "status": "done",
+      "completedAt": "2026-10-14T22:18:06.515Z",
       "title": "Opus Reviewer review: uses-pins check, round 6 candidate (4ddb62e, VFL-837)",
       "assignee": "Opus Reviewer",
       "project": "platform-foundation"
@@ -7188,15 +7193,15 @@
       "project": "platform-foundation"
     },
     "VFL-1100": {
-      "status": "in_progress",
-      "completedAt": null,
+      "status": "done",
+      "completedAt": "2026-10-14T22:19:24.814Z",
       "title": "Test Runner: VFL-734 merged on main `c549335` (`6a957de`)",
       "assignee": "Test Runner",
       "project": "platform-foundation"
     },
     "VFL-1101": {
-      "status": "blocked",
-      "completedAt": null,
+      "status": "done",
+      "completedAt": "2026-10-14T22:21:53.542Z",
       "title": "Push approval: VFL-734 re-merged on main `c549335` (`6a957de`)",
       "assignee": "Cortana",
       "project": "platform-foundation"
@@ -7209,15 +7214,15 @@
       "project": "platform-foundation"
     },
     "VFL-1103": {
-      "status": "in_progress",
-      "completedAt": null,
+      "status": "done",
+      "completedAt": "2026-10-14T22:21:42.914Z",
       "title": "Test Runner: VFL-789 merged on main `c549335` (`b379b39`)",
       "assignee": "Test Runner",
       "project": "platform-foundation"
     },
     "VFL-1104": {
-      "status": "blocked",
-      "completedAt": null,
+      "status": "done",
+      "completedAt": "2026-10-14T22:26:48.658Z",
       "title": "Push approval: VFL-789 base-ref check merged on main `c549335` (`b379b39`)",
       "assignee": "Cortana",
       "project": "platform-foundation"
@@ -7237,9 +7242,44 @@
       "project": "platform-foundation"
     },
     "VFL-1108": {
+      "status": "done",
+      "completedAt": "2026-10-14T22:24:58.679Z",
+      "title": "Push approval: VFL-1063 base-tip prose cleanup at fc17154",
+      "assignee": "Cortana",
+      "project": "platform-foundation"
+    },
+    "VFL-1109": {
+      "status": "done",
+      "completedAt": "2026-10-14T22:19:57.240Z",
+      "title": "MasterChief wake: arm the VFL-1107 monitor, close VFL-1011, run the first continuation-12 pass",
+      "assignee": "MasterChief",
+      "project": "platform-foundation"
+    },
+    "VFL-1110": {
+      "status": "done",
+      "completedAt": "2026-10-14T22:27:35.870Z",
+      "title": "Test Runner: lane-gate self-test, discrimination and mutants for VFL-490 (aa86228)",
+      "assignee": "Test Runner",
+      "project": "platform-foundation"
+    },
+    "VFL-1111": {
+      "status": "backlog",
+      "completedAt": null,
+      "title": "GATE: partition refuses a base with no merge base using lane-gate's own message (VFL-789 Opus LOW-2)",
+      "assignee": "Jorge",
+      "project": "platform-foundation"
+    },
+    "VFL-1112": {
+      "status": "backlog",
+      "completedAt": null,
+      "title": "docs(tekton): lane-gate.yaml base-guard comment must not claim a zero-count path (VFL-789 Opus LOW-1, Tekton half)",
+      "assignee": "Jorge",
+      "project": "platform-foundation"
+    },
+    "VFL-1113": {
       "status": "in_progress",
       "completedAt": null,
-      "title": "Push approval: VFL-1063 base-tip prose cleanup at fc17154",
+      "title": "Ruling: VFL-1063 base-move predicate item 4 vs .tekton/triggers/kustomization.yaml (M = 8891dcf)",
       "assignee": "Cortana",
       "project": "platform-foundation"
     }
