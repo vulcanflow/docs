@@ -1,5 +1,5 @@
 {
-  "lastRunAt": "2026-10-14T17:39:16Z",
+  "lastRunAt": "2026-10-14T18:06:00Z",
   "phases": {
     "p1_foundation": {
       "label": "1 Foundation",
@@ -905,7 +905,29 @@
         "VFL-1030",
         "VFL-1031",
         "VFL-1032",
-        "VFL-1034"
+        "VFL-1034",
+        "VFL-1035",
+        "VFL-1036",
+        "VFL-1037",
+        "VFL-1038",
+        "VFL-1039",
+        "VFL-1040",
+        "VFL-1041",
+        "VFL-1042",
+        "VFL-1043",
+        "VFL-1044",
+        "VFL-1045",
+        "VFL-1046",
+        "VFL-1047",
+        "VFL-1048",
+        "VFL-1049",
+        "VFL-1050",
+        "VFL-1051",
+        "VFL-1052",
+        "VFL-1053",
+        "VFL-1055",
+        "VFL-1056",
+        "VFL-1057"
       ]
     }
   },
@@ -4747,8 +4769,8 @@
       "project": "platform-foundation"
     },
     "VFL-696": {
-      "status": "blocked",
-      "completedAt": null,
+      "status": "done",
+      "completedAt": "2026-10-14T17:37:36.906Z",
       "title": "CI: lane-gate erosion counts the base at the merge-base, not the fetched main tip (false red on stale merge ref)",
       "assignee": "Jorge",
       "project": "platform-foundation"
@@ -5160,7 +5182,7 @@
       "project": "platform-foundation"
     },
     "VFL-778": {
-      "status": "in_progress",
+      "status": "blocked",
       "completedAt": null,
       "title": "CI on Tekton (3d/4): report the check results as commit statuses on the PR head",
       "assignee": "Jorge",
@@ -5230,7 +5252,7 @@
       "project": "platform-foundation"
     },
     "VFL-789": {
-      "status": "blocked",
+      "status": "in_progress",
       "completedAt": null,
       "title": "CI: ci/lane-gate.sh verifies BASE_REF resolves (VFL-729 R1 follow-up)",
       "assignee": "Jorge",
@@ -6322,7 +6344,7 @@
       "project": "platform-foundation"
     },
     "VFL-974": {
-      "status": "in_progress",
+      "status": "blocked",
       "completedAt": null,
       "title": "CI on Tekton (3c.1/4): cancel a pull request's superseded runs on synchronize (VFL-948 finding 2)",
       "assignee": "Jorge",
@@ -6468,7 +6490,7 @@
       "project": "platform-foundation"
     },
     "VFL-997": {
-      "status": "blocked",
+      "status": "in_progress",
       "completedAt": null,
       "title": "CI: reword .tekton/tasks/lane-gate.yaml base-commit description after VFL-696 (erosion counts at the merge-base)",
       "assignee": "Jorge",
@@ -6692,10 +6714,164 @@
       "project": "platform-foundation"
     },
     "VFL-1034": {
-      "status": "in_progress",
-      "completedAt": null,
+      "status": "done",
+      "completedAt": "2026-10-14T17:36:31.730Z",
       "title": "Merge PR #62 (VFL-696) at `aae8da7`",
       "assignee": "Cortana",
+      "project": "platform-foundation"
+    },
+    "VFL-1035": {
+      "status": "blocked",
+      "completedAt": null,
+      "title": "CI on Tekton (3c.2/4): the lane-gate trigger files join the GATE class (VFL-824 D3)",
+      "assignee": "Jorge",
+      "project": "platform-foundation"
+    },
+    "VFL-1036": {
+      "status": "done",
+      "completedAt": "2026-10-14T17:43:41.457Z",
+      "title": "VFL-778 (3d) ruling: reporter GATE class, missing commit result vs D4, cancelled wording",
+      "assignee": "Cortana",
+      "project": "platform-foundation"
+    },
+    "VFL-1037": {
+      "status": "done",
+      "completedAt": "2026-10-14T18:04:57.543Z",
+      "title": "CodeRabbit review: VFL-997 lane-gate.yaml base-commit description `376e232`",
+      "assignee": "Arbiter",
+      "project": "platform-foundation"
+    },
+    "VFL-1038": {
+      "status": "done",
+      "completedAt": "2026-10-14T17:45:57.705Z",
+      "title": "Opus Reviewer: VFL-997 lane-gate.yaml base-commit description `376e232`",
+      "assignee": "Opus Reviewer",
+      "project": "platform-foundation"
+    },
+    "VFL-1039": {
+      "status": "done",
+      "completedAt": "2026-10-14T17:43:24.589Z",
+      "title": "Test Runner: kustomize, kubeconform and lane gate on VFL-997 candidate 376e232",
+      "assignee": "Test Runner",
+      "project": "platform-foundation"
+    },
+    "VFL-1040": {
+      "status": "done",
+      "completedAt": "2026-10-14T17:46:25.335Z",
+      "title": "CodeRabbit review: VFL-998 erosion merge-base assertion pins (d01e72b)",
+      "assignee": "Arbiter",
+      "project": "platform-foundation"
+    },
+    "VFL-1041": {
+      "status": "in_progress",
+      "completedAt": null,
+      "title": "Opus Reviewer: review VFL-998 erosion merge-base assertion pins (d01e72b)",
+      "assignee": "Opus Reviewer",
+      "project": "platform-foundation"
+    },
+    "VFL-1042": {
+      "status": "blocked",
+      "completedAt": null,
+      "title": "CI on Tekton (3d.1/4): the status reporter Task joins the GATE class (VFL-1036 R1)",
+      "assignee": "Jorge",
+      "project": "platform-foundation"
+    },
+    "VFL-1043": {
+      "status": "done",
+      "completedAt": "2026-10-14T18:02:53.100Z",
+      "title": "Test Runner: lane-gate test run on VFL-998 candidate (d01e72b)",
+      "assignee": "Test Runner",
+      "project": "platform-foundation"
+    },
+    "VFL-1044": {
+      "status": "done",
+      "completedAt": "2026-10-14T17:50:39.134Z",
+      "title": "Test Writer: lane-gate fixtures for erosion rustdoc-fence demotion on 4f78e67 (VFL-734)",
+      "assignee": "Halsey",
+      "project": "platform-foundation"
+    },
+    "VFL-1045": {
+      "status": "done",
+      "completedAt": "2026-10-14T17:51:43.820Z",
+      "title": "Cortana wake: answer conflict card 3b17468a on VFL-490 (PR #63 vs main 1e436d0)",
+      "assignee": "Cortana",
+      "project": "platform-foundation"
+    },
+    "VFL-1046": {
+      "status": "done",
+      "completedAt": "2026-10-14T17:53:51.837Z",
+      "title": "Cortana wake: answer round 4 route card 5a07f445 on VFL-837 (main moved to 6b333dd)",
+      "assignee": "Cortana",
+      "project": "platform-foundation"
+    },
+    "VFL-1047": {
+      "status": "done",
+      "completedAt": "2026-10-14T17:56:01.190Z",
+      "title": "Test Runner: lane-gate checks on VFL-974 candidate 261cf1d (Tekton supersede control)",
+      "assignee": "Test Runner",
+      "project": "platform-foundation"
+    },
+    "VFL-1048": {
+      "status": "done",
+      "completedAt": "2026-10-14T18:03:41.777Z",
+      "title": "CodeRabbit review: VFL-974 Tekton supersede control (261cf1d)",
+      "assignee": "Arbiter",
+      "project": "platform-foundation"
+    },
+    "VFL-1049": {
+      "status": "todo",
+      "completedAt": null,
+      "title": "Opus Reviewer: review VFL-974 Tekton supersede control (261cf1d)",
+      "assignee": "Opus Reviewer",
+      "project": "platform-foundation"
+    },
+    "VFL-1050": {
+      "status": "done",
+      "completedAt": "2026-10-14T17:57:52.597Z",
+      "title": "Test Writer: lane-gate missing-base cases for `bbb7073` (VFL-789)",
+      "assignee": "Halsey",
+      "project": "platform-foundation"
+    },
+    "VFL-1051": {
+      "status": "done",
+      "completedAt": "2026-10-14T18:02:27.626Z",
+      "title": "Test Writer: resolve PR #63 merge conflict with main 1e436d0 in ci/lane-gate-test.sh (VFL-490)",
+      "assignee": "Halsey",
+      "project": "platform-foundation"
+    },
+    "VFL-1052": {
+      "status": "in_progress",
+      "completedAt": null,
+      "title": "CodeRabbit review: uses-pins check, round 4 candidate (72d6caa, VFL-837)",
+      "assignee": "Arbiter",
+      "project": "platform-foundation"
+    },
+    "VFL-1053": {
+      "status": "todo",
+      "completedAt": null,
+      "title": "Opus Reviewer review: uses-pins check, round 4 candidate (72d6caa, VFL-837)",
+      "assignee": "Opus Reviewer",
+      "project": "platform-foundation"
+    },
+    "VFL-1055": {
+      "status": "in_progress",
+      "completedAt": null,
+      "title": "CodeRabbit review: VFL-734 erosion rustdoc-fence demotion `fe833f0` (code + VFL-1044 fixtures)",
+      "assignee": "Arbiter",
+      "project": "platform-foundation"
+    },
+    "VFL-1056": {
+      "status": "todo",
+      "completedAt": null,
+      "title": "Opus Reviewer: VFL-734 erosion rustdoc-fence demotion `fe833f0` (code + VFL-1044 fixtures)",
+      "assignee": "Opus Reviewer",
+      "project": "platform-foundation"
+    },
+    "VFL-1057": {
+      "status": "in_progress",
+      "completedAt": null,
+      "title": "Test Runner: VFL-734 erosion rustdoc-fence demotion `fe833f0`",
+      "assignee": "Test Runner",
       "project": "platform-foundation"
     }
   }
