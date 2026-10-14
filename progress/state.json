@@ -1,5 +1,5 @@
 {
-  "lastRunAt": "2026-10-14T02:04:19Z",
+  "lastRunAt": "2026-10-14T02:33:48Z",
   "phases": {
     "p1_foundation": {
       "label": "1 Foundation",
@@ -751,7 +751,18 @@
         "VFL-849",
         "VFL-850",
         "VFL-852",
-        "VFL-853"
+        "VFL-853",
+        "VFL-855",
+        "VFL-856",
+        "VFL-857",
+        "VFL-858",
+        "VFL-859",
+        "VFL-860",
+        "VFL-861",
+        "VFL-862",
+        "VFL-863",
+        "VFL-864",
+        "VFL-865"
       ]
     }
   },
@@ -3830,8 +3841,8 @@
       "project": "core-libraries"
     },
     "VFL-185": {
-      "status": "blocked",
-      "completedAt": null,
+      "status": "done",
+      "completedAt": "2026-10-14T02:23:18.901Z",
       "title": "Bootstrap: verify cc before publishing a toolchain tree, gate --env-only on cargo, bound the lock wait",
       "assignee": "Jorge",
       "project": "core-libraries"
@@ -4614,7 +4625,7 @@
       "project": "platform-foundation"
     },
     "VFL-703": {
-      "status": "blocked",
+      "status": "in_progress",
       "completedAt": null,
       "title": "VFL-122 continuation 3: land PR #37 (merge-update after #36, then close)",
       "assignee": "Jorge",
@@ -5384,8 +5395,8 @@
       "project": "platform-foundation"
     },
     "VFL-839": {
-      "status": "in_progress",
-      "completedAt": null,
+      "status": "done",
+      "completedAt": "2026-10-14T02:28:51.842Z",
       "title": "Opus Reviewer review round 7: PR #37 merge of main, lane-gate pins (c1c5abe, VFL-122)",
       "assignee": "Opus Reviewer",
       "project": "platform-foundation"
@@ -5461,10 +5472,87 @@
       "project": "platform-foundation"
     },
     "VFL-853": {
-      "status": "in_progress",
-      "completedAt": null,
+      "status": "done",
+      "completedAt": "2026-10-14T02:08:28.335Z",
       "title": "Push approval: VFL-185 r2 bootstrap hardening at 1fe613c (merge de9b7d2 with main bbe8179)",
       "assignee": "Cortana",
+      "project": "core-libraries"
+    },
+    "VFL-855": {
+      "status": "done",
+      "completedAt": "2026-10-14T02:10:01.229Z",
+      "title": "CodeRabbit review: VFL-836 NUL-delimited paths in partition (9a01ccd)",
+      "assignee": "Arbiter",
+      "project": "platform-foundation"
+    },
+    "VFL-856": {
+      "status": "done",
+      "completedAt": "2026-10-14T02:20:26.675Z",
+      "title": "Opus Reviewer: review VFL-836 NUL-delimited paths in partition (9a01ccd)",
+      "assignee": "Opus Reviewer",
+      "project": "platform-foundation"
+    },
+    "VFL-857": {
+      "status": "done",
+      "completedAt": "2026-10-14T02:09:24.527Z",
+      "title": "Test Runner: lane-gate checks and mutation run on VFL-836 candidate 9a01ccd (NUL-delimited paths in partition)",
+      "assignee": "Test Runner",
+      "project": "platform-foundation"
+    },
+    "VFL-858": {
+      "status": "in_progress",
+      "completedAt": null,
+      "title": "Bootstrap: re-probe an already-published C toolchain tree on the already-present path (VFL-831 LOW-2)",
+      "assignee": "Jorge",
+      "project": "core-libraries"
+    },
+    "VFL-859": {
+      "status": "blocked",
+      "completedAt": null,
+      "title": "Bootstrap callers: eval of the bootstrap env must propagate a failed exit status (VFL-204 L-2)",
+      "assignee": "Jorge",
+      "project": "core-libraries"
+    },
+    "VFL-860": {
+      "status": "done",
+      "completedAt": "2026-10-14T02:18:54.040Z",
+      "title": "Merge PR #51: VFL-185 bootstrap hardening at `de9b7d2`",
+      "assignee": "Cortana",
+      "project": "core-libraries"
+    },
+    "VFL-861": {
+      "status": "done",
+      "completedAt": "2026-10-14T02:28:13.911Z",
+      "title": "Push approval: VFL-836 NUL-delimited paths in the partition gate at 9a01ccd",
+      "assignee": "Cortana",
+      "project": "platform-foundation"
+    },
+    "VFL-862": {
+      "status": "blocked",
+      "completedAt": null,
+      "title": "Lane gate: fix LOW-1..LOW-4 from the VFL-836 review (README/comment accuracy, fail-closed self-tests)",
+      "assignee": "Jorge",
+      "project": "platform-foundation"
+    },
+    "VFL-863": {
+      "status": "in_progress",
+      "completedAt": null,
+      "title": "CodeRabbit review: VFL-859 bootstrap eval exit status, candidate be76767",
+      "assignee": "Arbiter",
+      "project": "core-libraries"
+    },
+    "VFL-864": {
+      "status": "in_progress",
+      "completedAt": null,
+      "title": "Opus Reviewer: review VFL-859 bootstrap eval exit status, candidate be76767",
+      "assignee": "Opus Reviewer",
+      "project": "core-libraries"
+    },
+    "VFL-865": {
+      "status": "in_progress",
+      "completedAt": null,
+      "title": "Test Runner: VFL-859 be76767, bootstrap failure stops the caller, lane gate",
+      "assignee": "Test Runner",
       "project": "core-libraries"
     }
   }
