@@ -1,5 +1,5 @@
 {
-  "lastRunAt": "2026-10-14T08:05:04Z",
+  "lastRunAt": "2026-10-14T08:37:26Z",
   "phases": {
     "p1_foundation": {
       "label": "1 Foundation",
@@ -791,7 +791,13 @@
         "VFL-902",
         "VFL-903",
         "VFL-904",
-        "VFL-905"
+        "VFL-905",
+        "VFL-908",
+        "VFL-911",
+        "VFL-912",
+        "VFL-907",
+        "VFL-909",
+        "VFL-910"
       ]
     }
   },
@@ -1529,7 +1535,7 @@
       "completedAt": "2026-10-05T19:49:29.166Z",
       "title": "Architecture documentation and first coding task list (from approved plan)",
       "assignee": "Cortana",
-      "project": "none"
+      "project": null
     },
     "VFL-406": {
       "status": "done",
@@ -1935,7 +1941,7 @@
       "completedAt": "2026-10-07T17:00:10.153Z",
       "title": "Board watch pass 16:46 UTC: post nudges and re-arm the VFL-272 monitor (task-bound run)",
       "assignee": "MasterChief",
-      "project": "none"
+      "project": null
     },
     "VFL-183": {
       "status": "done",
@@ -2998,8 +3004,8 @@
       "status": "blocked",
       "completedAt": null,
       "title": "CI on Tekton (4/4): retire the GitHub Actions workflows; keep Dependabot only",
-      "assignee": "912014ba-380a-46cd-baa6-306e9343a2c2",
-      "project": "91740a68-0dd1-47b4-935f-9ab08f4c5669"
+      "assignee": "Jorge",
+      "project": "platform-foundation"
     },
     "VFL-126": {
       "status": "done",
@@ -3012,7 +3018,7 @@
       "status": "done",
       "completedAt": "2026-10-06T10:59:55.885Z",
       "title": "Board watch: find stuck tasks and nudge owners",
-      "assignee": "Unassigned",
+      "assignee": "unassigned",
       "project": "progress-and-docs"
     },
     "VFL-78": {
@@ -3026,8 +3032,8 @@
       "status": "cancelled",
       "completedAt": null,
       "title": "PROBE",
-      "assignee": "Unassigned",
-      "project": "none"
+      "assignee": "unassigned",
+      "project": null
     },
     "VFL-50": {
       "status": "done",
@@ -3048,7 +3054,7 @@
       "completedAt": "2026-10-05T20:01:04.840Z",
       "title": "create technical workflow",
       "assignee": "MasterChief",
-      "project": "none"
+      "project": null
     },
     "VFL-47": {
       "status": "blocked",
@@ -3160,42 +3166,42 @@
       "completedAt": "2026-10-05T18:36:41.929Z",
       "title": "check GitHub org repositories",
       "assignee": "MasterChief",
-      "project": "none"
+      "project": null
     },
     "VFL-6": {
       "status": "done",
       "completedAt": "2026-10-05T18:31:15.362Z",
       "title": "Architect audit: vulcanflow GitHub repositories (keep / create / remove)",
       "assignee": "Cortana",
-      "project": "none"
+      "project": null
     },
     "VFL-3": {
       "status": "done",
       "completedAt": "2026-10-05T18:03:17.375Z",
       "title": "Hire the agents to work on this project.",
       "assignee": "MasterChief",
-      "project": "none"
+      "project": null
     },
     "VFL-4": {
       "status": "done",
       "completedAt": "2026-10-05T16:31:18.914Z",
       "title": "Install coderabbit skill",
       "assignee": "MasterChief",
-      "project": "none"
+      "project": null
     },
     "VFL-1": {
       "status": "done",
       "completedAt": "2026-10-05T15:39:11.139Z",
       "title": "Paperclip onboarding",
       "assignee": "MasterChief",
-      "project": "onboarding"
+      "project": "Onboarding"
     },
     "VFL-2": {
       "status": "done",
       "completedAt": "2026-10-05T14:04:56.921Z",
       "title": "push the plan to GitHub using the existing connection",
       "assignee": "MasterChief",
-      "project": "none"
+      "project": null
     },
     "VFL-361": {
       "status": "cancelled",
@@ -3684,7 +3690,7 @@
       "status": "blocked",
       "completedAt": null,
       "title": "install-tools.sh: count installed tools against the lock, key the tree on the installer, fixed-string tar match (VFL-268 LOW-1/2/4)",
-      "assignee": "Unassigned",
+      "assignee": "unassigned",
       "project": "core-libraries"
     },
     "VFL-194": {
@@ -4035,7 +4041,7 @@
       "completedAt": "2026-10-05T19:55:39.476Z",
       "title": "Append related-task links to the remaining 19 VulcanFlow tasks",
       "assignee": "MasterChief",
-      "project": "none"
+      "project": null
     },
     "VFL-38": {
       "status": "blocked",
@@ -4654,7 +4660,7 @@
       "project": "platform-foundation"
     },
     "VFL-703": {
-      "status": "blocked",
+      "status": "in_progress",
       "completedAt": null,
       "title": "VFL-122 continuation 3: land PR #37 (merge-update after #36, then close)",
       "assignee": "Jorge",
@@ -4731,7 +4737,7 @@
       "project": "core-libraries"
     },
     "VFL-716": {
-      "status": "in_progress",
+      "status": "in_review",
       "completedAt": null,
       "title": "CI on Tekton (2b/4): check (amd64) by cross-build on arm64, unit tests under user-mode QEMU",
       "assignee": "Jorge",
@@ -4804,7 +4810,7 @@
       "status": "done",
       "completedAt": "2026-10-13T21:23:54.295Z",
       "title": "VFL-125 follow-up: lane-gate base guard, RUST_TEST_THREADS and README nits (Opus L1, L2, L7, L8)",
-      "assignee": "Jorge",
+      "assignee": "Cortana",
       "project": "platform-foundation"
     },
     "VFL-731": {
@@ -4944,8 +4950,8 @@
       "status": "done",
       "completedAt": "2026-10-13T22:27:17.948Z",
       "title": "Board watch (continuation 8): find stuck tasks and nudge owners",
-      "assignee": "ae2a6da1-327d-466e-8227-311999bca475",
-      "project": "1e4d751c-3ada-47c7-aabe-e8cb40bc897e"
+      "assignee": "MasterChief",
+      "project": "core-libraries"
     },
     "VFL-758": {
       "status": "blocked",
@@ -4992,7 +4998,7 @@
     "VFL-767": {
       "status": "done",
       "completedAt": "2026-10-13T18:54:54.974Z",
-      "title": "Cortana wake: retry the PR #36 merge path now (identity returned 18:08 window)",
+      "title": "Cortana wake: retry the PR #36 merge path now (identity returned 18:08)",
       "assignee": "Cortana",
       "project": "core-libraries"
     },
@@ -5021,8 +5027,8 @@
       "status": "done",
       "completedAt": "2026-10-13T21:57:17.629Z",
       "title": "CI on Tekton (3a/4): Tekton lane-gate definitions in the GATE class (VFL-126 L4)",
-      "assignee": "a9be75cd-d767-4c44-b49c-2017c61f751f",
-      "project": "91740a68-0dd1-47b4-935f-9ab08f4c5669"
+      "assignee": "Cortana",
+      "project": "platform-foundation"
     },
     "VFL-775": {
       "status": "done",
@@ -5126,8 +5132,8 @@
       "status": "done",
       "completedAt": "2026-10-13T21:39:31.296Z",
       "title": "Push approval: VFL-774 Tekton lane-gate GATE class at 14b708a",
-      "assignee": "a9be75cd-d767-4c44-b49c-2017c61f751f",
-      "project": "91740a68-0dd1-47b4-935f-9ab08f4c5669"
+      "assignee": "Cortana",
+      "project": "platform-foundation"
     },
     "VFL-792": {
       "status": "done",
@@ -5140,36 +5146,36 @@
       "status": "done",
       "completedAt": "2026-10-13T22:02:03.150Z",
       "title": "Test Writer: lane-gate self-test cases for .tekton/kustomization.yaml in GATE on 166993a (VFL-792)",
-      "assignee": "6029b86f-ff5b-492b-9f97-ed31363be784",
-      "project": "91740a68-0dd1-47b4-935f-9ab08f4c5669"
+      "assignee": "Halsey",
+      "project": "platform-foundation"
     },
     "VFL-795": {
       "status": "done",
       "completedAt": "2026-10-13T22:11:48.188Z",
       "title": "Test Runner: lane-gate checks on VFL-792 candidate 135580b (.tekton/kustomization.yaml in GATE)",
-      "assignee": "d0a26468-a577-4f16-a29c-de0b53af3983",
-      "project": "91740a68-0dd1-47b4-935f-9ab08f4c5669"
+      "assignee": "Test Runner",
+      "project": "platform-foundation"
     },
     "VFL-796": {
       "status": "done",
       "completedAt": "2026-10-13T22:12:16.588Z",
       "title": "CodeRabbit review: VFL-792 .tekton/kustomization.yaml in the GATE class (135580b)",
-      "assignee": "13034933-9579-4b3c-add9-b9426144d934",
-      "project": "91740a68-0dd1-47b4-935f-9ab08f4c5669"
+      "assignee": "Arbiter",
+      "project": "platform-foundation"
     },
     "VFL-797": {
       "status": "done",
       "completedAt": "2026-10-13T22:13:23.999Z",
       "title": "Opus Reviewer: review VFL-792 .tekton/kustomization.yaml in the GATE class (135580b)",
-      "assignee": "938921ab-9ab9-469b-85ac-976d8cabad96",
-      "project": "91740a68-0dd1-47b4-935f-9ab08f4c5669"
+      "assignee": "Opus Reviewer",
+      "project": "platform-foundation"
     },
     "VFL-798": {
       "status": "done",
       "completedAt": "2026-10-13T22:18:41.544Z",
       "title": "Push approval: VFL-792 .tekton/kustomization.yaml in GATE at 135580b",
-      "assignee": "a9be75cd-d767-4c44-b49c-2017c61f751f",
-      "project": "91740a68-0dd1-47b4-935f-9ab08f4c5669"
+      "assignee": "Cortana",
+      "project": "platform-foundation"
     },
     "VFL-799": {
       "status": "done",
@@ -5245,7 +5251,7 @@
       "status": "todo",
       "completedAt": null,
       "title": "Owner action (continuation of VFL-471): GitHub identity grant and the evidence log",
-      "assignee": null,
+      "assignee": "6V7ZcYxpm1GXkJVicEAGVKgfJLRYoQY5",
       "project": "platform-foundation"
     },
     "VFL-811": {
@@ -5536,8 +5542,8 @@
       "project": "core-libraries"
     },
     "VFL-859": {
-      "status": "in_progress",
-      "completedAt": null,
+      "status": "done",
+      "completedAt": "2026-10-14T08:24:16.969Z",
       "title": "Bootstrap callers: eval of the bootstrap env must propagate a failed exit status (VFL-204 L-2)",
       "assignee": "Jorge",
       "project": "core-libraries"
@@ -5557,7 +5563,7 @@
       "project": "platform-foundation"
     },
     "VFL-862": {
-      "status": "blocked",
+      "status": "in_progress",
       "completedAt": null,
       "title": "Lane gate: fix LOW-1..LOW-4 from the VFL-836 review (README/comment accuracy, fail-closed self-tests)",
       "assignee": "Jorge",
@@ -5690,7 +5696,7 @@
       "project": "platform-foundation"
     },
     "VFL-891": {
-      "status": "blocked",
+      "status": "in_progress",
       "completedAt": null,
       "title": "CodeRabbit review: VFL-777 Tekton PR trigger and egress policy (d12e988)",
       "assignee": "Arbiter",
@@ -5725,8 +5731,8 @@
       "project": "platform-foundation"
     },
     "VFL-894": {
-      "status": "in_progress",
-      "completedAt": null,
+      "status": "done",
+      "completedAt": "2026-10-14T08:17:20.116Z",
       "title": "Opus Reviewer review round 8: PR #37 re-merge of main, lane-gate pins (1c75f13, VFL-122)",
       "assignee": "Opus Reviewer",
       "project": "platform-foundation"
@@ -5739,7 +5745,7 @@
       "project": "core-libraries"
     },
     "VFL-899": {
-      "status": "blocked",
+      "status": "in_progress",
       "completedAt": null,
       "title": "Bootstrap text residuals: --env-only shim advice, header/README failure mode, wait-message value, usage header (VFL-858 F1)",
       "assignee": "Jorge",
@@ -5774,8 +5780,8 @@
       "project": "core-libraries"
     },
     "VFL-904": {
-      "status": "in_progress",
-      "completedAt": null,
+      "status": "done",
+      "completedAt": "2026-10-14T08:02:21.831Z",
       "title": "Push approval: VFL-862 lane-gate LOW fixes at 02438cc",
       "assignee": "Cortana",
       "project": "platform-foundation"
@@ -5786,6 +5792,48 @@
       "title": "Lane gate self-tests: fix residual LOW-1..LOW-3 from VFL-888 (install_git_stub printf, exact lane counts, stub guard)",
       "assignee": "Halsey",
       "project": "platform-foundation"
+    },
+    "VFL-911": {
+      "status": "done",
+      "completedAt": "2026-10-14T08:31:11.082Z",
+      "title": "Cortana wake: answer pending cards on VFL-703 (push 1c75f13) and VFL-716 (PR #54 second merge-update)",
+      "assignee": "Cortana",
+      "project": "platform-foundation"
+    },
+    "VFL-908": {
+      "status": "blocked",
+      "completedAt": null,
+      "title": "Arbiter wake: run the VFL-891 CodeRabbit review of d12e988 (VFL-777 gate)",
+      "assignee": "Arbiter",
+      "project": "platform-foundation"
+    },
+    "VFL-912": {
+      "status": "done",
+      "completedAt": "2026-10-14T08:29:19.557Z",
+      "title": "Merge-update approval: PR #55 (VFL-862) BEHIND again after #56",
+      "assignee": "Cortana",
+      "project": "platform-foundation"
+    },
+    "VFL-909": {
+      "status": "in_progress",
+      "completedAt": null,
+      "title": "Toolchain provenance guard: cargo recipes refuse a cargo that is not the pinned toolchain",
+      "assignee": "Jorge",
+      "project": "core-libraries"
+    },
+    "VFL-910": {
+      "status": "done",
+      "completedAt": "2026-10-14T08:23:53.621Z",
+      "title": "Merge PR #56: VFL-859 bootstrap eval exit-status docs at `27b76b3`",
+      "assignee": "Cortana",
+      "project": "core-libraries"
+    },
+    "VFL-907": {
+      "status": "done",
+      "completedAt": "2026-10-14T08:13:46.559Z",
+      "title": "Push approval: VFL-859 bootstrap eval exit status at dc16cf6 (merge 27b76b3 with main 0a8e2ec)",
+      "assignee": "Cortana",
+      "project": "core-libraries"
     }
   }
 }
