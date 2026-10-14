@@ -1,5 +1,5 @@
 {
-  "lastRunAt": "2026-10-14T14:07:28Z",
+  "lastRunAt": "2026-10-14T14:35:49Z",
   "phases": {
     "p1_foundation": {
       "label": "1 Foundation",
@@ -6578,7 +6578,7 @@
       "project": "platform-foundation"
     },
     "VFL-1014": {
-      "status": "in_progress",
+      "status": "blocked",
       "completedAt": null,
       "title": "Test Runner: just check + just test-unit on VFL-1009 candidate 0657f78",
       "assignee": "Test Runner",
