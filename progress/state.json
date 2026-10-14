@@ -1,5 +1,5 @@
 {
-  "lastRunAt": "2026-10-14T18:06:00Z",
+  "lastRunAt": "2026-10-14T18:34:00Z",
   "phases": {
     "p1_foundation": {
       "label": "1 Foundation",
@@ -873,18 +873,18 @@
         "VFL-991",
         "VFL-992",
         "VFL-994",
-        "VFL-997",
-        "VFL-998",
         "VFL-995",
         "VFL-996",
+        "VFL-997",
+        "VFL-998",
         "VFL-999",
-        "VFL-1005",
-        "VFL-1004",
-        "VFL-1003",
-        "VFL-1007",
         "VFL-1000",
-        "VFL-1002",
         "VFL-1001",
+        "VFL-1002",
+        "VFL-1003",
+        "VFL-1004",
+        "VFL-1005",
+        "VFL-1007",
         "VFL-1008",
         "VFL-1009",
         "VFL-1010",
@@ -927,7 +927,23 @@
         "VFL-1053",
         "VFL-1055",
         "VFL-1056",
-        "VFL-1057"
+        "VFL-1057",
+        "VFL-1058",
+        "VFL-1059",
+        "VFL-1060",
+        "VFL-1061",
+        "VFL-1062",
+        "VFL-1063",
+        "VFL-1064",
+        "VFL-1065",
+        "VFL-1066",
+        "VFL-1067",
+        "VFL-1068",
+        "VFL-1069",
+        "VFL-1070",
+        "VFL-1071",
+        "VFL-1073",
+        "VFL-1074"
       ]
     }
   },
@@ -3488,7 +3504,7 @@
       "project": "platform-foundation"
     },
     "VFL-490": {
-      "status": "in_progress",
+      "status": "blocked",
       "completedAt": null,
       "title": "Bound the `pins` refusal list: accept the canonical `uses:` form only (VFL-485 Q3)",
       "assignee": "Jorge",
@@ -5252,7 +5268,7 @@
       "project": "platform-foundation"
     },
     "VFL-789": {
-      "status": "in_progress",
+      "status": "blocked",
       "completedAt": null,
       "title": "CI: ci/lane-gate.sh verifies BASE_REF resolves (VFL-729 R1 follow-up)",
       "assignee": "Jorge",
@@ -5546,7 +5562,7 @@
       "project": "platform-foundation"
     },
     "VFL-837": {
-      "status": "in_progress",
+      "status": "blocked",
       "completedAt": null,
       "title": "CI: wire ci/lane-gate.sh pins as the uses-pins check in lane-gate.yml and the Tekton lane-gate pipeline (VFL-827)",
       "assignee": "Jorge",
@@ -6344,7 +6360,7 @@
       "project": "platform-foundation"
     },
     "VFL-974": {
-      "status": "blocked",
+      "status": "in_progress",
       "completedAt": null,
       "title": "CI on Tekton (3c.1/4): cancel a pull request's superseded runs on synchronize (VFL-948 finding 2)",
       "assignee": "Jorge",
@@ -6490,14 +6506,14 @@
       "project": "platform-foundation"
     },
     "VFL-997": {
-      "status": "in_progress",
-      "completedAt": null,
+      "status": "done",
+      "completedAt": "2026-10-14T18:25:35.604Z",
       "title": "CI: reword .tekton/tasks/lane-gate.yaml base-commit description after VFL-696 (erosion counts at the merge-base)",
       "assignee": "Jorge",
       "project": "platform-foundation"
     },
     "VFL-998": {
-      "status": "blocked",
+      "status": "in_review",
       "completedAt": null,
       "title": "Tests: pin erosion merge-base assertions in ci/lane-gate-test.sh cases 149 and 152 (VFL-696 Opus LOW-1/LOW-2)",
       "assignee": "Halsey",
@@ -6763,8 +6779,8 @@
       "project": "platform-foundation"
     },
     "VFL-1041": {
-      "status": "in_progress",
-      "completedAt": null,
+      "status": "done",
+      "completedAt": "2026-10-14T18:10:15.338Z",
       "title": "Opus Reviewer: review VFL-998 erosion merge-base assertion pins (d01e72b)",
       "assignee": "Opus Reviewer",
       "project": "platform-foundation"
@@ -6819,8 +6835,8 @@
       "project": "platform-foundation"
     },
     "VFL-1049": {
-      "status": "todo",
-      "completedAt": null,
+      "status": "done",
+      "completedAt": "2026-10-14T18:23:00.501Z",
       "title": "Opus Reviewer: review VFL-974 Tekton supersede control (261cf1d)",
       "assignee": "Opus Reviewer",
       "project": "platform-foundation"
@@ -6840,38 +6856,150 @@
       "project": "platform-foundation"
     },
     "VFL-1052": {
-      "status": "in_progress",
-      "completedAt": null,
+      "status": "done",
+      "completedAt": "2026-10-14T18:15:53.034Z",
       "title": "CodeRabbit review: uses-pins check, round 4 candidate (72d6caa, VFL-837)",
       "assignee": "Arbiter",
       "project": "platform-foundation"
     },
     "VFL-1053": {
-      "status": "todo",
-      "completedAt": null,
+      "status": "done",
+      "completedAt": "2026-10-14T18:29:54.857Z",
       "title": "Opus Reviewer review: uses-pins check, round 4 candidate (72d6caa, VFL-837)",
       "assignee": "Opus Reviewer",
       "project": "platform-foundation"
     },
     "VFL-1055": {
-      "status": "in_progress",
-      "completedAt": null,
+      "status": "done",
+      "completedAt": "2026-10-14T18:22:21.367Z",
       "title": "CodeRabbit review: VFL-734 erosion rustdoc-fence demotion `fe833f0` (code + VFL-1044 fixtures)",
       "assignee": "Arbiter",
       "project": "platform-foundation"
     },
     "VFL-1056": {
-      "status": "todo",
+      "status": "in_progress",
       "completedAt": null,
       "title": "Opus Reviewer: VFL-734 erosion rustdoc-fence demotion `fe833f0` (code + VFL-1044 fixtures)",
       "assignee": "Opus Reviewer",
       "project": "platform-foundation"
     },
     "VFL-1057": {
-      "status": "in_progress",
-      "completedAt": null,
+      "status": "done",
+      "completedAt": "2026-10-14T18:08:04.492Z",
       "title": "Test Runner: VFL-734 erosion rustdoc-fence demotion `fe833f0`",
       "assignee": "Test Runner",
+      "project": "platform-foundation"
+    },
+    "VFL-1058": {
+      "status": "done",
+      "completedAt": "2026-10-14T18:09:56.736Z",
+      "title": "Cortana wake: answer card 780c6df8 on VFL-490 (renumber map 149-163 -> 153-167, condition 4)",
+      "assignee": "Cortana",
+      "project": "platform-foundation"
+    },
+    "VFL-1059": {
+      "status": "done",
+      "completedAt": "2026-10-14T18:14:29.354Z",
+      "title": "Push approval: VFL-997 lane-gate.yaml base-commit description at 376e232",
+      "assignee": "Cortana",
+      "project": "platform-foundation"
+    },
+    "VFL-1060": {
+      "status": "in_progress",
+      "completedAt": null,
+      "title": "CodeRabbit delta review: VFL-490 merge head 2198fd5 (PR #63 conflict resolution)",
+      "assignee": "Arbiter",
+      "project": "platform-foundation"
+    },
+    "VFL-1061": {
+      "status": "todo",
+      "completedAt": null,
+      "title": "Opus Reviewer delta review: VFL-490 merge head 2198fd5 (PR #63 conflict resolution)",
+      "assignee": "Opus Reviewer",
+      "project": "platform-foundation"
+    },
+    "VFL-1062": {
+      "status": "done",
+      "completedAt": "2026-10-14T18:17:57.005Z",
+      "title": "Test Runner: lane-gate self-test, discrimination and mutants for VFL-490 (2198fd5)",
+      "assignee": "Test Runner",
+      "project": "platform-foundation"
+    },
+    "VFL-1063": {
+      "status": "in_progress",
+      "completedAt": null,
+      "title": "CI: prose-only cleanup of stale pre-VFL-696 base-tip text (Opus LOW-1..4 from VFL-1038)",
+      "assignee": "Jorge",
+      "project": "platform-foundation"
+    },
+    "VFL-1064": {
+      "status": "done",
+      "completedAt": "2026-10-14T18:24:05.470Z",
+      "title": "Test Runner: lane gate, self-test and YAML parse, uses-pins round 4 candidate (72d6caa, VFL-837)",
+      "assignee": "Test Runner",
+      "project": "platform-foundation"
+    },
+    "VFL-1065": {
+      "status": "in_progress",
+      "completedAt": null,
+      "title": "VFL-837 (continued): push request and PR #60 for round 4 candidate 72d6caa (uses-pins check)",
+      "assignee": "Jorge",
+      "project": "platform-foundation"
+    },
+    "VFL-1066": {
+      "status": "blocked",
+      "completedAt": null,
+      "title": "VFL-490 continuation: re-gate, push and merge of PR #63 head 2198fd5",
+      "assignee": "Jorge",
+      "project": "platform-foundation"
+    },
+    "VFL-1067": {
+      "status": "done",
+      "completedAt": "2026-10-14T18:24:13.547Z",
+      "title": "Merge PR #66 (VFL-997) at `376e232`",
+      "assignee": "Cortana",
+      "project": "platform-foundation"
+    },
+    "VFL-1068": {
+      "status": "done",
+      "completedAt": "2026-10-14T18:27:38.077Z",
+      "title": "CodeRabbit review: lane-gate base-ref check (61de358, VFL-789)",
+      "assignee": "Arbiter",
+      "project": "platform-foundation"
+    },
+    "VFL-1069": {
+      "status": "todo",
+      "completedAt": null,
+      "title": "Opus Reviewer review: lane-gate base-ref check (61de358, VFL-789)",
+      "assignee": "Opus Reviewer",
+      "project": "platform-foundation"
+    },
+    "VFL-1070": {
+      "status": "done",
+      "completedAt": "2026-10-14T18:27:26.546Z",
+      "title": "Test Runner: lane gate and self-test on the base-ref check candidate (61de358, VFL-789)",
+      "assignee": "Test Runner",
+      "project": "platform-foundation"
+    },
+    "VFL-1071": {
+      "status": "in_progress",
+      "completedAt": null,
+      "title": "Cortana wake: answer push card 4a95add4 on VFL-998 (erosion merge-base assertion pins)",
+      "assignee": "Cortana",
+      "project": "platform-foundation"
+    },
+    "VFL-1073": {
+      "status": "todo",
+      "completedAt": null,
+      "title": "CodeRabbit review: VFL-1063 base-tip prose cleanup `fc17154`",
+      "assignee": "Arbiter",
+      "project": "platform-foundation"
+    },
+    "VFL-1074": {
+      "status": "todo",
+      "completedAt": null,
+      "title": "Opus Reviewer: VFL-1063 base-tip prose cleanup `fc17154`",
+      "assignee": "Opus Reviewer",
       "project": "platform-foundation"
     }
   }
