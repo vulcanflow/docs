@@ -1,5 +1,5 @@
 {
-  "lastRunAt": "2026-10-14T08:37:26Z",
+  "lastRunAt": "2026-10-14T09:26:17Z",
   "phases": {
     "p1_foundation": {
       "label": "1 Foundation",
@@ -797,7 +797,26 @@
         "VFL-912",
         "VFL-907",
         "VFL-909",
-        "VFL-910"
+        "VFL-910",
+        "VFL-914",
+        "VFL-915",
+        "VFL-916",
+        "VFL-917",
+        "VFL-918",
+        "VFL-919",
+        "VFL-920",
+        "VFL-921",
+        "VFL-922",
+        "VFL-923",
+        "VFL-924",
+        "VFL-925",
+        "VFL-926",
+        "VFL-928",
+        "VFL-929",
+        "VFL-930",
+        "VFL-931",
+        "VFL-932",
+        "VFL-933"
       ]
     }
   },
@@ -924,7 +943,7 @@
     "VFL-52": {
       "status": "done",
       "completedAt": "2026-10-05T21:35:57.245Z",
-      "title": "F1 scaffold complete at d61b43f — carries the VFL-9 report (my run cannot write to VFL-9), two decisions for Cortana",
+      "title": "F1 scaffold complete at d61b43f \u2014 carries the VFL-9 report (my run cannot write to VFL-9), two decisions for Cortana",
       "assignee": "Cortana",
       "project": "platform-foundation"
     },
@@ -952,7 +971,7 @@
     "VFL-529": {
       "status": "done",
       "completedAt": "2026-10-08T23:20:02.579Z",
-      "title": "Test Runner: record H2 b6f1488 — T2 scope pack, just check, just test-unit, fuzz-check (VFL-507/VFL-460)",
+      "title": "Test Runner: record H2 b6f1488 \u2014 T2 scope pack, just check, just test-unit, fuzz-check (VFL-507/VFL-460)",
       "assignee": "Test Runner",
       "project": "core-libraries"
     },
@@ -1400,7 +1419,7 @@
     "VFL-458": {
       "status": "done",
       "completedAt": "2026-10-08T11:22:05.407Z",
-      "title": "Halsey run has no GitHub identity (github_identity_unavailable) — blocks VFL-456 rebase/push of PR #18",
+      "title": "Halsey run has no GitHub identity (github_identity_unavailable) \u2014 blocks VFL-456 rebase/push of PR #18",
       "assignee": "MasterChief",
       "project": "platform-foundation"
     },
@@ -1470,7 +1489,7 @@
     "VFL-415": {
       "status": "done",
       "completedAt": "2026-10-08T10:07:14.686Z",
-      "title": "Push approval: C2 vf-core::scope — reviewed fbf6342, or re-parented 5d6eac2 (VFL-15)",
+      "title": "Push approval: C2 vf-core::scope \u2014 reviewed fbf6342, or re-parented 5d6eac2 (VFL-15)",
       "assignee": "Cortana",
       "project": "core-libraries"
     },
@@ -1491,7 +1510,7 @@
     "VFL-431": {
       "status": "done",
       "completedAt": "2026-10-08T09:57:52.398Z",
-      "title": "Test Runner: re-record C2 at 5d6eac2 + T2 a0cbdf1 — pack 66/66, clippy, deny, audit (VFL-15)",
+      "title": "Test Runner: re-record C2 at 5d6eac2 + T2 a0cbdf1 \u2014 pack 66/66, clippy, deny, audit (VFL-15)",
       "assignee": "Test Runner",
       "project": "core-libraries"
     },
@@ -1645,7 +1664,7 @@
     "VFL-383": {
       "status": "done",
       "completedAt": "2026-10-08T06:32:17.009Z",
-      "title": "Re-parent the reviewed scope fuzz harness (12801bf) onto the test lane — it currently fails the lane gate",
+      "title": "Re-parent the reviewed scope fuzz harness (12801bf) onto the test lane \u2014 it currently fails the lane gate",
       "assignee": "Halsey",
       "project": "core-libraries"
     },
@@ -2065,7 +2084,7 @@
     "VFL-235": {
       "status": "done",
       "completedAt": "2026-10-07T08:22:58.380Z",
-      "title": "Ruling: §15.1 vs §A3.8 observation edges for C1 (VFL-233 MEDIUM-1)",
+      "title": "Ruling: \u00a715.1 vs \u00a7A3.8 observation edges for C1 (VFL-233 MEDIUM-1)",
       "assignee": "Cortana",
       "project": "core-libraries"
     },
@@ -2107,7 +2126,7 @@
     "VFL-208": {
       "status": "done",
       "completedAt": "2026-10-07T07:29:16.097Z",
-      "title": "Clear VFL-14 → VFL-112 blocker deadlock so T1a can start on C1 candidate 18258f0",
+      "title": "Clear VFL-14 \u2192 VFL-112 blocker deadlock so T1a can start on C1 candidate 18258f0",
       "assignee": "Halsey",
       "project": "core-libraries"
     },
@@ -2212,7 +2231,7 @@
     "VFL-173": {
       "status": "done",
       "completedAt": "2026-10-06T21:33:38.233Z",
-      "title": "§A5 ruling: RUSTSEC-2023-0071 (`rsa` via jsonwebtoken `rust_crypto`): exception or alternative",
+      "title": "\u00a7A5 ruling: RUSTSEC-2023-0071 (`rsa` via jsonwebtoken `rust_crypto`): exception or alternative",
       "assignee": "Cortana",
       "project": "platform-foundation"
     },
@@ -2282,7 +2301,7 @@
     "VFL-113": {
       "status": "blocked",
       "completedAt": null,
-      "title": "T1b test pack: vf-meter accounting — reserve/settle/release, admission, ledger (covers C4)",
+      "title": "T1b test pack: vf-meter accounting \u2014 reserve/settle/release, admission, ledger (covers C4)",
       "assignee": "Halsey",
       "project": "test-packs"
     },
@@ -2625,7 +2644,7 @@
     "VFL-410": {
       "status": "blocked",
       "completedAt": null,
-      "title": "F2f. graph-rules: vf-testkit may only be a dev-dependency (§A1.4, LOW-17)",
+      "title": "F2f. graph-rules: vf-testkit may only be a dev-dependency (\u00a7A1.4, LOW-17)",
       "assignee": "Jorge",
       "project": "platform-foundation"
     },
@@ -2702,7 +2721,7 @@
     "VFL-407": {
       "status": "done",
       "completedAt": "2026-10-08T09:46:24.969Z",
-      "title": "Architect: C1 residual dispositions and §A3 records (from VFL-240 gate-record)",
+      "title": "Architect: C1 residual dispositions and \u00a7A3 records (from VFL-240 gate-record)",
       "assignee": "Cortana",
       "project": "core-libraries"
     },
@@ -2912,7 +2931,7 @@
     "VFL-291": {
       "status": "done",
       "completedAt": "2026-10-07T18:40:28.765Z",
-      "title": "Architecture: bound the §A5 validation error list (truncation marker) — follow-up from G1 D6",
+      "title": "Architecture: bound the \u00a7A5 validation error list (truncation marker) \u2014 follow-up from G1 D6",
       "assignee": "Cortana",
       "project": "graph-and-execution-contracts"
     },
@@ -2961,7 +2980,7 @@
     "VFL-228": {
       "status": "done",
       "completedAt": "2026-10-07T07:45:58.022Z",
-      "title": "Cortana ruling: LSan-ptrace exit-1 (zero panics) — does it satisfy VFL-200's fuzz acceptance criterion?",
+      "title": "Cortana ruling: LSan-ptrace exit-1 (zero panics) \u2014 does it satisfy VFL-200's fuzz acceptance criterion?",
       "assignee": "Cortana",
       "project": "core-libraries"
     },
@@ -3024,7 +3043,7 @@
     "VFL-78": {
       "status": "done",
       "completedAt": "2026-10-06T10:33:26.997Z",
-      "title": "Architect ruling: §A5 revision 4 TLS sentence vs the reqwest rustls-no-provider row",
+      "title": "Architect ruling: \u00a7A5 revision 4 TLS sentence vs the reqwest rustls-no-provider row",
       "assignee": "Cortana",
       "project": "platform-foundation"
     },
@@ -3206,7 +3225,7 @@
     "VFL-361": {
       "status": "cancelled",
       "completedAt": null,
-      "title": "Test Runner: VFL-185 candidate cccd3c1 — Part A2, workspace build + test (heaviest step)",
+      "title": "Test Runner: VFL-185 candidate cccd3c1 \u2014 Part A2, workspace build + test (heaviest step)",
       "assignee": "Test Runner",
       "project": "core-libraries"
     },
@@ -3248,14 +3267,14 @@
     "VFL-536": {
       "status": "done",
       "completedAt": "2026-10-08T22:06:08.678Z",
-      "title": "Decide: compile doctests in the gate (cargo test --doc) — Opus info note on VFL-411",
+      "title": "Decide: compile doctests in the gate (cargo test --doc) \u2014 Opus info note on VFL-411",
       "assignee": "Cortana",
       "project": "platform-foundation"
     },
     "VFL-538": {
       "status": "blocked",
       "completedAt": null,
-      "title": "F2h: compile doctests in the gate — `test-doc` recipe, `test-unit` depends on it (VFL-536)",
+      "title": "F2h: compile doctests in the gate \u2014 `test-doc` recipe, `test-unit` depends on it (VFL-536)",
       "assignee": "Jorge",
       "project": "platform-foundation"
     },
@@ -3304,14 +3323,14 @@
     "VFL-495": {
       "status": "done",
       "completedAt": "2026-10-09T14:01:51.841Z",
-      "title": "T2 fuzz follow-up: force ≥1 label in canonical_host Descendant arm (residual LOW, PR #26)",
+      "title": "T2 fuzz follow-up: force \u22651 label in canonical_host Descendant arm (residual LOW, PR #26)",
       "assignee": "Cortana",
       "project": "core-libraries"
     },
     "VFL-80": {
       "status": "blocked",
       "completedAt": null,
-      "title": "graph-rules rule 3: every TLS-initiating binary resolves rustls `ring` on its own (§A5 rev 5)",
+      "title": "graph-rules rule 3: every TLS-initiating binary resolves rustls `ring` on its own (\u00a7A5 rev 5)",
       "assignee": "Jorge",
       "project": "platform-foundation"
     },
@@ -3612,21 +3631,21 @@
     "VFL-362": {
       "status": "cancelled",
       "completedAt": null,
-      "title": "Test Runner: VFL-185 candidate cccd3c1 — Part A3, wasm build + just checks",
+      "title": "Test Runner: VFL-185 candidate cccd3c1 \u2014 Part A3, wasm build + just checks",
       "assignee": "Test Runner",
       "project": "core-libraries"
     },
     "VFL-363": {
       "status": "done",
       "completedAt": "2026-10-07T22:52:04.785Z",
-      "title": "Test Runner: VFL-185 candidate cccd3c1 — Parts B/C/D, fault-injection scenarios",
+      "title": "Test Runner: VFL-185 candidate cccd3c1 \u2014 Parts B/C/D, fault-injection scenarios",
       "assignee": "Test Runner",
       "project": "core-libraries"
     },
     "VFL-360": {
       "status": "done",
       "completedAt": "2026-10-07T22:44:30.120Z",
-      "title": "Test Runner: VFL-185 candidate cccd3c1 — Part A1, bootstrap AC4 idempotency (no build)",
+      "title": "Test Runner: VFL-185 candidate cccd3c1 \u2014 Part A1, bootstrap AC4 idempotency (no build)",
       "assignee": "Test Runner",
       "project": "core-libraries"
     },
@@ -3640,21 +3659,21 @@
     "VFL-82": {
       "status": "done",
       "completedAt": "2026-10-07T21:55:44.248Z",
-      "title": "README: cite §A5 revision 5, not revision 4",
+      "title": "README: cite \u00a7A5 revision 5, not revision 4",
       "assignee": "Jorge",
       "project": "platform-foundation"
     },
     "VFL-350": {
       "status": "done",
       "completedAt": "2026-10-07T21:51:16.114Z",
-      "title": "Merge PR #22: VFL-82 README §A5 revision 5 at 9bc3ea1",
+      "title": "Merge PR #22: VFL-82 README \u00a7A5 revision 5 at 9bc3ea1",
       "assignee": "Cortana",
       "project": "platform-foundation"
     },
     "VFL-345": {
       "status": "done",
       "completedAt": "2026-10-07T21:39:05.063Z",
-      "title": "Push approval: VFL-82 README §A5 revision citation at 470c2a0",
+      "title": "Push approval: VFL-82 README \u00a7A5 revision citation at 470c2a0",
       "assignee": "Cortana",
       "project": "platform-foundation"
     },
@@ -3871,7 +3890,7 @@
     "VFL-202": {
       "status": "done",
       "completedAt": "2026-10-06T22:56:06.613Z",
-      "title": "Cortana: rule on §A5 pin and deny/audit scope for the test-lane fuzz workspace (from VFL-199 F5)",
+      "title": "Cortana: rule on \u00a7A5 pin and deny/audit scope for the test-lane fuzz workspace (from VFL-199 F5)",
       "assignee": "Cortana",
       "project": "core-libraries"
     },
@@ -3885,14 +3904,14 @@
     "VFL-177": {
       "status": "backlog",
       "completedAt": null,
-      "title": "Decide: project-controlled image mirror for the §A5 compose pin set (MinIO digest first)",
+      "title": "Decide: project-controlled image mirror for the \u00a7A5 compose pin set (MinIO digest first)",
       "assignee": "MasterChief",
       "project": "platform-foundation"
     },
     "VFL-176": {
       "status": "backlog",
       "completedAt": null,
-      "title": "§A5 follow-up: retire the RUSTSEC-2023-0071 (`rsa` Marvin) exception when a patched `rsa` ships",
+      "title": "\u00a7A5 follow-up: retire the RUSTSEC-2023-0071 (`rsa` Marvin) exception when a patched `rsa` ships",
       "assignee": "Jorge",
       "project": "platform-foundation"
     },
@@ -3913,7 +3932,7 @@
     "VFL-98": {
       "status": "done",
       "completedAt": "2026-10-06T11:40:01.593Z",
-      "title": "§A5 ruling: keep both cargo-deny advisories and cargo-audit in `just check`, or collapse to one",
+      "title": "\u00a7A5 ruling: keep both cargo-deny advisories and cargo-audit in `just check`, or collapse to one",
       "assignee": "Cortana",
       "project": "platform-foundation"
     },
@@ -3976,7 +3995,7 @@
     "VFL-115": {
       "status": "done",
       "completedAt": "2026-10-06T14:01:07.885Z",
-      "title": "Opus Reviewer review: VFL-82 README §A5 revision citation (470c2a0)",
+      "title": "Opus Reviewer review: VFL-82 README \u00a7A5 revision citation (470c2a0)",
       "assignee": "Opus Reviewer",
       "project": "platform-foundation"
     },
@@ -4025,14 +4044,14 @@
     "VFL-114": {
       "status": "done",
       "completedAt": "2026-10-06T12:54:02.077Z",
-      "title": "Arbiter review: VFL-82 README §A5 revision citation (470c2a0)",
+      "title": "Arbiter review: VFL-82 README \u00a7A5 revision citation (470c2a0)",
       "assignee": "Arbiter",
       "project": "platform-foundation"
     },
     "VFL-81": {
       "status": "backlog",
       "completedAt": null,
-      "title": "T9 assertion: per-binary rustls `ring` provider (§A5 rev 5)",
+      "title": "T9 assertion: per-binary rustls `ring` provider (\u00a7A5 rev 5)",
       "assignee": "Halsey",
       "project": "platform-foundation"
     },
@@ -4060,7 +4079,7 @@
     "VFL-587": {
       "status": "done",
       "completedAt": "2026-10-09T12:40:24.250Z",
-      "title": "Test Runner: record M 7ae4351 — merge of origin/main into H2, T2 scope pack, just check, just test-unit, fuzz-check (VFL-581)",
+      "title": "Test Runner: record M 7ae4351 \u2014 merge of origin/main into H2, T2 scope pack, just check, just test-unit, fuzz-check (VFL-581)",
       "assignee": "Test Runner",
       "project": "core-libraries"
     },
@@ -4123,21 +4142,21 @@
     "VFL-585": {
       "status": "done",
       "completedAt": "2026-10-08T23:45:12.782Z",
-      "title": "Ruling: fuzz lane C/C++ env — zig toolchain/env.sh or VFL-201 fuzz-cxx (gcc-14)?",
+      "title": "Ruling: fuzz lane C/C++ env \u2014 zig toolchain/env.sh or VFL-201 fuzz-cxx (gcc-14)?",
       "assignee": "Cortana",
       "project": "core-libraries"
     },
     "VFL-584": {
       "status": "done",
       "completedAt": "2026-10-08T23:42:52.121Z",
-      "title": "Test Runner: VFL-573 r2 — self-test + just fuzz-check on H2 b6f1488 (c++ f9fe329)",
+      "title": "Test Runner: VFL-573 r2 \u2014 self-test + just fuzz-check on H2 b6f1488 (c++ f9fe329)",
       "assignee": "Test Runner",
       "project": "core-libraries"
     },
     "VFL-592": {
       "status": "done",
       "completedAt": "2026-10-09T01:39:10.851Z",
-      "title": "Toolchain: zig shim follow-up — -Xlinker pair, sibling linker wrappers + env.sh export, self-test gaps (VFL-573 LOWs)",
+      "title": "Toolchain: zig shim follow-up \u2014 -Xlinker pair, sibling linker wrappers + env.sh export, self-test gaps (VFL-573 LOWs)",
       "assignee": "Jorge",
       "project": "core-libraries"
     },
@@ -4165,7 +4184,7 @@
     "VFL-599": {
       "status": "done",
       "completedAt": "2026-10-09T01:16:17.885Z",
-      "title": "Test Runner: VFL-592 c1 — self-test + just fuzz-check on H2 b6f1488 (cc 18b7327)",
+      "title": "Test Runner: VFL-592 c1 \u2014 self-test + just fuzz-check on H2 b6f1488 (cc 18b7327)",
       "assignee": "Test Runner",
       "project": "core-libraries"
     },
@@ -4270,7 +4289,7 @@
     "VFL-628": {
       "status": "done",
       "completedAt": "2026-10-09T08:41:52.352Z",
-      "title": "Run the required tests on c0b7127: cross toolchain bootstrap (VFL-151) — continuation of VFL-398",
+      "title": "Run the required tests on c0b7127: cross toolchain bootstrap (VFL-151) \u2014 continuation of VFL-398",
       "assignee": "Test Runner",
       "project": "core-libraries"
     },
@@ -4298,7 +4317,7 @@
     "VFL-633": {
       "status": "done",
       "completedAt": "2026-10-09T08:54:30.998Z",
-      "title": "Rebase jorge/vfl-151-cross-toolchain-r3 onto current main — lane-gate fails on stale branch",
+      "title": "Rebase jorge/vfl-151-cross-toolchain-r3 onto current main \u2014 lane-gate fails on stale branch",
       "assignee": "Jorge",
       "project": "core-libraries"
     },
@@ -4431,7 +4450,7 @@
     "VFL-657": {
       "status": "blocked",
       "completedAt": null,
-      "title": "Gate lane for runtime-free crate test packs: test-pack recipe, test-unit depends on it (VFL-655 §3)",
+      "title": "Gate lane for runtime-free crate test packs: test-pack recipe, test-unit depends on it (VFL-655 \u00a73)",
       "assignee": "Jorge",
       "project": "platform-foundation"
     },
@@ -4508,14 +4527,14 @@
     "VFL-671": {
       "status": "done",
       "completedAt": "2026-10-09T13:25:33.193Z",
-      "title": "Opus Reviewer: independent review of f537171 — fuzz canonical_host Descendant guard + scope_match use-list (VFL-495)",
+      "title": "Opus Reviewer: independent review of f537171 \u2014 fuzz canonical_host Descendant guard + scope_match use-list (VFL-495)",
       "assignee": "Opus Reviewer",
       "project": "core-libraries"
     },
     "VFL-672": {
       "status": "done",
       "completedAt": "2026-10-09T13:25:07.417Z",
-      "title": "Arbiter (CodeRabbit): review f537171 — fuzz canonical_host Descendant guard + scope_match use-list (VFL-495)",
+      "title": "Arbiter (CodeRabbit): review f537171 \u2014 fuzz canonical_host Descendant guard + scope_match use-list (VFL-495)",
       "assignee": "Arbiter",
       "project": "core-libraries"
     },
@@ -4571,14 +4590,14 @@
     "VFL-683": {
       "status": "done",
       "completedAt": "2026-10-09T14:20:40.019Z",
-      "title": "Opus Reviewer: independent review of 5b1f4d9 — fuzz Descendant guard comment 'documented above' (VFL-677)",
+      "title": "Opus Reviewer: independent review of 5b1f4d9 \u2014 fuzz Descendant guard comment 'documented above' (VFL-677)",
       "assignee": "Opus Reviewer",
       "project": "core-libraries"
     },
     "VFL-684": {
       "status": "done",
       "completedAt": "2026-10-09T14:28:45.333Z",
-      "title": "Arbiter (CodeRabbit): review 5b1f4d9 — fuzz Descendant guard comment 'documented above' (VFL-677)",
+      "title": "Arbiter (CodeRabbit): review 5b1f4d9 \u2014 fuzz Descendant guard comment 'documented above' (VFL-677)",
       "assignee": "Arbiter",
       "project": "core-libraries"
     },
@@ -4697,7 +4716,7 @@
     "VFL-708": {
       "status": "done",
       "completedAt": "2026-10-13T15:34:47.462Z",
-      "title": "Bump ammonia pin =4.2.1 → =4.2.3: RUSTSEC-2021-0157/0158 make cargo deny red on main (blocks PR #40 merge)",
+      "title": "Bump ammonia pin =4.2.1 \u2192 =4.2.3: RUSTSEC-2021-0157/0158 make cargo deny red on main (blocks PR #40 merge)",
       "assignee": "Cortana",
       "project": "core-libraries"
     },
@@ -5045,7 +5064,7 @@
       "project": "platform-foundation"
     },
     "VFL-777": {
-      "status": "blocked",
+      "status": "in_progress",
       "completedAt": null,
       "title": "CI on Tekton (3c/4): webhook starts vf-lane-gate and vf-rust-check for same-repo pull requests",
       "assignee": "Jorge",
@@ -5563,8 +5582,8 @@
       "project": "platform-foundation"
     },
     "VFL-862": {
-      "status": "in_progress",
-      "completedAt": null,
+      "status": "done",
+      "completedAt": "2026-10-14T08:38:27.908Z",
       "title": "Lane gate: fix LOW-1..LOW-4 from the VFL-836 review (README/comment accuracy, fail-closed self-tests)",
       "assignee": "Jorge",
       "project": "platform-foundation"
@@ -5696,8 +5715,8 @@
       "project": "platform-foundation"
     },
     "VFL-891": {
-      "status": "in_progress",
-      "completedAt": null,
+      "status": "done",
+      "completedAt": "2026-10-14T09:05:32.283Z",
       "title": "CodeRabbit review: VFL-777 Tekton PR trigger and egress policy (d12e988)",
       "assignee": "Arbiter",
       "project": "platform-foundation"
@@ -5745,7 +5764,7 @@
       "project": "core-libraries"
     },
     "VFL-899": {
-      "status": "in_progress",
+      "status": "blocked",
       "completedAt": null,
       "title": "Bootstrap text residuals: --env-only shim advice, header/README failure mode, wait-message value, usage header (VFL-858 F1)",
       "assignee": "Jorge",
@@ -5787,7 +5806,7 @@
       "project": "platform-foundation"
     },
     "VFL-905": {
-      "status": "blocked",
+      "status": "in_progress",
       "completedAt": null,
       "title": "Lane gate self-tests: fix residual LOW-1..LOW-3 from VFL-888 (install_git_stub printf, exact lane counts, stub guard)",
       "assignee": "Halsey",
@@ -5801,8 +5820,8 @@
       "project": "platform-foundation"
     },
     "VFL-908": {
-      "status": "blocked",
-      "completedAt": null,
+      "status": "done",
+      "completedAt": "2026-10-14T09:12:14.077Z",
       "title": "Arbiter wake: run the VFL-891 CodeRabbit review of d12e988 (VFL-777 gate)",
       "assignee": "Arbiter",
       "project": "platform-foundation"
@@ -5815,7 +5834,7 @@
       "project": "platform-foundation"
     },
     "VFL-909": {
-      "status": "in_progress",
+      "status": "blocked",
       "completedAt": null,
       "title": "Toolchain provenance guard: cargo recipes refuse a cargo that is not the pinned toolchain",
       "assignee": "Jorge",
@@ -5833,6 +5852,139 @@
       "completedAt": "2026-10-14T08:13:46.559Z",
       "title": "Push approval: VFL-859 bootstrap eval exit status at dc16cf6 (merge 27b76b3 with main 0a8e2ec)",
       "assignee": "Cortana",
+      "project": "core-libraries"
+    },
+    "VFL-914": {
+      "status": "done",
+      "completedAt": "2026-10-14T08:35:48.075Z",
+      "title": "Merge PR #55 (VFL-862) at 66d3053: all checks green",
+      "assignee": "Cortana",
+      "project": "platform-foundation"
+    },
+    "VFL-915": {
+      "status": "done",
+      "completedAt": "2026-10-14T08:41:01.148Z",
+      "title": "CodeRabbit review: VFL-899 bootstrap text residuals candidate 4c10c5e",
+      "assignee": "Arbiter",
+      "project": "core-libraries"
+    },
+    "VFL-916": {
+      "status": "done",
+      "completedAt": "2026-10-14T08:45:27.752Z",
+      "title": "Opus Reviewer: review VFL-899 bootstrap text residuals candidate 4c10c5e",
+      "assignee": "Opus Reviewer",
+      "project": "core-libraries"
+    },
+    "VFL-917": {
+      "status": "done",
+      "completedAt": "2026-10-14T08:43:03.876Z",
+      "title": "Test Runner: VFL-899 4c10c5e, healthy tree, damaged-tree and shim messages, lock wait",
+      "assignee": "Test Runner",
+      "project": "core-libraries"
+    },
+    "VFL-918": {
+      "status": "done",
+      "completedAt": "2026-10-14T08:43:32.489Z",
+      "title": "CodeRabbit review: VFL-909 toolchain provenance guard, candidate 76957d4",
+      "assignee": "Arbiter",
+      "project": "core-libraries"
+    },
+    "VFL-919": {
+      "status": "done",
+      "completedAt": "2026-10-14T08:57:48.644Z",
+      "title": "Opus Reviewer: review VFL-909 toolchain provenance guard, candidate 76957d4",
+      "assignee": "Opus Reviewer",
+      "project": "core-libraries"
+    },
+    "VFL-920": {
+      "status": "done",
+      "completedAt": "2026-10-14T08:48:03.240Z",
+      "title": "PR #37: merge main (#55) into d984e5e and resolve ci/lane-gate-test.sh (local merge commit)",
+      "assignee": "Halsey",
+      "project": "platform-foundation"
+    },
+    "VFL-921": {
+      "status": "done",
+      "completedAt": "2026-10-14T08:55:21.923Z",
+      "title": "CodeRabbit review: VFL-905 lane-gate self-test LOW fixes (3d33581)",
+      "assignee": "Arbiter",
+      "project": "platform-foundation"
+    },
+    "VFL-922": {
+      "status": "done",
+      "completedAt": "2026-10-14T09:05:32.085Z",
+      "title": "Opus Reviewer: review VFL-905 lane-gate self-test LOW fixes (3d33581)",
+      "assignee": "Opus Reviewer",
+      "project": "platform-foundation"
+    },
+    "VFL-923": {
+      "status": "done",
+      "completedAt": "2026-10-14T09:03:02.186Z",
+      "title": "Test Runner: lane-gate self-test run + mutation check on VFL-905 candidate (3d33581)",
+      "assignee": "Test Runner",
+      "project": "platform-foundation"
+    },
+    "VFL-924": {
+      "status": "done",
+      "completedAt": "2026-10-14T09:07:53.744Z",
+      "title": "CodeRabbit review: VFL-899 bootstrap text residuals round 2, candidate 4d860d4",
+      "assignee": "Arbiter",
+      "project": "core-libraries"
+    },
+    "VFL-925": {
+      "status": "blocked",
+      "completedAt": null,
+      "title": "Opus Reviewer: review VFL-899 bootstrap text residuals round 2, candidate 4d860d4",
+      "assignee": "Opus Reviewer",
+      "project": "core-libraries"
+    },
+    "VFL-926": {
+      "status": "in_progress",
+      "completedAt": null,
+      "title": "Test Runner: VFL-899 4d860d4, healthy tree, damaged-tree and shim messages, lock wait",
+      "assignee": "Test Runner",
+      "project": "core-libraries"
+    },
+    "VFL-928": {
+      "status": "in_progress",
+      "completedAt": null,
+      "title": "Test Runner: VFL-909 6799f7f, toolchain provenance guard, wiring, recipes, lane gate",
+      "assignee": "Test Runner",
+      "project": "core-libraries"
+    },
+    "VFL-929": {
+      "status": "in_progress",
+      "completedAt": null,
+      "title": "CodeRabbit review round 9: PR #37 re-merge of main after #55, lane-gate pins (0d6b7a7, VFL-122)",
+      "assignee": "Arbiter",
+      "project": "platform-foundation"
+    },
+    "VFL-930": {
+      "status": "in_progress",
+      "completedAt": null,
+      "title": "Opus Reviewer review round 9: PR #37 re-merge of main after #55, lane-gate pins (0d6b7a7, VFL-122)",
+      "assignee": "Opus Reviewer",
+      "project": "platform-foundation"
+    },
+    "VFL-931": {
+      "status": "todo",
+      "completedAt": null,
+      "title": "Test Runner: lane gate and lane-gate self-test on the PR #37 re-merge of main after #55 (0d6b7a7, VFL-122)",
+      "assignee": "Test Runner",
+      "project": "platform-foundation"
+    },
+    "VFL-932": {
+      "status": "blocked",
+      "completedAt": null,
+      "title": "CodeRabbit review: VFL-909 toolchain provenance guard, candidate 6799f7f (rebased + LOW-3)",
+      "assignee": "Arbiter",
+      "project": "core-libraries"
+    },
+    "VFL-933": {
+      "status": "todo",
+      "completedAt": null,
+      "title": "Opus Reviewer: review VFL-909 toolchain provenance guard, candidate 6799f7f (rebased + LOW-3)",
+      "assignee": "Opus Reviewer",
       "project": "core-libraries"
     }
   }
