@@ -1,5 +1,5 @@
 {
-  "lastRunAt": "2026-10-14T19:39:26Z",
+  "lastRunAt": "2026-10-14T20:09:09Z",
   "phases": {
     "p1_foundation": {
       "label": "1 Foundation",
@@ -951,7 +951,14 @@
         "VFL-1079",
         "VFL-1080",
         "VFL-1082",
-        "VFL-1083"
+        "VFL-1083",
+        "VFL-1089",
+        "VFL-1090",
+        "VFL-1091",
+        "VFL-1092",
+        "VFL-1094",
+        "VFL-1095",
+        "VFL-1096"
       ]
     }
   },
@@ -4982,10 +4989,10 @@
       "project": "platform-foundation"
     },
     "VFL-734": {
-      "status": "in_review",
+      "status": "in_progress",
       "completedAt": null,
       "title": "GATE: erosion check must see rustdoc fences demoted to ignore/text/no_run (Opus LOW-1 on VFL-538)",
-      "assignee": "Jorge",
+      "assignee": "912014ba-380a-46cd-baa6-306e9343a2c2",
       "project": "platform-foundation"
     },
     "VFL-740": {
@@ -6368,10 +6375,10 @@
       "project": "platform-foundation"
     },
     "VFL-974": {
-      "status": "blocked",
+      "status": "in_progress",
       "completedAt": null,
       "title": "CI on Tekton (3c.1/4): cancel a pull request's superseded runs on synchronize (VFL-948 finding 2)",
-      "assignee": "Jorge",
+      "assignee": "912014ba-380a-46cd-baa6-306e9343a2c2",
       "project": "platform-foundation"
     },
     "VFL-975": {
@@ -6921,10 +6928,10 @@
       "project": "platform-foundation"
     },
     "VFL-1061": {
-      "status": "in_progress",
-      "completedAt": null,
+      "status": "done",
+      "completedAt": "2026-10-14T19:42:24.559Z",
       "title": "Opus Reviewer delta review: VFL-490 merge head 2198fd5 (PR #63 conflict resolution)",
-      "assignee": "Opus Reviewer",
+      "assignee": "938921ab-9ab9-469b-85ac-976d8cabad96",
       "project": "platform-foundation"
     },
     "VFL-1062": {
@@ -6949,17 +6956,17 @@
       "project": "platform-foundation"
     },
     "VFL-1065": {
-      "status": "in_review",
+      "status": "blocked",
       "completedAt": null,
       "title": "VFL-837 (continued): push request and PR #60 for round 4 candidate 72d6caa (uses-pins check)",
-      "assignee": "Jorge",
+      "assignee": "912014ba-380a-46cd-baa6-306e9343a2c2",
       "project": "platform-foundation"
     },
     "VFL-1066": {
-      "status": "blocked",
+      "status": "in_review",
       "completedAt": null,
       "title": "VFL-490 continuation: re-gate, push and merge of PR #63 head 2198fd5",
-      "assignee": "Jorge",
+      "assignee": "912014ba-380a-46cd-baa6-306e9343a2c2",
       "project": "platform-foundation"
     },
     "VFL-1067": {
@@ -6977,10 +6984,10 @@
       "project": "platform-foundation"
     },
     "VFL-1069": {
-      "status": "todo",
+      "status": "in_progress",
       "completedAt": null,
       "title": "Opus Reviewer review: lane-gate base-ref check (61de358, VFL-789)",
-      "assignee": "Opus Reviewer",
+      "assignee": "938921ab-9ab9-469b-85ac-976d8cabad96",
       "project": "platform-foundation"
     },
     "VFL-1070": {
@@ -7068,10 +7075,10 @@
       "project": "platform-foundation"
     },
     "VFL-1092": {
-      "status": "in_progress",
-      "completedAt": null,
+      "status": "done",
+      "completedAt": "2026-10-14T19:34:12.025Z",
       "title": "Cortana wake: answer round 6 route card b6452f8a on VFL-1065 (uses-pins check, main moved to 1be3165)",
-      "assignee": "Cortana",
+      "assignee": "a9be75cd-d767-4c44-b49c-2017c61f751f",
       "project": "platform-foundation"
     },
     "VFL-1084": {
@@ -7089,24 +7096,24 @@
       "project": "platform-foundation"
     },
     "VFL-1090": {
-      "status": "in_progress",
-      "completedAt": null,
+      "status": "done",
+      "completedAt": "2026-10-14T19:41:50.786Z",
       "title": "CodeRabbit review: VFL-974 Tekton supersede control (45b0635)",
-      "assignee": "Arbiter",
+      "assignee": "13034933-9579-4b3c-add9-b9426144d934",
       "project": "platform-foundation"
     },
     "VFL-1089": {
-      "status": "in_progress",
-      "completedAt": null,
+      "status": "done",
+      "completedAt": "2026-10-14T19:33:26.416Z",
       "title": "Test Runner: lane-gate checks on VFL-974 candidate 45b0635 (Tekton supersede control)",
-      "assignee": "Test Runner",
+      "assignee": "d0a26468-a577-4f16-a29c-de0b53af3983",
       "project": "platform-foundation"
     },
     "VFL-1091": {
-      "status": "todo",
-      "completedAt": null,
+      "status": "done",
+      "completedAt": "2026-10-14T19:53:47.150Z",
       "title": "Opus Reviewer: review VFL-974 Tekton supersede control (45b0635)",
-      "assignee": "Opus Reviewer",
+      "assignee": "938921ab-9ab9-469b-85ac-976d8cabad96",
       "project": "platform-foundation"
     },
     "VFL-1088": {
@@ -7128,6 +7135,27 @@
       "completedAt": null,
       "title": "Opus Reviewer review: uses-pins check, round 5 candidate (935f541, VFL-837)",
       "assignee": "Opus Reviewer",
+      "project": "platform-foundation"
+    },
+    "VFL-1094": {
+      "status": "done",
+      "completedAt": "2026-10-14T19:50:25.737Z",
+      "title": "CodeRabbit review: uses-pins check, round 6 candidate (4ddb62e, VFL-837)",
+      "assignee": "13034933-9579-4b3c-add9-b9426144d934",
+      "project": "platform-foundation"
+    },
+    "VFL-1095": {
+      "status": "done",
+      "completedAt": "2026-10-14T19:44:04.990Z",
+      "title": "Test Runner: lane gate, self-test and YAML parse, uses-pins round 6 candidate (4ddb62e, VFL-837)",
+      "assignee": "d0a26468-a577-4f16-a29c-de0b53af3983",
+      "project": "platform-foundation"
+    },
+    "VFL-1096": {
+      "status": "done",
+      "completedAt": "2026-10-14T19:59:45.142Z",
+      "title": "Push approval: VFL-974 Tekton supersede control at 45b0635",
+      "assignee": "a9be75cd-d767-4c44-b49c-2017c61f751f",
       "project": "platform-foundation"
     }
   },
