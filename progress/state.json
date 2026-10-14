@@ -1,5 +1,5 @@
 {
-  "lastRunAt": "2026-10-14T23:09:23Z",
+  "lastRunAt": "2026-10-14T23:36:32Z",
   "phases": {
     "p1_foundation": {
       "label": "1 Foundation",
@@ -986,7 +986,12 @@
         "VFL-1119",
         "VFL-1120",
         "VFL-1121",
-        "VFL-1122"
+        "VFL-1122",
+        "VFL-1124",
+        "VFL-1125",
+        "VFL-1126",
+        "VFL-1127",
+        "VFL-1128"
       ]
     }
   },
@@ -3547,8 +3552,8 @@
       "project": "platform-foundation"
     },
     "VFL-490": {
-      "status": "blocked",
-      "completedAt": null,
+      "status": "done",
+      "completedAt": "2026-10-14T23:11:49.699Z",
       "title": "Bound the `pins` refusal list: accept the canonical `uses:` form only (VFL-485 Q3)",
       "assignee": "Jorge",
       "project": "platform-foundation"
@@ -5017,7 +5022,7 @@
       "project": "platform-foundation"
     },
     "VFL-734": {
-      "status": "in_progress",
+      "status": "blocked",
       "completedAt": null,
       "title": "GATE: erosion check must see rustdoc fences demoted to ignore/text/no_run (Opus LOW-1 on VFL-538)",
       "assignee": "Jorge",
@@ -6536,7 +6541,7 @@
       "project": "core-libraries"
     },
     "VFL-992": {
-      "status": "in_progress",
+      "status": "blocked",
       "completedAt": null,
       "title": "VFL-902 follow-up: skip proc-macro test artifacts (LOW-C) and non-JSON stdout lines (LOW-D) in the qemu coverage filter",
       "assignee": "Jorge",
@@ -6991,8 +6996,8 @@
       "project": "platform-foundation"
     },
     "VFL-1066": {
-      "status": "in_review",
-      "completedAt": null,
+      "status": "done",
+      "completedAt": "2026-10-14T23:11:47.577Z",
       "title": "VFL-490 continuation: re-gate, push and merge of PR #63 head 2198fd5",
       "assignee": "Jorge",
       "project": "platform-foundation"
@@ -7306,7 +7311,7 @@
       "project": "platform-foundation"
     },
     "VFL-1117": {
-      "status": "in_progress",
+      "status": "cancelled",
       "completedAt": null,
       "title": "Merge PR #69 (6a957de) for VFL-734 once a GitHub identity is available",
       "assignee": "Cortana",
@@ -7320,22 +7325,22 @@
       "project": "platform-foundation"
     },
     "VFL-1119": {
-      "status": "in_progress",
-      "completedAt": null,
+      "status": "done",
+      "completedAt": "2026-10-14T23:08:00.595Z",
       "title": "Merge PR #63 (VFL-490) at `aa86228`: BEHIND `f5be9d7`, needs a ruling first",
       "assignee": "Cortana",
       "project": "platform-foundation"
     },
     "VFL-1120": {
-      "status": "in_progress",
-      "completedAt": null,
+      "status": "done",
+      "completedAt": "2026-10-14T23:08:05.839Z",
       "title": "CodeRabbit review: uses-pins check, M5 candidate (b4f9b78, VFL-837)",
       "assignee": "Arbiter",
       "project": "platform-foundation"
     },
     "VFL-1121": {
-      "status": "in_progress",
-      "completedAt": null,
+      "status": "done",
+      "completedAt": "2026-10-14T23:10:29.518Z",
       "title": "Opus Reviewer review: uses-pins check, M5 candidate (b4f9b78, VFL-837)",
       "assignee": "Opus Reviewer",
       "project": "platform-foundation"
@@ -7345,6 +7350,41 @@
       "completedAt": "2026-10-14T23:03:19.580Z",
       "title": "Test Runner: lane gate, self-test and YAML parse, uses-pins M5 candidate (b4f9b78, VFL-837)",
       "assignee": "Test Runner",
+      "project": "platform-foundation"
+    },
+    "VFL-1124": {
+      "status": "blocked",
+      "completedAt": null,
+      "title": "pins check: refuse a deeper-indented line after a canonical `uses:` line; fix README wording (VFL-490 LOW-1, 2, 5, 6)",
+      "assignee": "Jorge",
+      "project": "platform-foundation"
+    },
+    "VFL-1125": {
+      "status": "done",
+      "completedAt": "2026-10-14T23:19:35.698Z",
+      "title": "Test Writer: merge main 3423a48 into VFL-734 6a957de, renumber erosion cases 153-158 to 168-173",
+      "assignee": "Halsey",
+      "project": "platform-foundation"
+    },
+    "VFL-1126": {
+      "status": "in_progress",
+      "completedAt": null,
+      "title": "Test Writer: lane-gate fixtures for the pins next-line clause on eb64715 (VFL-1124 AC4)",
+      "assignee": "Halsey",
+      "project": "platform-foundation"
+    },
+    "VFL-1127": {
+      "status": "done",
+      "completedAt": "2026-10-14T23:30:07.539Z",
+      "title": "Test Runner: VFL-734 merged on main `3423a48` (`ef06579`)",
+      "assignee": "Test Runner",
+      "project": "platform-foundation"
+    },
+    "VFL-1128": {
+      "status": "in_progress",
+      "completedAt": null,
+      "title": "Cortana wake: VFL-1065 card b4de0d15 (round 9 route after main moved to 3423a48)",
+      "assignee": "Cortana",
       "project": "platform-foundation"
     }
   },
