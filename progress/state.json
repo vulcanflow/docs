@@ -1,5 +1,5 @@
 {
-  "lastRunAt": "2026-10-14T18:34:00Z",
+  "lastRunAt": "2026-10-14T19:05:00Z",
   "phases": {
     "p1_foundation": {
       "label": "1 Foundation",
@@ -943,7 +943,15 @@
         "VFL-1070",
         "VFL-1071",
         "VFL-1073",
-        "VFL-1074"
+        "VFL-1074",
+        "VFL-1075",
+        "VFL-1076",
+        "VFL-1077",
+        "VFL-1078",
+        "VFL-1079",
+        "VFL-1080",
+        "VFL-1082",
+        "VFL-1083"
       ]
     }
   },
@@ -6360,7 +6368,7 @@
       "project": "platform-foundation"
     },
     "VFL-974": {
-      "status": "in_progress",
+      "status": "blocked",
       "completedAt": null,
       "title": "CI on Tekton (3c.1/4): cancel a pull request's superseded runs on synchronize (VFL-948 finding 2)",
       "assignee": "Jorge",
@@ -6877,8 +6885,8 @@
       "project": "platform-foundation"
     },
     "VFL-1056": {
-      "status": "in_progress",
-      "completedAt": null,
+      "status": "done",
+      "completedAt": "2026-10-14T18:54:10.551Z",
       "title": "Opus Reviewer: VFL-734 erosion rustdoc-fence demotion `fe833f0` (code + VFL-1044 fixtures)",
       "assignee": "Opus Reviewer",
       "project": "platform-foundation"
@@ -6905,8 +6913,8 @@
       "project": "platform-foundation"
     },
     "VFL-1060": {
-      "status": "in_progress",
-      "completedAt": null,
+      "status": "done",
+      "completedAt": "2026-10-14T18:32:42.388Z",
       "title": "CodeRabbit delta review: VFL-490 merge head 2198fd5 (PR #63 conflict resolution)",
       "assignee": "Arbiter",
       "project": "platform-foundation"
@@ -6926,7 +6934,7 @@
       "project": "platform-foundation"
     },
     "VFL-1063": {
-      "status": "in_progress",
+      "status": "blocked",
       "completedAt": null,
       "title": "CI: prose-only cleanup of stale pre-VFL-696 base-tip text (Opus LOW-1..4 from VFL-1038)",
       "assignee": "Jorge",
@@ -6940,7 +6948,7 @@
       "project": "platform-foundation"
     },
     "VFL-1065": {
-      "status": "in_progress",
+      "status": "in_review",
       "completedAt": null,
       "title": "VFL-837 (continued): push request and PR #60 for round 4 candidate 72d6caa (uses-pins check)",
       "assignee": "Jorge",
@@ -6982,15 +6990,15 @@
       "project": "platform-foundation"
     },
     "VFL-1071": {
-      "status": "in_progress",
-      "completedAt": null,
+      "status": "done",
+      "completedAt": "2026-10-14T18:31:26.261Z",
       "title": "Cortana wake: answer push card 4a95add4 on VFL-998 (erosion merge-base assertion pins)",
       "assignee": "Cortana",
       "project": "platform-foundation"
     },
     "VFL-1073": {
-      "status": "todo",
-      "completedAt": null,
+      "status": "done",
+      "completedAt": "2026-10-14T18:36:58.085Z",
       "title": "CodeRabbit review: VFL-1063 base-tip prose cleanup `fc17154`",
       "assignee": "Arbiter",
       "project": "platform-foundation"
@@ -7000,6 +7008,62 @@
       "completedAt": null,
       "title": "Opus Reviewer: VFL-1063 base-tip prose cleanup `fc17154`",
       "assignee": "Opus Reviewer",
+      "project": "platform-foundation"
+    },
+    "VFL-1075": {
+      "status": "done",
+      "completedAt": "2026-10-14T18:33:08.082Z",
+      "title": "Test Runner: kustomize, kubeconform and lane gate on VFL-1063 candidate fc17154",
+      "assignee": "Test Runner",
+      "project": "platform-foundation"
+    },
+    "VFL-1076": {
+      "status": "done",
+      "completedAt": "2026-10-14T18:48:12.698Z",
+      "title": "VFL-974 (3c.1) ruling: revisited-head check and the late-run residual (VFL-1048, VFL-1049)",
+      "assignee": "Cortana",
+      "project": "platform-foundation"
+    },
+    "VFL-1077": {
+      "status": "done",
+      "completedAt": "2026-10-14T18:53:03.502Z",
+      "title": "Test Runner: lane-gate checks on VFL-974 candidate 9c96f0f (Tekton supersede control)",
+      "assignee": "Test Runner",
+      "project": "platform-foundation"
+    },
+    "VFL-1078": {
+      "status": "in_progress",
+      "completedAt": null,
+      "title": "CodeRabbit review: VFL-974 Tekton supersede control (9c96f0f)",
+      "assignee": "Arbiter",
+      "project": "platform-foundation"
+    },
+    "VFL-1079": {
+      "status": "in_progress",
+      "completedAt": null,
+      "title": "Opus Reviewer: review VFL-974 Tekton supersede control (9c96f0f)",
+      "assignee": "Opus Reviewer",
+      "project": "platform-foundation"
+    },
+    "VFL-1080": {
+      "status": "in_progress",
+      "completedAt": null,
+      "title": "Push approval: VFL-734 erosion rustdoc-fence demotion at `fe833f0`",
+      "assignee": "Cortana",
+      "project": "platform-foundation"
+    },
+    "VFL-1082": {
+      "status": "blocked",
+      "completedAt": null,
+      "title": "GATE: erosion counts compiled rustdoc examples at merge-base vs head (VFL-734 follow-up)",
+      "assignee": "Jorge",
+      "project": "platform-foundation"
+    },
+    "VFL-1083": {
+      "status": "backlog",
+      "completedAt": null,
+      "title": "TEST: fixtures for erosion compiled-example count (VFL-1082)",
+      "assignee": "Halsey",
       "project": "platform-foundation"
     }
   }
