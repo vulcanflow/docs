@@ -1,5 +1,5 @@
 {
-  "lastRunAt": "2026-10-14T02:33:48Z",
+  "lastRunAt": "2026-10-14T07:18:42Z",
   "phases": {
     "p1_foundation": {
       "label": "1 Foundation",
@@ -762,7 +762,24 @@
         "VFL-862",
         "VFL-863",
         "VFL-864",
-        "VFL-865"
+        "VFL-865",
+        "VFL-867",
+        "VFL-868",
+        "VFL-869",
+        "VFL-870",
+        "VFL-871",
+        "VFL-872",
+        "VFL-873",
+        "VFL-874",
+        "VFL-875",
+        "VFL-876",
+        "VFL-877",
+        "VFL-887",
+        "VFL-888",
+        "VFL-889",
+        "VFL-890",
+        "VFL-891",
+        "VFL-892"
       ]
     }
   },
@@ -4702,7 +4719,7 @@
       "project": "core-libraries"
     },
     "VFL-716": {
-      "status": "in_progress",
+      "status": "blocked",
       "completedAt": null,
       "title": "CI on Tekton (2b/4): check (amd64) by cross-build on arm64, unit tests under user-mode QEMU",
       "assignee": "Jorge",
@@ -5010,7 +5027,7 @@
       "project": "platform-foundation"
     },
     "VFL-777": {
-      "status": "blocked",
+      "status": "in_progress",
       "completedAt": null,
       "title": "CI on Tekton (3c/4): webhook starts vf-lane-gate and vf-rust-check for same-repo pull requests",
       "assignee": "Jorge",
@@ -5304,8 +5321,8 @@
       "project": "platform-foundation"
     },
     "VFL-825": {
-      "status": "in_review",
-      "completedAt": null,
+      "status": "done",
+      "completedAt": "2026-10-14T07:14:26.996Z",
       "title": "VFL-777: owner's output of two read-only Cilium checks before vf-ci-check-egress is applied",
       "assignee": "MasterChief",
       "project": "platform-foundation"
@@ -5374,10 +5391,10 @@
       "project": "core-libraries"
     },
     "VFL-836": {
-      "status": "in_progress",
-      "completedAt": null,
+      "status": "done",
+      "completedAt": "2026-10-14T02:38:15.369Z",
       "title": "Lane gate: changed_files parses -z NUL-delimited paths so quoted paths keep their lane (VFL-819 LOW-1, LOW-2)",
-      "assignee": "Jorge",
+      "assignee": "Cortana",
       "project": "platform-foundation"
     },
     "VFL-837": {
@@ -5451,8 +5468,8 @@
       "project": "core-libraries"
     },
     "VFL-849": {
-      "status": "in_progress",
-      "completedAt": null,
+      "status": "done",
+      "completedAt": "2026-10-14T02:42:02.787Z",
       "title": "Opus Reviewer wake: finish VFL-839 (round 7 of PR #37, merge head c1c5abe)",
       "assignee": "Opus Reviewer",
       "project": "platform-foundation"
@@ -5500,7 +5517,7 @@
       "project": "platform-foundation"
     },
     "VFL-858": {
-      "status": "in_progress",
+      "status": "blocked",
       "completedAt": null,
       "title": "Bootstrap: re-probe an already-published C toolchain tree on the already-present path (VFL-831 LOW-2)",
       "assignee": "Jorge",
@@ -5535,25 +5552,144 @@
       "project": "platform-foundation"
     },
     "VFL-863": {
-      "status": "in_progress",
-      "completedAt": null,
+      "status": "done",
+      "completedAt": "2026-10-14T02:34:47.868Z",
       "title": "CodeRabbit review: VFL-859 bootstrap eval exit status, candidate be76767",
       "assignee": "Arbiter",
       "project": "core-libraries"
     },
     "VFL-864": {
-      "status": "in_progress",
-      "completedAt": null,
+      "status": "done",
+      "completedAt": "2026-10-14T02:33:55.979Z",
       "title": "Opus Reviewer: review VFL-859 bootstrap eval exit status, candidate be76767",
       "assignee": "Opus Reviewer",
       "project": "core-libraries"
     },
     "VFL-865": {
-      "status": "in_progress",
-      "completedAt": null,
+      "status": "done",
+      "completedAt": "2026-10-14T02:31:47.087Z",
       "title": "Test Runner: VFL-859 be76767, bootstrap failure stops the caller, lane gate",
       "assignee": "Test Runner",
       "project": "core-libraries"
+    },
+    "VFL-867": {
+      "status": "done",
+      "completedAt": "2026-10-14T02:35:27.331Z",
+      "title": "CodeRabbit review: VFL-716 check (amd64) cross-built on arm64 (e17f534)",
+      "assignee": "Arbiter",
+      "project": "platform-foundation"
+    },
+    "VFL-868": {
+      "status": "in_progress",
+      "completedAt": null,
+      "title": "Opus Reviewer: review VFL-716 check (amd64) cross-built on arm64 (e17f534)",
+      "assignee": "Opus Reviewer",
+      "project": "platform-foundation"
+    },
+    "VFL-869": {
+      "status": "done",
+      "completedAt": "2026-10-14T02:35:02.904Z",
+      "title": "Test Runner: lane gate, manifest and LOCK checks on VFL-716 candidate e17f534",
+      "assignee": "Test Runner",
+      "project": "platform-foundation"
+    },
+    "VFL-870": {
+      "status": "done",
+      "completedAt": "2026-10-14T02:46:24.479Z",
+      "title": "PR #37: re-merge main (after #52) into cc69dbc and resolve ci/lane-gate-test.sh (local merge commit)",
+      "assignee": "Halsey",
+      "project": "platform-foundation"
+    },
+    "VFL-871": {
+      "status": "done",
+      "completedAt": "2026-10-14T02:43:35.208Z",
+      "title": "CodeRabbit review: VFL-859 bootstrap eval exit status, candidate dc16cf6",
+      "assignee": "Arbiter",
+      "project": "core-libraries"
+    },
+    "VFL-872": {
+      "status": "todo",
+      "completedAt": null,
+      "title": "Opus Reviewer: review VFL-859 bootstrap eval exit status, candidate dc16cf6",
+      "assignee": "Opus Reviewer",
+      "project": "core-libraries"
+    },
+    "VFL-873": {
+      "status": "done",
+      "completedAt": "2026-10-14T02:41:07.473Z",
+      "title": "Test Runner: VFL-859 dc16cf6, bootstrap failure stops the caller, set -e rule, lane gate",
+      "assignee": "Test Runner",
+      "project": "core-libraries"
+    },
+    "VFL-874": {
+      "status": "done",
+      "completedAt": "2026-10-14T02:45:17.268Z",
+      "title": "CodeRabbit review: VFL-858 published-tree re-probe candidate 4d05318",
+      "assignee": "Arbiter",
+      "project": "core-libraries"
+    },
+    "VFL-875": {
+      "status": "in_progress",
+      "completedAt": null,
+      "title": "Opus Reviewer: review VFL-858 published-tree re-probe candidate 4d05318",
+      "assignee": "Opus Reviewer",
+      "project": "core-libraries"
+    },
+    "VFL-876": {
+      "status": "done",
+      "completedAt": "2026-10-14T02:47:04.090Z",
+      "title": "Test Runner: VFL-858 4d05318, empty-prefix bootstrap, damaged-tree faults, lock wait",
+      "assignee": "Test Runner",
+      "project": "core-libraries"
+    },
+    "VFL-877": {
+      "status": "done",
+      "completedAt": "2026-10-14T02:46:54.283Z",
+      "title": "Test Writer: lane-gate self-test cases for fail-closed changed_files and lane counts on 1c611da (VFL-862 LOW-3, LOW-4)",
+      "assignee": "Halsey",
+      "project": "platform-foundation"
+    },
+    "VFL-887": {
+      "status": "in_progress",
+      "completedAt": null,
+      "title": "CodeRabbit review: VFL-862 lane-gate LOW fixes (02438cc)",
+      "assignee": "Arbiter",
+      "project": "platform-foundation"
+    },
+    "VFL-888": {
+      "status": "todo",
+      "completedAt": null,
+      "title": "Opus Reviewer: review VFL-862 lane-gate LOW fixes (02438cc)",
+      "assignee": "Opus Reviewer",
+      "project": "platform-foundation"
+    },
+    "VFL-889": {
+      "status": "in_progress",
+      "completedAt": null,
+      "title": "Test Runner: lane-gate checks and mutation run on VFL-862 candidate 02438cc (lane-gate LOW fixes)",
+      "assignee": "Test Runner",
+      "project": "platform-foundation"
+    },
+    "VFL-890": {
+      "status": "todo",
+      "completedAt": null,
+      "title": "Test Runner: lane-gate checks on VFL-777 candidate d12e988 (Tekton PR trigger)",
+      "assignee": "Test Runner",
+      "project": "platform-foundation"
+    },
+    "VFL-891": {
+      "status": "in_progress",
+      "completedAt": null,
+      "title": "CodeRabbit review: VFL-777 Tekton PR trigger and egress policy (d12e988)",
+      "assignee": "Arbiter",
+      "project": "platform-foundation"
+    },
+    "VFL-892": {
+      "status": "todo",
+      "completedAt": null,
+      "title": "Opus Reviewer: review VFL-777 Tekton PR trigger and egress policy (d12e988)",
+      "assignee": "Opus Reviewer",
+      "project": "platform-foundation"
     }
   }
 }
