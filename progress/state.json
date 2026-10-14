@@ -1,5 +1,5 @@
 {
-  "lastRunAt": "2026-10-14T13:11:43Z",
+  "lastRunAt": "2026-10-14T13:40:16Z",
   "phases": {
     "p1_foundation": {
       "label": "1 Foundation",
@@ -872,7 +872,21 @@
         "VFL-990",
         "VFL-991",
         "VFL-992",
-        "VFL-994"
+        "VFL-994",
+        "VFL-997",
+        "VFL-998",
+        "VFL-995",
+        "VFL-996",
+        "VFL-999",
+        "VFL-1005",
+        "VFL-1004",
+        "VFL-1003",
+        "VFL-1007",
+        "VFL-1000",
+        "VFL-1002",
+        "VFL-1001",
+        "VFL-1008",
+        "VFL-1009"
       ]
     }
   },
@@ -4714,7 +4728,7 @@
       "project": "platform-foundation"
     },
     "VFL-696": {
-      "status": "in_progress",
+      "status": "blocked",
       "completedAt": null,
       "title": "CI: lane-gate erosion counts the base at the merge-base, not the fetched main tip (false red on stale merge ref)",
       "assignee": "Jorge",
@@ -5841,11 +5855,11 @@
       "project": "core-libraries"
     },
     "VFL-902": {
-      "status": "in_progress",
-      "completedAt": null,
+      "status": "done",
+      "completedAt": "2026-10-14T13:12:32.221Z",
       "title": "VFL-716 follow-up: qemu check covers every x86_64 test binary (LOW-A), reflow 101-col header line (LOW-B)",
-      "assignee": "912014ba-380a-46cd-baa6-306e9343a2c2",
-      "project": "91740a68-0dd1-47b4-935f-9ab08f4c5669"
+      "assignee": "Jorge",
+      "project": "platform-foundation"
     },
     "VFL-903": {
       "status": "done",
@@ -5890,7 +5904,7 @@
       "project": "platform-foundation"
     },
     "VFL-909": {
-      "status": "in_review",
+      "status": "blocked",
       "completedAt": null,
       "title": "Toolchain provenance guard: cargo recipes refuse a cargo that is not the pinned toolchain",
       "assignee": "Jorge",
@@ -6338,31 +6352,36 @@
       "project": "platform-foundation"
     },
     "VFL-980": {
-      "status": "in_progress",
-      "title": "Test Runner: lane-gate checks on VFL-777 candidate 9e83b51 (Tekton PR trigger, round 4)",
+      "status": "done",
+      "completedAt": "2026-10-14T13:15:20.502Z",
+      "title": "Test Runner: lane-gate checks on VFL-777 candidate 9e83b51 (Tekton PR trigger, DNS names only)",
       "assignee": "Test Runner",
       "project": "platform-foundation"
     },
     "VFL-981": {
-      "status": "in_progress",
+      "status": "done",
+      "completedAt": "2026-10-14T13:16:13.709Z",
       "title": "CodeRabbit review: VFL-777 Tekton PR trigger and egress policy (9e83b51)",
       "assignee": "Arbiter",
       "project": "platform-foundation"
     },
     "VFL-982": {
-      "status": "in_progress",
+      "status": "done",
+      "completedAt": "2026-10-14T13:20:21.965Z",
       "title": "Opus Reviewer: review VFL-777 Tekton PR trigger and egress policy (9e83b51)",
       "assignee": "Opus Reviewer",
       "project": "platform-foundation"
     },
     "VFL-983": {
-      "status": "in_progress",
+      "status": "done",
+      "completedAt": "2026-10-14T13:16:05.659Z",
       "title": "CodeRabbit review: VFL-490 bounded pins check (d2dc301)",
       "assignee": "Arbiter",
       "project": "platform-foundation"
     },
     "VFL-984": {
-      "status": "todo",
+      "status": "in_progress",
+      "completedAt": null,
       "title": "Opus Reviewer: review VFL-490 bounded pins check (d2dc301)",
       "assignee": "Opus Reviewer",
       "project": "platform-foundation"
@@ -6375,7 +6394,8 @@
       "project": "platform-foundation"
     },
     "VFL-986": {
-      "status": "in_progress",
+      "status": "done",
+      "completedAt": "2026-10-14T13:10:29.432Z",
       "title": "CodeRabbit review: uses-pins check, round 2 merge candidate (3d9afbf, VFL-837)",
       "assignee": "Arbiter",
       "project": "platform-foundation"
@@ -6420,9 +6440,108 @@
       "project": "platform-foundation"
     },
     "VFL-994": {
-      "status": "in_progress",
-      "title": "Merge PR #61 (VFL-902) at aaffeca",
+      "status": "done",
+      "completedAt": "2026-10-14T13:11:24.761Z",
+      "title": "Merge PR #61 (VFL-902) at `aaffeca`",
       "assignee": "Cortana",
+      "project": "platform-foundation"
+    },
+    "VFL-997": {
+      "status": "blocked",
+      "completedAt": null,
+      "title": "CI: reword .tekton/tasks/lane-gate.yaml base-commit description after VFL-696 (erosion counts at the merge-base)",
+      "assignee": "Jorge",
+      "project": "platform-foundation"
+    },
+    "VFL-998": {
+      "status": "blocked",
+      "completedAt": null,
+      "title": "Tests: pin erosion merge-base assertions in ci/lane-gate-test.sh cases 149 and 152 (VFL-696 Opus LOW-1/LOW-2)",
+      "assignee": "Halsey",
+      "project": "platform-foundation"
+    },
+    "VFL-995": {
+      "status": "done",
+      "completedAt": "2026-10-14T13:18:45.186Z",
+      "title": "Push approval: VFL-696 erosion merge-base at db019d3 (plain merge of round-3 candidate 1c9f6e3 into main 16dd6ff)",
+      "assignee": "Cortana",
+      "project": "platform-foundation"
+    },
+    "VFL-996": {
+      "status": "done",
+      "completedAt": "2026-10-14T13:24:28.470Z",
+      "title": "Decision: VFL-909 PR #58 base move to f43c4ee; #61 recipe check fails with the guard dependency",
+      "assignee": "Cortana",
+      "project": "core-libraries"
+    },
+    "VFL-999": {
+      "status": "done",
+      "completedAt": "2026-10-14T13:25:43.495Z",
+      "title": "CodeRabbit review: VFL-992 qemu filter skips proc-macro tests and non-JSON lines (dfa1303)",
+      "assignee": "Arbiter",
+      "project": "platform-foundation"
+    },
+    "VFL-1005": {
+      "status": "todo",
+      "completedAt": null,
+      "title": "Opus Reviewer: review VFL-777 Tekton PR trigger and egress policy (550940f)",
+      "assignee": "Opus Reviewer",
+      "project": "platform-foundation"
+    },
+    "VFL-1004": {
+      "status": "in_progress",
+      "completedAt": null,
+      "title": "CodeRabbit review: VFL-777 Tekton PR trigger and egress policy (550940f)",
+      "assignee": "Arbiter",
+      "project": "platform-foundation"
+    },
+    "VFL-1003": {
+      "status": "done",
+      "completedAt": "2026-10-14T13:29:11.726Z",
+      "title": "Test Runner: lane-gate checks on VFL-777 candidate 550940f (Tekton PR trigger, ndots 1)",
+      "assignee": "Test Runner",
+      "project": "platform-foundation"
+    },
+    "VFL-1007": {
+      "status": "in_progress",
+      "completedAt": null,
+      "title": "CodeRabbit review: VFL-992 qemu filter LOW-C/LOW-D and dry-run --no-deps (605d90c)",
+      "assignee": "Arbiter",
+      "project": "platform-foundation"
+    },
+    "VFL-1000": {
+      "status": "todo",
+      "completedAt": null,
+      "title": "Opus Reviewer: review VFL-992 qemu filter LOW-C/LOW-D and dry-run --no-deps (605d90c)",
+      "assignee": "Opus Reviewer",
+      "project": "platform-foundation"
+    },
+    "VFL-1002": {
+      "status": "blocked",
+      "completedAt": null,
+      "title": "Ruling: rust-check red on every PR from RUSTSEC-2026-0346..0349 (rustls 0.23.45): authorize Cargo.lock bump; PR #62 merge path",
+      "assignee": "Cortana",
+      "project": "platform-foundation"
+    },
+    "VFL-1001": {
+      "status": "cancelled",
+      "completedAt": null,
+      "title": "Test Runner: lane gate, manifest and LOCK checks on VFL-992 candidate dfa1303",
+      "assignee": "Test Runner",
+      "project": "platform-foundation"
+    },
+    "VFL-1008": {
+      "status": "in_progress",
+      "completedAt": null,
+      "title": "Test Runner: lane gate, manifest, LOCK and just dry-run checks on VFL-992 candidate 605d90c",
+      "assignee": "Test Runner",
+      "project": "platform-foundation"
+    },
+    "VFL-1009": {
+      "status": "in_review",
+      "completedAt": null,
+      "title": "deps: bump rustls 0.23.45 -> 0.23.46 in Cargo.lock (RUSTSEC-2026-0346..0349)",
+      "assignee": "Jorge",
       "project": "platform-foundation"
     }
   }
