@@ -1,5 +1,5 @@
 {
-  "lastRunAt": "2026-10-13T23:32:00Z",
+  "lastRunAt": "2026-10-14T00:08:32Z",
   "phases": {
     "p1_foundation": {
       "label": "1 Foundation",
@@ -717,7 +717,28 @@
         "VFL-811",
         "VFL-813",
         "VFL-814",
-        "VFL-815"
+        "VFL-815",
+        "VFL-817",
+        "VFL-818",
+        "VFL-819",
+        "VFL-820",
+        "VFL-821",
+        "VFL-822",
+        "VFL-823",
+        "VFL-824",
+        "VFL-825",
+        "VFL-826",
+        "VFL-827",
+        "VFL-828",
+        "VFL-830",
+        "VFL-831",
+        "VFL-832",
+        "VFL-833",
+        "VFL-834",
+        "VFL-835",
+        "VFL-836",
+        "VFL-837",
+        "VFL-790"
       ]
     }
   },
@@ -3796,7 +3817,7 @@
       "project": "core-libraries"
     },
     "VFL-185": {
-      "status": "in_progress",
+      "status": "blocked",
       "completedAt": null,
       "title": "Bootstrap: verify cc before publishing a toolchain tree, gate --env-only on cargo, bound the lock wait",
       "assignee": "Jorge",
@@ -4580,7 +4601,7 @@
       "project": "platform-foundation"
     },
     "VFL-703": {
-      "status": "in_review",
+      "status": "in_progress",
       "completedAt": null,
       "title": "VFL-122 continuation 3: land PR #37 (merge-update after #36, then close)",
       "assignee": "Jorge",
@@ -4657,7 +4678,7 @@
       "project": "core-libraries"
     },
     "VFL-716": {
-      "status": "in_progress",
+      "status": "blocked",
       "completedAt": null,
       "title": "CI on Tekton (2b/4): check (amd64) by cross-build on arm64, unit tests under user-mode QEMU",
       "assignee": "Jorge",
@@ -4965,7 +4986,7 @@
       "project": "platform-foundation"
     },
     "VFL-777": {
-      "status": "in_progress",
+      "status": "blocked",
       "completedAt": null,
       "title": "CI on Tekton (3c/4): webhook starts vf-lane-gate and vf-rust-check for same-repo pull requests",
       "assignee": "Jorge",
@@ -5182,7 +5203,7 @@
       "project": "platform-foundation"
     },
     "VFL-813": {
-      "status": "blocked",
+      "status": "in_progress",
       "completedAt": null,
       "title": "Lane gate: classify deleted paths and rename sources in partition (VFL-787 LOW-3)",
       "assignee": "Jorge",
@@ -5196,10 +5217,150 @@
       "project": "platform-foundation"
     },
     "VFL-815": {
-      "status": "in_progress",
-      "completedAt": null,
+      "status": "done",
+      "completedAt": "2026-10-13T23:32:31.296Z",
       "title": "Test Writer: lane-gate self-test cases for deleted paths and rename sources in partition on 17e15e4 (VFL-813)",
       "assignee": "Halsey",
+      "project": "platform-foundation"
+    },
+    "VFL-817": {
+      "status": "done",
+      "completedAt": "2026-10-13T23:44:28.788Z",
+      "title": "Test Runner: lane-gate checks on VFL-813 candidate c754d0a (deleted paths and rename sources in partition)",
+      "assignee": "Test Runner",
+      "project": "platform-foundation"
+    },
+    "VFL-818": {
+      "status": "done",
+      "completedAt": "2026-10-13T23:51:51.563Z",
+      "title": "CodeRabbit review: VFL-813 deleted paths and rename sources in partition (c754d0a)",
+      "assignee": "Arbiter",
+      "project": "platform-foundation"
+    },
+    "VFL-819": {
+      "status": "done",
+      "completedAt": "2026-10-13T23:50:20.544Z",
+      "title": "Opus Reviewer: review VFL-813 deleted paths and rename sources in partition (c754d0a)",
+      "assignee": "Opus Reviewer",
+      "project": "platform-foundation"
+    },
+    "VFL-820": {
+      "status": "done",
+      "completedAt": "2026-10-13T23:45:28.567Z",
+      "title": "CodeRabbit review: VFL-716 check (amd64) cross-built on arm64 (862f0cc)",
+      "assignee": "Arbiter",
+      "project": "platform-foundation"
+    },
+    "VFL-821": {
+      "status": "in_progress",
+      "completedAt": null,
+      "title": "Opus Reviewer: review VFL-716 check (amd64) cross-built on arm64 (862f0cc)",
+      "assignee": "Opus Reviewer",
+      "project": "platform-foundation"
+    },
+    "VFL-822": {
+      "status": "done",
+      "completedAt": "2026-10-13T23:47:59.688Z",
+      "title": "Test Runner: lane gate, manifest and LOCK checks on VFL-716 candidate 862f0cc",
+      "assignee": "Test Runner",
+      "project": "platform-foundation"
+    },
+    "VFL-823": {
+      "status": "done",
+      "completedAt": "2026-10-13T23:51:14.091Z",
+      "title": "Cortana wake: retry the PR #36 merge path (VFL-758) and answer the VFL-703 card",
+      "assignee": "Cortana",
+      "project": "core-libraries"
+    },
+    "VFL-824": {
+      "status": "done",
+      "completedAt": "2026-10-14T00:01:06.120Z",
+      "title": "VFL-777 (3c) ruling: fork-PR policy, push events, GATE class, stale merge ref",
+      "assignee": "Cortana",
+      "project": "platform-foundation"
+    },
+    "VFL-825": {
+      "status": "in_review",
+      "completedAt": null,
+      "title": "VFL-777: owner's output of two read-only Cilium checks before vf-ci-check-egress is applied",
+      "assignee": "MasterChief",
+      "project": "platform-foundation"
+    },
+    "VFL-826": {
+      "status": "done",
+      "completedAt": "2026-10-14T00:02:37.433Z",
+      "title": "PR #37: merge main and resolve the ci/lane-gate-test.sh conflict (local merge commit)",
+      "assignee": "Halsey",
+      "project": "platform-foundation"
+    },
+    "VFL-827": {
+      "status": "blocked",
+      "completedAt": null,
+      "title": "CI: run ci/lane-gate.sh pins from the lane-gate pipelines (follow-up to PR #37)",
+      "assignee": "Cortana",
+      "project": "platform-foundation"
+    },
+    "VFL-828": {
+      "status": "done",
+      "completedAt": "2026-10-14T00:01:30.088Z",
+      "title": "Push approval: VFL-813 partition classifies deleted paths and rename sources at c754d0a",
+      "assignee": "Cortana",
+      "project": "platform-foundation"
+    },
+    "VFL-830": {
+      "status": "in_progress",
+      "completedAt": null,
+      "title": "CodeRabbit review: VFL-185 r2 bootstrap hardening candidate 1fe613c",
+      "assignee": "Arbiter",
+      "project": "core-libraries"
+    },
+    "VFL-831": {
+      "status": "todo",
+      "completedAt": null,
+      "title": "Opus Reviewer: review VFL-185 r2 bootstrap hardening candidate 1fe613c",
+      "assignee": "Opus Reviewer",
+      "project": "core-libraries"
+    },
+    "VFL-832": {
+      "status": "done",
+      "completedAt": "2026-10-14T00:04:54.121Z",
+      "title": "Test Runner 1/4: VFL-185 r2 1fe613c, empty-prefix bootstrap, idempotency, lane gate, item 7",
+      "assignee": "Test Runner",
+      "project": "core-libraries"
+    },
+    "VFL-833": {
+      "status": "in_progress",
+      "completedAt": null,
+      "title": "Test Runner 2/4: VFL-185 r2 1fe613c, workspace build and unit tests",
+      "assignee": "Test Runner",
+      "project": "core-libraries"
+    },
+    "VFL-834": {
+      "status": "todo",
+      "completedAt": null,
+      "title": "Test Runner 3/4: VFL-185 r2 1fe613c, just check, wasm and check-cross",
+      "assignee": "Test Runner",
+      "project": "core-libraries"
+    },
+    "VFL-835": {
+      "status": "todo",
+      "completedAt": null,
+      "title": "Test Runner 4/4: VFL-185 r2 1fe613c, fault injection",
+      "assignee": "Test Runner",
+      "project": "core-libraries"
+    },
+    "VFL-836": {
+      "status": "blocked",
+      "completedAt": null,
+      "title": "Lane gate: changed_files parses -z NUL-delimited paths so quoted paths keep their lane (VFL-819 LOW-1, LOW-2)",
+      "assignee": "Jorge",
+      "project": "platform-foundation"
+    },
+    "VFL-837": {
+      "status": "blocked",
+      "completedAt": null,
+      "title": "CI: wire ci/lane-gate.sh pins as the uses-pins check in lane-gate.yml and the Tekton lane-gate pipeline (VFL-827)",
+      "assignee": "Jorge",
       "project": "platform-foundation"
     }
   }
