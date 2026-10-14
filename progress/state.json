@@ -1,5 +1,5 @@
 {
-  "lastRunAt": "2026-10-14T10:24:26Z",
+  "lastRunAt": "2026-10-14T11:11:04Z",
   "phases": {
     "p1_foundation": {
       "label": "1 Foundation",
@@ -831,7 +831,17 @@
         "VFL-946",
         "VFL-947",
         "VFL-948",
-        "VFL-949"
+        "VFL-949",
+        "VFL-950",
+        "VFL-951",
+        "VFL-952",
+        "VFL-953",
+        "VFL-954",
+        "VFL-955",
+        "VFL-956",
+        "VFL-957",
+        "VFL-958",
+        "VFL-959"
       ]
     }
   },
@@ -4673,7 +4683,7 @@
       "project": "platform-foundation"
     },
     "VFL-696": {
-      "status": "in_progress",
+      "status": "blocked",
       "completedAt": null,
       "title": "CI: lane-gate erosion counts the base at the merge-base, not the fetched main tip (false red on stale merge ref)",
       "assignee": "Jorge",
@@ -4771,8 +4781,8 @@
       "project": "core-libraries"
     },
     "VFL-716": {
-      "status": "blocked",
-      "completedAt": null,
+      "status": "done",
+      "completedAt": "2026-10-14T10:34:32.700Z",
       "title": "CI on Tekton (2b/4): check (amd64) by cross-build on arm64, unit tests under user-mode QEMU",
       "assignee": "Jorge",
       "project": "platform-foundation"
@@ -5079,7 +5089,7 @@
       "project": "platform-foundation"
     },
     "VFL-777": {
-      "status": "in_progress",
+      "status": "blocked",
       "completedAt": null,
       "title": "CI on Tekton (3c/4): webhook starts vf-lane-gate and vf-rust-check for same-repo pull requests",
       "assignee": "Jorge",
@@ -5450,7 +5460,7 @@
       "project": "platform-foundation"
     },
     "VFL-837": {
-      "status": "in_progress",
+      "status": "blocked",
       "completedAt": null,
       "title": "CI: wire ci/lane-gate.sh pins as the uses-pins check in lane-gate.yml and the Tekton lane-gate pipeline (VFL-827)",
       "assignee": "Jorge",
@@ -5779,7 +5789,7 @@
       "project": "core-libraries"
     },
     "VFL-899": {
-      "status": "blocked",
+      "status": "in_progress",
       "completedAt": null,
       "title": "Bootstrap text residuals: --env-only shim advice, header/README failure mode, wait-message value, usage header (VFL-858 F1)",
       "assignee": "Jorge",
@@ -5800,7 +5810,7 @@
       "project": "core-libraries"
     },
     "VFL-902": {
-      "status": "blocked",
+      "status": "in_progress",
       "completedAt": null,
       "title": "VFL-716 follow-up: qemu check covers every x86_64 test binary (LOW-A), reflow 101-col header line (LOW-B)",
       "assignee": "Jorge",
@@ -5821,7 +5831,7 @@
       "project": "platform-foundation"
     },
     "VFL-905": {
-      "status": "in_progress",
+      "status": "blocked",
       "completedAt": null,
       "title": "Lane gate self-tests: fix residual LOW-1..LOW-3 from VFL-888 (install_git_stub printf, exact lane counts, stub guard)",
       "assignee": "Halsey",
@@ -5849,7 +5859,7 @@
       "project": "platform-foundation"
     },
     "VFL-909": {
-      "status": "blocked",
+      "status": "in_progress",
       "completedAt": null,
       "title": "Toolchain provenance guard: cargo recipes refuse a cargo that is not the pinned toolchain",
       "assignee": "Jorge",
@@ -5961,8 +5971,8 @@
       "project": "core-libraries"
     },
     "VFL-928": {
-      "status": "in_progress",
-      "completedAt": null,
+      "status": "done",
+      "completedAt": "2026-10-14T10:38:08.522Z",
       "title": "Test Runner: VFL-909 6799f7f, toolchain provenance guard, wiring, recipes, lane gate",
       "assignee": "Test Runner",
       "project": "core-libraries"
@@ -6038,8 +6048,8 @@
       "project": "platform-foundation"
     },
     "VFL-939": {
-      "status": "in_review",
-      "completedAt": null,
+      "status": "done",
+      "completedAt": "2026-10-14T10:32:29.376Z",
       "title": "VFL-716 continuation: owner's acceptance run of check (amd64) on main c55cd22",
       "assignee": "Jorge",
       "project": "platform-foundation"
@@ -6066,29 +6076,29 @@
       "project": "platform-foundation"
     },
     "VFL-944": {
-      "status": "in_progress",
-      "completedAt": null,
+      "status": "done",
+      "completedAt": "2026-10-14T10:26:35.046Z",
       "title": "CodeRabbit review: VFL-899 bootstrap text residuals round 3, candidate 74f19d9",
       "assignee": "Arbiter",
       "project": "core-libraries"
     },
     "VFL-945": {
-      "status": "in_progress",
-      "completedAt": null,
+      "status": "done",
+      "completedAt": "2026-10-14T10:40:25.044Z",
       "title": "Opus Reviewer: review VFL-899 bootstrap text residuals round 3, candidate 74f19d9",
       "assignee": "Opus Reviewer",
       "project": "core-libraries"
     },
     "VFL-946": {
-      "status": "in_progress",
-      "completedAt": null,
+      "status": "done",
+      "completedAt": "2026-10-14T10:25:53.960Z",
       "title": "Test Runner: VFL-899 74f19d9, healthy tree, damaged-tree and shim messages, lock wait",
       "assignee": "Test Runner",
       "project": "core-libraries"
     },
     "VFL-947": {
-      "status": "todo",
-      "completedAt": null,
+      "status": "done",
+      "completedAt": "2026-10-14T10:40:40.059Z",
       "title": "Test Runner: lane-gate checks on VFL-777 candidate 434f4fa (Tekton PR trigger, VFL-716 reconcile)",
       "assignee": "Test Runner",
       "project": "platform-foundation"
@@ -6101,10 +6111,80 @@
       "project": "platform-foundation"
     },
     "VFL-949": {
-      "status": "todo",
-      "completedAt": null,
+      "status": "done",
+      "completedAt": "2026-10-14T10:54:25.589Z",
       "title": "Opus Reviewer: review VFL-777 Tekton PR trigger and egress policy (434f4fa)",
       "assignee": "Opus Reviewer",
+      "project": "platform-foundation"
+    },
+    "VFL-950": {
+      "status": "done",
+      "completedAt": "2026-10-14T10:28:23.414Z",
+      "title": "CodeRabbit review: VFL-905 lane-gate self-test LOW fixes, merge-updated (001628d)",
+      "assignee": "Arbiter",
+      "project": "platform-foundation"
+    },
+    "VFL-951": {
+      "status": "in_progress",
+      "completedAt": null,
+      "title": "Opus Reviewer: review VFL-905 lane-gate self-test LOW fixes, merge-updated (001628d)",
+      "assignee": "Opus Reviewer",
+      "project": "platform-foundation"
+    },
+    "VFL-952": {
+      "status": "blocked",
+      "completedAt": null,
+      "title": "Test Runner: lane-gate self-test run + mutation check, merge-updated (001628d)",
+      "assignee": "Test Runner",
+      "project": "platform-foundation"
+    },
+    "VFL-953": {
+      "status": "done",
+      "completedAt": "2026-10-14T10:37:29.141Z",
+      "title": "VFL-696 fixtures: renumber erosion cases 110-113 to 149-152 and drop the stale sha after rebase",
+      "assignee": "Halsey",
+      "project": "platform-foundation"
+    },
+    "VFL-954": {
+      "status": "done",
+      "completedAt": "2026-10-14T10:46:27.742Z",
+      "title": "CodeRabbit review: uses-pins check on both executors (5d684ce, VFL-837)",
+      "assignee": "Arbiter",
+      "project": "platform-foundation"
+    },
+    "VFL-955": {
+      "status": "todo",
+      "completedAt": null,
+      "title": "Opus Reviewer review: uses-pins check on both executors (5d684ce, VFL-837)",
+      "assignee": "Opus Reviewer",
+      "project": "platform-foundation"
+    },
+    "VFL-956": {
+      "status": "done",
+      "completedAt": "2026-10-14T10:52:22.333Z",
+      "title": "Test Runner: lane gate, self-test and YAML parse on the uses-pins candidate (5d684ce, VFL-837)",
+      "assignee": "Test Runner",
+      "project": "platform-foundation"
+    },
+    "VFL-957": {
+      "status": "in_progress",
+      "completedAt": null,
+      "title": "CodeRabbit review: VFL-696 erosion merge-base round 2 `8039e35` (rebased on main)",
+      "assignee": "Arbiter",
+      "project": "platform-foundation"
+    },
+    "VFL-958": {
+      "status": "todo",
+      "completedAt": null,
+      "title": "Opus Reviewer: VFL-696 erosion merge-base round 2 `8039e35` (rebased on main)",
+      "assignee": "Opus Reviewer",
+      "project": "platform-foundation"
+    },
+    "VFL-959": {
+      "status": "in_progress",
+      "completedAt": null,
+      "title": "Test Runner: VFL-696 erosion merge-base round 2 `8039e35`",
+      "assignee": "Test Runner",
       "project": "platform-foundation"
     }
   }
