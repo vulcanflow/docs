@@ -1,5 +1,5 @@
 {
-  "lastRunAt": "2026-10-15T07:48:00Z",
+  "lastRunAt": "2026-10-15T08:04:00Z",
   "phases": {
     "p1_foundation": {
       "label": "1 Foundation",
@@ -7366,7 +7366,7 @@
       "project": "platform-foundation"
     },
     "VFL-1124": {
-      "status": "in_progress",
+      "status": "in_review",
       "completedAt": null,
       "title": "pins check: refuse a deeper-indented line after a canonical `uses:` line; fix README wording (VFL-490 LOW-1, 2, 5, 6)",
       "assignee": "912014ba-380a-46cd-baa6-306e9343a2c2",
