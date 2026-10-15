@@ -1,5 +1,5 @@
 {
-  "lastRunAt": "2026-10-15T00:06:16Z",
+  "lastRunAt": "2026-10-15T07:48:00Z",
   "phases": {
     "p1_foundation": {
       "label": "1 Foundation",
@@ -1000,7 +1000,11 @@
         "VFL-1135",
         "VFL-1136",
         "VFL-1137",
-        "VFL-1138"
+        "VFL-1138",
+        "VFL-1140",
+        "VFL-1141",
+        "VFL-1143",
+        "VFL-1144"
       ]
     }
   },
@@ -5556,8 +5560,8 @@
       "project": "platform-foundation"
     },
     "VFL-827": {
-      "status": "blocked",
-      "completedAt": null,
+      "status": "done",
+      "completedAt": "2026-10-15T00:44:32.869Z",
       "title": "CI: run ci/lane-gate.sh pins from the lane-gate pipelines (follow-up to PR #37)",
       "assignee": "a9be75cd-d767-4c44-b49c-2017c61f751f",
       "project": "platform-foundation"
@@ -5619,8 +5623,8 @@
       "project": "platform-foundation"
     },
     "VFL-837": {
-      "status": "blocked",
-      "completedAt": null,
+      "status": "done",
+      "completedAt": "2026-10-15T00:38:32.811Z",
       "title": "CI: wire ci/lane-gate.sh pins as the uses-pins check in lane-gate.yml and the Tekton lane-gate pipeline (VFL-827)",
       "assignee": "912014ba-380a-46cd-baa6-306e9343a2c2",
       "project": "platform-foundation"
@@ -6998,8 +7002,8 @@
       "project": "platform-foundation"
     },
     "VFL-1065": {
-      "status": "in_review",
-      "completedAt": null,
+      "status": "done",
+      "completedAt": "2026-10-15T00:35:48.553Z",
       "title": "VFL-837 (continued): push request and PR #60 for round 4 candidate 72d6caa (uses-pins check)",
       "assignee": "912014ba-380a-46cd-baa6-306e9343a2c2",
       "project": "platform-foundation"
@@ -7362,7 +7366,7 @@
       "project": "platform-foundation"
     },
     "VFL-1124": {
-      "status": "blocked",
+      "status": "in_progress",
       "completedAt": null,
       "title": "pins check: refuse a deeper-indented line after a canonical `uses:` line; fix README wording (VFL-490 LOW-1, 2, 5, 6)",
       "assignee": "912014ba-380a-46cd-baa6-306e9343a2c2",
@@ -7397,10 +7401,10 @@
       "project": "platform-foundation"
     },
     "VFL-1138": {
-      "status": "in_progress",
-      "completedAt": null,
+      "status": "done",
+      "completedAt": "2026-10-15T00:48:26.205Z",
       "title": "Test Runner: lane-gate self-test, discrimination and mutants for VFL-1124 (92f98c0)",
-      "assignee": "Test Runner",
+      "assignee": "d0a26468-a577-4f16-a29c-de0b53af3983",
       "project": "platform-foundation"
     },
     "VFL-1135": {
@@ -7411,17 +7415,17 @@
       "project": "platform-foundation"
     },
     "VFL-1137": {
-      "status": "in_progress",
-      "completedAt": null,
+      "status": "done",
+      "completedAt": "2026-10-15T00:44:13.808Z",
       "title": "Opus Reviewer review: VFL-1124 pins next-line clause (92f98c0)",
-      "assignee": "Opus Reviewer",
+      "assignee": "938921ab-9ab9-469b-85ac-976d8cabad96",
       "project": "platform-foundation"
     },
     "VFL-1136": {
-      "status": "in_progress",
-      "completedAt": null,
+      "status": "done",
+      "completedAt": "2026-10-15T00:03:59.211Z",
       "title": "CodeRabbit review: VFL-1124 pins next-line clause (92f98c0)",
-      "assignee": "Arbiter",
+      "assignee": "13034933-9579-4b3c-add9-b9426144d934",
       "project": "platform-foundation"
     },
     "VFL-1132": {
@@ -7457,6 +7461,34 @@
       "completedAt": "2026-10-14T23:42:02.907Z",
       "title": "Push approval: VFL-734 re-merged on main `3423a48` (`ef06579`)",
       "assignee": "Cortana",
+      "project": "platform-foundation"
+    },
+    "VFL-1140": {
+      "status": "done",
+      "completedAt": "2026-10-15T00:04:11.618Z",
+      "title": "Cortana wake: VFL-1065 card 2f92dad2 (push approval for candidate H 24438f4)",
+      "assignee": "a9be75cd-d767-4c44-b49c-2017c61f751f",
+      "project": "platform-foundation"
+    },
+    "VFL-1141": {
+      "status": "done",
+      "completedAt": "2026-10-15T00:32:43.970Z",
+      "title": "Merge PR #60 (VFL-837, action-pins) at `24438f4`",
+      "assignee": "a9be75cd-d767-4c44-b49c-2017c61f751f",
+      "project": "platform-foundation"
+    },
+    "VFL-1143": {
+      "status": "done",
+      "completedAt": "2026-10-15T00:48:34.618Z",
+      "title": "Test Runner wake: finish gate VFL-1138 for `92f98c0` in the foreground",
+      "assignee": "d0a26468-a577-4f16-a29c-de0b53af3983",
+      "project": "platform-foundation"
+    },
+    "VFL-1144": {
+      "status": "done",
+      "completedAt": "2026-10-15T07:41:19.320Z",
+      "title": "Cortana wake: VFL-1124 card d3cabcc8 (push approval for 92f98c0, pins next-line clause)",
+      "assignee": "a9be75cd-d767-4c44-b49c-2017c61f751f",
       "project": "platform-foundation"
     }
   },
