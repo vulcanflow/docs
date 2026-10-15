@@ -1,5 +1,5 @@
 {
-  "lastRunAt": "2026-10-15T08:04:00Z",
+  "lastRunAt": "2026-10-15T08:31:00Z",
   "phases": {
     "p1_foundation": {
       "label": "1 Foundation",
@@ -1004,7 +1004,8 @@
         "VFL-1140",
         "VFL-1141",
         "VFL-1143",
-        "VFL-1144"
+        "VFL-1144",
+        "VFL-1160"
       ]
     }
   },
@@ -7366,8 +7367,8 @@
       "project": "platform-foundation"
     },
     "VFL-1124": {
-      "status": "in_review",
-      "completedAt": null,
+      "status": "done",
+      "completedAt": "2026-10-15T08:09:23.373Z",
       "title": "pins check: refuse a deeper-indented line after a canonical `uses:` line; fix README wording (VFL-490 LOW-1, 2, 5, 6)",
       "assignee": "912014ba-380a-46cd-baa6-306e9343a2c2",
       "project": "platform-foundation"
@@ -7488,6 +7489,13 @@
       "status": "done",
       "completedAt": "2026-10-15T07:41:19.320Z",
       "title": "Cortana wake: VFL-1124 card d3cabcc8 (push approval for 92f98c0, pins next-line clause)",
+      "assignee": "a9be75cd-d767-4c44-b49c-2017c61f751f",
+      "project": "platform-foundation"
+    },
+    "VFL-1160": {
+      "status": "done",
+      "completedAt": "2026-10-15T08:07:12.003Z",
+      "title": "Merge PR #71 (VFL-1124, pins next-line clause) at `3c54c40`",
       "assignee": "a9be75cd-d767-4c44-b49c-2017c61f751f",
       "project": "platform-foundation"
     }
