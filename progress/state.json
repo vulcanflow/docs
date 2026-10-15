@@ -1,5 +1,5 @@
 {
-  "lastRunAt": "2026-10-15T08:31:00Z",
+  "lastRunAt": "2026-10-15T10:30:00Z",
   "phases": {
     "p1_foundation": {
       "label": "1 Foundation",
@@ -1005,7 +1005,8 @@
         "VFL-1141",
         "VFL-1143",
         "VFL-1144",
-        "VFL-1160"
+        "VFL-1160",
+        "VFL-1165"
       ]
     }
   },
@@ -7262,8 +7263,8 @@
       "project": "platform-foundation"
     },
     "VFL-1107": {
-      "status": "in_progress",
-      "completedAt": null,
+      "status": "done",
+      "completedAt": "2026-10-15T10:03:03.161Z",
       "title": "Board watch (continuation 12): find stuck tasks and nudge owners",
       "assignee": "ae2a6da1-327d-466e-8227-311999bca475",
       "project": "platform-foundation"
@@ -7497,6 +7498,13 @@
       "completedAt": "2026-10-15T08:07:12.003Z",
       "title": "Merge PR #71 (VFL-1124, pins next-line clause) at `3c54c40`",
       "assignee": "a9be75cd-d767-4c44-b49c-2017c61f751f",
+      "project": "platform-foundation"
+    },
+    "VFL-1165": {
+      "status": "in_progress",
+      "completedAt": null,
+      "title": "Board watch (continuation 13): find stuck tasks and nudge owners",
+      "assignee": "ae2a6da1-327d-466e-8227-311999bca475",
       "project": "platform-foundation"
     }
   },
