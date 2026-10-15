@@ -1,5 +1,5 @@
 {
-  "lastRunAt": "2026-10-15T10:30:00Z",
+  "lastRunAt": "2026-10-15T15:33:33Z",
   "phases": {
     "p1_foundation": {
       "label": "1 Foundation",
@@ -1006,7 +1006,8 @@
         "VFL-1143",
         "VFL-1144",
         "VFL-1160",
-        "VFL-1165"
+        "VFL-1165",
+        "VFL-1176"
       ]
     }
   },
@@ -7501,9 +7502,16 @@
       "project": "platform-foundation"
     },
     "VFL-1165": {
+      "status": "done",
+      "completedAt": "2026-10-15T15:19:54.402Z",
+      "title": "Board watch (continuation 13): find stuck tasks and nudge owners (child of VFL-1107)",
+      "assignee": "ae2a6da1-327d-466e-8227-311999bca475",
+      "project": "platform-foundation"
+    },
+    "VFL-1176": {
       "status": "in_progress",
       "completedAt": null,
-      "title": "Board watch (continuation 13): find stuck tasks and nudge owners",
+      "title": "Board watch (continuation 14): find stuck tasks and nudge owners (child of VFL-1165)",
       "assignee": "ae2a6da1-327d-466e-8227-311999bca475",
       "project": "platform-foundation"
     }
