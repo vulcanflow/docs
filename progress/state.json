@@ -1,5 +1,5 @@
 {
-  "lastRunAt": "2026-10-16T12:39:17Z",
+  "lastRunAt": "2026-10-16T14:04:07Z",
   "phases": {
     "p1_foundation": {
       "label": "1 Foundation",
@@ -7533,7 +7533,7 @@
       "project": "platform-foundation"
     },
     "VFL-1220": {
-      "status": "in_progress",
+      "status": "blocked",
       "completedAt": null,
       "title": "Board watch (continuation 15): find stuck tasks and nudge owners",
       "assignee": "ae2a6da1-327d-466e-8227-311999bca475",
