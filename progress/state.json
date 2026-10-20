@@ -1,5 +1,5 @@
 {
-  "lastRunAt": "2026-10-20T16:10:00Z",
+  "lastRunAt": "2026-10-20T19:30:00Z",
   "phases": {
     "p1_foundation": {
       "label": "1 Foundation",
@@ -1011,7 +1011,10 @@
         "VFL-1211",
         "VFL-1212",
         "VFL-1220",
-        "VFL-1231"
+        "VFL-1231",
+        "VFL-1240",
+        "VFL-1241",
+        "VFL-1242"
       ]
     }
   },
@@ -7240,7 +7243,7 @@
       "project": "platform-foundation"
     },
     "VFL-1102": {
-      "status": "in_review",
+      "status": "blocked",
       "completedAt": null,
       "title": "VFL-974 acceptance (e): owner applies .tekton, the egress policy and triggers/ at c549335; delivery evidence",
       "assignee": "912014ba-380a-46cd-baa6-306e9343a2c2",
@@ -7546,6 +7549,27 @@
       "title": "Board watch (continuation 16): find stuck tasks and nudge owners",
       "assignee": "ae2a6da1-327d-466e-8227-311999bca475",
       "project": "platform-foundation"
+    },
+    "VFL-1240": {
+      "status": "done",
+      "completedAt": "2026-10-20T19:19:00.989Z",
+      "title": "cargo deny red on main 4a08db2: RUSTSEC-2026-0373 (ammonia 4.2.3) and RUSTSEC-2026-0374 (basic-toml via askama); fix and ruling",
+      "assignee": "a9be75cd-d767-4c44-b49c-2017c61f751f",
+      "project": "core-libraries"
+    },
+    "VFL-1241": {
+      "status": "blocked",
+      "completedAt": null,
+      "title": "Test: askama keeps default-features=false without config and basic-toml stays out of the graph (RUSTSEC-2026-0374 guard, VFL-1240 ruling)",
+      "assignee": "6029b86f-ff5b-492b-9f97-ed31363be784",
+      "project": "core-libraries"
+    },
+    "VFL-1242": {
+      "status": "in_progress",
+      "completedAt": null,
+      "title": "Bump ammonia =4.2.3\u2192=4.2.4 and set askama default-features=false (no config): RUSTSEC-2026-0373/0374 make cargo deny red on main 4a08db2",
+      "assignee": "912014ba-380a-46cd-baa6-306e9343a2c2",
+      "project": "core-libraries"
     }
   },
   "projectStatuses": {
