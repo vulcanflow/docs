@@ -1,5 +1,5 @@
 {
-  "lastRunAt": "2026-10-21T07:23:58Z",
+  "lastRunAt": "2026-10-21T10:37:39Z",
   "phases": {
     "p1_foundation": {
       "label": "1 Foundation",
@@ -7576,7 +7576,7 @@
       "project": "core-libraries"
     },
     "VFL-1242": {
-      "status": "blocked",
+      "status": "in_progress",
       "completedAt": null,
       "title": "Bump ammonia =4.2.3\u2192=4.2.4 and set askama default-features=false (no config): RUSTSEC-2026-0373/0374 make cargo deny red on main 4a08db2",
       "assignee": "a9be75cd-d767-4c44-b49c-2017c61f751f",
@@ -7611,8 +7611,8 @@
       "project": "core-libraries"
     },
     "VFL-1250": {
-      "status": "in_progress",
-      "completedAt": null,
+      "status": "done",
+      "completedAt": "2026-10-21T10:31:44.227Z",
       "title": "Test Runner: just gate, deny/audit/check, tree and T9 for VFL-1242 candidate (945ce7e)",
       "assignee": "d0a26468-a577-4f16-a29c-de0b53af3983",
       "project": "core-libraries"
