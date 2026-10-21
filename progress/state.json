@@ -1,5 +1,5 @@
 {
-  "lastRunAt": "2026-10-21T11:04:08Z",
+  "lastRunAt": "2026-10-21T11:35:25Z",
   "phases": {
     "p1_foundation": {
       "label": "1 Foundation",
@@ -1033,7 +1033,16 @@
         "VFL-1287",
         "VFL-1288",
         "VFL-1289",
-        "VFL-1290"
+        "VFL-1290",
+        "VFL-1292",
+        "VFL-1293",
+        "VFL-1294",
+        "VFL-1295",
+        "VFL-1296",
+        "VFL-1297",
+        "VFL-1298",
+        "VFL-1299",
+        "VFL-1301"
       ]
     }
   },
@@ -7577,8 +7586,8 @@
       "project": "core-libraries"
     },
     "VFL-1241": {
-      "status": "in_progress",
-      "completedAt": null,
+      "status": "done",
+      "completedAt": "2026-10-21T11:21:18.944Z",
       "title": "Test: askama keeps default-features=false without config and basic-toml stays out of the graph (RUSTSEC-2026-0374 guard, VFL-1240 ruling)",
       "assignee": "Cortana",
       "project": "core-libraries"
@@ -7598,10 +7607,10 @@
       "project": "core-libraries"
     },
     "VFL-1246": {
-      "status": "in_progress",
-      "completedAt": null,
+      "status": "done",
+      "completedAt": "2026-10-21T11:30:30.206Z",
       "title": "Board watch (continuation 17): find stuck tasks and nudge owners",
-      "assignee": "ae2a6da1-327d-466e-8227-311999bca475",
+      "assignee": "MasterChief",
       "project": "platform-foundation"
     },
     "VFL-1248": {
@@ -7654,10 +7663,10 @@
       "project": "test-packs"
     },
     "VFL-1275": {
-      "status": "in_progress",
+      "status": "blocked",
       "completedAt": null,
       "title": "Test: bound the final [[licenses.exceptions]] block and fix the strip-comments rationale in deny_toml_licence_exceptions_match_ratified_set (VFL-1251 residual LOW-1/LOW-2)",
-      "assignee": "Halsey",
+      "assignee": "Cortana",
       "project": "test-packs"
     },
     "VFL-1276": {
@@ -7722,6 +7731,69 @@
       "title": "CodeRabbit review: VFL-1241 askama_features_exclude_config_per_vfl_1240 (5282d92)",
       "assignee": "Arbiter",
       "project": "core-libraries"
+    },
+    "VFL-1292": {
+      "status": "done",
+      "completedAt": "2026-10-21T11:12:48.281Z",
+      "title": "Test Runner: workspace_graph on VFL-1241 rebased candidate db57b0f (full suite 18/0, two Cargo.toml mutants, basic-toml cross-check)",
+      "assignee": "Test Runner",
+      "project": "core-libraries"
+    },
+    "VFL-1293": {
+      "status": "done",
+      "completedAt": "2026-10-21T11:17:11.760Z",
+      "title": "Test Runner: workspace_graph on VFL-1275 candidate 2e2fa15 (candidate, four deny.toml mutants, parent control)",
+      "assignee": "Test Runner",
+      "project": "test-packs"
+    },
+    "VFL-1294": {
+      "status": "done",
+      "completedAt": "2026-10-21T11:16:08.307Z",
+      "title": "Opus Reviewer review: VFL-1275 bound exception blocks, exact allow, true rationale (2e2fa15)",
+      "assignee": "Opus Reviewer",
+      "project": "test-packs"
+    },
+    "VFL-1295": {
+      "status": "done",
+      "completedAt": "2026-10-21T11:17:22.552Z",
+      "title": "CodeRabbit review: VFL-1275 bound exception blocks, exact allow, true rationale (2e2fa15)",
+      "assignee": "Arbiter",
+      "project": "test-packs"
+    },
+    "VFL-1296": {
+      "status": "blocked",
+      "completedAt": null,
+      "title": "Test: extract_toml_string_array matches a key only at line start and ignores trailing comments (VFL-1275 residual LOW)",
+      "assignee": "Halsey",
+      "project": "test-packs"
+    },
+    "VFL-1297": {
+      "status": "done",
+      "completedAt": "2026-10-21T11:33:01.000Z",
+      "title": "Test Runner: workspace_graph on VFL-1275 rebased candidate fe5bfe9 (candidate, four deny.toml mutants, parent control)",
+      "assignee": "Test Runner",
+      "project": "test-packs"
+    },
+    "VFL-1298": {
+      "status": "done",
+      "completedAt": "2026-10-21T11:35:09.364Z",
+      "title": "Opus Reviewer review: VFL-1275 bound exception blocks, exact allow, true rationale (rebased fe5bfe9)",
+      "assignee": "Opus Reviewer",
+      "project": "test-packs"
+    },
+    "VFL-1299": {
+      "status": "in_progress",
+      "completedAt": null,
+      "title": "CodeRabbit review: VFL-1275 bound exception blocks, exact allow, true rationale (rebased fe5bfe9)",
+      "assignee": "Arbiter",
+      "project": "test-packs"
+    },
+    "VFL-1301": {
+      "status": "in_progress",
+      "completedAt": null,
+      "title": "Board watch (continuation 18): find stuck tasks and nudge owners",
+      "assignee": "MasterChief",
+      "project": "platform-foundation"
     }
   },
   "projectStatuses": {
