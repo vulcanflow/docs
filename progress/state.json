@@ -1,5 +1,5 @@
 {
-  "lastRunAt": "2026-10-21T17:10:00Z",
+  "lastRunAt": "2026-10-21T21:35:00Z",
   "phases": {
     "p1_foundation": {
       "label": "1 Foundation",
@@ -1046,7 +1046,8 @@
         "VFL-1303",
         "VFL-1304",
         "VFL-1305",
-        "VFL-1315"
+        "VFL-1315",
+        "VFL-1325"
       ]
     }
   },
@@ -7821,9 +7822,16 @@
       "project": "test-packs"
     },
     "VFL-1315": {
+      "status": "done",
+      "completedAt": "2026-10-21T21:21:02.625Z",
+      "title": "Board watch (continuation 19): find stuck tasks and nudge owners",
+      "assignee": "MasterChief",
+      "project": "platform-foundation"
+    },
+    "VFL-1325": {
       "status": "in_progress",
       "completedAt": null,
-      "title": "Board watch (continuation 19): find stuck tasks and nudge owners",
+      "title": "Board watch (continuation 20): find stuck tasks and nudge owners",
       "assignee": "MasterChief",
       "project": "platform-foundation"
     }
