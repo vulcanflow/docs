@@ -1,5 +1,5 @@
 {
-  "lastRunAt": "2026-10-21T13:03:44Z",
+  "lastRunAt": "2026-10-21T13:33:50Z",
   "phases": {
     "p1_foundation": {
       "label": "1 Foundation",
@@ -7786,7 +7786,7 @@
     },
     "VFL-1299": {
       "status": "done",
-      "completedAt": "2026-10-21T11:56:53.505Z",
+      "completedAt": "2026-10-21T11:56:53.360Z",
       "title": "CodeRabbit review: VFL-1275 bound exception blocks, exact allow, true rationale (rebased fe5bfe9)",
       "assignee": "Arbiter",
       "project": "test-packs"
@@ -7799,15 +7799,15 @@
       "project": "platform-foundation"
     },
     "VFL-1303": {
-      "status": "in_progress",
-      "completedAt": null,
+      "status": "done",
+      "completedAt": "2026-10-21T12:32:05.914Z",
       "title": "Test Runner: workspace_graph on VFL-1296 candidate 015ce0c (candidate, three deny.toml mutants, two parent controls)",
       "assignee": "Test Runner",
       "project": "test-packs"
     },
     "VFL-1304": {
-      "status": "in_progress",
-      "completedAt": null,
+      "status": "done",
+      "completedAt": "2026-10-21T12:35:23.212Z",
       "title": "Opus Reviewer review: VFL-1296 extract_toml_string_array ignores commented-out keys, fails closed on non-double-quoted elements (015ce0c)",
       "assignee": "Opus Reviewer",
       "project": "test-packs"
