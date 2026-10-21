@@ -1,5 +1,5 @@
 {
-  "lastRunAt": "2026-10-21T12:35:42Z",
+  "lastRunAt": "2026-10-21T13:03:44Z",
   "phases": {
     "p1_foundation": {
       "label": "1 Foundation",
@@ -7764,8 +7764,8 @@
       "project": "test-packs"
     },
     "VFL-1296": {
-      "status": "blocked",
-      "completedAt": null,
+      "status": "done",
+      "completedAt": "2026-10-21T12:44:29.410Z",
       "title": "Test: extract_toml_string_array matches a key only at line start and ignores trailing comments (VFL-1275 residual LOW)",
       "assignee": "Halsey",
       "project": "test-packs"
@@ -7813,8 +7813,8 @@
       "project": "test-packs"
     },
     "VFL-1305": {
-      "status": "in_progress",
-      "completedAt": null,
+      "status": "done",
+      "completedAt": "2026-10-21T12:37:15.977Z",
       "title": "CodeRabbit review: VFL-1296 extract_toml_string_array ignores commented-out keys, fails closed on non-double-quoted elements (015ce0c)",
       "assignee": "Arbiter",
       "project": "test-packs"
