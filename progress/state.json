@@ -1,5 +1,5 @@
 {
-  "lastRunAt": "2026-10-21T13:33:50Z",
+  "lastRunAt": "2026-10-21T16:05:37Z",
   "phases": {
     "p1_foundation": {
       "label": "1 Foundation",
@@ -7680,14 +7680,14 @@
       "project": "core-libraries"
     },
     "VFL-1283": {
-      "status": "in_review",
-      "completedAt": null,
+      "status": "done",
+      "completedAt": "2026-10-21T15:37:27.595Z",
       "title": "VFL-1102 cont. 1: rerun vf-rust-check at rev dc525f4 under the egress policy, then apply triggers/ at c549335",
       "assignee": "Jorge",
       "project": "platform-foundation"
     },
     "VFL-1284": {
-      "status": "blocked",
+      "status": "in_progress",
       "completedAt": null,
       "title": "VFL-1102 cont. 2: first pull request deliveries after triggers/ at c549335; VFL-974 and VFL-777 acceptance evidence",
       "assignee": "Jorge",
