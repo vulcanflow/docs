@@ -1,5 +1,5 @@
 {
-  "lastRunAt": "2026-10-21T10:37:39Z",
+  "lastRunAt": "2026-10-21T11:04:08Z",
   "phases": {
     "p1_foundation": {
       "label": "1 Foundation",
@@ -1025,7 +1025,15 @@
         "VFL-1253",
         "VFL-1254",
         "VFL-1275",
-        "VFL-1276"
+        "VFL-1276",
+        "VFL-1283",
+        "VFL-1284",
+        "VFL-1285",
+        "VFL-1286",
+        "VFL-1287",
+        "VFL-1288",
+        "VFL-1289",
+        "VFL-1290"
       ]
     }
   },
@@ -7569,17 +7577,17 @@
       "project": "core-libraries"
     },
     "VFL-1241": {
-      "status": "blocked",
+      "status": "in_progress",
       "completedAt": null,
       "title": "Test: askama keeps default-features=false without config and basic-toml stays out of the graph (RUSTSEC-2026-0374 guard, VFL-1240 ruling)",
-      "assignee": "6029b86f-ff5b-492b-9f97-ed31363be784",
+      "assignee": "Cortana",
       "project": "core-libraries"
     },
     "VFL-1242": {
-      "status": "in_progress",
-      "completedAt": null,
+      "status": "done",
+      "completedAt": "2026-10-21T10:41:05.172Z",
       "title": "Bump ammonia =4.2.3\u2192=4.2.4 and set askama default-features=false (no config): RUSTSEC-2026-0373/0374 make cargo deny red on main 4a08db2",
-      "assignee": "a9be75cd-d767-4c44-b49c-2017c61f751f",
+      "assignee": "Cortana",
       "project": "core-libraries"
     },
     "VFL-1245": {
@@ -7618,10 +7626,10 @@
       "project": "core-libraries"
     },
     "VFL-1251": {
-      "status": "blocked",
-      "completedAt": null,
+      "status": "done",
+      "completedAt": "2026-10-21T11:02:06.503Z",
       "title": "Test: T9 ratified licence-exception set is seven (add libfuzzer-sys NCSA per VFL-202 ruling); fixes deny_toml_licence_exceptions_match_ratified_set on main",
-      "assignee": "a9be75cd-d767-4c44-b49c-2017c61f751f",
+      "assignee": "Cortana",
       "project": "test-packs"
     },
     "VFL-1252": {
@@ -7646,10 +7654,10 @@
       "project": "test-packs"
     },
     "VFL-1275": {
-      "status": "blocked",
+      "status": "in_progress",
       "completedAt": null,
       "title": "Test: bound the final [[licenses.exceptions]] block and fix the strip-comments rationale in deny_toml_licence_exceptions_match_ratified_set (VFL-1251 residual LOW-1/LOW-2)",
-      "assignee": "6029b86f-ff5b-492b-9f97-ed31363be784",
+      "assignee": "Halsey",
       "project": "test-packs"
     },
     "VFL-1276": {
@@ -7657,6 +7665,62 @@
       "completedAt": "2026-10-21T07:22:12.141Z",
       "title": "Wake Arbiter: post the CodeRabbit verdict on VFL-1249 (945ce7e, review completed, 0 findings)",
       "assignee": "13034933-9579-4b3c-add9-b9426144d934",
+      "project": "core-libraries"
+    },
+    "VFL-1283": {
+      "status": "in_review",
+      "completedAt": null,
+      "title": "VFL-1102 cont. 1: rerun vf-rust-check at rev dc525f4 under the egress policy, then apply triggers/ at c549335",
+      "assignee": "Jorge",
+      "project": "platform-foundation"
+    },
+    "VFL-1284": {
+      "status": "blocked",
+      "completedAt": null,
+      "title": "VFL-1102 cont. 2: first pull request deliveries after triggers/ at c549335; VFL-974 and VFL-777 acceptance evidence",
+      "assignee": "Jorge",
+      "project": "platform-foundation"
+    },
+    "VFL-1285": {
+      "status": "done",
+      "completedAt": "2026-10-21T10:50:01.764Z",
+      "title": "Test Runner: workspace_graph on VFL-1251 rebased candidate f605a65 (baseline, candidate, two deny.toml mutants)",
+      "assignee": "Test Runner",
+      "project": "test-packs"
+    },
+    "VFL-1286": {
+      "status": "done",
+      "completedAt": "2026-10-21T10:51:53.868Z",
+      "title": "Opus Reviewer review: VFL-1251 T9 licence-exception set is seven (rebased f605a65)",
+      "assignee": "Opus Reviewer",
+      "project": "test-packs"
+    },
+    "VFL-1287": {
+      "status": "done",
+      "completedAt": "2026-10-21T10:49:54.512Z",
+      "title": "CodeRabbit review: VFL-1251 T9 licence-exception set is seven (rebased f605a65)",
+      "assignee": "Arbiter",
+      "project": "test-packs"
+    },
+    "VFL-1288": {
+      "status": "done",
+      "completedAt": "2026-10-21T10:55:53.670Z",
+      "title": "Test Runner: workspace_graph on VFL-1241 candidate 5282d92 (candidate, two Cargo.toml mutants, basic-toml cross-check)",
+      "assignee": "Test Runner",
+      "project": "core-libraries"
+    },
+    "VFL-1289": {
+      "status": "done",
+      "completedAt": "2026-10-21T11:00:06.668Z",
+      "title": "Opus Reviewer review: VFL-1241 askama_features_exclude_config_per_vfl_1240 (5282d92)",
+      "assignee": "Opus Reviewer",
+      "project": "core-libraries"
+    },
+    "VFL-1290": {
+      "status": "done",
+      "completedAt": "2026-10-21T10:52:00.602Z",
+      "title": "CodeRabbit review: VFL-1241 askama_features_exclude_config_per_vfl_1240 (5282d92)",
+      "assignee": "Arbiter",
       "project": "core-libraries"
     }
   },
