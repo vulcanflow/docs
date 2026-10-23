@@ -1,5 +1,5 @@
 {
-  "lastRunAt": "2026-10-23T15:35:00Z",
+  "lastRunAt": "2026-10-23T18:05:00Z",
   "phases": {
     "p1_foundation": {
       "label": "1 Foundation",
@@ -276,7 +276,8 @@
         "VFL-767",
         "VFL-756",
         "VFL-758",
-        "VFL-1438"
+        "VFL-1438",
+        "VFL-1434"
       ]
     },
     "p3_api": {
@@ -1063,7 +1064,17 @@
         "VFL-1437",
         "VFL-1439",
         "VFL-1440",
-        "VFL-1441"
+        "VFL-1441",
+        "VFL-1450",
+        "VFL-1447",
+        "VFL-1449",
+        "VFL-1448",
+        "VFL-1453",
+        "VFL-1446",
+        "VFL-1445",
+        "VFL-1444",
+        "VFL-1452",
+        "VFL-1443"
       ]
     }
   },
@@ -7880,7 +7891,7 @@
       "project": "platform-foundation"
     },
     "VFL-1409": {
-      "status": "in_progress",
+      "status": "blocked",
       "completedAt": null,
       "title": "Dependency advisory RUSTSEC-2026-0385: bump ctutils to >=0.4.4 so `just check` (cargo deny) passes again",
       "assignee": "912014ba-380a-46cd-baa6-306e9343a2c2",
@@ -7943,7 +7954,7 @@
       "project": "core-libraries"
     },
     "VFL-1434": {
-      "status": "in_progress",
+      "status": "blocked",
       "completedAt": null,
       "title": "T4-C3a: vf-db tests for the C3a foundation (skeleton b98b917)",
       "assignee": "6029b86f-ff5b-492b-9f97-ed31363be784",
@@ -7957,7 +7968,7 @@
       "project": "core-libraries"
     },
     "VFL-1428": {
-      "status": "in_progress",
+      "status": "blocked",
       "completedAt": null,
       "title": "vf-integration lane: Task, Pipeline and manual PipelineRun (VFL-1413 steps 1-2)",
       "assignee": "912014ba-380a-46cd-baa6-306e9343a2c2",
@@ -8055,22 +8066,22 @@
       "project": "platform-foundation"
     },
     "VFL-1438": {
-      "status": "in_progress",
+      "status": "blocked",
       "completedAt": null,
       "title": "T1b-C4: vf-meter tests for the C4 skeleton (66459bf)",
       "assignee": "6029b86f-ff5b-492b-9f97-ed31363be784",
       "project": "core-libraries"
     },
     "VFL-1439": {
-      "status": "in_progress",
-      "completedAt": null,
+      "status": "done",
+      "completedAt": "2026-10-23T15:35:35.070Z",
       "title": "CodeRabbit review: VFL-305 wasm-pack re-land on main (b37f5fb)",
       "assignee": "13034933-9579-4b3c-add9-b9426144d934",
       "project": "platform-foundation"
     },
     "VFL-1440": {
-      "status": "in_progress",
-      "completedAt": null,
+      "status": "done",
+      "completedAt": "2026-10-23T15:45:48.157Z",
       "title": "Opus Reviewer review: VFL-305 wasm-pack re-land on main (b37f5fb)",
       "assignee": "938921ab-9ab9-469b-85ac-976d8cabad96",
       "project": "platform-foundation"
@@ -8080,6 +8091,76 @@
       "completedAt": null,
       "title": "Test Runner: required runs on VFL-305 wasm-pack re-land (b37f5fb)",
       "assignee": "d0a26468-a577-4f16-a29c-de0b53af3983",
+      "project": "platform-foundation"
+    },
+    "VFL-1450": {
+      "status": "in_progress",
+      "completedAt": null,
+      "title": "Cortana wake: answer cards on VFL-20 (3b2e0482) and VFL-1420 (6aa3653f)",
+      "assignee": "a9be75cd-d767-4c44-b49c-2017c61f751f",
+      "project": "platform-foundation"
+    },
+    "VFL-1447": {
+      "status": "in_progress",
+      "completedAt": null,
+      "title": "Opus Reviewer review: VFL-1409 ctutils/tokio advisory bumps candidate (3387ef4)",
+      "assignee": "938921ab-9ab9-469b-85ac-976d8cabad96",
+      "project": "platform-foundation"
+    },
+    "VFL-1449": {
+      "status": "in_progress",
+      "completedAt": null,
+      "title": "Test Runner: just check, deny/audit, tree, T9 and gate for VFL-1409 candidate (3387ef4)",
+      "assignee": "d0a26468-a577-4f16-a29c-de0b53af3983",
+      "project": "platform-foundation"
+    },
+    "VFL-1452": {
+      "status": "in_progress",
+      "completedAt": null,
+      "title": "Run T1b-C4 vf-meter test pack's no-database unit tests (VFL-1438 x a818ade)",
+      "assignee": "d0a26468-a577-4f16-a29c-de0b53af3983",
+      "project": "test-packs"
+    },
+    "VFL-1443": {
+      "status": "in_progress",
+      "completedAt": null,
+      "title": "Run T4-C3a vf-db test pack against the implementation (VFL-1434 x VFL-1420)",
+      "assignee": "d0a26468-a577-4f16-a29c-de0b53af3983",
+      "project": "test-packs"
+    },
+    "VFL-1448": {
+      "status": "done",
+      "completedAt": "2026-10-23T15:59:51.751Z",
+      "title": "CodeRabbit review: VFL-1409 ctutils/tokio advisory bumps candidate (3387ef4)",
+      "assignee": "13034933-9579-4b3c-add9-b9426144d934",
+      "project": "platform-foundation"
+    },
+    "VFL-1453": {
+      "status": "in_progress",
+      "completedAt": null,
+      "title": "Board watch (continuation 23): find stuck tasks and nudge owners",
+      "assignee": "ae2a6da1-327d-466e-8227-311999bca475",
+      "project": "platform-foundation"
+    },
+    "VFL-1446": {
+      "status": "in_progress",
+      "completedAt": null,
+      "title": "Test Runner: lane-gate checks on VFL-1428 vf-integration lane (39b6bec)",
+      "assignee": "d0a26468-a577-4f16-a29c-de0b53af3983",
+      "project": "platform-foundation"
+    },
+    "VFL-1445": {
+      "status": "in_progress",
+      "completedAt": null,
+      "title": "Opus review: VFL-1428 vf-integration Tekton lane (39b6bec)",
+      "assignee": "938921ab-9ab9-469b-85ac-976d8cabad96",
+      "project": "platform-foundation"
+    },
+    "VFL-1444": {
+      "status": "done",
+      "completedAt": "2026-10-23T16:01:33.906Z",
+      "title": "CodeRabbit review: VFL-1428 vf-integration Tekton lane (39b6bec)",
+      "assignee": "13034933-9579-4b3c-add9-b9426144d934",
       "project": "platform-foundation"
     }
   },
