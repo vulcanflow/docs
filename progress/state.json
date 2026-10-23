@@ -1,5 +1,5 @@
 {
-  "lastRunAt": "2026-10-23T14:20:20Z",
+  "lastRunAt": "2026-10-23T15:10:00Z",
   "phases": {
     "p1_foundation": {
       "label": "1 Foundation",
@@ -2114,8 +2114,8 @@
       "project": "test-packs"
     },
     "VFL-302": {
-      "status": "in_review",
-      "completedAt": null,
+      "status": "done",
+      "completedAt": "2026-10-23T14:45:26.488Z",
       "title": "VFL-92: open PR for b785dd0, rebase after #18, hand to Cortana for merge",
       "assignee": "6029b86f-ff5b-492b-9f97-ed31363be784",
       "project": "platform-foundation"
@@ -2730,10 +2730,10 @@
       "project": "operator-and-ingest"
     },
     "VFL-20": {
-      "status": "blocked",
+      "status": "in_progress",
       "completedAt": null,
       "title": "C4. `vf-meter` accounting library",
-      "assignee": "349b5411-a09e-40b6-a523-08c13e6824a5",
+      "assignee": "981a97b8-bf01-45ec-b09e-1663fd664324",
       "project": "core-libraries"
     },
     "VFL-18": {
@@ -3514,7 +3514,7 @@
       "project": "platform-foundation"
     },
     "VFL-538": {
-      "status": "blocked",
+      "status": "backlog",
       "completedAt": null,
       "title": "F2h: compile doctests in the gate \u2014 `test-doc` recipe, `test-unit` depends on it (VFL-536)",
       "assignee": "912014ba-380a-46cd-baa6-306e9343a2c2",
@@ -3584,8 +3584,8 @@
       "project": "platform-foundation"
     },
     "VFL-494": {
-      "status": "blocked",
-      "completedAt": null,
+      "status": "done",
+      "completedAt": "2026-10-23T14:48:36.273Z",
       "title": "VFL-105 continuation: confirm CI green on c0c0df5 and hand off to Cortana for merge",
       "assignee": "6029b86f-ff5b-492b-9f97-ed31363be784",
       "project": "platform-foundation"
@@ -3948,10 +3948,10 @@
       "project": "platform-foundation"
     },
     "VFL-336": {
-      "status": "blocked",
+      "status": "backlog",
       "completedAt": null,
       "title": "install-tools.sh: count installed tools against the lock, key the tree on the installer, fixed-string tar match (VFL-268 LOW-1/2/4)",
-      "assignee": null,
+      "assignee": "912014ba-380a-46cd-baa6-306e9343a2c2",
       "project": "core-libraries"
     },
     "VFL-194": {
@@ -3969,7 +3969,7 @@
       "project": "platform-foundation"
     },
     "VFL-92": {
-      "status": "blocked",
+      "status": "in_review",
       "completedAt": null,
       "title": "T9 follow-up: fix LOW-T1 and LOW-T2 from the VFL-77 re-review",
       "assignee": "6029b86f-ff5b-492b-9f97-ed31363be784",
@@ -4690,7 +4690,7 @@
       "project": "platform-foundation"
     },
     "VFL-657": {
-      "status": "blocked",
+      "status": "backlog",
       "completedAt": null,
       "title": "Gate lane for runtime-free crate test packs: test-pack recipe, test-unit depends on it (VFL-655 \u00a73)",
       "assignee": "912014ba-380a-46cd-baa6-306e9343a2c2",
@@ -5047,14 +5047,14 @@
       "project": "platform-foundation"
     },
     "VFL-725": {
-      "status": "blocked",
+      "status": "backlog",
       "completedAt": null,
       "title": "C1c. vf-core LOW follow-ups from the C1b gate: problem.rs task id, TraceId from Uuid, const debug_assert doc, macro order",
       "assignee": "349b5411-a09e-40b6-a523-08c13e6824a5",
       "project": "core-libraries"
     },
     "VFL-726": {
-      "status": "blocked",
+      "status": "backlog",
       "completedAt": null,
       "title": "T1d. vf-core test LOW follow-ups from the C1b gate (Opus LOW-4, LOW-5) plus C1c TraceId::from(Uuid) coverage",
       "assignee": "6029b86f-ff5b-492b-9f97-ed31363be784",
@@ -5383,7 +5383,7 @@
       "project": "platform-foundation"
     },
     "VFL-789": {
-      "status": "blocked",
+      "status": "backlog",
       "completedAt": null,
       "title": "CI: ci/lane-gate.sh verifies BASE_REF resolves (VFL-729 R1 follow-up)",
       "assignee": "912014ba-380a-46cd-baa6-306e9343a2c2",
@@ -6419,7 +6419,7 @@
       "project": "core-libraries"
     },
     "VFL-963": {
-      "status": "blocked",
+      "status": "backlog",
       "completedAt": null,
       "title": "test: committed self-test harness for ci/toolchain-provenance.sh (VFL-909 R4)",
       "assignee": "6029b86f-ff5b-492b-9f97-ed31363be784",
@@ -6601,7 +6601,7 @@
       "project": "platform-foundation"
     },
     "VFL-991": {
-      "status": "blocked",
+      "status": "backlog",
       "completedAt": null,
       "title": "Toolchain guard: scope channel to [toolchain] and canonicalise the executable (VFL-909 L7, L8)",
       "assignee": "912014ba-380a-46cd-baa6-306e9343a2c2",
@@ -7161,7 +7161,7 @@
       "project": "platform-foundation"
     },
     "VFL-1082": {
-      "status": "blocked",
+      "status": "backlog",
       "completedAt": null,
       "title": "GATE: erosion counts compiled rustdoc examples at merge-base vs head (VFL-734 follow-up)",
       "assignee": "912014ba-380a-46cd-baa6-306e9343a2c2",
@@ -7868,8 +7868,8 @@
       "project": "graph-and-execution-contracts"
     },
     "VFL-1414": {
-      "status": "in_progress",
-      "completedAt": null,
+      "status": "done",
+      "completedAt": "2026-10-23T14:51:43.051Z",
       "title": "Direction: product phases before CI follow-ups; park the CI/toolchain LOW backlog",
       "assignee": "a9be75cd-d767-4c44-b49c-2017c61f751f",
       "project": "platform-foundation"
@@ -7882,14 +7882,14 @@
       "project": "platform-foundation"
     },
     "VFL-1415": {
-      "status": "in_progress",
+      "status": "blocked",
       "completedAt": null,
       "title": "C1b landing (cont. of VFL-408): push 2afb232 and open PR after the #36 squash merge",
       "assignee": "349b5411-a09e-40b6-a523-08c13e6824a5",
       "project": "core-libraries"
     },
     "VFL-1413": {
-      "status": "in_progress",
+      "status": "blocked",
       "completedAt": null,
       "title": "Tekton integration lane: service sidecars so F2a/F2b/F3b/F3c acceptance runs in-cluster",
       "assignee": "912014ba-380a-46cd-baa6-306e9343a2c2",
@@ -7903,25 +7903,144 @@
       "project": "platform-foundation"
     },
     "VFL-1416": {
-      "status": "in_progress",
-      "completedAt": null,
+      "status": "done",
+      "completedAt": "2026-10-23T14:35:34.592Z",
       "title": "Opus review: VFL-92 rebase 5778def (LOW-T2 only, LOW-T1 superseded)",
       "assignee": "938921ab-9ab9-469b-85ac-976d8cabad96",
       "project": "platform-foundation"
     },
     "VFL-1417": {
-      "status": "in_progress",
-      "completedAt": null,
+      "status": "done",
+      "completedAt": "2026-10-23T14:33:14.858Z",
       "title": "CodeRabbit review: VFL-92 rebase 5778def (LOW-T2 only)",
       "assignee": "13034933-9579-4b3c-add9-b9426144d934",
       "project": "platform-foundation"
     },
     "VFL-1418": {
-      "status": "in_progress",
-      "completedAt": null,
+      "status": "done",
+      "completedAt": "2026-10-23T14:30:16.895Z",
       "title": "Test Runner: run VFL-92 rebase 5778def (LOW-T2 only)",
       "assignee": "d0a26468-a577-4f16-a29c-de0b53af3983",
       "project": "platform-foundation"
+    },
+    "VFL-1423": {
+      "status": "blocked",
+      "completedAt": null,
+      "title": "C3h. vf-testkit consumes the vf-db migrators (AA-3)",
+      "assignee": "349b5411-a09e-40b6-a523-08c13e6824a5",
+      "project": "core-libraries"
+    },
+    "VFL-1420": {
+      "status": "in_progress",
+      "completedAt": null,
+      "title": "C3a. vf-db foundation: control schema, TenantTx/ControlTx, migrators, `vf-db migrate`, projects/targets",
+      "assignee": "349b5411-a09e-40b6-a523-08c13e6824a5",
+      "project": "core-libraries"
+    },
+    "VFL-1434": {
+      "status": "in_progress",
+      "completedAt": null,
+      "title": "T4-C3a: vf-db tests for the C3a foundation (skeleton b98b917)",
+      "assignee": "6029b86f-ff5b-492b-9f97-ed31363be784",
+      "project": "core-libraries"
+    },
+    "VFL-1419": {
+      "status": "done",
+      "completedAt": "2026-10-23T14:32:43.759Z",
+      "title": "Cortana wake: rule on the C1b landing-path card a7e2b59e on VFL-1415",
+      "assignee": "a9be75cd-d767-4c44-b49c-2017c61f751f",
+      "project": "core-libraries"
+    },
+    "VFL-1428": {
+      "status": "in_progress",
+      "completedAt": null,
+      "title": "vf-integration lane: Task, Pipeline and manual PipelineRun (VFL-1413 steps 1-2)",
+      "assignee": "912014ba-380a-46cd-baa6-306e9343a2c2",
+      "project": "platform-foundation"
+    },
+    "VFL-1432": {
+      "status": "in_progress",
+      "completedAt": null,
+      "title": "Cortana wake: four pending cards lost their wake (VFL-1412 G1 push, VFL-92 push approval, VFL-340 re-land, VFL-1420 \u00a7A5 pin)",
+      "assignee": "a9be75cd-d767-4c44-b49c-2017c61f751f",
+      "project": "platform-foundation"
+    },
+    "VFL-1421": {
+      "status": "blocked",
+      "completedAt": null,
+      "title": "C3b. vf-db authorization tables and repositories",
+      "assignee": "349b5411-a09e-40b6-a523-08c13e6824a5",
+      "project": "core-libraries"
+    },
+    "VFL-1430": {
+      "status": "blocked",
+      "completedAt": null,
+      "title": "vf-integration: commit status `vf-integration` and log artifact (VFL-1413 step 3)",
+      "assignee": "912014ba-380a-46cd-baa6-306e9343a2c2",
+      "project": "platform-foundation"
+    },
+    "VFL-1429": {
+      "status": "blocked",
+      "completedAt": null,
+      "title": "vf-integration: start on PR label `integration` (VFL-1413 step 1, later)",
+      "assignee": "912014ba-380a-46cd-baa6-306e9343a2c2",
+      "project": "platform-foundation"
+    },
+    "VFL-1431": {
+      "status": "blocked",
+      "completedAt": null,
+      "title": "vf-integration: first run on main, links to VFL-171/189/566/646 (VFL-1413 step 4)",
+      "assignee": "912014ba-380a-46cd-baa6-306e9343a2c2",
+      "project": "platform-foundation"
+    },
+    "VFL-1425": {
+      "status": "blocked",
+      "completedAt": null,
+      "title": "C3d. vf-db allowance tables and repositories",
+      "assignee": "349b5411-a09e-40b6-a523-08c13e6824a5",
+      "project": "core-libraries"
+    },
+    "VFL-1436": {
+      "status": "in_progress",
+      "completedAt": null,
+      "title": "VFL-92 continuation: push 5778def, supersede PR #20, open the test-only PR to main",
+      "assignee": "6029b86f-ff5b-492b-9f97-ed31363be784",
+      "project": "platform-foundation"
+    },
+    "VFL-1435": {
+      "status": "in_progress",
+      "completedAt": null,
+      "title": "Opus review: G1 candidate 313d43a, MEDIUM-1 fix delta over 4b9a679 (VFL-16)",
+      "assignee": "938921ab-9ab9-469b-85ac-976d8cabad96",
+      "project": "graph-and-execution-contracts"
+    },
+    "VFL-1426": {
+      "status": "blocked",
+      "completedAt": null,
+      "title": "C3f. vf-db observations, false positives, verification and reference tables",
+      "assignee": "349b5411-a09e-40b6-a523-08c13e6824a5",
+      "project": "core-libraries"
+    },
+    "VFL-1422": {
+      "status": "blocked",
+      "completedAt": null,
+      "title": "C3e. vf-db outbox, notification nonces and audit log",
+      "assignee": "349b5411-a09e-40b6-a523-08c13e6824a5",
+      "project": "core-libraries"
+    },
+    "VFL-1427": {
+      "status": "blocked",
+      "completedAt": null,
+      "title": "C3g. vf-db reports/schedules schema, full \u00a7A4 snapshot and `.sqlx/`",
+      "assignee": "349b5411-a09e-40b6-a523-08c13e6824a5",
+      "project": "core-libraries"
+    },
+    "VFL-1424": {
+      "status": "blocked",
+      "completedAt": null,
+      "title": "C3c. vf-db pipeline runs, work units, scans and events",
+      "assignee": "349b5411-a09e-40b6-a523-08c13e6824a5",
+      "project": "core-libraries"
     }
   },
   "projectStatuses": {
