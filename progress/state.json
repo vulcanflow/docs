@@ -1,5 +1,5 @@
 {
-  "lastRunAt": "2026-10-23T15:10:00Z",
+  "lastRunAt": "2026-10-23T15:35:00Z",
   "phases": {
     "p1_foundation": {
       "label": "1 Foundation",
@@ -275,7 +275,8 @@
         "VFL-752",
         "VFL-767",
         "VFL-756",
-        "VFL-758"
+        "VFL-758",
+        "VFL-1438"
       ]
     },
     "p3_api": {
@@ -1058,7 +1059,11 @@
         "VFL-1410",
         "VFL-1416",
         "VFL-1417",
-        "VFL-1418"
+        "VFL-1418",
+        "VFL-1437",
+        "VFL-1439",
+        "VFL-1440",
+        "VFL-1441"
       ]
     }
   },
@@ -1645,7 +1650,7 @@
       "project": "core-libraries"
     },
     "VFL-340": {
-      "status": "in_review",
+      "status": "cancelled",
       "completedAt": null,
       "title": "VFL-305 delivery: push 6e9a76d and open the PR to main",
       "assignee": "912014ba-380a-46cd-baa6-306e9343a2c2",
@@ -1785,7 +1790,7 @@
       "project": "core-libraries"
     },
     "VFL-17": {
-      "status": "in_progress",
+      "status": "blocked",
       "completedAt": null,
       "title": "C3. `vf-db` schemas, migrations, `TenantTx`, repositories, outbox",
       "assignee": "349b5411-a09e-40b6-a523-08c13e6824a5",
@@ -1974,7 +1979,7 @@
       "project": "platform-foundation"
     },
     "VFL-341": {
-      "status": "blocked",
+      "status": "cancelled",
       "completedAt": null,
       "title": "VFL-305 delivery: merge the PR for 6e9a76d",
       "assignee": "a9be75cd-d767-4c44-b49c-2017c61f751f",
@@ -7861,7 +7866,7 @@
       "project": "platform-foundation"
     },
     "VFL-1412": {
-      "status": "in_review",
+      "status": "blocked",
       "completedAt": null,
       "title": "G1 delivery: push vf-graph candidate 313d43a and open the PR to main",
       "assignee": "8e2f4479-d1f5-4cfd-b56a-ceeda5a84e58",
@@ -7931,7 +7936,7 @@
       "project": "core-libraries"
     },
     "VFL-1420": {
-      "status": "in_progress",
+      "status": "blocked",
       "completedAt": null,
       "title": "C3a. vf-db foundation: control schema, TenantTx/ControlTx, migrators, `vf-db migrate`, projects/targets",
       "assignee": "349b5411-a09e-40b6-a523-08c13e6824a5",
@@ -7959,8 +7964,8 @@
       "project": "platform-foundation"
     },
     "VFL-1432": {
-      "status": "in_progress",
-      "completedAt": null,
+      "status": "done",
+      "completedAt": "2026-10-23T15:08:18.631Z",
       "title": "Cortana wake: four pending cards lost their wake (VFL-1412 G1 push, VFL-92 push approval, VFL-340 re-land, VFL-1420 \u00a7A5 pin)",
       "assignee": "a9be75cd-d767-4c44-b49c-2017c61f751f",
       "project": "platform-foundation"
@@ -8001,15 +8006,15 @@
       "project": "core-libraries"
     },
     "VFL-1436": {
-      "status": "in_progress",
+      "status": "blocked",
       "completedAt": null,
       "title": "VFL-92 continuation: push 5778def, supersede PR #20, open the test-only PR to main",
       "assignee": "6029b86f-ff5b-492b-9f97-ed31363be784",
       "project": "platform-foundation"
     },
     "VFL-1435": {
-      "status": "in_progress",
-      "completedAt": null,
+      "status": "done",
+      "completedAt": "2026-10-23T15:14:34.119Z",
       "title": "Opus review: G1 candidate 313d43a, MEDIUM-1 fix delta over 4b9a679 (VFL-16)",
       "assignee": "938921ab-9ab9-469b-85ac-976d8cabad96",
       "project": "graph-and-execution-contracts"
@@ -8041,6 +8046,41 @@
       "title": "C3c. vf-db pipeline runs, work units, scans and events",
       "assignee": "349b5411-a09e-40b6-a523-08c13e6824a5",
       "project": "core-libraries"
+    },
+    "VFL-1437": {
+      "status": "done",
+      "completedAt": "2026-10-23T15:25:32.084Z",
+      "title": "Wake: answer merge card b3a1d2fd on VFL-1436 (PR #77, VFL-92 LOW-T2)",
+      "assignee": "a9be75cd-d767-4c44-b49c-2017c61f751f",
+      "project": "platform-foundation"
+    },
+    "VFL-1438": {
+      "status": "in_progress",
+      "completedAt": null,
+      "title": "T1b-C4: vf-meter tests for the C4 skeleton (66459bf)",
+      "assignee": "6029b86f-ff5b-492b-9f97-ed31363be784",
+      "project": "core-libraries"
+    },
+    "VFL-1439": {
+      "status": "in_progress",
+      "completedAt": null,
+      "title": "CodeRabbit review: VFL-305 wasm-pack re-land on main (b37f5fb)",
+      "assignee": "13034933-9579-4b3c-add9-b9426144d934",
+      "project": "platform-foundation"
+    },
+    "VFL-1440": {
+      "status": "in_progress",
+      "completedAt": null,
+      "title": "Opus Reviewer review: VFL-305 wasm-pack re-land on main (b37f5fb)",
+      "assignee": "938921ab-9ab9-469b-85ac-976d8cabad96",
+      "project": "platform-foundation"
+    },
+    "VFL-1441": {
+      "status": "in_progress",
+      "completedAt": null,
+      "title": "Test Runner: required runs on VFL-305 wasm-pack re-land (b37f5fb)",
+      "assignee": "d0a26468-a577-4f16-a29c-de0b53af3983",
+      "project": "platform-foundation"
     }
   },
   "projectStatuses": {
